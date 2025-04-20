@@ -1,0 +1,295 @@
+﻿@model VMS.ViewModel.VMTransporterMaster
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+@if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Transporter Master Details</h4>
+                    <div>
+                        <form id="frmTransporterMaster" name="frmTransporterMaster" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <input id="hdnuserSubscriptionId" name="hdnuserSubscriptionId" type="hidden">
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtUserName">User Name</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.UserName, new { @class = "form-control", id = "txtUserName" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtTransporterCode"> Transporter Code</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.TransporterCode, new { @class = "form-control", id = "txtTransporterCode" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtTransporterName"> Transporter Name</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.TransporterName, new { @class = "form-control", id = "txtTransporterName" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtOwnerName"> Owner Name</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.OwnerName, new { @class = "form-control", id = "txtOwnerName" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtMobileNo"> Mobile Number</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.MobileNo, new { @class = "form-control", id = "txtMobileNo" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtEmailAddress"> Email Address</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.EmailID, new { @class = "form-control", id = "txtEmailAddress" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtAddress1"> Address Line 1</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextAreaFor(m => m.Address1, new { @class = "form-control", cols = "10", rows = "10", id = "txtAddress1" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtAddress2"> Address Line 2</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextAreaFor(m => m.Address2, new { @class = "form-control", cols = "10", rows = "10", id = "txtAddress2" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtAddress3"> Address Line 3</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextAreaFor(m => m.Address3, new { @class = "form-control", cols = "10", rows = "10", id = "txtAddress3" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="ddlUser">State</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.StateName, new { @class = "form-control", id = "txtStateName" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDistrictName">District</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.DistrictName, new { @class = "form-control", id = "txtDistrictName" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                     <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtCityName">City</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.CityName, new { @class = "form-control", id = "txtCityName" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPincode"> Pincode</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.PinCode, new { @class = "form-control", id = "txtPincode" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtGstinNo"> GSTIN No</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.GSTINNo, new { @class = "form-control", id = "txtGstinNo" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPanNo"> Pan No</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.PanNo, new { @class = "form-control", id = "txtPanNo" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtBillPrefix"> Bill Prefix</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.BillPrifix, new { @class = "form-control", id = "txtBillPrefix" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="chkIsActive">Is Active</label>
+                                        <div class="col-sm-10">
+                                            @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", id = "chkIsActive" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                            @* <div class="row rowHeight">
+                            <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="from-date-picker">From Date :</label>
+                            <div class="col-sm-8">
+                            <input type="text" id="from-date-picker" placeholder="Select From Date" class="form-control" onchange="setTextboxStyle(this);" readonly=" readonly">
+                            </div>
+                            </div>
+                            </div>
+                            <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="to-date-picker">To Date :</label>
+                            <div class="col-sm-8">
+                            <input type="text" id="to-date-picker" placeholder="Select To Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                            </div>
+                            </div>
+                            </div>
+                            </div> *@
+                            <div class="row rowHeight">
+                                <div class="col-md-12"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        var fullAccess = 'True';
+        var viewAccess = 'True';
+
+        $(document).ready(function () {
+            setSideMenu("transporter-master");
+            if (fullAccess === "True" || viewAccess === "True") {
+                makeFieldsReadOnly();
+                var transporterMasterId = GetParameterValues('transporterMasterId');
+                getTransporterMaster(transporterMasterId);
+            }
+        });
+
+        function makeFieldsReadOnly() {
+            $("#txtUserName").prop("readonly", true);
+            $("#txtStateName").prop("readonly", true);
+            $("#txtDistrictName").prop("readonly", true);
+            $("#txtCityName").prop("readonly", true);
+            $("#txtTransporterCode").prop("readonly", true);
+            $("#txtTransporterName").prop("readonly", true);
+            $("#txtOwnerName").prop("readonly", true);
+            $("#txtMobileNo").prop("readonly", true);
+            $("#txtEmailAddress").prop("readonly", true);
+            $("#txtAddress1").prop("readonly", true);
+            $("#txtAddress2").prop("readonly", true);
+            $("#txtAddress3").prop("readonly", true);
+            $("#txtPincode").prop("readonly", true);
+            $("#txtGstinNo").prop("readonly", true);
+            $("#txtPanNo").prop("readonly", true);
+            $("#txtBillPrefix").prop("readonly", true);
+            $("#chkIsActive").prop('checked', false);
+            $("#chkIsActive").attr("disabled", true);
+        }
+
+        function getTransporterMaster(transporterMasterId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "TransporterMaster/getTransporterMasterbyId")',
+                type: "GET",
+                data: { transporterMasterId: transporterMasterId },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        $("#txtUserName").val(data.userName);
+                        $("#txtStateName").val(data.stateName);
+                        $("#txtDistrictName").val(data.districtName);
+                        $("#txtCityName").val(data.cityName);
+                        $("#txtTransporterCode").val(data.transporterCode);
+                        $("#txtTransporterName").val(data.transporterName);
+                        $("#txtOwnerName").val(data.ownerName);
+                        $("#txtMobileNo").val(data.mobileNo);
+                        $("#txtEmailAddress").val(data.emailID);
+                        $("#txtAddress1").val(data.address1);
+                        $("#txtAddress2").val(data.address2);
+                        $("#txtAddress3").val(data.address3);
+                        $("#txtPincode").val(data.pinCode);
+                        $("#txtGstinNo").val(data.gstinNo);
+                        $("#txtPanNo").val(data.panNo);
+                        $("#txtBillPrefix").val(data.billPrifix);
+                        $("#chkIsActive").prop('checked', data.isActive);
+                    } else {
+                        $.confirm({
+                            title: 'Transporter Master',
+                            content: 'Transporter Master does not Exists!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,680 @@
+﻿@model VMS.ViewModel.VMCompanyMaster
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+@if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Company Master List</h4>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtCompanyCode"> Company Code:</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(x => x.BillToCode, new { @class = "form-control alphanumericonly", id = "txtCompanyCode", @maxlength = "100" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtCompanyName"> Company Name:</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(x => x.BillToCompanyName, new { @class = "form-control alphanumericonlywithspace", id = "txtCompanyName", @maxlength = "100" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtAddress1">Address Line 1:</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(x => x.Address1, new { @class = "form-control", id = "txtAddress1", @maxlength = "500" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtAddress2">Address Line 2:</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(x => x.Address2, new { @class = "form-control", id = "txtAddress2", @maxlength = "500" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtAddress3">Address Line 3:</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(x => x.Address3, new { @class = "form-control", id = "txtAddress3", @maxlength = "500" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="ddlState">State:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="ddlState" name="ddlState" onchange="setDropDownStyle(this);"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="ddlDistrict">District:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="ddlDistrict" name="ddlDistrict" onchange="setDropDownStyle(this);"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="ddlCity">City:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="ddlCity" name="ddlCity" onchange="setDropDownStyle(this);"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtPincode"> Pincode:</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(x => x.PinCode, new { @class = "form-control numberonly", id = "txtPincode", @maxlength = "10" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtGstinNo"> GSTIN No:</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(x => x.GSTINNo, new { @class = "form-control gstNo alphanumericonly", id = "txtGstinNo", @maxlength = "15" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtPanNo"> Pan No:</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(x => x.PanNo, new { @class = "form-control panNo alphanumericonly", id = "txtPanNo", @maxlength = "10" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active:</label>
+                                <div class="col-sm-8">
+                                    @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", id = "chkIsActive" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                    @*  @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+                    { *@
+                    <div class="row rowHeight" style="text-align:center;">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary mr-2" onclick="searchCompanyMaster();">Search</button>
+                           @*  <button type="button" class="btn btn-primary mr-2" onclick="getCompanyMasterList();">View All</button> *@
+                            <button type="button" class="btn btn-light" onclick="clearControls();">Clear</button> 
+                        </div>
+                    </div>
+                    @*  } *@
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-sm-12"></div>
+                            </div>
+                        </div>
+                    </div>
+                    @* @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+                    { *@
+                    <div id="divCompanyMaster">
+                        <div class="table-responsive pt-3">
+                            <table id="tblCompanyMaster" class="table table-striped project-orders-table nowrap hover order-column row-border stripe display" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Actions</th>
+                                        <th>Company Code</th>
+                                        <th>Company Name</th>
+                                        <th>Address 1</th>
+                                        <th>Address 2</th>
+                                        <th>Address 3</th>
+                                        <th>State</th>
+                                        <th>District</th>
+                                        <th>City</th>
+                                        <th>Pin Code</th>
+                                        <th>GSTIN No</th>
+                                        <th>Pan No</th>
+                                        <th>Is Active</th>
+                                        <th>Creation Date</th>
+                                        <th>Created By</th>
+                                        <th>Update Date</th>
+                                        <th>Updatd By</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="companyMasterBody">
+                                </tbody>
+                            </table>
+                        </div>
+                        @* } *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var addAccess = '@ViewBag.AddUserRoleAddAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        // var updateAccess = '@ViewBag.AddUserRoleUpdateAccess';
+        // var deleteAccess = '@ViewBag.AddUserRoleDeleteAccess';
+        var fullAccess = 'True';
+        var addAccess = 'True';
+        var viewAccess = 'True';
+        var updateAccess = 'True';
+        var deleteAccess = 'True';
+        var viewButton = "";
+        var updateButton = "";
+        var deleteButton = "";
+
+        $(document).ready(function () {
+            setSideMenu("company-master");
+            if (fullAccess === "True" || viewAccess === "True") {
+                //checkValidationOnChange();
+                getCompanyMasterList();
+                getStateByCountryId(1);
+               
+                $("#ddlState").on("change", function () {
+                    getDistrictByStateId($(this).val());
+                });
+
+                $("#ddlDistrict").on("change", function () {
+                    getCityByDisctrictId($(this).val());
+                });
+            }
+        });
+
+        function bindDataTable() {
+            $('#tblCompanyMaster').DataTable({
+                deferRender: true,
+                scroller: true,
+                scrollX: true,
+                scrollY: true,
+                searching: true,
+                info: true,
+                paging: true,
+                dom: 'Bfrtip',
+                "bDestroy": true,
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: 'Copy'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: 'Csv',
+                        title: function () {
+                            return "Company Master List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Csv</span>',
+                        titleAttr: 'Csv'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        title: function () {
+                            return "Company Master List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Excel</span>',
+                        titleAttr: 'Excel'
+                    },
+                    {
+                        extend: "print",
+                        exportOptions: {
+                            orientation: 'landscape'
+                        },
+                        pageSize: 'A0',
+                        customize: function (win) {
+                            var last = null;
+                            var current = null;
+                            var bod = [];
+
+                            var css = '@@page { size: landscape; }',
+                                head = win.document.head || win.document.getElementsByTagName('head')[0],
+                                style = win.document.createElement('style');
+
+                            style.type = 'text/css';
+                            style.media = 'print';
+
+                            if (style.styleSheet) {
+                                style.styleSheet.cssText = css;
+                            }
+                            else {
+                                style.appendChild(win.document.createTextNode(css));
+                            }
+                            head.appendChild(style);
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: function () {
+                            return "Company Master List";
+                        },
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        text: '<span class="fa fa-file-pdf-o">PDF</span>',
+                        titleAttr: 'PDF'
+                    }
+                ]
+            });
+        }
+
+        function checkValidation() {
+            var isValid = true;
+
+            if ($('#ddlState option:selected').val() == "0") {
+                $("#ddlState").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlState").focus();
+                isValid = false;
+            } else {
+                $("#ddlState").attr('class', 'form-control');
+                $("#ddlState").focus();
+            }
+
+            if ($('#ddlDistrict option:selected').val() == "0") {
+                $("#ddlDistrict").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlDistrict").focus();
+                isValid = false;
+            } else {
+                $("#ddlDistrict").attr('class', 'form-control');
+                $("#ddlDistrict").focus();
+            }
+
+            if ($('#ddlCity option:selected').val() == "0") {
+                $("#ddlCity").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlCity").focus();
+                isValid = false;
+            } else {
+                $("#ddlCity").attr('class', 'form-control');
+                $("#ddlCity").focus();
+            }
+
+            if ($("#txtCompanyCode").val() == "") {
+                $("#txtCompanyCode").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtCompanyCode").focus();
+                isValid = false;
+            } else {
+                $("#txtCompanyCode").attr('class', 'form-control');
+                $("#txtCompanyCode").focus();
+            }
+
+            if ($("#txtCompanyName").val() == "") {
+                $("#txtCompanyName").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtCompanyName").focus();
+                isValid = false;
+            } else {
+                $("#txtCompanyName").attr('class', 'form-control');
+                $("#txtCompanyName").focus();
+            }
+
+            if ($("#txtAddress1").val() == "") {
+                $("#txtAddress1").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtAddress1").focus();
+                isValid = false;
+            } else {
+                $("#txtAddress1").attr('class', 'form-control');
+                $("#txtAddress1").focus();
+            }
+
+            if ($("#txtGstinNo").val() == "") {
+                $("#txtGstinNo").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtGstinNo").focus();
+                isValid = false;
+            } else {
+                $("#txtGstinNo").attr('class', 'form-control');
+                $("#txtGstinNo").focus();
+            }
+
+            if ($("#txtPanNo").val() == "") {
+                $("#txtPanNo").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtPanNo").focus();
+                isValid = false;
+            } else {
+                $("#txtPanNo").attr('class', 'form-control');
+                $("#txtPanNo").focus();
+            }
+            return isValid;
+        }
+
+        function checkValidationOnChange() {
+            $(function () {
+                $("#ddlState").change(function () {
+                    if ($('option:selected', this).val() == "0") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#ddlDistrict").change(function () {
+                    if ($('option:selected', this).val() == "0") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#ddlCity").change(function () {
+                    if ($('option:selected', this).val() == "0") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtCompanyCode").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtCompanyName").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtAddress1").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtGstinNo").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+                $("#txtPanNo").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+            });
+        }
+
+        function clearControls() {
+            $("#ddlState").prop("selectedIndex", 0).val();
+            $("#ddlDistrict").prop("selectedIndex", 0).val();
+            $("#ddlCity").prop("selectedIndex", 0).val();
+            $("#txtCompanyCode").val("");
+            $("#txtCompanyName").val("");
+            $("#txtAddress1").val("");
+            $("#txtAddress2").val("");
+            $("#txtAddress3").val("");
+            $("#txtPincode").val("");
+            $("#txtGstinNo").val("");
+            $("#txtPanNo").val("");
+            $("#chkIsActive").prop("checked", false);
+        }
+
+        function searchCompanyMaster() {
+            if ($.fn.DataTable.isDataTable("#tblCompanyMaster")) {
+                $('#tblCompanyMaster tr').remove();
+                $('#tblCompanyMaster tbody').empty();
+                $('#tblCompanyMaster').DataTable().clear().destroy();
+            }
+
+            var companyCode = $("#txtCompanyCode").val();
+            var companyName = $("#txtCompanyName").val();
+            var address1 = $("#txtAddress1").val();
+            var address2 = $("#txtAddress2").val();
+            var address3 = $("#txtAddress3").val();
+            var stateId = 0;
+            var districtId = 0;
+            var cityId = 0;
+            var pinCode = $("#txtPincode").val();
+            var gstinNo = $("#txtGstinNo").val();
+            var panNo = $("#txtPanNo").val();
+            var isActive = $("#chkIsActive").is(":checked");
+
+            if( $('#ddlState option:selected').val() != null && $('#ddlState option:selected').val() != undefined){
+                stateId = $('#ddlState option:selected').val();
+            }
+
+            if( $('#ddlDistrict option:selected').val() != null &&  $('#ddlDistrict option:selected').val() != undefined){
+                districtId = $('#ddlDistrict option:selected').val();
+            }
+
+            if( $('#ddlCity option:selected').val() != null &&  $('#ddlCity option:selected').val() != undefined){
+                cityId = $('#ddlCity option:selected').val();
+            }
+
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "CompanyMaster/searchCompanyMaster")',
+                type: "GET",
+                dataType: "json",
+                data: {
+                    companyCode: companyCode, companyName: companyName,
+                    address1: address1, address2: address2, address3: address3,
+                    stateId: stateId, districtId: districtId, cityId: cityId,
+                    pinCode: pinCode, gstinNo: gstinNo, panNo: panNo, isActive: isActive
+                },
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        console.log(data);
+                        var rows = "";
+                        var row = "";
+                        $.each(data, function (i, item) {
+                            if (fullAccess === "True" || viewAccess === "True") {
+                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewCompanyMaster(\'' + item.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || updateAccess === "True") {
+                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="editCompanyMaster(\'' + item.id + '\');"> Edit <i class="typcn typcn-edit btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || deleteAccess === "True") {
+                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" onclick="deleteCompanyMaster(\'' + item.id + '\');"> Delete <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                            }
+                            row = '<tr>' +
+                                '<td>' +
+                                '<div class="d-flex align-items-center">' +
+                                    viewButton +
+                                    updateButton +
+                                    deleteButton +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + item.billToCode + '</td>' +
+                                '<td>' + item.billToCompanyName + '</td>' +
+                                '<td>' + item.address1 + '</td>' +
+                                '<td>' + item.address2 + '</td>' +
+                                '<td>' + item.address3 + '</td>' +
+                                '<td>' + item.stateName + '</td>' +
+                                '<td>' + item.districtName + '</td>' +
+                                '<td>' + item.cityName + '</td>' +
+                                '<td>' + item.pinCode + '</td>' +
+                                '<td>' + item.gstinNo + '</td>' +
+                                '<td>' + item.panNo + '</td>' +
+                                '<td>' + item.isActive + '</td>' +
+                                '<td>' + item.createDate + '</td>' +
+                                '<td>' + item.createdBy + '</td>' +
+                                '<td>' + item.updateDate + '</td>' +
+                                '<td>' + item.updateBy + '</td>' +
+                                '</tr>';
+                            rows = rows + row;
+                        });
+                        $("#divCompanyMaster").show();
+                        $("#tblCompanyMaster").focus();
+                        bindDataTable();
+                        $("#companyMasterBody").html(rows);
+                        rows = "";
+                    }
+                    else {
+                        console.log(data);
+                        $.confirm({
+                            title: 'Company Master List',
+                            content: 'Company Master Not Found!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                        // var row = '<tr>' +
+                        //     '<td colspan="17" style="text-align:center">No Data Found!!!</td>' +
+                        //     '</tr>';
+
+                        var row = '<tr>' +
+                            '<td>' +
+                            '<div class="d-flex align-items-center">' +
+                            '</div>' +
+                            '</td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td style="text-align:center">No Data Found!!!</td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '</tr>';
+                        $("#companyMasterBody").html(row);
+                    }
+                }
+            });
+            //}
+        }
+
+        function getCompanyMasterList() {
+            if ($.fn.DataTable.isDataTable("#tblCompanyMaster")) {
+                $('#tblCompanyMaster tbody').empty();
+                $('#tblCompanyMaster').DataTable().clear().destroy();
+            }
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "CompanyMaster/getCompanyMasterList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        $.each(data, function (i, item) {
+                            var sno = 0;
+                            var rows = "";
+                            var row = "";
+                            sno = sno + 1;
+                            if (fullAccess === "True" || viewAccess === "True") {
+                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewCompanyMaster(\'' + item.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || updateAccess === "True") {
+                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="editCompanyMaster(\'' + item.id + '\');"> Edit <i class="typcn typcn-edit btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || deleteAccess === "True") {
+                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" onclick="deleteCompanyMaster(\'' + item.id + '\');"> Delete <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                            }
+                            row = '<tr>' +
+                                '<td>' +
+                                '<div class="d-flex align-items-center">' +
+                                viewButton +
+                                updateButton +
+                                deleteButton +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + item.billToCode + '</td>' +
+                                '<td>' + item.billToCompanyName + '</td>' +
+                                '<td>' + item.address1 + '</td>' +
+                                '<td>' + item.address2 + '</td>' +
+                                '<td>' + item.address3 + '</td>' +
+                                '<td>' + item.stateName + '</td>' +
+                                '<td>' + item.districtName + '</td>' +
+                                '<td>' + item.cityName + '</td>' +
+                                '<td>' + item.pinCode + '</td>' +
+                                '<td>' + item.gstinNo + '</td>' +
+                                '<td>' + item.panNo + '</td>' +
+                                '<td>' + item.isActive + '</td>' +
+                                '<td>' + item.createDate + '</td>' +
+                                '<td>' + item.createdBy + '</td>' +
+                                '<td>' + item.updateDate + '</td>' +
+                                '<td>' + item.updateBy + '</td>' +
+                                '</tr>';
+                            rows = rows + row;
+                            $("#companyMasterBody").append(rows);
+                            rows = "";
+                            $("#tblCompanyMaster").focus();
+                        });
+                        bindDataTable();
+                    } else {
+                        var row = '<tr>' +
+                            '<td colspan="17" style="text-align:center">No Data Found!!!</td>' +
+                            '</tr>';
+                        $("#companyMasterBody").html(row);
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+    </script>
+}

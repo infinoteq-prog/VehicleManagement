@@ -1,0 +1,579 @@
+﻿@model VMS.ViewModel.VMGstMaster
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+@if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">View GST Master</h4>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="ddlTransporter">Transporter : <span class="reqFields">*</span></label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="ddlTransporter" name="ddlTransporter" onchange="setDropDownStyle(this);"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtSgstRate">SGST Rate :</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(x => x.SgstRate, new { @class = "form-control decimalnumberonly", @maxlength = "10", id = "txtSgstRate" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtCgstRate">CGST Rate :</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(x => x.CgstRate, new { @class = "form-control decimalnumberonly", @maxlength = "10", id = "txtCgstRate" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtIgstRate">IGST Rate :</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(x => x.IgstRate, new { @class = "form-control decimalnumberonly", @maxlength = "10", id = "txtIgstRate" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtUgstRate">UGST Rate :</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(x => x.UgstRate, new { @class = "form-control decimalnumberonly", @maxlength = "10", id = "txtUgstRate" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtEffectiveDate">Effective Date : </label>
+                                <div class="col-sm-8 input-group date" data-date-format="dd/mm/yyyy">
+                                    @Html.TextBoxFor(x => x.EffectiveDate, new { @class = "form-control datepicker", id = "txtEffectiveDate", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtEndDate">End Date : </label>
+                                <div class="col-sm-8 input-group date" data-date-format="dd/mm/yyyy">
+                                    @Html.TextBoxFor(x => x.EndDate, new { @class = "form-control datepicker", id = "txtEndDate", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="chkIsRcm">Is RCM:</label>
+                                <div class="col-sm-8">
+                                    @Html.CheckBoxFor(x => x.IsRcm, new { @class = "form-check-label checkboxStyle", id = "chkIsRcm" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active:</label>
+                                <div class="col-sm-8">
+                                    @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", id = "chkIsActive" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                    @*  @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+                    { *@
+                    <div class="row rowHeight" style="text-align:center;">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary mr-2" onclick="searchGSTMaster();">Search</button>
+                            @*  <button type="button" class="btn btn-primary mr-2" onclick="getGSTMasterList();">View All</button> *@
+                            <button type="button" class="btn btn-light" onclick="clearControls();">Clear</button>
+                        </div>
+                    </div>
+                    @*  } *@
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-sm-12"></div>
+                            </div>
+                        </div>
+                    </div>
+                    @* @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+                    { *@
+                    <div id="divGSTMaster">
+                        <div class="table-responsive pt-3">
+                            <table id="tblGstMasterList" class="table table-striped project-orders-table nowrap hover order-column row-border stripe display" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Actions</th>
+                                        <th>Effective Date</th>
+                                        <th>Transporter Name</th>
+                                        <th>Transporter Code</th>
+                                        <th>SGST Rate</th>
+                                        <th>CGST Rate</th>
+                                        <th>IGST Rate</th>
+                                        <th>UTGST Rate</th>
+                                        <th>End Date</th>
+                                        <th>Is Rcm</th>
+                                        <th>Is Active</th>
+                                        <th>Created By</th>
+                                        <th>Created Date</th>
+                                        <th>Updated By</th>
+                                        <th>Updated Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="gstMasterBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var addAccess = '@ViewBag.AddUserRoleAddAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        // var updateAccess = '@ViewBag.AddUserRoleUpdateAccess';
+        // var deleteAccess = '@ViewBag.AddUserRoleDeleteAccess';
+        var fullAccess = 'True';
+        var addAccess = 'True';
+        var viewAccess = 'True';
+        var updateAccess = 'True';
+        var deleteAccess = 'True';
+        var viewButton = "";
+        var updateButton = "";
+        var deleteButton = "";
+
+        $(document).ready(function () {
+            setSideMenu("gst-master");
+            getTransporterList();
+            if (fullAccess === "True" || viewAccess === "True") {
+                getGSTMasterList();
+            }
+        });
+
+        function bindDataTable() {
+            $('#tblGstMasterList').DataTable({
+                deferRender: true,
+                scroller: true,
+                scrollX: true,
+                scrollY: true,
+                searching: true,
+                info: true,
+                paging: true,
+                dom: 'Bfrtip',
+                "bDestroy": true,
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: 'Copy'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: 'Csv',
+                        title: function () {
+                            return "GST Master List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Csv</span>',
+                        titleAttr: 'Csv'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        title: function () {
+                            return "GST Master List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Excel</span>',
+                        titleAttr: 'Excel'
+                    },
+                    {
+                        extend: "print",
+                        exportOptions: {
+                            orientation: 'landscape'
+                        },
+                        pageSize: 'A0',
+                        customize: function (win) {
+                            var last = null;
+                            var current = null;
+                            var bod = [];
+
+                            var css = '@@page { size: landscape; }',
+                                head = win.document.head || win.document.getElementsByTagName('head')[0],
+                                style = win.document.createElement('style');
+
+                            style.type = 'text/css';
+                            style.media = 'print';
+
+                            if (style.styleSheet) {
+                                style.styleSheet.cssText = css;
+                            }
+                            else {
+                                style.appendChild(win.document.createTextNode(css));
+                            }
+                            head.appendChild(style);
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: function () {
+                            return "GST Master List";
+                        },
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        text: '<span class="fa fa-file-pdf-o">PDF</span>',
+                        titleAttr: 'PDF'
+                    }
+                ]
+            });
+        }
+
+        function checkValidation() {
+            var isValid = true;
+            if ($('#ddlTransporter option:selected').val() == "0") {
+                $("#ddlTransporter").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlTransporter").focus();
+                isValid = false;
+            } else {
+                $("#ddlTransporter").attr('class', 'form-control');
+                $("#ddlTransporter").focus();
+            }
+
+            if ($("#txtSgstRate").val() == "") {
+                $("#txtSgstRate").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtSgstRate").focus();
+                     isValid = false;
+            } else {
+                $("#txtSgstRate").attr('class', 'form-control');
+                $("#txtSgstRate").focus();
+            }
+
+            if ($("#txtCgstRate").val() == "") {
+                $("#txtCgstRate").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtCgstRate").focus();
+                     isValid = false;
+            } else {
+                $("#txtCgstRate").attr('class', 'form-control');
+                $("#txtCgstRate").focus();
+            }
+
+            if ($("#txtIgstRate").val() == "") {
+                $("#txtIgstRate").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtIgstRate").focus();
+                isValid = false;
+            } else {
+                $("#txtIgstRate").attr('class', 'form-control');
+                $("#txtIgstRate").focus();
+            }
+
+            if ($("#txtUgstRate").val() == "") {
+                $("#txtUgstRate").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtUgstRate").focus();
+                isValid = false;
+            } else {
+                $("#txtUgstRate").attr('class', 'form-control');
+                $("#txtUgstRate").focus();
+            }
+
+            if ($("#txtEffectiveDate").val() == "") {
+                $("#txtEffectiveDate").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtEffectiveDate").focus();
+                isValid = false;
+            } else {
+                $("#txtEffectiveDate").attr('class', 'form-control');
+                $("#txtEffectiveDate").focus();
+            }
+            return isValid;
+        }
+
+        function checkValidationOnChange() {
+            $(function () {
+                $("#ddlTransporter").change(function () {
+                    if ($('option:selected', this).val() == "0") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtSgstRate").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtCgstRate").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtIgstRate").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtUgstRate").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtEffectiveDate").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+            });
+        }
+
+        function clearControls() {
+            $("#ddlTransporter").prop("selectedIndex", 0).val();
+            $("#txtSgstRate").val("");
+            $("#txtCgstRate").val("");
+            $("#txtIgstRate").val("");
+            $("#txtUgstRate").val("");
+            $("#txtEffectiveDate").val("");
+        }
+
+        function searchGSTMaster() {
+            if ($.fn.DataTable.isDataTable("#tblGstMasterList")) {
+                $('#tblGstMasterList tr').remove();
+                $('#tblGstMasterList tbody').empty();
+                $('#tblGstMasterList').DataTable().clear().destroy();
+            }
+            var transporterCode = $('#ddlTransporter option:selected').text();
+            var sgstRate = $('#txtSgstRate').val();
+            var cgstRate = $('#txtCgstRate').val();
+            var igstRate = $('#txtIgstRate').val();
+            var ugstRate = $('#txtUgstRate').val();
+            var effectiveDate = $("#txtEffectiveDate").val();
+            var newEffectiveDate = effectiveDate.split("-").reverse().join("-");
+
+            var endDate = $("#txtEndDate").val();
+            var newEndDate = endDate.split("-").reverse().join("-");
+
+            var isActive = $("#chkIsActive").is(":checked");
+
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "GSTMaster/searchGstMasterList")',
+                type: "GET",
+                dataType: "json",
+                data: { transporterCode : transporterCode, sgstRate: sgstRate, cgstRate: cgstRate, igstRate: igstRate, ugstRate: ugstRate, effectiveDate: newEffectiveDate, isActive: isActive
+                },
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        console.log(data);
+                        var rows = "";
+                        var row = "";
+                        $.each(data, function (i, item) {
+                            if (fullAccess === "True" || viewAccess === "True") {
+                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewGSTMaster(\'' + item.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || updateAccess === "True") {
+                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="editGSTMaster(\'' + item.id + '\');"> Edit <i class="typcn typcn-edit btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || deleteAccess === "True") {
+                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" onclick="deleteGSTMaster(\'' + item.id + '\');"> Delete <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                            }
+                            row = '<tr>' +
+                                '<td>' +
+                                '<div class="d-flex align-items-center">' +
+                                viewButton +
+                                updateButton +
+                                deleteButton +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + item.effectiveDateString + '</td>' +
+                                '<td>' + item.transporterName + '</td>' +
+                                '<td>' + item.transporterCode + '</td>' +
+                                '<td>' + item.sgstRate + '</td>' +
+                                '<td>' + item.cgstRate + '</td>' +
+                                '<td>' + item.igstRate + '</td>' +
+                                '<td>' + item.ugstRate + '</td>' +
+                                '<td>' + item.endDateString + '</td>' +
+                                '<td>' + item.IsRcm + '</td>' +
+                                '<td>' + item.isActive + '</td>' +
+                                '<td>' + item.creationDate + '</td>' +
+                                '<td>' + item.createdBy + '</td>' +
+                                '<td>' + item.updateDate + '</td>' +
+                                '<td>' + item.updatedBy + '</td>' +
+                                '</tr>';
+                            rows = rows + row;
+                        });
+                        $("#divGSTMaster").show();
+                        $("#tblGstMasterList").focus();
+                        bindDataTable();
+                        $("#gstMasterBody").html(rows);
+                        rows = "";
+                    }
+                    else {
+                        console.log(data);
+                        $.confirm({
+                            title: 'GST Master List',
+                            content: 'GST Master Not Found!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                        // var row = '<tr>' +
+                        //     '<td colspan="17" style="text-align:center">No Data Found!!!</td>' +
+                        //     '</tr>';
+
+                        var row = '<tr>' +
+                            '<td>' +
+                            '<div class="d-flex align-items-center">' +
+                            '</div>' +
+                            '</td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td style="text-align:center">No Data Found!!!</td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '</tr>';
+                        $("#gstMasterBody").html(row);
+                    }
+                }
+            });
+            //}
+        }
+
+        function getGSTMasterList() {
+            if ($.fn.DataTable.isDataTable("#tblGstMasterList")) {
+                $('#tblGstMasterList tbody').empty();
+                $('#tblGstMasterList').DataTable().clear().destroy();
+            }
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "GSTMaster/getGSTMasterList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        $.each(data, function (i, item) {
+                            var sno = 0;
+                            var rows = "";
+                            var row = "";
+                            sno = sno + 1;
+                            if (fullAccess === "True" || viewAccess === "True") {
+                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewGSTMaster(\'' + item.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || updateAccess === "True") {
+                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="editGSTMaster(\'' + item.id + '\');"> Edit <i class="typcn typcn-edit btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || deleteAccess === "True") {
+                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" onclick="deleteGSTMaster(\'' + item.id + '\');"> Delete <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                            }
+                            row = '<tr>' +
+                                '<td>' +
+                                '<div class="d-flex align-items-center">' +
+                                viewButton +
+                                updateButton +
+                                deleteButton +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + item.effectiveDateString + '</td>' +
+                                '<td>' + item.transporterName + '</td>' +
+                                '<td>' + item.transporterCode + '</td>' +
+                                '<td>' + item.sgstRate + '</td>' +
+                                '<td>' + item.cgstRate + '</td>' +
+                                '<td>' + item.igstRate + '</td>' +
+                                '<td>' + item.ugstRate + '</td>' +
+                                '<td>' + item.endDateString + '</td>' +
+                                '<td>' + item.IsRcm + '</td>' +
+                                '<td>' + item.isActive + '</td>' +
+                                '<td>' + item.creationDate + '</td>' +
+                                '<td>' + item.createdBy + '</td>' +
+                                '<td>' + item.updateDate + '</td>' +
+                                '<td>' + item.updatedBy + '</td>' +
+                                '</tr>';
+                            rows = rows + row;
+                            $("#gstMasterBody").append(rows);
+                            rows = "";
+                            $("#tblGstMasterList").focus();
+                        });
+                        bindDataTable();
+                    } else {
+                        var row = '<tr>' +
+                            '<td colspan="15" style="text-align:center">No Data Found!!!</td>' +
+                            '</tr>';
+                        $("#gstMasterBody").html(row);
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+    </script>
+}

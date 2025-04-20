@@ -1,0 +1,1384 @@
+﻿@model VMS.ViewModel.VMDispatchDetails
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@{
+    Layout = "_LayoutFull";
+    ViewData["Title"] = "Print Bill Details";
+}
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+} *@
+
+@* @if (userAccess.TransporterBillFullAccess == true || userAccess.TransporterBillViewAccess == true)
+{ *@
+<div class="content-wrapper-full">
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card" style="min-height: 570px;">
+                <input id="hdnCompanyName" name="hdnCompanyName" type="hidden">
+                <input id="hdnTransporterEmail" name="hdnTransporterEmail" type="hidden">
+                <input id="hdnDispatchErrorFileName" name="hdnDispatchErrorFileName" type="hidden">
+                <input id="hdnBillNo" name="hdnBillNo" type="hidden">
+                <div class="card-body">
+                    <div style="text-align:center;">
+                        <h3><b>Transporter Bill Details</b></h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 grid-margin stretch-card"></div>
+                    </div>
+                    <div class="row">
+                        <table style="width:100%;">
+                            <tr>
+                                <td style="width:5%"></td>
+                                <td style="width:93%;">
+                                    <div class="row" id="divPrint">
+                                        <div class="col-12 grid-margin stretch-card">
+                                            <table height="1800" cellspacing="5" cellpadding="5" border="1" style="width:97%;height:1800px !important;" class="pdfStyle">
+                                                <tr class="pdfStyle" style="text-align:center;">
+                                                    <td colspan="4" class="pdfStyle">
+                                                        <div style="width:100%; margin-top: 10px;">
+                                                            <h4><span id="spanTransporterName" class="pdfMainHeading"></span></h4>
+                                                        </div>
+                                                        <div style="width:100%; height:10px;"></div>
+                                                        <div style="width:100%" margin-bottom: 10px;">
+                                                            <div style="width:100%;" id="divTransporterAddress1">
+                                                                <h4><span id="spanTransporterAddressLine1" class="pdfSubHeading"></span></h4>
+                                                            </div>
+                                                            <div style="width:100%;" id="divTransporterAddress2">
+                                                                <h4><span id="spanTransporterAddressLine2" class="pdfSubHeading"></span></h4>
+                                                            </div>
+                                                            <div style="width:100%;" id="divTransporterAddress3">
+                                                                <h4><span id="spanTransporterAddressLine3" class="pdfSubHeading"></span></h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <b><span class="printTextHeadingBigWithUnderline">Tax Invoice</span></b>
+                                                    </td>
+                                                    <td style="width: 35%" class="pdfStyle">
+                                                        <table style="width:100% !important; height: 100% !important; border:none !important;">
+                                                            <tr>
+                                                                <td><span class="printText">Original for Recipient</span></td>
+                                                            </tr>
+                                                            <tr style="height:10px;">
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><span class="printText">Duplicate for Supplier</span></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <table style="width:100% !important; height: 100% !important; border:none !important;">
+                                                            <tr>
+                                                                <td><span class="printTextBold">Vendor Code</span></td>
+                                                            </tr>
+                                                            <tr style="height:10px;">
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><span class="printTextBold">Invoice Number</span></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td style="width: 25%" class="pdfStyle">
+                                                        <table style="width:100% !important; height: 100% !important; border:none !important;">
+                                                            <tr>
+                                                                <td><span id="spanTrasporterVendorCode" class="printText"></span></td>
+                                                            </tr>
+                                                            <tr style="height:10px;">
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><span id="spanTrasporterInvoiceNumber" class="printText"></span></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <span class="printTextBold">CGST/IGST  Commissionerate</span>
+                                                    </td>
+                                                    <td style="width: 35%" class="pdfStyle">
+                                                        <span id="spanTrasporterCity" class="printText"></span>
+                                                    </td>
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <span class="printTextBold">Invoice Date</span>
+                                                    </td>
+                                                    <td style="width: 25%" class="pdfStyle">
+                                                        <span id="spanTransporterInvoiceDate" class="printText"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <span class="printTextBold">State</span>
+                                                    </td>
+                                                    <td style="width: 35%" class="pdfStyle">
+                                                        <table style="width:100% !important; height: 100% !important; border:none !important;">
+                                                            <tr>
+                                                                <td style="width:50%; border-right: 1px ridge #454545;"><span id="spanTransporterState" class="printText"></span></td>
+                                                                <td style="width:30%; border-right: 1px ridge #454545;  padding-left : 20px;"><span class="printText">State Code</span></td>
+                                                                <td style="width:20%; padding-left : 20px;"><span id="spanTransporterStateCode" class="printText"></span></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <span class="printTextBold">Document Type</span>
+                                                    </td>
+                                                    <td style="width: 25%" class="pdfStyle">
+                                                        <span class="printText" id="spanDistributionChannel">ZN</span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <span class="printTextBold">Mobile Number</span>
+                                                    </td>
+                                                    <td style="width: 35%" class="pdfStyle">
+                                                        <span id="spanTransporterMobileNumber" class="printText"></span>
+                                                    </td>
+
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <span class="printTextBold">Business Place</span>
+                                                    </td>
+                                                    <td style="width: 25%" class="pdfStyle">
+                                                        <span id="spanTransporterPlaceState" class="printText"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <span class="printTextBold">Email</span>
+                                                    </td>
+                                                    <td style="width: 35%" class="pdfStyle">
+                                                        <span id="spanTransporterEmail" class="printText"></span>
+                                                    </td>
+
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <span class="printTextBold">Unit</span>
+                                                    </td>
+                                                    <td style="width: 25%" class="pdfStyle">
+                                                        <span id="spanTransporterUnit" class="printText"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <span class="printTextBold">GSTIN</span>
+                                                    </td>
+                                                    <td style="width: 35%" class="pdfStyle">
+                                                        <span id="spanTransporterGstin" class="printText"></span>
+                                                    </td>
+
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <span class="printTextBold">HSN/SAC Code</span>
+                                                    </td>
+                                                    <td style="width: 25%" class="pdfStyle">
+                                                        <span id="spanTransporterHsnCode" class="printText"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <span class="printTextBold">PAN Number</span>
+                                                    </td>
+                                                    <td style="width: 35%" class="pdfStyle">
+                                                        <span id="spanTransporterPanno" class="printText"></span>
+                                                    </td>
+
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                    </td>
+                                                    <td style="width: 25%" class="pdfStyle">
+                                                    </td>
+                                                </tr>
+                                                <tr style="margin-top:30px;" class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <b><span class="printTextHeadingBigWithUnderline">Bill To:</span></b>
+                                                    </td>
+                                                    <td style="width: 35%" class="pdfStyle">
+                                                    </td>
+
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                    </td>
+                                                    <td style="width: 25%" class="pdfStyle">
+                                                    </td>
+                                                </tr>
+                                                <tr class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <span class="printTextBold">Firm Name</span>
+                                                    </td>
+                                                    <td style="width: 35%" class="pdfStyle">
+                                                        <span id="spanCompanyName" class="printText"></span>
+                                                    </td>
+                                                    <td colspan="2" style="width: 45%" class="pdfStyle">
+                                                    </td>
+                                                </tr>
+                                                <tr class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <span class="printTextBold">Address</span>
+                                                    </td>
+                                                    <td style="width: 35%" class="pdfStyle">
+                                                        <div style="width:100%" id="divCompanyAddress1">
+                                                            <h4><span id="spanCompanyAddressLine1" class="printText"></span></h4>
+                                                        </div>
+                                                        <div style="width:100%" id="divCompanyAddress2">
+                                                            <h4><span id="spanCompanyAddressLine2" class="printText"></span></h4>
+                                                        </div>
+                                                        <div style="width:100%" id="divCompanyAddress3">
+                                                            <h4><span id="spanCompanyAddressLine3" class="printText"></span></h4>
+                                                        </div>
+                                                    </td>
+                                                    <td colspan="2" style="width: 45%" class="pdfStyle">
+                                                    </td>
+                                                </tr>
+                                                <tr class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <span class="printTextBold">State</span>
+                                                    </td>
+                                                    <td style="width: 35%" class="pdfStyle">
+                                                        <table style="width:100% !important; height: 100% !important; border:none !important;">
+                                                            <tr>
+                                                                <td style="width:50%; border-right: 1px ridge #000000;"><span id="spanCompanyState" class="printText"></span></td>
+                                                                <td style="width:30%; border-right: 1px ridge #454545; padding-left : 20px;"><span class="printText">State Code</span></td>
+                                                                <td style="width:20%;  padding-left : 20px;"><span id="spanCompanyStateCode" class="printText"></span></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td colspan="2" style="width: 45%" class="pdfStyle">
+                                                    </td>
+                                                </tr>
+                                                <tr class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                        <span class="printTextBold">GSTIN</span>
+                                                    </td>
+                                                    <td style="width: 35%" class="pdfStyle">
+                                                        <span id="spanCompanyGstin" class="printText"></span>
+                                                    </td>
+                                                    <td colspan="2" style="width: 45%" class="pdfStyle">
+                                                    </td>
+                                                </tr>
+                                                <tr class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle"></td>
+                                                    <td style="width: 80%" colspan="3" class="pdfStyle">
+                                                        <span colspan="3" class="printTextBold">Sub: Freight for the period of</span> <span id="spanCompanyTransStartDate" class="printTextBold"></span><span class="printTextBold"> to </span><span id="spanCompanyTransEndDate" class="printTextBold"></span> <span class="printTextBold">Type of Dispatch :                        </span><span id="spanDistributionChannel1" class="printTextBold">ZN</span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="pdfStyle">
+                                                    <td colspan="3" style="width: 75%; text-align:right !important" class="pdfStyle">
+                                                        <span class="printTextHeading printTextBold"><b>Grand Total =></b></span>
+                                                    </td>
+                                                    <td style="width: 25%" class="numericAlignment pdfStyle">
+                                                        <b><span id="spanBillTotalAmount" class="printTextHeading" style="padding-right:7px;"></span></b>
+                                                    </td>
+                                                </tr>
+                                                <tr id="trTotalAmount" class="pdfStyle">
+                                                    @* <td colspan="2" style="width: 55%">
+                                            <table style="border:none !important; width:100%;">
+                                                <tr>
+                                                    <td style="text-align:left !important; width:97%;">
+                                                        <b><span id="spanTotalAmountInWords" class="printTextHeading printTextBold"></span></b>
+                                                    </td>
+                                                    <td style="text-align:right !important;width:7%;">
+                                                        <b><span id="spanGSTHeading" class="printTextHeading printTextBold">GST</span></b>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td style="width: 20%; text-align:center;">
+                                            <b><span id="spanTaxRateHeading" class="printTextHeading printTextBold">Tax Rate</span></b>
+                                        </td>
+                                        <td style="width: 25%; text-align:center;">
+                                            <b><span id="spanTaxAmountHeading" class="printTextHeading printTextBold">Tax Amount (in INR)</span></b>
+                                        </td> *@
+                                                </tr>
+                                                <tr id="trGstCalculation" class="pdfStyle">
+                                                    <td colspan="4">
+                                                        @* style="width:100% !important; border: 1px ridge #454545" border="1" cellspacing="5" cellpadding="5" *@
+                                                        <table id="tblGstCalculation" style="border:none !important; width:100%;"></table>
+                                                    </td>
+                                                </tr>
+                                                <!--<tr id="trCgst" style="display:none;">
+                                                    <td style="width: 20%">
+                                                    </td>
+                                                    <td style="width: 35%">
+                                                        <table style="border:none !important; width:100%;">
+                                                            <tr>
+                                                                <td style="text-align:left !important; width:85%;">
+                                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                </td>
+                                                                <td style="text-align:right !important;width:15%;">
+                                                                    <span class="printText">CGST</span>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td style="width: 20%;" class="numericAlignment">
+                                                        <span id="spanCGSTRate" class="printText"></span>
+                                                    </td>
+                                                    <td style="width: 25%" class="numericAlignment">
+                                                        <span id="spanCGSTAmount" class="printText" style="padding-right:7px;"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr id="trSgst" style="display:none;">
+                                                    <td style="width: 20%">
+                                                    </td>
+                                                    <td style="width: 35%">
+                                                        <table style="border:none !important; width:100%;">
+                                                            <tr>
+                                                                <td style="text-align:left !important; width:85%;">
+                                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                </td>
+                                                                <td style="text-align:right !important;width:15%;">
+                                                                    <span class="printText">SGST</span>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td style="width: 20%;" class="numericAlignment">
+                                                        <span id="spanSGSTRate" class="printText"></span>
+                                                    </td>
+                                                    <td style="width: 25%" class="numericAlignment">
+                                                        <span id="spanSGSTAmount" class="printText" style="padding-right:7px;"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr id="trIgst" style="display:none;">
+                                                    <td style="width: 20%">
+                                                    </td>
+                                                    <td style="width: 35%">
+                                                        <table style="border:none !important; width:100%;">
+                                                            <tr>
+                                                                <td style="text-align:left !important; width:85%;">
+                                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                </td>
+                                                                <td style="text-align:right !important;width:15%;">
+                                                                    <span class="printText">IGST</span>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td style="width: 20%;" class="numericAlignment">
+                                                        <span id="spanIGSTRate" class="printText"></span>
+                                                    </td>
+                                                    <td style="width: 25%" class="numericAlignment">
+                                                        <span id="spanIGSTAmount" class="printText" style="padding-right:7px;"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr id="trUgst" style="display:none;">
+                                                    <td style="width: 20%">
+                                                    </td>
+                                                    <td style="width: 35%">
+                                                        <table style="border:none !important; width:100%;">
+                                                            <tr>
+                                                                <td style="text-align:left !important; width:85%;">
+                                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                </td>
+                                                                <td style="text-align:right !important;width:15%;">
+                                                                    <span class="printText">UGST</span>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td style="width: 20%;" class="numericAlignment">
+                                                        <span id="spanUGSTRate" class="printText"></span>
+                                                    </td>
+                                                    <td style="width: 25%" class="numericAlignment">
+                                                        <span id="spanUGSTAmount" class="printText" style="padding-right:7px;"></span>
+                                                    </td>
+                                                </tr>-->
+                                                <tr class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                    </td>
+                                                    <td colspan="2" class="pdfStyle" style="width: 55%; text-align:right !important; padding-right:10px !important;">
+                                                        <b><span class="printTextHeading printTextBold">Grand Total Value (in INR)</span></b>
+                                                    </td>
+                                                    <td style="width: 25%" class="numericAlignment pdfStyle">
+                                                        <span id="spanGrandTotalValue" class="printTextHeading printTextBold" style="padding-right:7px;"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                    </td>
+                                                    <td colspan="2" class="pdfStyle" style="width: 55%; text-align:right !important; padding-right:10px !important;">
+                                                        <b><span class="printTextHeading printTextBold">Reverse Charges Applicable</span></b>
+                                                    </td>
+                                                    <td style="width: 25%; text-align:center;" class="pdfStyle">
+                                                        <b><span id="spanReverseChargesApplicable" class="printTextHeading printTextBold"></span></b>
+                                                    </td>
+                                                </tr>
+                                                <tr style="margin-top:30px;" class="pdfStyle">
+                                                    <td colspan="4" style="width: 100%" class="pdfStyle">
+                                                        <div style="width: 100%; padding-top:15px !important;padding-left:10px !important;">
+                                                            <span class="printText">
+                                                                1. Certified that the above information is true & correct and Goods
+                                                                and Services Tax charged in the above bill will be paid to the
+                                                                government exchequer as per the provision of Goods and Service Tax Act.
+                                                                It is further certified that taxable service described above has been
+                                                                rendered by us and no other consideration is received towards the above
+                                                                service directly or indirectly from the service receiver.
+                                                            </span>
+                                                        </div>
+                                                        <div style="width: 100%; padding-top:15px !important;padding-left:10px !important;">
+                                                            <span class="printText">
+                                                                2. I/we have taken registration under the CGST Act, 2017 and have exercised
+                                                                the option to pay tax on services of GTA in relation to transport of goods
+                                                                supplied by us during the Financial Year 2024-2025 under forward charge.
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr style="height: 170px" class="pdfStyle">
+                                                    <td style="width: 20%" class="pdfStyle">
+                                                    </td>
+                                                    <td style="width: 35%" class="pdfStyle">
+                                                    </td>
+                                                    <td colspan="2" style="width: 45%" class="pdfStyle">
+                                                        <div style="width: 100%">
+                                                            <b><span id="spanTransporterNameBottom" class="printTextHeading"></span></b>
+                                                        </div>
+                                                        <div style="width: 100%; height:80px !important;"></div>
+                                                        <div style="width: 100%;">
+                                                            <b><span class="printTextHeading">(Signature of Authorized Person)</span></b>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="pdfStyle">
+                                                    <td colspan="4" class="pdfStyle">
+                                                        <table style="width: 100% !important;" cellspacing="5" cellpadding="5">
+                                                            <tr style="height:10px;">
+                                                                <td colspan="6"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:20%; padding-left:20px;">
+                                                                    <b><span class="printTextHeadingSmallWithUnderline">Checked By</span></b>
+                                                                </td>
+                                                                <td style="width:30%"></td>
+                                                                <td style="width:5%;"></td>
+                                                                <td style="width:20%; padding-left:20px;">
+                                                                    <b><span class="printTextHeadingSmallWithUnderline">Authorized By</span></b>
+                                                                </td>
+                                                                <td style="width:30%"></td>
+                                                                <td style="width:5%;"></td>
+                                                            </tr>
+                                                            <tr style="height:15px;">
+                                                                <td colspan="6"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:20%; padding-left:20px;">
+                                                                    <span class="printText">Name:</span>
+                                                                </td>
+                                                                <td style="width:30%; height:25px; border:1px ridge gray;"></td>
+                                                                <td style="width:5%;"></td>
+                                                                <td style="width:20%; padding-left:10px;">
+                                                                    <span class="printText">Name:</span>
+                                                                </td>
+                                                                <td style="width:30%; height:25px; border:1px ridge gray;"></td>
+                                                                <td style="width:5%;"></td>
+                                                            </tr>
+                                                            <tr style="height:15px;">
+                                                                <td colspan="6"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:20%; padding-left:20px;">
+                                                                    <span class="printText">Signature:</span>
+                                                                </td>
+                                                                <td style="width:30%; height:25px; border:1px ridge gray;"></td>
+                                                                <td style="width:5%;"></td>
+                                                                <td style="width:20%; padding-left:10px;">
+                                                                    <span class="printText">Signature:</span>
+                                                                </td>
+                                                                <td style="width:30%; height:25px; border:1px ridge gray;"></td>
+                                                                <td style="width:5%;"></td>
+                                                            </tr>
+                                                            <tr style="height:15px;">
+                                                                <td colspan="6"></td>
+                                                            </tr>
+                                                            @* <tr style="min-height:150px !important;">
+                                                                <td colspan="6"></td>
+                                                            </tr> *@
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div id="divSpace"></div>
+                                        <div class="col-12 grid-margin stretch-card">
+                                            <table id="tblDispatchTransactions" border="1" style="width:97%;" class="pdfStyle" cellspacing="3" cellpadding="3">
+                                                <thead >
+                                                    <tr class="pdfStyle" style="height: 15px !important;">
+                                                        <th class="pdfStyle printTextHeadingDispatch numericAlignment" style="width:4%;">Sno</th>
+                                                        <th class="pdfStyle printTextHeadingDispatch numericAlignment" style="width:6%;">LR No</th>
+                                                        <th class="pdfStyle printTextHeadingDispatch textAlignment" style="width:12%;">Truck No</th>
+                                                        <th class="pdfStyle printTextHeadingDispatch textAlignment" style="width:20%;">Destination</th>
+                                                        <th class="pdfStyle printTextHeadingDispatch numericAlignment" style="width:10%;">Ship No</th>
+                                                        <th class="pdfStyle printTextHeadingDispatch numericAlignment" style="width:11%;">D I No</th>
+                                                        <th class="pdfStyle printTextHeadingDispatch textAlignment" style="width:10%;">Date</th>
+                                                        <th class="pdfStyle printTextHeadingDispatch numericAlignment" style="width:8%;">Qty (MT)</th>
+                                                        <th class="pdfStyle printTextHeadingDispatch numericAlignment" style="width:8%;">Rate (Rs)</th>
+                                                        <th class="pdfStyle printTextHeadingDispatch numericAlignment" style="width:11%;">Net Amt (Rs)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tblDispatchTransactionsDetails">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="width:2%"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="row">
+                        @*  @if (userAccess.TransporterBillFullAccess == true || userAccess.TransporterBillPrintAccess == true)
+                            { *@
+                        <div class="row divCenter">
+                            <div class="col-md-12" style="text-align:center !important; padding-left:470px;">
+                                <button id="btnPrint" type="button" class="btn btn-primary mr-2">Print</button>
+                                <button id="btnPdfDownload" type="button" class="btn btn-primary mr-2" onclick="downloadPDF();">Generate PDF</button>
+                                <button id="btnSendEmail" type="button" class="btn btn-primary mr-2" onclick="savePDFandSendEmail();">Send Email</button>
+                                <div style="visibility:hidden;">
+                                    @Html.ActionLink("downloadBillPDF", "downlodPDF")
+                                    @Html.ActionLink("Download", "downloadDispatchErrorFile", new { fileName = ViewBag.DownloadDispatchErrorFile })
+                                </div>
+                            </div>
+                        </div>
+                        @* } *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style type="text/css" media="print">
+    @@page {
+        size: landscape;
+    }
+</style>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+    var pageHeight = 0;
+    var pageStatus = "NoSpace";
+    const ones = [
+          "",
+          "one",
+          "two",
+          "three",
+          "four",
+          "five",
+          "six",
+          "seven",
+          "eight",
+          "nine",
+        ];
+        const teens = [
+          "eleven",
+          "twelve",
+          "thirteen",
+          "fourteen",
+          "fifteen",
+          "sixteen",
+          "seventeen",
+          "eighteen",
+          "nineteen",
+        ];
+        const tens = [
+          "",
+          "ten",
+          "twenty",
+          "thirty",
+          "forty",
+          "fifty",
+          "sixty",
+          "seventy",
+          "eighty",
+          "ninety",
+        ];
+        const thousands = ["", "thousand", "lakh", "crore"];
+
+        function numberToWords(num) {
+          if (num === "0") return "zero";
+
+          let numStr = num.toString();
+          let word = "";
+          let n = numStr.length;
+
+          if (n > 9) return "overflow"; // number out of bounds
+
+          // Pad the number with leading zeros for easier parsing
+          numStr = numStr.padStart(9, "0");
+
+          // Split the number into groups of two
+          let crore = numStr.slice(0, 2);
+          let lakh = numStr.slice(2, 4);
+          let thousand = numStr.slice(4, 6);
+          let hundred = numStr[6];
+          let ten = numStr.slice(7);
+
+          if (parseInt(crore) > 0) {
+            word += `${convertTwoDigits(crore)} crore `;
+          }
+          if (parseInt(lakh) > 0) {
+            word += `${convertTwoDigits(lakh)} lakh `;
+          }
+          if (parseInt(thousand) > 0) {
+            word += `${convertTwoDigits(thousand)} thousand `;
+          }
+          if (parseInt(hundred) > 0) {
+            word += `${ones[hundred]} hundred `;
+          }
+          if (parseInt(ten) > 0) {
+            word += convertTwoDigits(ten);
+          }
+
+          return word.trim();
+        }
+
+        function convertTwoDigits(num) {
+          num = parseInt(num, 10);
+          if (num < 10) return ones[num];
+          if (num > 10 && num < 20) return teens[num - 11];
+          let unit = num % 10;
+          let ten = Math.floor(num / 10);
+          return `${tens[ten]} ${ones[unit]}`.trim();
+        }
+
+        function convertRupeesPaise(amount) {
+          let [rupees, paise] = amount.toString().split(".");
+
+          let rupeesInWords = numberToWords(parseInt(rupees));
+          let paiseInWords = paise ? convertTwoDigits(paise.padEnd(2, "0")) : "";
+
+          let result = "";
+          if (rupeesInWords) {
+            result += `${rupeesInWords} rupees`;
+          }
+          if (paiseInWords) {
+            result += ` and ${paiseInWords} paise`;
+          }
+          return result.trim();
+        }
+
+        // var fullAccess = '@ViewBag.TransporterBillFullAccess';
+        // var addAccess = '@ViewBag.TransporterBillInsertAccess';
+        // var viewAccess = '@ViewBag.TransporterBillViewAccess';
+        // var viewPendingBillAccess = '@ViewBag.TransporterBillPendingAccess';
+        // var printAccess = '@ViewBag.TransporterBillPrintAccess';
+        var fullAccess = 'True';
+        var addAccess = 'True';
+        var viewAccess = 'True';
+        var viewPendingBillAccess = 'True';
+        var printAccess = 'True';
+        var viewButton = "";
+        var printButton = "";
+        $(document).ready(function () {
+            if (fullAccess === "True" || viewAccess === "True") {
+                getBillDetails();
+            }
+
+            if (fullAccess === "True" || printAccess === "True") {
+                $('#btnPrint').on('click', function () {
+                    printData();
+                });
+            }
+        });
+
+        function printData() {
+            var divToPrint = document.getElementById("divPrint");
+            newWin = window.open("");
+            newWin.document.write(divToPrint.outerHTML);
+            newWin.print();
+            newWin.close();
+        }
+
+        function getCurrentDate() {
+            let today = new Date();
+            let dd = today.getDate();
+            let mm = today.getMonth() + 1;
+            let yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            today = dd + '/' + mm + '/' + yyyy;
+            return today;
+        }
+
+        function titleCase(str) {
+            var splitStr = str.toLowerCase().split(' ');
+            for (var i = 0; i < splitStr.length; i++) {
+                // You do not need to check if i is larger than splitStr length, as your for does that for you
+                // Assign it back to the array
+                splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+            }
+            // Directly return the joined string
+            return splitStr.join(' ');
+        }
+
+        // function numberToWords(number) {
+        //     var digit = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+        //     var elevenSeries = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+        //     var countingByTens = ['Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+        //     var shortScale = ['', 'Thousand', 'Million', 'Billion', 'Trillion'];
+
+        //     number = number.toString(); number = number.replace(/[\, ]/g, ''); if (number != parseFloat(number)) return 'not a number'; var x = number.indexOf('.'); if (x == -1) x = number.length; if (x > 20) return 'too big'; var n = number.split(''); var str = ''; var sk = 0; for (var i = 0; i < x; i++) { if ((x - i) % 3 == 2) { if (n[i] == '1') { str += elevenSeries[Number(n[i + 1])] + ' '; i++; sk = 1; } else if (n[i] != 0) { str += countingByTens[n[i] - 2] + ' '; sk = 1; } } else if (n[i] != 0) { str += digit[n[i]] + ' '; if ((x - i) % 3 == 0) str += 'hundred '; sk = 1; } if ((x - i) % 3 == 1) { if (sk) str += shortScale[(x - i - 1) / 3] + ' '; sk = 0; } } if (x != number.length) { var y = number.length; str += 'point '; for (var i = x + 1; i < y; i++) str += digit[n[i]] + ' '; } str = str.replace(/\number+/g, ' '); return str.trim() + ".";
+        // }
+
+        function getBillDetails() {
+            var billNo = GetParameterValues('billno');
+            $("#hdnBillNo").val(billNo);
+            var finalTotalBillAmount = 0;
+            var totalBillAmount = 0;
+            var cgstRate=0;
+            var sgstRate=0;
+            var igstRate=0;
+            var ugstRate=0;
+            var cgstAmount=0;
+            var sgstAmount=0;
+            var igstAmount=0;
+            var ugstAmount=0;
+            var isUnionTerritory = false;
+            var companyStateId;
+            var transporterStateId;
+            var zeroRate = 0;
+            var totalQty = 0;
+            var varIsRcm;
+            var billUgstAmount = 0.00;
+            var billCgstAmount = 0.00;
+            var billSgstAmount = 0.00;
+            var billIgstAmount = 0.00;
+
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "TransporterBill/getBillNumberByID")',
+                type: "GET",
+                dataType: "json",
+                data: { billNo: billNo },
+                success: function (data) {
+                     if (data != null && data != undefined) {
+                        console.log(data);
+                        var sno = 0;
+                          $.each(data, function (i, item) {
+                            sno = sno + 1;
+                            if (item.ebidFrtRate == 0.00 && item.dispatchQtyRoad > 0 && item.ebidNetAmt > 0) {
+                                zeroRate = parseFloat(item.ebidNetAmt) / parseFloat(item.dispatchQtyRoad);
+                              }else{
+                                 zeroRate = item.ebidFrtRate;
+                              }
+
+                                totalQty =  parseFloat(totalQty) + parseFloat(item.dispatchQtyRoad);
+                                
+                                var rows = '<tr class="pdfStyle" style="height:10px; !important;">' +
+                                        '<td class="pdfStyle printTextDetails numericAlignment">' + sno + '</td>' +
+                                        '<td class="pdfStyle printTextDetails numericAlignment">' + item.lrGrNo + '</td>' +
+                                        '<td class="pdfStyle printTextDetails textAlignment">' + item.truckNo + '</td>' +
+                                        '<td class="pdfStyle printTextDetails textAlignment">' + item.shipToPartyTzone + '</td>' +
+                                        '<td class="pdfStyle printTextDetails numericAlignment">' + item.shipmentNo + '</td>' +
+                                        '<td class="pdfStyle printTextDetails numericAlignment">' + item.deliveryNo + '</td>' +
+                                        '<td class="pdfStyle printTextDetails textAlignment">' + item.pgiDate + '</td>' +
+                                        '<td class="pdfStyle printTextDetails numericAlignment">' + parseFloat(item.dispatchQtyRoad).toFixed(2) + '</td>' +
+                                        '<td class="pdfStyle printTextDetails numericAlignment">' + parseFloat(zeroRate).toFixed(2) + '</td>' +
+                                        '<td class="pdfStyle printTextDetails numericAlignment">' + parseFloat(item.ebidNetAmt).toFixed(2) + '</td>' +
+                                 '</tr>';
+                                 $("#tblDispatchTransactionsDetails").append(rows);
+
+                                 $("#spanDistributionChannel").html(item.distributionChannel);
+                                 $("#spanDistributionChannel1").html(item.distributionChannel);
+
+                                 //Setting Transporter Data
+                                 $("#spanTransporterName").html(item.transporterMaster.transporterName);
+
+                                 if(item.transporterMaster.address1 != null
+                                     && item.transporterMaster.address1 != undefined
+                                     && item.transporterMaster.address1 != ""){
+                                      $("#divTransporterAddress1").height("20px");
+                                      $("#divTransporterAddress1").show();
+                                      $("#spanTransporterAddressLine1").html(item.transporterMaster.address1);
+                                      pageHeight = pageHeight + 20;
+                                 }else{
+                                     $("#divTransporterAddress1").hide();
+                                     $("#divTransporterAddress1").height("0px");
+                                     // if(pageHeight > 20){
+                                     //    pageHeight = pageHeight - 20;
+                                     // }
+                                     //$("#divSpace").height("20px");
+                                 }
+
+                                 if(item.transporterMaster.address2 != null
+                                     && item.transporterMaster.address2 != undefined
+                                     && item.transporterMaster.address2 != ""){
+                                      $("#divTransporterAddress2").height("20px");
+                                      $("#divTransporterAddress2").show();
+                                      $("#spanTransporterAddressLine2").html(item.transporterMaster.address2);
+                                    // pageHeight = pageHeight + 20;
+                                 }else{
+                                     $("#divTransporterAddress2").hide();
+                                     $("#divTransporterAddress2").height("0px");
+                                        // if(pageHeight > 20){
+                                        //     pageHeight = pageHeight - 20;
+                                        //  }
+                                     //$("#divSpace").height("20px");
+                                 }
+
+
+                                  if(item.transporterMaster.address3 != null
+                                     && item.transporterMaster.address3 != undefined
+                                     && item.transporterMaster.address3 != ""){
+                                      $("#divTransporterAddress3").height("20px");
+                                      $("#divTransporterAddress3").show();
+                                      $("#spanTransporterAddressLine3").html(item.transporterMaster.address3);
+                                      // pageHeight = pageHeight + 20;
+                                 }else{
+                                     $("#divTransporterAddress3").hide();
+                                     $("#divTransporterAddress3").height("0px");
+                                         // if(pageHeight > 20){
+                                         //    pageHeight = pageHeight - 20;
+                                         // }
+                                     // $("#divSpace").height("20px");
+                                 }
+
+                                //alert(item.transporterMaster.address2);
+                                //alert(item.transporterMaster.address3);
+
+                                if(item.transporterMaster.address2 != null && item.transporterMaster.address3 != null){
+                                    pageStatus = "HeadingSecondAndThird";
+                                }else if(item.transporterMaster.address2 != null && item.transporterMaster.address3 == null){
+                                    pageStatus = "HeadingSecond";
+                                }else if(item.transporterMaster.address3 != null && item.transporterMaster.address2 == null){
+                                    pageStatus = "HeadingThird";
+                                }
+
+                                 $("#spanTrasporterVendorCode").html(item.transporterMaster.transporterCode);
+                                 $("#spanTrasporterInvoiceNumber").html(item.transporterBill.billNumber);
+                                 $("#spanTrasporterCity").html(item.transporterMaster.cityName);
+                                 $("#spanTransporterInvoiceDate").html(item.transporterBill.billDateInString);
+                                 $("#spanTransporterState").html(item.transporterMaster.stateName);
+                                 $("#spanTransporterStateCode").html(item.transporterMaster.stateCode);
+                                 $("#spanTransporterMobileNumber").html(item.transporterMaster.mobileNo);
+                                 $("#spanTransporterPlaceState").html(item.transporterMaster.stateName);
+                                 $("#spanTransporterEmail").html(item.transporterMaster.emailID);
+                                 $("#spanTransporterUnit").html(item.companyMaster.cityName);
+                                 $("#spanTransporterGstin").html(item.transporterMaster.gstinNo);
+                                 $("#spanTransporterHsnCode").html(item.hsnCode);
+                                 $("#spanTransporterPanno").html(item.transporterMaster.panNo);
+                                 $("#spanTransporterNameBottom").html(item.transporterMaster.transporterName);
+                                 $("#hdnCompanyName").val(item.companyMaster.billToCompanyName);
+                                 $("#hdnTransporterEmail").val(item.transporterMaster.emailID);
+
+                                 //Setting Company Data
+                                 $("#spanCompanyName").html(item.companyMaster.billToCompanyName);
+
+                                 if(item.companyMaster.address1 != null
+                                     && item.companyMaster.address1 != undefined
+                                     && item.companyMaster.address1 != ""){
+                                      $("#divCompanyAddress1").show();
+                                      $("#spanCompanyAddressLine1").html(item.companyMaster.address1);
+                                 }else{
+                                     $("#divCompanyAddress1").hide();
+                                 }
+
+                                 if(item.companyMaster.address2 != null
+                                     && item.companyMaster.address2 != undefined
+                                     && item.companyMaster.address2 != ""){
+                                      $("#divCompanyAddress2").show();
+                                      $("#spanCompanyAddressLine2").html(item.companyMaster.address2);
+                                 }else{
+                                     $("#divCompanyAddress2").hide();
+                                 }
+
+                                 if(item.companyMaster.address3 != null
+                                     && item.companyMaster.address3 != undefined
+                                     && item.companyMaster.address3 != ""){
+                                      $("#divCompanyAddress3").show();
+                                      $("#spanCompanyAddressLine3").html(item.companyMaster.address3);
+                                 }else{
+                                     $("#divCompanyAddress3").hide();
+                                 }
+
+                                 $("#spanCompanyState").html(item.companyMaster.stateName);
+                                 $("#spanCompanyStateCode").html(item.companyMaster.stateCode);
+                                 $("#spanCompanyTransStartDate").html(item.transporterBill.startDate);
+                                 $("#spanCompanyTransEndDate").html(item.transporterBill.endDate);
+                                 $("#spanCompanyGstin").html(item.companyMaster.gstinNo);
+
+                                 // if(item.transporterMaster.gstMaster.isRcm == false){
+                                 //     varIsRcm = false;
+                                 //     if(item.transporterMaster.isUnionTerritory == true){
+                                 //        ugstRate = item.ugstRate;
+                                 //     }
+                                 //     else{
+                                 //         if(item.companyMaster.stateId == item.transporterMaster.stateId)
+                                 //         {
+                                 //            cgstRate = item.cgstRate;
+                                 //            sgstRate = item.sgstRate;
+                                 //         }else{
+                                 //            igstRate = item.igstRate;
+                                 //        }
+                                 //     }
+                                 // }
+
+                                //Setting Rcm Variable
+                                varIsRcm = item.transporterMaster.gstMaster.isRcm;
+                                // if(item.transporterMaster.gstMaster.isRcm == false){
+                                //      varIsRcm = false;
+                                // }
+
+                                if(item.transporterMaster.isUnionTerritory == true){
+                                    ugstRate = item.ugstRate;
+                                }
+                                else{
+                                    if(item.companyMaster.stateId == item.transporterMaster.stateId)
+                                    {
+                                        cgstRate = item.cgstRate;
+                                        sgstRate = item.sgstRate;
+                                    }else{
+                                        igstRate = item.igstRate;
+                                    }
+                                }
+
+                                isUnionTerritory = item.transporterMaster.isUnionTerritory;
+                                companyStateId = item.companyMaster.stateId;
+                                transporterStateId = item.transporterMaster.stateId;
+                                totalBillAmount = parseFloat(totalBillAmount) + parseFloat(item.ebidNetAmt);
+
+                                billUgstAmount = item.transporterBill.ugstAmount;
+                                billCgstAmount = item.transporterBill.cgstAmount;
+                                billSgstAmount = item.transporterBill.sgstAmount;
+                                billIgstAmount = item.transporterBill.igstAmount;
+                          });
+
+                          var blankRows = "";
+
+                          for(var j = 1; j < 4; j++)
+                          {
+                                if(j == 3){
+                                blankRows = '<tr class="pdfStyle style="height:10px; !important;">' +
+                                        '<td class="pdfStyle printTextDetails numericAlignment"></td>' +
+                                        '<td class="pdfStyle printTextDetails textAlignment"></td>' +
+                                        '<td class="pdfStyle printTextDetails textAlignment"></td>' +
+                                        '<td class="pdfStyle printTextHeadingDispatch textAlignment"><b>Grand Total =></b></td>' +
+                                        '<td class="pdfStyle printTextDetails numericAlignment"></td>' +
+                                        '<td class="pdfStyle numericAlignment printTextDetails"></td>' +
+                                        '<td class="pdfStyle printTextDetails textAlignment"></td>' +
+                                        '<td class="pdfStyle printTextHeadingDispatch numericAlignment"><b>' + parseFloat(totalQty).toFixed(2) + '</b></td>' +
+                                        '<td class="pdfStyle printTextDetails numericAlignment"></td>' +
+                                        '<td class="pdfStyle printTextHeadingDispatch numericAlignment"><b>'+ parseFloat(totalBillAmount).toFixed(2) +'</b></td>' +
+                                '</tr>';
+                                }
+                                // else{
+                                //             blankRows = '<tr style="height:10px !important; border: 1px thin #454545;">' +
+                                //         '<td class="printTextDetails numericAlignment"></td>' +
+                                //         '<td class="printTextDetails textAlignment"></td>' +
+                                //         '<td class="printTextDetails textAlignment"></td>' +
+                                //         '<td class="printTextDetails textAlignment"></td>' +
+                                //         '<td class="printTextDetails numericAlignment"></td>' +
+                                //         '<td class="printTextDetails numericAlignment"></td>' +
+                                //         '<td class="printTextDetails textAlignment"></td>' +
+                                //         '<td class="printTextDetails numericAlignment"></td>' +
+                                //         '<td class="printTextDetails numericAlignment"></td>' +
+                                //         '<td class="printTextDetails numericAlignment"></td>' +
+                                // '</tr>';
+                                // }
+
+                            $("#tblDispatchTransactionsDetails").append(blankRows);
+                          }
+                          //Setting Billing Data
+                          $("#spanBillTotalAmount").html(parseFloat(totalBillAmount).toFixed(2));
+
+                          //Setting RCM Value
+                          if(varIsRcm === false)
+                          {
+                              $("#spanReverseChargesApplicable").html("No");
+                          }else{
+                              $("#spanReverseChargesApplicable").html("Yes");
+                          }
+                          
+                          if(billUgstAmount === 0.00 &&  billCgstAmount == 0.00 && billSgstAmount == 0.00 && billIgstAmount == 0.00)
+                          {
+                            $("#spanGrandTotalValue").html(parseFloat(totalBillAmount).toFixed(2));
+                            $("#spanGSTHeading").css("display", "none");
+                            $("#spanTaxRateHeading").css("display", "none");
+                            $("#spanTaxAmountHeading").css("display", "none");
+
+                            var trGSTHeading =  /* '<tr id="trTotalAmount">' + */
+                                                    '<td colspan="4" class="pdfStyle" style="width: 55%">' +
+                                                        '<table style="border:none !important; width:100%;">' +
+                                                            '<tr>' +
+                                                                '<td style="text-align:left !important; width:100%;">' +
+                                                                        '<b><span id="spanTotalAmountInWords" class="printTextHeading printTextBold">'+ titleCase(convertRupeesPaise(totalBillAmount)) +'</span></b>' +
+                                                                '</td>' +
+                                                            '</tr>' +
+                                                        '</table>' +
+                                                    '</td>';
+                                                // '</tr>' +
+                            $("#trTotalAmount").append(trGSTHeading);
+                            // $("#spanTotalAmountInWords").html(convertRupeesPaise(totalBillAmount));
+
+                            var trEmpty =  '<tr id="trUgst" class="pdfStyle">' +
+                                                '<td colspan="4" style="width:100%;" class="pdfStyle"></td>' +
+                                           '</tr>';
+                            $("#tblGstCalculation").append(trEmpty);
+                            $("#tblGstCalculation").closest("tr").remove();
+                            $("#trGstCalculation").height("80px");
+                            //pageHeight = pageHeight + 80;
+                            //$("#divSpace").height("80px");
+                          }
+                        else{
+                            if(isUnionTerritory == true){
+                            // ugstAmount = parseFloat(totalBillAmount * ugstRate / 100).toFixed(2);
+                            // finalTotalBillAmount = parseFloat(totalBillAmount) + parseFloat(ugstAmount);
+                            // $("#spanGrandTotalValue").html(parseFloat(finalTotalBillAmount).toFixed(2));
+
+                            ugstAmount = parseFloat(billUgstAmount).toFixed(2);
+                            finalTotalBillAmount = parseFloat(totalBillAmount) + parseFloat(ugstAmount);
+                            $("#spanGrandTotalValue").html(parseFloat(finalTotalBillAmount).toFixed(2));
+
+                            var trUgst =  '<tr id="trUgst">' +
+                                                    '<td style="width: 20%">' +
+                                                    '</td>' +
+                                                        '<td style="width: 55%;border-right: 1px ridge #454545; padding-right:10px;" class="pdfStyle">' +
+                                                        '<table style="border:none !important; width:100%;">' +
+                                                            '<tr>' +
+                                                                '<td style="text-align:left !important; width:85%;">' +
+                                                                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                                                                '</td>' +
+                                                                '<td style="text-align:right !important;width:15%;vertical-align: middle;">' +
+                                                                    '<b><span class="printText">UGST</span></b>' +
+                                                                '</td>' +
+                                                            '</tr>' +
+                                                        '</table>' +
+                                                    '</td>' +
+                                                        '<td style="width: 20%;border-right: 1px ridge #454545; padding-right:10px;vertical-align: middle;" class="numericAlignment pdfStyle">' +
+                                                        '<b><span id="spanUGSTRate" class="printText">' + ugstRate.toString() + "%" + '</span></b>' +
+                                                    '</td>' +
+                                                    '<td style="width: 25%" class="numericAlignment pdfStyle">' +
+                                                        '<b><span id="spanUGSTAmount" class="printText" style="padding-right:7px;vertical-align: middle;">' + ugstAmount + '</span></b>' +
+                                                    '</td>' +
+                                                '</tr>';
+                            $("#tblGstCalculation").append(trUgst);
+                            $("#trGstCalculation").height("20px");
+                            //pageHeight = pageHeight + 40;
+                            //$("#divSpace").height("50px");
+                                    
+                            if(pageStatus == "NoSpace"){
+                                pageStatus = "NoSpaceWithUGST";
+                            }else if(pageStatus == "HeadingSecondAndThird"){
+                                pageStatus = "HeadingSecondAndThirdWithUGST";
+                            }
+                            else if(pageStatus == "HeadingSecond"){
+                                pageStatus = "HeadingSecondWithUGST";
+                            }else if(pageStatus == "HeadingThird"){
+                                pageStatus = "HeadingThirdWithUGST";
+                            }
+                                }
+                                else
+                                {
+                                    if(companyStateId == transporterStateId)
+                                    {
+                                        // $("#spanCGSTRate").html(cgstRate.toString() + "%");
+                                        // $("#spanSGSTRate").html(sgstRate.toString() + "%");
+
+                                        // cgstAmount = parseFloat(totalBillAmount * cgstRate / 100).toFixed(2);
+                                        // sgstAmount = parseFloat(totalBillAmount * sgstRate / 100).toFixed(2);
+
+                                        // $("#spanCGSTAmount").html(cgstAmount);
+                                        // $("#spanSGSTAmount").html(sgstAmount);
+
+                                        cgstAmount = parseFloat(billCgstAmount).toFixed(2);
+                                        sgstAmount = parseFloat(billSgstAmount).toFixed(2);
+
+                                        var gstTotal = parseFloat(cgstAmount) + parseFloat(sgstAmount);
+                                        finalTotalBillAmount = parseFloat(totalBillAmount) + parseFloat(gstTotal);
+
+                                        $("#spanGrandTotalValue").html(parseFloat(finalTotalBillAmount).toFixed(2));
+
+                                        var trCgst = '<tr id="trCgst">' +
+                                                        '<td style="width: 20%; border-bottom: 1px ridge #454545;">' +
+                                                        '</td>' +
+                                                            '<td style="width: 35%; border-right: 1px ridge #454545; border-bottom: 1px ridge #454545;padding-right:10px;">' +
+                                                                '<table style="border:none !important; width:100%;">' +
+                                                                    '<tr>' +
+                                                                        '<td style="text-align:left !important; width:85%;">' +
+                                                                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                                                                        '</td>' +
+                                                                        '<td style="text-align:right !important;width:15%;vertical-align: middle;">' +
+                                                                            '<b><span class="printText">CGST</span></b>' +
+                                                                        '</td>' +
+                                                                    '</tr>' +
+                                                                '</table>' +
+                                                            '</td>' +
+                                                            '<td style="width: 20%;border-right: 1px ridge #454545; border-bottom: 1px ridge #454545; padding-right:10px;vertical-align: middle;" class="numericAlignment">' +
+                                                                '<b><span id="spanCGSTRate" class="printText">' + cgstRate.toString() + "%" +'</span></b>' +
+                                                            '</td>' +
+                                                            '<td style="width: 25%;border-bottom: 1px ridge #454545;vertical-align: middle;" class="numericAlignment">' +
+                                                                '<b><span id="spanCGSTAmount" class="printText" style="padding-right:7px;">'+ cgstAmount +'</span></b>' +
+                                                            '</td>' +
+                                                        '</tr>';
+
+                                            var trSgst =  '<tr id="trSgst">' +
+                                                            '<td style="width: 20%">' +
+                                                            '</td>' +
+                                                            '<td style="width: 35%;border-right: 1px ridge #454545; padding-right:10px;">' +
+                                                                '<table style="border:none !important; width:100%;">' +
+                                                                    '<tr>' +
+                                                                        '<td style="text-align:left !important; width:85%;">' +
+                                                                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                                                                        '</td>' +
+                                                                        '<td style="text-align:right !important;width:15%;vertical-align: middle;">' +
+                                                                            '<b><span class="printText">SGST</span></b>' +
+                                                                        '</td>' +
+                                                                    '</tr>' +
+                                                                '</table>' +
+                                                            '</td>' +
+                                                            '<td style="width: 20%;border-right: 1px ridge #454545; padding-right:10px;vertical-align: middle;" class="numericAlignment">' +
+                                                                '<b><span id="spanSGSTRate" class="printText">' + sgstRate.toString() + "%" +'</span></b>' +
+                                                            '</td>' +
+                                                                '<td style="width: 25%" class="numericAlignment">' +
+                                                                '<b><span id="spanSGSTAmount" class="printText" style="padding-right:7px;vertical-align: middle;">'+ sgstAmount +'</span></b>' +
+                                                            '</td>' +
+                                                        '</tr>';
+                                        $("#tblGstCalculation").append(trCgst);
+                                        $("#tblGstCalculation").append(trSgst);
+                                        $("#trGstCalculation").height("40px");
+                                        //$("#divSpace").height("50px");
+                                        //pageHeight = pageHeight + 40;
+                                            
+                                        if(pageStatus == "NoSpace"){
+                                           pageStatus = "NoSpaceWithCGSTSGST";
+                                        }else if(pageStatus == "HeadingSecondAndThird"){
+                                           pageStatus = "HeadingSecondAndThirdWithCGSTSGST";
+                                        }
+                                        else if(pageStatus == "HeadingSecond"){
+                                            pageStatus = "HeadingSecondWithCGSTSGST";
+                                        }else if(pageStatus == "HeadingThird"){
+                                            pageStatus = "HeadingThirdWithCGSTSGST";
+                                        }
+                                    }else{
+                                        //$("#spanIGSTRate").html(igstRate.toString() + "%");
+                                        // igstAmount = parseFloat(totalBillAmount * igstRate / 100).toFixed(2);
+                                        //$("#spanIGSTAmount").html(igstAmount);
+                                        igstAmount = parseFloat(billIgstAmount).toFixed(2);
+                                        finalTotalBillAmount = parseFloat(totalBillAmount) + parseFloat(igstAmount);
+                                        $("#spanGrandTotalValue").html(parseFloat(finalTotalBillAmount).toFixed(2));
+                                        var trIgst =  '<tr id="trIgst"' +
+                                                            '<td style="width: 20%">' +
+                                                                '</td>' +
+                                                                '<td style="width: 55%;border-right: 1px ridge #454545; padding-right:10px;">' +
+                                                                    '<table style="border:none !important; width:100%;">' +
+                                                                        '<tr>' +
+                                                                            '<td style="text-align:left !important; width:85%;">' +
+                                                                                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                                                                            '</td>' +
+                                                                            '<td style="text-align:right !important;width:15%;vertical-align: middle;">' +
+                                                                                '<b><span class="printText">IGST</span></b>' +
+                                                                            '</td>' +
+                                                                        '</tr>' +
+                                                                    '</table>' +
+                                                                '</td>' +
+                                                                    '<td style="width: 20%;border-right: 1px ridge #454545; padding-right:10px;vertical-align: middle;" class="numericAlignment">' +
+                                                                    '<b><span id="spanIGSTRate" class="printText">'+ igstRate.toString() + "%" +'</span></b>' +
+                                                                '</td>' +
+                                                                    '<td style="width: 25%" class="numericAlignment">' +
+                                                                    '<b><span id="spanIGSTAmount" class="printText" style="padding-right:7px;vertical-align: middle;">'+ igstAmount+'</span></b>' +
+                                                                '</td>' +
+                                                            '</tr>';
+                                    $("#tblGstCalculation").append(trIgst);
+                                    $("#trGstCalculation").height("20px");
+                                    //pageHeight = pageHeight + 40;
+                                    //$("#divSpace").height("40px");
+
+                                    if(pageStatus == "NoSpace"){
+                                        pageStatus = "NoSpaceWithIGST";
+                                    }else if(pageStatus == "HeadingSecondAndThird"){
+                                        pageStatus = "HeadingSecondAndThirdWithIGST";
+                                    }
+                                    else if(pageStatus == "HeadingSecond"){
+                                        pageStatus = "HeadingSecondWithIGST";
+                                    }else if(pageStatus == "HeadingThird"){
+                                        pageStatus = "HeadingThirdWithIGST";
+                                    }
+                                }
+                            }
+
+                            var trGSTHeading =  '<td colspan="2" style="width: 55%" class="pdfStyle">' +
+                                                        '<table style="border:none !important; width:100%;">' +
+                                                            '<tr>' +
+                                                                '<td style="text-align:left !important; width:97%;">' +
+                                                                        '<b><span id="spanTotalAmountInWords" class="printTextHeading printTextBold">'+ titleCase(convertRupeesPaise(finalTotalBillAmount)) +'</span></b>' +
+                                                                '</td>' +
+                                                                '<td style="text-align:right !important;width:7%;">' +
+                                                                    '<b><span id="spanGSTHeading" class="printTextHeading printTextBold">GST</span></b>' +
+                                                                '</td>' +
+                                                            '</tr>' +
+                                                        '</table>' +
+                                                    '</td>' +
+                                                        '<td style="width: 20%; text-align:center;" class="pdfStyle">' +
+                                                        '<b><span id="spanTaxRateHeading" class="printTextHeading printTextBold">Tax Rate</span></b>' +
+                                                    '</td>' +
+                                                        '<td style="width: 25%; text-align:center;" class="pdfStyle">' +
+                                                        '<b><span id="spanTaxAmountHeading" class="printTextHeading printTextBold">Tax Amount (in INR)</span></b>' +
+                                                '</td>';
+                                               
+                            $("#spanTotalAmountInWords").html(convertRupeesPaise(finalTotalBillAmount));
+                            $("#trTotalAmount").append(trGSTHeading);
+                        }
+
+                        //alert(pageStatus);
+
+                        if(pageStatus == "NoSpaceWithIGST" || 
+                           pageStatus == "HeadingSecondAndThirdWithIGST" || 
+                           pageStatus == "HeadingSecondWithIGST" ||
+                           pageStatus == "HeadingThirdWithIGST")
+                        {
+                            if(pageStatus == "NoSpaceWithIGST"){
+                                $("#divSpace").height("170px");  
+                            }else if(pageStatus == "HeadingSecondAndThirdWithIGST"){
+                                $("#divSpace").height("105px");
+                            }else if(pageStatus == "HeadingSecondWithIGST"){
+                                $("#divSpace").height("85px");
+                            }else if(pageStatus == "HeadingThirdWithIGST"){
+                                $("#divSpace").height("85px");
+                            }    
+                        }else if(pageStatus == "NoSpaceWithCGSTSGST" ||
+                           pageStatus == "HeadingSecondAndThirdWithCGSTSGST" || 
+                           pageStatus == "HeadingSecondWithCGSTSGST" ||
+                           pageStatus == "HeadingThirdWithCGSTSGST")
+                        {
+                            if(pageStatus == "NoSpaceWithCGSTSGST"){
+                                $("#divSpace").height("105px");  
+                            }else if(pageStatus == "HeadingSecondAndThirdWithCGSTSGST"){
+                                $("#divSpace").height("65px");
+                            }else if(pageStatus == "HeadingSecondWithCGSTSGST"){
+                                $("#divSpace").height("85px");  
+                            }else if(pageStatus == "HeadingThirdWithCGSTSGST"){
+                                $("#divSpace").height("85px");
+                            }    
+                        }
+                        else if(pageStatus == "NoSpaceWithUGST" ||
+                            pageStatus == "HeadingSecondAndThirdWithUGST" ||
+                            pageStatus == "HeadingSecondWithUGST" ||
+                            pageStatus == "HeadingThirdWithUGST")
+                        {
+                            if(pageStatus == "NoSpaceWithUGST"){
+                                 $("#divSpace").height("170px"); 
+                            }else if(pageStatus == "HeadingSecondAndThirdWithUGST"){
+                                $("#divSpace").height("130px");
+                            }else if(pageStatus == "HeadingSecondWithUGST"){
+                                $("#divSpace").height("85px");
+                            }else if(pageStatus == "HeadingThirdWithUGST"){
+                                    $("#divSpace").height("85px");
+                            }
+                        }
+                        else if(pageStatus == "HeadingSecondAndThird"){
+                            $("#divSpace").height("105px");
+                        }
+                        else if(pageStatus == "HeadingSecond"){
+                            $("#divSpace").height("105px");
+                        }
+                        else if(pageStatus == "HeadingThird"){
+                            $("#divSpace").height("105px");
+                        }
+                        else if(pageStatus == "NoSpace"){
+                            $("#divSpace").height("145px");
+                        }
+                     }
+                     else{
+                        console.log(data);
+                     }
+                }
+            });
+        }
+
+        function generatePdf(){
+            var pageHTML = $('#divPrint').html();
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "TransporterBill/downloadPDF")',
+                type: "POST",
+                dataType: "json",
+                data: { divHTML: pageHTML },
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        if (data.transactionMessage.status == '@((byte)TransactionStatus.Success)') {
+                            //alert(data);
+                        }
+                        console.log(data);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function downloadPDF() {
+            var pageHTML = $('#divPrint').html();
+            var billNo = $("#hdnBillNo").val();
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "TransporterBill/saveITextSharpPDF")',
+                type: "POST",
+                dataType: "json",
+                data: { divHTML: pageHTML, billNo: billNo },
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        if (data.transactionMessage.status == '@((byte)TransactionStatus.Success)') {
+                            window.location = '@Url.Action("downlodPDF", "TransporterBill")';
+                        }
+                        console.log(data);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function savePDFandSendEmail() {
+            var pageHTML = $('#divPrint').html();
+            var billNo = $("#hdnBillNo").val();
+            var transporterName = $("#spanTransporterName").html();
+            var transporterEmail = $("#hdnTransporterEmail").val();
+            var companyName = $("#hdnCompanyName").val();
+
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "TransporterBill/savePDFandEmail")',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    divHTML: pageHTML, billNo: billNo, transName: transporterName,
+                    transEmail: transporterEmail, companyName: companyName },
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        if (data.transactionMessage.status == '@((byte)TransactionStatus.Success)') {
+                            $.confirm({
+                                title: 'Transporter Bill Generated & Email Sent!',
+                                content: 'Transporter Bill has been generated and Email sent to  Transporter.',
+                                icon: 'fa fa-warning',
+                                type: 'green',
+                                buttons: {
+                                    omg: {
+                                        text: 'OK',
+                                        btnClass: 'btn-green',
+                                    },
+                                }
+                            });
+                        }
+                        console.log(data);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function sendEmailWithAttachemnt() {
+            var transporterName = $("#spanTransporterName").html();
+            var transporterEmail = $("#hdnTransporterEmail").val();
+            var companyName = $("#hdnCompanyName").val();
+
+            window.location = '@Url.Action("SendEmailWithAttachment", "TransporterBill")?transName=' + transporterName + '&transEmail=' + transporterEmail + '&companyName=' + companyName;
+        }
+    </script>
+}

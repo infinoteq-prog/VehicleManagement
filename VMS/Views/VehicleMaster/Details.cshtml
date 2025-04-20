@@ -1,0 +1,525 @@
+﻿@model VMS.ViewModel.VMVehicleMaster
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+@if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body" style="min-height:500px;">
+                    <h4 class="card-title">Vehicle Master Details</h4>
+                    <div>
+                        <form id="frmUserRole" name="frmUserRole" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtVehicleNo">Vehicle No:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.VehicleNo, new { @class = "form-control", id = "txtVehicleNo", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtVehicleCreationDate">Purchase Date:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtVehicleCreationDate" placeholder="Select Vehicle Creation Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtVehicleOwner">Vehicle Owner:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.VehicleOwner, new { @class = "form-control", id = "txtVehicleOwner", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtMfgYear">Manufacturing Year:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.MfgYear, new { @class = "form-control numberonly", id = "txtMfgYear", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtMakeMaster">Make Master:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.MakeName, new { @class = "form-control numberonly", id = "txtMakeMaster", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtModelMaster">Model Master:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ModelName, new { @class = "form-control numberonly", id = "txtModelMaster", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtNoOfTyres">No of Tyres: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.NoOfTyres, new { @class = "form-control numberonly", id = "txtNoOfTyres", @maxlength = "2", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtEngineNo">Engine No: </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.EngineNo, new { @class = "form-control", id = "txtEngineNo", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtChasisNo">Chasis No:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ChasisNo, new { @class = "form-control numberonly", id = "txtChasisNo", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtVehicleType">Vehicle Type: </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.VehicleTypeName, new { @class = "form-control", id = "txtVehicleType", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtBodyType">Body Type:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.BodyTypeName, new { @class = "form-control", id = "txtBodyType", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtBodyManufacturer">Body Manufacturer: </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.BodyManufacturerName, new { @class = "form-control", id = "txtBodyManufacturer", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtFinencerName">Financer Name:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.FinancerName, new { @class = "form-control", id = "txtFinencerName", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRunningKm">Running Km:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.RunningKm, new { @class = "form-control numberonly", id = "txtRunningKm", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPanNo">Pan No Due:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtPanNo" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="aPanNoLink">Pan No Doc: </label>
+                                        <div class="col-sm-8">
+                                            <div class="image-set">
+                                                <a id="aPanNoLink" target="_blank" data-magnify="gallery" data-caption="Rémi Bizouard triple champion du monde by malainxx24">
+                                                    <img id="imgPanNoPhoto" alt="Image" style="width:260px; height:130px;" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtInsuranceDue">Insurance Due:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtInsuranceDue" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtInsuranceDoc">Insurance Doc: </label>
+                                        <div class="col-sm-8">
+                                            <div class="image-set">
+                                                <a id="aInsuracneDocLink" target="_blank" data-magnify="gallery" data-caption="Rémi Bizouard triple champion du monde by malainxx24">
+                                                    <img id="imgInsuranceDocPhoto" alt="Image" style="width:260px; height:130px;" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtNationalPermitDue"> National Permit Due:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtNationalPermitDue" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="aNationalPermitDocLink">National Permit Doc: </label>
+                                        <div class="col-sm-8">
+                                            <div class="image-set">
+                                                <a id="aNationalPermitDocLink" target="_blank" data-magnify="gallery" data-caption="Rémi Bizouard triple champion du monde by malainxx24">
+                                                    <img id="imgNationalPermitDocPhoto" alt="Image" style="width:260px; height:130px;" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLocalPermitDue"> Local Permit Due:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtLocalPermitDue"  class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="aLocalPermitDocLink">Local Permit Doc: </label>
+                                        <div class="col-sm-8">
+                                            <div class="image-set">
+                                                <a id="aLocalPermitDocLink" target="_blank" data-magnify="gallery" data-caption="Rémi Bizouard triple champion du monde by malainxx24">
+                                                    <img id="imageLocalPermitDocPhoto" alt="Image" style="width:260px; height:130px;" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRcValidityDue"> RC Validity Due:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtRcValidityDue"  class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="aRcValidityDocLink">RC Doc: </label>
+                                        <div class="col-sm-8">
+                                            <div class="image-set">
+                                                <a id="aRcValidityDocLink" target="_blank" data-magnify="gallery" data-caption="Rémi Bizouard triple champion du monde by malainxx24">
+                                                    <img id="imageRcValidityDocPhoto" alt="Image" style="width:260px; height:130px;" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRTODue">RTO Due:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtRTODue" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="aRTODocLink">RTO Doc: </label>
+                                        <div class="col-sm-8">
+                                            <div class="image-set">
+                                                <a id="aRTODocLink" target="_blank" data-magnify="gallery" data-caption="Rémi Bizouard triple champion du monde by malainxx24">
+                                                    <img id="imageRTOPhoto" alt="Image" style="width:260px; height:130px;" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPollutionDue">Pollution Due:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtPollutionDue" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="aPollutionDocLink">Pollution Doc: </label>
+                                        <div class="col-sm-8">
+                                            <div class="image-set">
+                                                <a id="aPollutionDocLink" target="_blank" data-magnify="gallery" data-caption="Rémi Bizouard triple champion du monde by malainxx24">
+                                                    <img id="imagePollutionPhoto" alt="Image" style="width:260px; height:130px;" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtFitnessDue">Fitness Due:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtFitnessDue"  class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="aFitnessDocLink">Fitness Doc: </label>
+                                        <div class="col-sm-8">
+                                            <div class="image-set">
+                                                <a id="aFitnessDocLink" target="_blank" data-magnify="gallery" data-caption="Rémi Bizouard triple champion du monde by malainxx24">
+                                                    <img id="imageFitnessPhoto" alt="Image" style="width:260px; height:130px;" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDimension">Dimension: </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Dimension, new { @class = "form-control numberonly", id = "txtDimension", @maxlength = "10", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtBranchOffice">Branch Office: </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.BranchOffice, new { @class = "form-control", id = "txtBranchOffice", @maxlength = "200", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRcCapicity">RC Capicity: </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.RcCapicity, new { @class = "form-control", id = "txtRcCapicity", @maxlength = "10", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtActualCapicity">Actual Capicity: </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ActualCapicity, new { @class = "form-control", id = "txtActualCapicity", @maxlength = "10", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active:</label>
+                                        <div class="col-sm-8">
+                                            @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", id = "chkIsActive" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        var fullAccess = 'True';
+        var viewAccess = 'True';
+
+        $(document).ready(function () {
+            setSideMenu("vehicle-master");
+            if (fullAccess === "True" || viewAccess === "True") {
+                makeFieldsReadOnly();
+                var vehicleMasterID = GetParameterValues('vehicleMasterID');
+                getVehicleMasterID(vehicleMasterID);
+            }
+        });
+
+        function makeFieldsReadOnly() {
+            $("#txtMakeMaster").prop("readonly", true);
+            $("#txtModelMaster").prop("readonly", true);
+            $("#txtVehicleNo").prop("readonly", true);
+            $("#txtVehicleCreationDate").prop("readonly", true);
+            $("#txtVehicleOwner").prop("readonly", true);
+            $("#txtMfgYear").prop("readonly", true);
+            $("#txtEngineNo").prop("readonly", true);
+            $("#txtChasisNo").prop("readonly", true);
+            $("#txtVehicleType").prop("readonly", true);
+            $("#txtBodyType").prop("readonly", true);
+            $("#txtNoOfTyres").prop("readonly", true);
+            $("#txtFinencerName").prop("readonly", true);
+            $("#txtBodyManufacturer").prop("readonly", true);
+            $("#txtRunningKm").prop("readonly", true);
+
+            $("#txtPanNo").prop("readonly", true);
+            $("#txtInsuranceDue").prop("readonly", true);
+            $("#txtNationalPermitDue").prop("readonly", true);
+            $("#txtLocalPermitDue").prop("readonly", true);
+            $("#txtRcValidityDue").prop("readonly", true);
+            $("#txtRTODue").prop("readonly", true);
+            $("#txtPollutionDue").prop("readonly", true);
+            $("#txtFitnessDue").prop("readonly", true);
+
+            $("#txtDimension").prop("readonly", true);
+            $("#txtBranchOffice").prop("readonly", true);
+            $("#txtRcCapicity").prop("readonly", true);
+            $("#txtActualCapicity").prop("readonly", true);
+            $("#chkIsActive").attr("disabled", true);    
+        }
+
+        function getVehicleMasterID(vehicleMasterID) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "VehicleMaster/getVehicleMasterByID")',
+                type: "GET",
+                data: { vehicleMasterID: vehicleMasterID },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        $("#txtMakeMaster").val(data.makeName);
+                        $("#txtModelMaster").val(data.modelName);
+                        $("#txtVehicleNo").val(data.vehicleNo);
+                        $("#txtVehicleCreationDate").val(data.purchaseDate);
+                        $("#txtVehicleOwner").val(data.vehicleOwner);
+                        $("#txtMfgYear").val(data.mfgYear);
+                        $("#txtEngineNo").val(data.engineNo);
+                        $("#txtChasisNo").val(data.chasisNo);
+                        $("#txtVehicleType").val(data.vehicleTypeName);
+                        $("#txtBodyType").val(data.bodyTypeName);
+                        $("#txtNoOfTyres").val(data.noOfTyres);
+                        $("#txtFinencerName").val(data.financerName);
+                        $("#txtBodyManufacturer").val(data.bodyManufacturerName);
+                        $("#txtRunningKm").val(data.runningKm);
+
+                        $("#txtPanNo").val(data.panNo);
+                        $("#imgPanNoPhoto").attr('src', '@(utilityHelper.SiteUrl())' + data.panNoImage);
+                        $("#imgPanNoPhoto").attr('data-src', '@(utilityHelper.SiteUrl())' + data.panNoImage);
+                        $("#aPanNoLink").attr('href', '@(utilityHelper.SiteUrl())' + data.panNoImage);
+
+                        $("#txtInsuranceDue").val(data.insuranceDue);
+                        $("#imgInsuranceDocPhoto").attr('src', '@(utilityHelper.SiteUrl())' + data.insuranceDoc);
+                        $("#imgInsuranceDocPhoto").attr('data-src', '@(utilityHelper.SiteUrl())' + data.insuranceDoc);
+                        $("#aInsuracneDocLink").attr('href', '@(utilityHelper.SiteUrl())' + data.insuranceDoc);
+
+                        $("#txtNationalPermitDue").val(data.nationalPermitDue);
+                        $("#imgNationalPermitDocPhoto").attr('src', '@(utilityHelper.SiteUrl())' + data.nationalPermitDoc);
+                        $("#imgNationalPermitDocPhoto").attr('data-src', '@(utilityHelper.SiteUrl())' + data.nationalPermitDoc);
+                        $("#aNationalPermitDocLink").attr('href', '@(utilityHelper.SiteUrl())' + data.nationalPermitDoc);
+
+                        $("#txtLocalPermitDue").val(data.localPermitDue);
+                        $("#imageLocalPermitDocPhoto").attr('src', '@(utilityHelper.SiteUrl())' + data.localPermitDoc);
+                        $("#imageLocalPermitDocPhoto").attr('data-src', '@(utilityHelper.SiteUrl())' + data.localPermitDoc);
+                        $("#aLocalPermitDocLink").attr('href', '@(utilityHelper.SiteUrl())' + data.localPermitDoc);
+
+                        $("#txtRcValidityDue").val(data.rcValidityDue);
+                        $("#imageRcValidityDocPhoto").attr('src', '@(utilityHelper.SiteUrl())' + data.rcDoc);
+                        $("#imageRcValidityDocPhoto").attr('data-src', '@(utilityHelper.SiteUrl())' + data.rcDoc);
+                        $("#aRcValidityDocLink").attr('href', '@(utilityHelper.SiteUrl())' + data.rcDoc);
+
+                        $("#txtRTODue").val(data.rtoDue);
+                        $("#imageRTOPhoto").attr('src', '@(utilityHelper.SiteUrl())' + data.rtoDoc);
+                        $("#imageRTOPhoto").attr('data-src', '@(utilityHelper.SiteUrl())' + data.rtoDoc);
+                        $("#aRTODocLink").attr('href', '@(utilityHelper.SiteUrl())' + data.rtoDoc);
+
+                        $("#txtPollutionDue").val(data.pollutionDue);
+                        $("#imagePollutionPhoto").attr('src', '@(utilityHelper.SiteUrl())' + data.pollutionDoc);
+                        $("#imagePollutionPhoto").attr('data-src', '@(utilityHelper.SiteUrl())' + data.pollutionDoc);
+                        $("#aPollutionDocLink").attr('href', '@(utilityHelper.SiteUrl())' + data.pollutionDoc);
+
+                        $("#txtFitnessDue").val(data.fitnessDue);
+                        $("#imageFitnessPhoto").attr('src', '@(utilityHelper.SiteUrl())' + data.fitnessDoc);
+                        $("#imageFitnessPhoto").attr('data-src', '@(utilityHelper.SiteUrl())' + data.fitnessDoc);
+                        $("#aFitnessDocLink").attr('href', '@(utilityHelper.SiteUrl())' + data.fitnessDoc);
+
+                        $("#txtDimension").val(data.dimension);
+                        $("#txtBranchOffice").val(data.branchOffice);
+                        $("#txtRcCapicity").val(data.rcCapicity);
+                        $("#txtActualCapicity").val(data.actualCapicity);
+
+
+                        $("#chkIsActive").prop('checked', data.isActive);
+                    } else {
+                        $.confirm({
+                            title: 'Vehicle Master',
+                            content: 'Vehicle Master does not Exists!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+    </script>
+}

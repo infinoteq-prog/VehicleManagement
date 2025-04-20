@@ -1,0 +1,153 @@
+﻿@model VMS.ViewModel.VMLogin
+@using VMS.Helper
+@{
+    Layout = "_LoginLayout";
+    ViewData["Title"] = "Page Title";
+}
+<div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth px-0">
+            <div class="row w-100 mx-0">
+                <div class="col-lg-4 mx-auto">
+                    <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+                        <div class="brand-logo">
+                        <img src="~/images/TBSLoginLogo.png" alt="logo" style="width:100%;">
+                        </div>
+                        <h4>Hello! let's get started</h4>
+                        <h6 class="font-weight-light">Sign in to continue.</h6><br/>
+                        <form id="frmLogin" name="frmLogin" method="post">
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control form-control-lg", @placeholder = "User Id", @maxlength = "200", id = "txtUsername"})
+                                @* <input type="text" class="form-control form-control-lg" id="txtUsername" placeholder="Email"> *@
+                            </div>
+                            <div class="form-group">
+                                @Html.PasswordFor(model => model.Password, new { @class = "form-control form-control-lg", @placeholder = "Password", @maxlength = "200", id = "txtPassword" })
+                                @* <input type="password" class="form-control form-control-lg" id="txtPassword" placeholder="Password"> *@
+                            </div>
+                            <div class="mt-3">
+                            <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" id="btnLogin">LOG IN</a>
+                            </div>
+                            <div class="my-2 d-flex justify-content-between align-items-center">
+                                <div class="form-check">
+                                    <label class="form-check-label text-muted">
+                                    <input type="checkbox" class="form-check-input" id="chkRememberme">
+                                        Keep me signed in
+                                    </label>
+                                </div>
+                                @* <a href="#" class="auth-link text-black">Forgot password?</a> *@
+                            </div>
+                           @*  <div class="mb-2">
+                                <button type="button" class="btn btn-block btn-facebook auth-form-btn">
+                                    <i class="typcn typcn-social-facebook mr-2"></i>Connect using facebook
+                                </button>
+                            </div>
+                            <div class="text-center mt-4 font-weight-light">
+                                Don't have an account? <a href="register.html" class="text-primary">Create</a>
+                            </div> *@
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- content-wrapper ends -->
+    </div>
+@section scripts {
+<script type="text/javascript" src="~/js/Login/login.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnLogin").click(function () {
+            doLogin();
+        });
+    });
+
+    function OnError(xhr, errorType, exception) {
+        var responseText;
+        try {
+            responseText = jQuery.parseJSON(xhr.responseText);
+            alert("<div><b>" + errorType + " " + exception + "</b></div>");
+            alert("<div><u>Exception</u>:<br /><br />" + responseText.ExceptionType + "</div>");
+            alert("<div><u>StackTrace</u>:<br /><br />" + responseText.StackTrace + "</div>");
+            alert("<div><u>Message</u>:<br /><br />" + responseText.Message + "</div>");
+        } catch (e) {
+            responseText = xhr.responseText;
+                alert(responseText);
+        }
+    }
+
+    function doLogin() {
+        if ($("#txtUsername").val() != "" && $("#txtPassword").val() != "") {
+            var userName = $("#txtUsername").val();
+            var password = $("#txtPassword").val();
+            $.ajax({
+                cache: false,
+                async: true,
+                url: '@(utilityHelper.SiteUrl() + "Login/ValidateUser")',
+                type: "POST",
+                data: { userName: userName, password: password },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data.success) {
+                        window.location.href = '@(utilityHelper.SiteUrl() + "Home/Index")';
+                        // $.confirm({
+                        //     title: 'User Authentication',
+                        //     content: data.message,
+                        //     type: 'green',
+                        //     buttons: {
+                        //         omg: {
+                        //             text: 'OK',
+                        //             btnClass: 'btn-green',
+                        //             action: function () {
+                        //                 $('#AjaxLoader').show();
+                        //                 setInterval(function () {
+                        //                     window.location.href = '@(utilityHelper.SiteUrl() + "Home/Index")';
+                        //                 }, 3000);
+                        //             }
+                        //         },
+                        //     }
+                        // });
+                    } else {
+                        $("#txtUsername").attr('class', 'form-control form-control-lg vaidationTextBoxError');
+                        $("#txtPassword").attr('class', 'form-control form-control-lg vaidationTextBoxError');
+                        $.confirm({
+                            title: 'User Authentication',
+                            content: data.message,
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                    }
+                },
+                error: OnError
+            });
+        }
+        else {
+            if ($("#txtUsername").val() == "") {
+                $("#txtUsername").attr('class', 'form-control form-control-lg vaidationTextBoxError');
+            }
+
+            if ($("#txtPassword").val() == "") {
+                $("#txtPassword").attr('class', 'form-control form-control-lg vaidationTextBoxError');
+            }
+
+            $.confirm({
+                title: 'Username & Password Required!',
+                content: 'Please Enter Username/Password to Login!',
+                icon: 'fa fa-warning',
+                type: 'red',
+                buttons: {
+                    omg: {
+                        text: 'OK',
+                        btnClass: 'btn-red',
+                    },
+                }
+            });
+        }
+    }
+</script>
+}

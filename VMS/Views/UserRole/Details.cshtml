@@ -1,0 +1,140 @@
+﻿@model VMS.ViewModel.VMUserRole
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+@if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">User Role Details</h4>
+                    <div>
+                        <form id="frmUserRole" name="frmUserRole" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <input id="hdnUserRoleID" name="hdnUserRoleID" type="hidden">
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtFirstName"> Role Name</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.Role, new { @class = "form-control", id = "txtRoleName" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active</label>
+                                        <div class="col-sm-8">
+                                            @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", id = "chkIsActive" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="txtRoleDescription">Role Description </label>
+                                        <div class="col-sm-10">
+                                            @Html.TextAreaFor(m => m.RoleName, new { @class = "form-control", cols = "20", rows = "10", id = "txtRoleDescription" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLastName">From Date:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.StartDate, new { @class = "form-control", id = "txtStartDate" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtEndDate">To Date :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.EndDate, new { @class = "form-control", id = "txtEndDate" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        var fullAccess = 'True';
+        var viewAccess = 'True';
+
+        $(document).ready(function () {
+            setSideMenu("users-role");
+            if (fullAccess === "True" || viewAccess === "True") {
+                makeFieldsReadOnly();
+                var userRoleID = GetParameterValues('userRoleID');
+                getUserRolebyID(userRoleID);
+            }
+        });
+
+        function makeFieldsReadOnly() {
+            $("#txtRoleName").prop("readonly", true);
+            $("#txtRoleDescription").attr("disabled", true);
+            $("#chkIsActive").attr("disabled", true);
+        }
+
+        function getUserRolebyID(userRoleID) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "UserRole/getUserRolebyID")',
+                type: "GET",
+                data: { userRoleID: userRoleID },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        $('#txtRoleName').val(data.role);
+                        $('#txtRoleDescription').val(data.roleName);
+                        $('#txtStartDate').val(data.startDateString);
+                        $('#txtEndDate').val(data.endDateString);
+                        $("#chkIsActive").prop('checked', data.isActive);
+                    } else {
+                        $.confirm({
+                            title: 'User Role',
+                            content: 'User Role does not Exists!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+    </script>
+}

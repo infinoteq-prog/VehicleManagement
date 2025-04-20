@@ -1,0 +1,174 @@
+﻿@model VMS.ViewModel.VMGstMaster
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+@if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">GST Master Details</h4>
+                    <div>
+                        <form id="frmCompanyMaster" name="frmCompanyMaster" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <input id="hdnCompanyId" name="hdnCompanyId" type="hidden">
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtTransporterCode">Transporter Name :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.TransporterName, new { @class = "form-control", @maxlength = "20", id = "txtTransporterCode" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtSgstRate">SGST Rate :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.SgstRate, new { @class = "form-control decimalnumberonly", @maxlength = "10", id = "txtSgstRate" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtCgstRate">CGST Rate :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.CgstRate, new { @class = "form-control decimalnumberonly", @maxlength = "10", id = "txtCgstRate" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtIgstRate">IGST Rate :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.IgstRate, new { @class = "form-control decimalnumberonly", @maxlength = "10", id = "txtIgstRate" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtUgstRate">UGST Rate :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.UgstRate, new { @class = "form-control decimalnumberonly", @maxlength = "10", id = "txtUgstRate" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtEffectiveDates">Effective Date : </label>
+                                        <div class="col-sm-8 input-group date" data-date-format="dd/mm/yyyy">
+                                            @Html.TextBoxFor(x => x.EffectiveDate, new { @class = "form-control datepicker", id = "txtEffectiveDates" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtEndDates">End Date : </label>
+                                        <div class="col-sm-8 input-group date" data-date-format="dd/mm/yyyy">
+                                            @Html.TextBoxFor(x => x.EndDate, new { @class = "form-control datepicker", id = "txtEndDates" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active:</label>
+                                        <div class="col-sm-8">
+                                            @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", id = "chkIsActive" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        var fullAccess = 'True';
+        var viewAccess = 'True';
+
+        $(document).ready(function () {
+            setSideMenu("gst-master");
+            if (fullAccess === "True" || viewAccess === "True") {
+                makeFieldsReadOnly();
+                var gstMasterId = GetParameterValues('gstMasterId');
+                getGstMasterById(gstMasterId);
+            }
+        });
+
+        function makeFieldsReadOnly() {
+            $("#txtTransporterCode").prop("readonly", true);
+            $("#txtSgstRate").prop("readonly", true);
+            $("#txtCgstRate").prop("readonly", true);
+            $("#txtIgstRate").prop("readonly", true);
+            $("#txtUgstRate").prop("readonly", true);
+            $("#txtEffectiveDates").prop("readonly", true);
+            $("#txtEndDates").prop("readonly", true);
+            $("#chkIsActive").attr("disabled", true);
+        }
+
+        function getGstMasterById(gstMasterId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "GSTMaster/getGstMasterById")',
+                type: "GET",
+                data: { gstMasterId: gstMasterId },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        $("#txtTransporterCode").val(data.transporterCode);
+                        $("#txtSgstRate").val(data.sgstRate);
+                        $("#txtCgstRate").val(data.cgstRate);
+                        $("#txtIgstRate").val(data.igstRate);
+                        $("#txtUgstRate").val(data.ugstRate);
+                        $('#txtEffectiveDates').val(data.effectiveDateString);
+                        $('#txtEndDates').val(data.endDateString);
+                        $("#chkIsActive").prop('checked', data.isActive);
+                    } else {
+                        $.confirm({
+                            title: 'GST Master',
+                            content: 'GST Master does not Exists!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+    </script>
+}

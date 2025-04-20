@@ -1,0 +1,1123 @@
+﻿@model VMS.ViewModel.VMVehicleMaster
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+@if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Vehicle Master List</h4>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtVehicleNo">Vehicle No:  </label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.VehicleNo, new { @class = "form-control", id = "txtVehicleNo", @maxlength = "20"})
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtVehicleCreationDate">Purchase Date:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="txtVehicleCreationDate" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtVehicleOwner">Vehicle Owner: </label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.VehicleOwner, new { @class = "form-control", id = "txtVehicleOwner", @maxlength = "200" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtMfgYear">Mfg. Month/Year:</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.MfgYear, new { @class = "form-control numberonly", id = "txtMfgYear", @maxlength = "10" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="ddlMakeMaster">Make Master: </label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="ddlMakeMaster" name="ddlMakeMaster" onchange="setDropDownStyle(this);"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="ddlModelMaster">Model Master:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="ddlModelMaster" name="ddlModelMaster" onchange="setDropDownStyle(this);"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtNoOfTyres">No of Tyres:  </label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.NoOfTyres, new { @class = "form-control numberonly", id = "txtNoOfTyres", @maxlength = "2" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtEngineNo">Engine No:  </label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.EngineNo, new { @class = "form-control", id = "txtEngineNo", @maxlength = "50" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtChasisNo">Chasis No:</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.ChasisNo, new { @class = "form-control", id = "txtChasisNo", @maxlength = "50"})
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="ddlVehicleType">Vehicle Type:  </label>
+                                <div class="col-sm-8">
+                                    @*  @Html.TextBoxFor(m => m.VehicleType, new { @class = "form-control", id = "txtVehicleType", @maxlength = "100" }) *@
+                                    <select class="form-control" id="ddlVehicleType" name="ddlVehicleType" onchange="setDropDownStyle(this);">
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="ddlBodyType">Body Type:</label>
+                                <div class="col-sm-8">
+                                    @*  @Html.TextBoxFor(m => m.BodyType, new { @class = "form-control", id = "txtBodyType", @maxlength = "100" }) *@
+                                    <select class="form-control" id="ddlBodyType" name="ddlBodyType" onchange="setDropDownStyle(this);">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="ddlManufacturerType">Body Manufacturer:  </label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="ddlManufacturerType" name="ddlBodyType" onchange="setDropDownStyle(this);">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtFinencerName">Financer Name:</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.FinancerName, new { @class = "form-control", id = "txtFinencerName", @maxlength = "200" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtRunningKm">Running Km:</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.RunningKm, new { @class = "form-control numberonly", id = "txtRunningKm", @maxlength = "10" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtPanNo">Pan Card No:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="txtPanNo" class="form-control" onchange="setTextboxStyle(this);">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtInsuranceDue">Insurance Due:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="txtInsuranceDue" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtNationalPermitDue"> National Permit Due:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="txtNationalPermitDue" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtLocalPermitDue"> Local Permit Due:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="txtLocalPermitDue" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtRcValidityDue"> RC Validity Due:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="txtRcValidityDue" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtRTODue">RTO Due:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="txtRTODue" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtPollutionDue">Pollution Due:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="txtPollutionDue" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtFitnessDue">Fitness Due:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="txtFitnessDue" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtDimension">Dimension: </label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.Dimension, new { @class = "form-control", id = "txtDimension", @maxlength = "20" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtBranchOffice">Branch Office: </label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.BranchOffice, new { @class = "form-control", id = "txtBranchOffice", @maxlength = "200"})
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtRcCapicity">RC Capicity: </label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.RcCapicity, new { @class = "form-control numberonly", id = "txtRcCapicity", @maxlength = "10"})
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtActualCapicity">Actual Capicity: </label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.ActualCapicity, new { @class = "form-control numberonly", id = "txtActualCapicity", @maxlength = "10" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row" style="display:none;">
+                                <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active:</label>
+                                <div class="col-sm-8">
+                                    @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", id = "chkIsActive" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight" style="text-align:center;">
+                        <div class="col-md-12"></div>
+                    </div>
+                       @*  @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+                        { *@
+                            <div class="row rowHeight" style="text-align:center;">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-primary mr-2" onclick="searchVehicleMaster();">Search</button>
+                                   @*  <button type="button" class="btn btn-primary mr-2" onclick="getVehicleMasterList();">View All</button> *@
+                                    <button type="button" class="btn btn-light" onclick="clearControls();">Clear</button> 
+                                </div>
+                            </div>
+                       @*  } *@
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-sm-12"></div>
+                            </div>
+                        </div>
+                    </div>
+                    @* @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+                    { *@
+                        <div id="divVehicleMaster">
+                            <div class="table-responsive pt-3">
+                                <table id="tblVehicleMaster" class="table table-striped project-orders-table nowrap hover order-column row-border stripe display" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Actions</th>
+                                            <th>Vehicle No</th>
+                                            <th>Purchase Date</th>
+                                            <th>Vehicle Owner</th>
+                                            <th>Mfg Date</th>
+                                            <th>Make Name</th>
+                                            <th>Model Name</th>
+                                            <th>No of Tyres</th>
+                                            <th>Engine Number</th>
+                                            <th>Chasis Number</th>
+                                            <th>Vehicle Type</th>
+                                            <th>Body Type</th>
+                                            <th>Financer Name</th>
+                                            <th>Body Manufacturer</th>
+                                            <th>Running Km</th>
+                                            <th>Pan No</th>
+                                            <th>PanNo Image</th>
+                                            <th>Insurance Due</th>
+                                            <th>Insurance Doc</th>
+                                            <th>National Permit Due</th>
+                                            <th>National Permit Doc</th>
+                                            <th>Local Permit Due</th>
+                                            <th>Local Permit Doc</th>
+                                            <th>Rc Validity Due</th>
+                                            <th>Rc Doc</th>
+                                            <th>Rto Due</th>
+                                            <th>Rto Doc</th>
+                                            <th>Pollution Due</th>
+                                            <th>Pollution Doc</th>
+                                            <th>Fitness Due</th>
+                                            <th>Fitness Doc</th>
+                                            <th>Dimension</th>
+                                            <th>Branch Office</th>
+                                            <th>Rc Capicity</th>
+                                            <th>Actual Capicity</th>
+                                            <th>Is Active</th>
+                                            <th>Creation Date</th>
+                                            <th>Created By</th>
+                                            <th>Update Date</th>
+                                            <th>Updatd By</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="VehicleMasterBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @* } *@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var addAccess = '@ViewBag.AddUserRoleAddAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        // var updateAccess = '@ViewBag.AddUserRoleUpdateAccess';
+        // var deleteAccess = '@ViewBag.AddUserRoleDeleteAccess';
+        var fullAccess = 'True';
+        var addAccess = 'True';
+        var viewAccess = 'True';
+        var updateAccess = 'True';
+        var deleteAccess = 'True';
+        var viewButton = "";
+        var updateButton = "";
+        var deleteButton = "";
+
+        $(document).ready(function () {
+            setSideMenu("vehicle-master");
+            getMakeMaster();
+            getModelMaster();
+            getVehicleTypeMaster();
+            getBodyTypeMaster();
+            getManufacturerTypeMaster();
+            if (fullAccess === "True" || viewAccess === "True") {
+                //checkValidationOnChange();
+                getVehicleMasterList();
+                $(function () {
+                         $("#txtVehicleCreationDate").datepicker({
+                        dateFormat: 'dd-mm-yy',
+                        changeYear: true,
+                        changeMonth: true,
+                    });
+                     $("#txtRTODue").datepicker({
+                        dateFormat: 'dd-mm-yy',
+                        changeYear: true,
+                        changeMonth: true,
+                    });
+                     $("#txtRTODue").datepicker({
+                        dateFormat: 'dd-mm-yy',
+                        changeYear: true,
+                        changeMonth: true,
+                    });
+
+                     $("#txtFitnessDue").datepicker({
+                        dateFormat: 'dd-mm-yy',
+                        changeYear: true,
+                        changeMonth: true,
+                    });
+
+                     $("#txtPollutionDue").datepicker({
+                        dateFormat: 'dd-mm-yy',
+                        changeYear: true,
+                        changeMonth: true,
+                    });
+
+                     $("#txtRTODoc").datepicker({
+                        dateFormat: 'dd-mm-yy',
+                        changeYear: true,
+                        changeMonth: true,
+                    });
+
+                     $("#txtNationalPermitDue").datepicker({
+                        dateFormat: 'dd-mm-yy',
+                        changeYear: true,
+                        changeMonth: true,
+                    });
+
+                    $("#txtLocalPermitDue").datepicker({
+                        dateFormat: 'dd-mm-yy',
+                        changeYear: true,
+                        changeMonth: true,
+                    });
+
+                     $("#txtRcValidityDue").datepicker({
+                        dateFormat: 'dd-mm-yy',
+                        changeYear: true,
+                        changeMonth: true,
+                    });
+
+                    $("#txtInsuranceDue").datepicker({
+                        dateFormat: 'dd-mm-yy',
+                        changeYear: true,
+                        changeMonth: true,
+                    });
+                });
+            }
+        });
+
+        function bindDataTable() {
+            $('#tblVehicleMaster').DataTable({
+                deferRender: true,
+                scroller: true,
+                scrollX: true,
+                scrollY: true,
+                searching: true,
+                info: true,
+                paging: true,
+                dom: 'Bfrtip',
+                "bDestroy": true,
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: 'Copy'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: 'Csv',
+                        title: function () {
+                            return "Vehicle Master List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Csv</span>',
+                        titleAttr: 'Csv'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        title: function () {
+                            return "Vehicle Master List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Excel</span>',
+                        titleAttr: 'Excel'
+                    },
+                    {
+                        extend: "print",
+                        exportOptions: {
+                            orientation: 'landscape'
+                        },
+                        pageSize: 'A0',
+                        customize: function (win) {
+                            var last = null;
+                            var current = null;
+                            var bod = [];
+
+                            var css = '@@page { size: landscape; }',
+                                head = win.document.head || win.document.getElementsByTagName('head')[0],
+                                style = win.document.createElement('style');
+
+                            style.type = 'text/css';
+                            style.media = 'print';
+
+                            if (style.styleSheet) {
+                                style.styleSheet.cssText = css;
+                            }
+                            else {
+                                style.appendChild(win.document.createTextNode(css));
+                            }
+                            head.appendChild(style);
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: function () {
+                            return "Vehicle Master List";
+                        },
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        text: '<span class="fa fa-file-pdf-o">PDF</span>',
+                        titleAttr: 'PDF'
+                    }
+                ]
+            });
+        }
+
+         function setDropDownStyle(cltr){
+            if ($(cltr).find(":selected").val() == "0") {
+                $(cltr).attr('class', 'form-control vaidationTextBoxError');
+            } else {
+                $(cltr).attr('class', 'form-control');
+            }
+        }
+
+        function setTextboxStyle(cltr) {
+            if ($(cltr).val() == "") {
+                $(cltr).attr('class', 'form-control vaidationTextBoxError');
+            } else {
+                $(cltr).attr('class', 'form-control');
+            }
+        }
+
+         function checkValidation() {
+            var isValid = true;
+
+            if ($('#ddlMakeMaster option:selected').val() == "0") {
+                $("#ddlMakeMaster").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlMakeMaster").focus();
+                isValid = false;
+            } else {
+                $("#ddlMakeMaster").attr('class', 'form-control');
+                $("#ddlMakeMaster").focus();
+            }
+
+            if ($('#ddlModelMaster option:selected').val() == "0") {
+                $("#ddlModelMaster").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlModelMaster").focus();
+                isValid = false;
+            } else {
+                $("#ddlModelMaster").attr('class', 'form-control');
+                $("#ddlModelMaster").focus();
+            }
+
+            if ($("#txtVehicleNo").val() == "") {
+                $("#txtVehicleNo").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtVehicleNo").focus();
+                isValid = false;
+            } else {
+                $("#txtVehicleNo").attr('class', 'form-control');
+                $("#txtVehicleNo").focus();
+            }
+
+            if ($("#txtVehicleCreationDate").val() == "") {
+                $("#txtVehicleCreationDate").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtVehicleCreationDate").focus();
+                isValid = false;
+            } else {
+                $("#txtVehicleCreationDate").attr('class', 'form-control');
+                $("#txtVehicleCreationDate").focus();
+            }
+
+            if ($("#txtVehicleOwner").val() == "") {
+                $("#txtVehicleOwner").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtVehicleOwner").focus();
+                isValid = false;
+            } else {
+                $("#txtVehicleOwner").attr('class', 'form-control');
+                $("#txtVehicleOwner").focus();
+            }
+
+            if ($("#txtMfgYear").val() == "") {
+                $("#txtMfgYear").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtMfgYear").focus();
+                isValid = false;
+            } else {
+                $("#txtMfgYear").attr('class', 'form-control');
+                $("#txtMfgYear").focus();
+            }
+
+            if ($("#txtEngineNo").val() == "") {
+                $("#txtEngineNo").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtEngineNo").focus();
+                isValid = false;
+            } else {
+                $("#txtEngineNo").attr('class', 'form-control');
+                $("#txtEngineNo").focus();
+            }
+
+            if ($("#txtChasisNo").val() == "") {
+                $("#txtChasisNo").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtChasisNo").focus();
+                isValid = false;
+            } else {
+                $("#txtChasisNo").attr('class', 'form-control');
+                $("#txtChasisNo").focus();
+            }
+
+            if ($('#ddlVehicleType option:selected').val() == "0") {
+                $("#ddlVehicleType").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlVehicleType").focus();
+                isValid = false;
+            } else {
+                $("#ddlVehicleType").attr('class', 'form-control');
+                $("#ddlVehicleType").focus();
+            }
+
+            if ($('#ddlBodyType option:selected').val() == "0") {
+                $("#ddlBodyType").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlBodyType").focus();
+                isValid = false;
+            } else {
+                $("#ddlBodyType").attr('class', 'form-control');
+                $("#ddlBodyType").focus();
+            }
+
+            if ($("#txtNoOfTyres").val() == "") {
+                $("#txtNoOfTyres").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtNoOfTyres").focus();
+                isValid = false;
+            } else {
+                $("#txtNoOfTyres").attr('class', 'form-control');
+                $("#txtNoOfTyres").focus();
+            }
+
+            if ($("#txtFinencerName").val() == "") {
+                $("#txtFinencerName").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtFinencerName").focus();
+                isValid = false;
+            } else {
+                $("#txtFinencerName").attr('class', 'form-control');
+                $("#txtFinencerName").focus();
+            }
+
+             if ($("#txtBodyManufacturer").val() == "") {
+                $("#txtBodyManufacturer").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtBodyManufacturer").focus();
+                isValid = false;
+            } else {
+                $("#txtBodyManufacturer").attr('class', 'form-control');
+                $("#txtBodyManufacturer").focus();
+            }
+
+             if ($("#txtRunningKm").val() == "") {
+                $("#txtRunningKm").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtRunningKm").focus();
+                isValid = false;
+            } else {
+                $("#txtRunningKm").attr('class', 'form-control');
+                $("#txtRunningKm").focus();
+            }
+            return isValid;
+        }
+
+        function checkValidationOnChange() {
+            $(function () {
+                $("#ddlMakeMaster").change(function () {
+                    if ($('option:selected', this).val() == "0") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#ddlModelMaster").change(function () {
+                    if ($('option:selected', this).val() == "0") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtVehicleNo").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                 $("#txtVehicleCreationDate").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtVehicleOwner").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                 $("#txtMfgYear").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+                 $("#txtEngineNo").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                 $("#txtChasisNo").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#ddlVehicleType").change(function () {
+                    if ($('option:selected', this).val() == "0") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#ddlBodyType").change(function () {
+                    if ($('option:selected', this).val() == "0") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtNoOfTyres").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+
+                });
+
+                $("#txtFinencerName").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                 $("#txtBodyManufacturer").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtRunningKm").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+            });
+        }
+
+        function clearControls() {
+             $("#ddlMakeMaster").prop("selectedIndex", 0).val();
+            $("#ddlModelMaster").prop("selectedIndex", 0).val();
+            $("#ddlVehicleType").prop("selectedIndex", 0).val();
+            $("#ddlBodyType").prop("selectedIndex", 0).val();
+            $("#ddlManufacturerType").prop("selectedIndex", 0).val();
+
+            $("#txtVehicleNo").val("");
+            $("#txtVehicleCreationDate").val("");
+            $("#txtVehicleOwner").val("");
+            $("#txtNoOfTyres").val("");
+            $("#txtMfgYear").val("");
+            $("#txtEngineNo").val("");
+            $("#txtChasisNo").val("");
+            $("#txtFinencerName").val("");
+            $("#txtRunningKm").val("");
+
+            $("#txtPanNo").val("");
+            $("#txtInsuranceDue").val("");
+            $("#txtNationalPermitDue").val("");
+            $("#txtLocalPermitDue").val("");
+            $("#txtRcValidityDue").val("");
+            $("#txtRTODue").val("");
+            $("#txtPollutionDue").val("");
+            $("#txtFitnessDue").val("");
+            $("#chkIsActive").prop("checked", false);
+        }
+
+        function searchVehicleMaster() {
+            if ($.fn.DataTable.isDataTable("#tblVehicleMaster")) {
+                $('#tblVehicleMaster tbody').empty();
+                $('#tblVehicleMaster').DataTable().clear().destroy();
+            }
+            var purchaseDate =  $("#txtVehicleCreationDate").val().split("-").reverse().join("-");
+            var insuranceDue = $("#txtInsuranceDue").val().split("-").reverse().join("-");
+            var nationalPermitDue = $("#txtNationalPermitDue").val().split("-").reverse().join("-");
+            var localPermitDue = $("#txtLocalPermitDue").val().split("-").reverse().join("-");
+            var rcValidityDue = $("#txtRcValidityDue").val().split("-").reverse().join("-");
+            var rtoDue = $("#txtRTODue").val().split("-").reverse().join("-");
+            var pollutionDue = $("#txtPollutionDue").val().split("-").reverse().join("-");
+            var fitnessDue = $("#txtFitnessDue").val().split("-").reverse().join("-");
+
+            var formData = new FormData();
+            formData.append("vehicleNo", $('#txtVehicleNo').val());
+            formData.append("vehicleOwner", $("#txtVehicleOwner").val());
+            formData.append("purchaseDate", purchaseDate);
+            formData.append("mfgYear", $("#txtMfgYear").val());
+            formData.append("makeId", $("#ddlMakeMaster option:selected").val());
+            formData.append("modelId", $("#ddlModelMaster option:selected").val());
+            formData.append("noOfTyres", $("#txtNoOfTyres").val());
+            formData.append("engineNo", $("#txtEngineNo").val());
+            formData.append("chasisNo", $("#txtChasisNo").val());
+            formData.append("vehicleTypeId", $("#ddlVehicleType option:selected").val());
+            formData.append("bodyTypeId", $("#ddlBodyType option:selected").val());
+            formData.append("financerName", $("#txtFinencerName").val());
+            formData.append("bodyManufacturerId", $("#ddlManufacturerType option:selected").val());
+            formData.append("runningKm", $("#txtRunningKm").val());
+            formData.append("panNo", $("#txtPanNo").val());
+            formData.append("insuranceDue", insuranceDue);
+            formData.append("nationalPermitDue", nationalPermitDue);
+            formData.append("localPermitDue", localPermitDue);
+            formData.append("rcValidityDue", rcValidityDue);
+            formData.append("rtoDue", rtoDue);
+            formData.append("pollutionDue", pollutionDue);
+            formData.append("fitnessDue", fitnessDue);
+            formData.append("dimension", $("#txtDimension").val());
+            formData.append("branchOffice", $("#txtBranchOffice").val());
+            formData.append("rcCapicity", $("#txtRcCapicity").val());
+            formData.append("actualCapicity", $("#txtActualCapicity").val());
+            formData.append("isActive", true);
+
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "VehicleMaster/searchVehicleMaster")',
+                type: "POST",
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        console.log(data);
+                        var rows = "";
+                        var row = "";
+                        $.each(data, function (i, item) {
+                            if (fullAccess === "True" || viewAccess === "True") {
+                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewVehicleMaster(\'' + item.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || updateAccess === "True") {
+                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="editVehicleMaster(\'' + item.id + '\');"> Edit <i class="typcn typcn-edit btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || deleteAccess === "True") {
+                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" onclick="deleteVehicleMaster(\'' + item.id + '\');"> Delete <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                            }
+                            row = '<tr>' +
+                                '<td>' +
+                                '<div class="d-flex align-items-center">' +
+                                viewButton +
+                                updateButton +
+                                deleteButton +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + item.vehicleNo + '</td>' +
+                                '<td>' + item.purchaseDate + '</td>' +
+                                '<td>' + item.vehicleOwner + '</td>' +
+                                '<td>' + item.mfgYear + '</td>' +
+                                '<td>' + item.makeName + '</td>' +
+                                '<td>' + item.modelName + '</td>' +
+                                '<td>' + item.noOfTyres + '</td>' +
+                                '<td>' + item.engineNo + '</td>' +
+                                '<td>' + item.chasisNo + '</td>' +
+                                '<td>' + item.vehicleTypeName + '</td>' +
+                                '<td>' + item.bodyTypeName + '</td>' +
+                                '<td>' + item.financerName + '</td>' +
+                                '<td>' + item.bodyManufacturerId + '</td>' +
+                                '<td>' + item.runningKm + '</td>' +
+                                '<td>' + item.panNo + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.panNoImage + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.insuranceDue + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.insuranceDoc + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.nationalPermitDue+ '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.nationalPermitDoc + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.localPermitDue + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.localPermitDoc + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.rcValidityDue + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.rcDoc + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.rtoDue + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.rtoDoc + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.pollutionDue + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.pollutionDoc + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.fitnessDue + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.fitnessDoc + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.dimension + '</td>' +
+                                '<td>' + item.branchOffice + '</td>' +
+                                '<td>' + item.rcCapicity + '</td>' +
+                                '<td>' + item.actualCapicity + '</td>' +
+                                '<td>' + item.isActive + '</td>' +
+                                '<td>' + item.creationDate + '</td>' +
+                                '<td>' + item.createdByName + '</td>' +
+                                '<td>' + item.updateDate + '</td>' +
+                                '<td>' + item.updatedByName + '</td>' +
+                                '</tr>';
+                            rows = rows + row;
+                        });
+                        $("#divVehicleMaster").show();
+                        $("#tblVehicleMaster").focus();
+                        $("#VehicleMasterBody").html(rows);
+                        rows = "";
+                        bindDataTable();
+                    }
+                    else {
+                        console.log(data);
+                        $.confirm({
+                            title: 'Vehicle Master List',
+                            content: 'Vehicle Master Not Found!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                        var row = '<tr>' +
+                            '<td>' +
+                            '<div class="d-flex align-items-center">' +
+                            '</div>' +
+                            '</td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td style="text-align:center">No Data Found!!!</td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '</tr>';
+                        $("#VehicleMasterBody").html(row);
+                    }
+                }
+            });
+            //}
+        }
+
+        function getVehicleMasterList() {
+            if ($.fn.DataTable.isDataTable("#tblVehicleMaster")) {
+                $('#tblVehicleMaster tbody').empty();
+                $('#tblVehicleMaster').DataTable().clear().destroy();
+            }
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "VehicleMaster/getVehicleMasterList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        var sno = 0;
+                        var rows = "";
+                        var row = "";
+                        $("#VehicleMasterBody").html("");
+                        $.each(data, function (i, item) {
+                            sno = sno + 1;
+                            if (fullAccess === "True" || viewAccess === "True") {
+                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewVehicleMaster(\'' + item.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || updateAccess === "True") {
+                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="editVehicleMaster(\'' + item.id + '\');"> Edit <i class="typcn typcn-edit btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || deleteAccess === "True") {
+                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" onclick="deleteVehicleMaster(\'' + item.id + '\');"> Delete <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                            }
+                            row = '<tr>' +
+                                '<td>' +
+                                '<div class="d-flex align-items-center">' +
+                                viewButton +
+                                updateButton +
+                                deleteButton +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + item.vehicleNo + '</td>' +
+                                '<td>' + item.purchaseDate + '</td>' +
+                                '<td>' + item.vehicleOwner + '</td>' +
+                                '<td>' + item.mfgYear + '</td>' +
+                                '<td>' + item.makeName + '</td>' +
+                                '<td>' + item.modelName + '</td>' +
+                                '<td>' + item.noOfTyres + '</td>' +
+                                '<td>' + item.engineNo + '</td>' +
+                                '<td>' + item.chasisNo + '</td>' +
+                                '<td>' + item.vehicleTypeName + '</td>' +
+                                '<td>' + item.bodyTypeName + '</td>' +
+                                '<td>' + item.financerName + '</td>' +
+                                '<td>' + item.bodyManufacturerId + '</td>' +
+                                '<td>' + item.runningKm + '</td>' +
+                                '<td>' + item.panNo + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.panNoImage + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.insuranceDue + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.insuranceDoc + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.nationalPermitDue+ '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.nationalPermitDoc + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.localPermitDue + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.localPermitDoc + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.rcValidityDue + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.rcDoc + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.rtoDue + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.rtoDoc + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.pollutionDue + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.pollutionDoc + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.fitnessDue + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.fitnessDoc + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.dimension + '</td>' +
+                                '<td>' + item.branchOffice + '</td>' +
+                                '<td>' + item.rcCapicity + '</td>' +
+                                '<td>' + item.actualCapicity + '</td>' +
+                                '<td>' + item.isActive + '</td>' +
+                                '<td>' + item.creationDate + '</td>' +
+                                '<td>' + item.createdByName + '</td>' +
+                                '<td>' + item.updateDate + '</td>' +
+                                '<td>' + item.updatedByName + '</td>' +
+                                '</tr>';
+                            rows = rows + row;
+                            row = "";
+                            $("#tblVehicleMaster").focus();
+                        });
+                        $("#VehicleMasterBody").append(rows);
+                        bindDataTable();
+                    } else {
+                        var row = '<tr>' +
+                            '<td colspan="40" style="text-align:center">No Data Found!!!</td>' +
+                            '</tr>';
+                        $("#VehicleMasterBody").html(row);
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+    </script>
+}

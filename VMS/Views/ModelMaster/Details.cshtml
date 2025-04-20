@@ -1,0 +1,192 @@
+﻿@model VMS.ViewModel.VMModelAverageMaster
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+@if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body" style="min-height:500px;">
+                    <h4 class="card-title">Model Master Details</h4>
+                    <div>
+                        <form id="frmUserRole" name="frmUserRole" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtMakeName">Make Master: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.MakeName, new { @class = "form-control", id = "txtMakeName" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtModelNo">Model No:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ModelNo, new { @class = "form-control", id = "txtModelNo" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtUlAvg">UL Avg:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.UlAvg, new { @class = "form-control", id = "txtUlAvg" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtMegaHW">Mega HW:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.MegaHw, new { @class = "form-control", id = "txtMegaHW" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtKhali">Khali:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Khali, new { @class = "form-control", id = "txtKhali" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtNh">NH:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Nh, new { @class = "form-control", id = "txtNh"})
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtOffRoad">Off Road:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.OffRoad, new { @class = "form-control", id = "txtOffRoad" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtOverLoad">Over Load:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.OverLoad, new { @class = "form-control", id = "txtOverLoad"})
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtOther">Other:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Other, new { @class = "form-control", id = "txtOther" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active:</label>
+                                        <div class="col-sm-8">
+                                            @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", id = "chkIsActive" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        var fullAccess = 'True';
+        var viewAccess = 'True';
+
+        $(document).ready(function () {
+            setSideMenu("model-master");
+            if (fullAccess === "True" || viewAccess === "True") {
+                makeFieldsReadOnly();
+                var modelMasterID = GetParameterValues('modelMasterID');
+                getmodelMasterID(modelMasterID);
+            }
+        });
+
+        function makeFieldsReadOnly() {
+            $("#txtMakeName").prop("readonly", true);
+            $("#txtModelNo").prop("readonly", true);
+            $("#txtUlAvg").prop("readonly", true);
+            $("#txtMegaHW").prop("readonly", true);
+            $("#txtKhali").prop("readonly", true);
+            $("#txtNh").prop("readonly", true);
+            $("#txtOffRoad").prop("readonly", true);
+            $("#txtOverLoad").prop("readonly", true);
+            $("#txtOther").prop("readonly", true);
+            $("#chkIsActive").attr("disabled", true);
+        }
+
+        function getmodelMasterID(modelMasterID) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "ModelMaster/getModelMasterByID")',
+                type: "GET",
+                data: { modelMasterID: modelMasterID },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        $('#txtMakeName').val(data.makeName);
+                        $('#txtModelNo').val(data.modelNo);
+                        $("#chkIsActive").prop('checked', data.isActive);
+                        $("#txtUlAvg").val(data.ulAvg);
+                        $("#txtMegaHW").val(data.megaHw);
+                        $("#txtKhali").val(data.khali);
+                        $("#txtNh").val(data.nh);
+                        $("#txtOffRoad").val(data.offRoad);
+                        $("#txtOverLoad").val(data.overLoad);
+                        $("#txtOther").val(data.other);
+                    } else {
+                        $.confirm({
+                            title: 'Model Master',
+                            content: 'Model Master does not Exists!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+    </script>
+}

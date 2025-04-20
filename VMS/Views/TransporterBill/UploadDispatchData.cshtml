@@ -1,0 +1,469 @@
+﻿@model VMS.ViewModel.VMDispatchDetails
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+} *@
+
+@* @if (userAccess.TransporterBillFullAccess == true || userAccess.TransporterBillInsertAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body" style="min-height: 570px;">
+                    <h4 class="card-title">Upload Dispatch Data</h4>
+                    <div id="divSearchTransporterBillDetails">
+                        <form id="frmVehicleRelease" name="frmVehicleRelease" method="post" class="forms-sample">
+                            @Html.AntiForgeryToken()
+                            <input id="hndUniqueDispatchNo" name="hndUniqueDispatchNo" type="hidden">
+                            <input id="hdnDispatchId" name="hdnDispatchId" type="hidden">
+                            <input id="hdnDispatchErrorFileName" name="hdnDispatchErrorFileName" type="hidden">
+                            <div class="row rowHeight">
+                                <div class="col-md-12">
+                                    <label id="lblMandatoryMessage" class="reqFields">@SiteConstants.ReqFieldMessage</label>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12"></div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="fileBillDetails">Upload File: <span class="reqFields">*</span></label>
+                                        <div class="col-sm-10">
+                                            <input id="fileBillDetails" type="file" name="fileBillDetails" class="form-control" />
+                                        </div>
+                                        <button id="btnUploadBillDetails" type="submit" name="btnUploadBillDetails" class="btn btn-primary" style="display:none;">Upload</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeightNew">
+                                <div class="col-md-12"></div>
+                            </div>
+                            <div class="row rowHeight" style="text-align:center;">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-primary mr-2" onclick="saveDispatchData();">Upload Dispatch Data</button>
+                                    <button type="button" class="btn btn-light" onclick="clearControls();">Clear</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div style="height:40px;"></div>
+                    <div id="divDispatchError" class="col-md-12">
+                        <div class="col-md-12" style="text-align:center;">
+                            <h4 class="card-title">Dispatch Error Transactions</h4>
+                        </div>
+                        <div class="col-md-12 table-responsive pt-3 wmd-view">
+                            <table id="tblDispatchError" class="table table-striped project-orders-table nowrap hover order-column row-border stripe display" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>S.NO.</th>
+                                        <th>ERROR TYPE</th>
+                                        <th>ERROR REASON</th>
+                                        <th>ERROR DESCRIPTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="thDispatchError">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div  class="row" style="text-align:center;margin-top: 30px;">
+                            <div class="col-md-12">
+                                <button id="btnDownloadErrorSheet" type="button" class="btn btn-primary mr-2" onclick="downloadDispatchErrorFile();">Download Error Sheet</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="divTransporterBillTransactions" class="col-md-12">
+                        <div class="col-md-12" style="text-align:center;">
+                            <h4 class="card-title">Transporter Bill Transactions</h4>
+                        </div>
+                        <div class="col-md-12 table-responsive pt-3 wmd-view">
+                            <table id="tblTransporterTrans" class="table table-striped project-orders-table nowrap hover order-column row-border stripe display" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Actions</th>
+                                        <th>SUPPLYING PLANT</th>
+                                        <th>SHIPMENT NUMBER</th>
+                                        <th>DELIVERY NUMBER</th>
+                                        <th>TRUCK NUNBER</th>
+                                        <th>LR GR NUMBER</th>
+                                        <th>LR GR DATE</th>
+                                        <th>SHIP TO PARTY TZONE</th>
+                                        <th>DISPATCHED QUANTITY</th>
+                                        <th>EBID NET AMOUNT</th>
+                                        <th>EBID RATE</th>
+                                        <th>FORWARDING AGENT CODE</th>
+                                        <th>FORWARDING AGENT NAME</th>
+                                        <th>REGION STATE</th>
+                                        @* <th>PGI NUMBER</th> *@
+                                        <th>PGI DATE</th>
+                                        <th>DISTRIBUTION CHANNEL</th>
+                                        <th>DIVISION</th>
+                                        <th>INCO TERM</th>
+                                        <th>ROUTE CODE</th>
+                                        <th>ROUTE DESCRIPTION</th>
+                                        <th>EPOD NUMBER</th>
+                                        <th>EPOD DATE</th>
+                                        <th>BILL NUMBER</th>
+                                        <th>BILL DATE</th>
+                                        <th>CGST RATE</th>
+                                        <th>SGST RATE</th>
+                                        <th>IGST RATE</th>
+                                        <th>UGST Rate</th>
+                                        <th>TOTAL AMOUNT</th>
+                                        <th>IS ACTIVE</th>
+                                        <th>CREATION DATE</th>
+                                        <th>CREATED BY</th>
+                                        <th>UPDATE DATE</th>
+                                        <th>UPDATED BY</th>
+                                        @* <th>NET AMOUNT</th> *@
+                                    </tr>
+                                </thead>
+                                <tbody id="thTransporterBillDetails">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.TransporterBillFullAccess';
+        // var addAccess = '@ViewBag.TransporterBillInsertAccess';
+        // var viewAccess = '@ViewBag.TransporterBillViewAccess';
+        // var viewPendingBillAccess = '@ViewBag.TransporterBillPendingAccess';
+        // var printAccess = '@ViewBag.TransporterBillPrintAccess';
+        setSideMenu("upload-dipatch-data");
+        var fullAccess = 'True';
+        var addAccess = 'True';
+        var viewAccess = 'True';
+        var viewPendingBillAccess = 'True';
+        var printAccess = 'True';
+
+        var viewButton = "";
+        var printButton = "";
+        var showUpdateButton = true;
+        var defaultShortage = true;
+
+        $(document).ready(function () {
+            setSideMenu("transporter-bill");
+            $("#divTransporterBillTransactions").hide();
+            $("#divDispatchError").hide();
+            
+            if (fullAccess === "True" || addAccess === "True") {
+            }
+        });
+
+        function checkValidation() {
+            var isValid = true;
+
+            if ($("#fileBillDetails")[0].files.length === 0) {
+                $("#fileBillDetails").attr('class', 'form-control vaidationTextBoxError');
+                $("#fileBillDetails").focus();
+                isValid = false;
+            } else {
+                $("#fileBillDetails").attr('class', 'form-control');
+                $("#fileBillDetails").focus();
+            }
+
+            return isValid;
+        }
+
+        function clearControls() {
+            clearFileUploadControl($('#fileBillDetails'));
+        }
+
+        function bindDataTable() {
+            $('#tblTransporterTrans').DataTable({
+                deferRender: true,
+                scroller: true,
+                scrollX: true,
+                scrollY: true,
+                searching: true,
+                info: true,
+                paging: true,
+                dom: 'Bfrtip',
+                "bDestroy": true,
+                "pageLength": 100,
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: 'Copy'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: 'Csv',
+                        title: function () {
+                            return "Dispatch Transactions";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Csv</span>',
+                        titleAttr: 'Csv'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        title: function () {
+                                return "Dispatch Transactions";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Excel</span>',
+                        titleAttr: 'Excel'
+                    },
+                    {
+                        extend: "print",
+                        exportOptions: {
+                            orientation: 'landscape'
+                        },
+                        title: function () {
+                            return "Dispatch Transactions";
+                        },
+                        pageSize: 'A0',
+                        customize: function (win) {
+                            var last = null;
+                            var current = null;
+                            var bod = [];
+
+                            var css = '@@page { size: landscape; }',
+                                head = win.document.head || win.document.getElementsByTagName('head')[0],
+                                style = win.document.createElement('style');
+
+                            style.type = 'text/css';
+                            style.media = 'print';
+
+                            if (style.styleSheet) {
+                                style.styleSheet.cssText = css;
+                            }
+                            else {
+                                style.appendChild(win.document.createTextNode(css));
+                            }
+                            head.appendChild(style);
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: function () {
+                            return "Dispatch Transactions";
+                        },
+                        orientation: 'landscape',
+                        pageSize: 'A1',
+                        text: '<span class="fa fa-file-pdf-o">PDF</span>',
+                        titleAttr: 'PDF'
+                    }
+                ]
+            });
+        }
+
+        function saveDispatchData() {
+            var isValid = checkValidation();
+            if (isValid == true) {
+                var filePath = $("#fileBillDetails")[0].value;
+                var extension = filePath.substring(filePath.lastIndexOf(".") + 1, filePath.length).toLowerCase();
+                var validFilesTypes = ["xls", "xlsx"];
+                var isValidFile = validFilesTypes.includes(extension);
+               
+                if (!isValidFile) {
+                    $.confirm({ title: 'Error Occoured : Invalid Excel File!',
+                        content:"Please upload a excel file. Only " + validFilesTypes.join(", ") + " extension files are allowed!",
+                        icon: 'fa fa-warning',
+                        type: 'red',
+                        buttons: {
+                            omg: {
+                                text: 'OK',
+                                btnClass: 'btn-red',
+                            },
+                        }
+                    });
+                    //Removing Selected File From File Uploader Control
+                    clearFileUploadControl($('#fileBillDetails'));
+                }
+                else{
+                    var formData = new FormData();
+                    formData.append("postedFile", $("#fileBillDetails")[0].files[0]);
+                    //Add the Field values to FormData object.
+                    $.ajax({
+                        cache: false,
+                        url: '@(utilityHelper.SiteUrl() + "TransporterBill/SaveDispatchDetails")',
+                        type: 'POST',
+                        dataType: "json",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (data) {
+                            console.log("Data : " + data);
+                            console.log("Dispatch Error Model : " + data.dispatchErrorModel);
+                            console.log("Unique Dispatch Id : " + data.uniqueDispatchId);
+                            console.log("Dispatch Error File Name : " + data.disptachErrorFilePath);
+                            $("#thDispatchError").html("");
+                            if (data != null && data != undefined) {
+                                if((data.dispatchErrorModel == null || data.dispatchErrorModel == undefined) && data.uniqueDispatchId != ""){
+                                   $("#divTransporterBillTransactions").show();
+                                   $("#divDispatchError").hide();
+                                    console.log("File Saved In DB!");
+                                    $.confirm({
+                                        title: 'File Upload Success!',
+                                        content: "File has been uploaded successfully!",
+                                        type: 'green',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-green',
+                                                action: function () {
+                                                    $("#hndUniqueDispatchNo").val(data.uniqueDispatchId);
+                                                    viewTransporterBillTrans(data.uniqueDispatchId);
+                                                }
+                                            },
+                                        }
+                                    });
+                                    //Removing Selected File From File Uploader Control
+                                    clearFileUploadControl($('#fileBillDetails'));
+                                }else if(data.dispatchErrorModel != null 
+                                        && data.uniqueDispatchId == "" 
+                                        && data.disptachErrorFilePath != ""){
+                                   $("#divTransporterBillTransactions").hide();
+                                   $("#divDispatchError").show();
+                                   $.each(data.dispatchErrorModel, function (i, item) {
+                                       var rows =  '<tr>' +
+                                            '<td>' + item.sno+ '</td>' +
+                                            '<td>' + item.errorType + '</td>' +
+                                            '<td>' + item.errorReason + '</td>' +
+                                            '<td>' + item.errorDescription + '</td>' +
+                                       '</tr>';
+
+                                       $("#thDispatchError").append(rows);
+                                       $("#hdnDispatchErrorFileName").val(data.disptachErrorFilePath);
+                                   });
+                                }else{
+                                     $.confirm({
+                                        title: 'File Upload Falied!',
+                                        content:"File not uploaded!.",
+                                        icon: 'fa fa-warning',
+                                        type: 'red',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-red',
+                                            },
+                                        }
+                                    });
+                                    //Removing Selected File From File Uploader Control
+                                    clearFileUploadControl($('#fileBillDetails'));
+                                }
+                            }
+                        },
+                        error: function (req, status, error) {
+                            console.log(msg);
+                        }
+                    });
+                }
+            }else{
+                $.confirm({
+                    title: 'File Upload Failed!',
+                    content:"Please select a file to upload!",
+                    icon: 'fa fa-warning',
+                    type: 'red',
+                    buttons: {
+                    omg: {
+                        text: 'OK',
+                        btnClass: 'btn-red',
+                    },
+                }});
+                //Removing Selected File From File Uploader Control
+                clearFileUploadControl($('#fileBillDetails'));
+            }
+        }
+
+        function viewTransporterBillTrans(uniqueDispatchNo) {
+            if ($.fn.DataTable.isDataTable("#tblTransporterTrans")) {
+                $('#tblTransporterTrans tbody').empty();
+                $('#tblTransporterTrans').DataTable().clear().destroy();
+            }
+            var totalAmount = 0;
+            var deductableAmount = 0;
+            var netAmount = 0;
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "TransporterBill/getTransporterBillTransByDispatchNo")',
+                type: "GET",
+                dataType: "json",
+                data: { uniqueDispatchNo: uniqueDispatchNo },
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        $("#divTransporterBillTransactions").show();
+                        console.log(data);
+                        var sno = 0;
+                        $("#thTransporterBillDetails").html("");
+                        if ($("#thTransporterBillDetails").html() == "") {
+                            $.each(data, function (i, item) {
+                                sno = sno + 1;
+                                if (fullAccess === "True" || viewAccess === "True") {
+                                   // viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewTransporterBillTrans(\'' + item.transporterBill.billNumber + '\');"> View Details <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                                }
+
+                                var rows =  '<tr>' +
+                                            '<td>' + sno + '</td>' +
+                                            '<td>' + item.supplyingPlant + '</td>' +
+                                            '<td>' + item.shipmentNo + '</td>' +
+                                            '<td>' + item.deliveryNo + '</td>' +
+                                            '<td>' + item.truckNo + '</td>' +
+                                            '<td>' + item.lrGrNo + '</td>' +
+                                            '<td>' + item.lrGrDate + '</td>' +
+                                            '<td>' + item.shipToPartyTzone + '</td>' +
+                                            '<td>' + item.dispatchQtyRoad + '</td>' +
+                                            '<td>' + item.ebidNetAmt + '</td>' +
+                                            '<td>' + item.ebidFrtRate + '</td>' +
+                                            '<td>' + item.forwardingAgentCode + '</td>' +
+                                            '<td>' + item.forwardingAgentName + '</td>' +
+                                            '<td>' + item.regionState + '</td>' +
+                                            '<td>' + item.pgiNo + '</td>' +
+                                            // '<td>' + item.pgiDate + '</td>' +
+                                            '<td>' + item.distributionChannel + '</td>' +
+                                            '<td>' + item.division + '</td>' +
+                                            '<td>' + item.incoTerm + '</td>' +
+                                            '<td>' + item.routeCode + '</td>' +
+                                            '<td>' + item.routeDescription + '</td>' +
+                                            '<td>' + item.epodNo + '</td>' +
+                                            '<td>' + item.epodDate + '</td>' +
+                                            '<td>' + item.billNo + '</td>' +
+                                            '<td>' + item.billDate + '</td>' +
+                                            '<td>' + item.cgstRate + '</td>' +
+                                            '<td>' + item.sgstRate + '</td>' +
+                                            '<td>' + item.igstRate + '</td>' +
+                                            '<td>' + item.utgstRate + '</td>' +
+                                            '<td>' + item.totalAmount + '</td>' +
+                                            '<td>' + item.isActive + '</td>' +
+                                            '<td>' + item.creationDate + '</td>' +
+                                            '<td>' + item.createdByName + '</td>' +
+                                            '<td>' + item.updateDate + '</td>' +
+                                            '<td>' + item.updatedByName + '</td>' +
+                                    '</tr>';
+
+                                $("#thTransporterBillDetails").append(rows);
+
+                                totalAmount =  parseFloat(totalAmount) + parseFloat(item.totalAmount);
+                            });
+                            bindDataTable();
+                        }
+                    } else {
+                        console.log(data);
+                        var row = '<tr>' +
+                            '<td colspan="34" style="text-align:center">No Data Found!!!</td>' +
+                            '</tr>';
+                        $("#thTransporterBillDetails").html(row);
+                        $("#divTransporterBillTransactions").show();
+                    }
+                }
+            });
+        }
+
+        function downloadDispatchErrorFile() {
+            window.location = '@Url.Action("downloadDispatchErrorFile", "TransporterBill")?fileName=' + $("#hdnDispatchErrorFileName").val();
+        }
+    </script>
+}

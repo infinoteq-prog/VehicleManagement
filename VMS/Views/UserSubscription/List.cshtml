@@ -1,0 +1,547 @@
+﻿@model VMS.ViewModel.VMUserSubscription
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+@if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">User Subscription List</h4>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="ddlUser">User</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="ddlUser" name="ddlUser" onchange="setDropDownStyle(this);"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtFinancialYear"> Financial Year</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(x => x.FinYear, new { @class = "form-control", id = "txtFinancialYear" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtAmount"> Amount</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(x => x.Amount, new { @class = "form-control", id = "txtAmount" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="from-date-picker">Paid Date :</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="txtPaidDate" placeholder="Select Paid Date" class="form-control" onchange="setTextboxStyle(this);" readonly=" readonly">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="from-date-picker">From Date :</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="from-date-picker" placeholder="Select From Date" class="form-control" onchange="setTextboxStyle(this);" readonly=" readonly">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="to-date-picker">To Date :</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="to-date-picker" placeholder="Select To Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="chkIsActive">Is Active</label>
+                                <div class="col-sm-10">
+                                    @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", id = "chkIsActive" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                    @*  @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+                    { *@
+                    <div class="row rowHeight" style="text-align:center;">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary mr-2" onclick="searchUserSubscription();">Search</button>
+                           @*  <button type="button" class="btn btn-primary mr-2" onclick="getUserSubscriptionList();">View All</button> *@
+                            <button type="button" class="btn btn-light" onclick="clearControls();">Clear</button> 
+                        </div>
+                    </div>
+                    @*  } *@
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-sm-12"></div>
+                            </div>
+                        </div>
+                    </div>
+                    @* @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+                    { *@
+                    <div id="divUserSubscription">
+                        <div class="table-responsive pt-3">
+                            <table id="tblUserSubscription" class="table table-striped project-orders-table nowrap hover order-column row-border stripe display" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Actions</th>
+                                        <th>User Name</th>
+                                        <th>Financial Year</th>
+                                        <th>Amount Year</th>
+                                        <th>Paid Date</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Is Active</th>
+                                        <th>Creation Date</th>
+                                        <th>Created By</th>
+                                        <th>Update Date</th>
+                                        <th>Updatd By</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userSubscriptionBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    @* } *@
+                </div>
+            
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var addAccess = '@ViewBag.AddUserRoleAddAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        // var updateAccess = '@ViewBag.AddUserRoleUpdateAccess';
+        // var deleteAccess = '@ViewBag.AddUserRoleDeleteAccess';
+        var fullAccess = 'True';
+        var addAccess = 'True';
+        var viewAccess = 'True';
+        var updateAccess = 'True';
+        var deleteAccess = 'True';
+        var viewButton = "";
+        var updateButton = "";
+        var deleteButton = "";
+
+        $(document).ready(function () {
+            setSideMenu("user-subscription");
+            if (fullAccess === "True" || viewAccess === "True") {
+                //checkValidationOnChange();
+                getUserSubscriptionList();
+                getUserList();
+            }
+        });
+
+        function bindDataTable() {
+            $('#tblUserSubscription').DataTable({
+                deferRender: true,
+                scroller: true,
+                scrollX: true,
+                scrollY: true,
+                searching: true,
+                info: true,
+                paging: true,
+                dom: 'Bfrtip',
+                "bDestroy": true,
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: 'Copy'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: 'Csv',
+                        title: function () {
+                            return "User Subscription List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Csv</span>',
+                        titleAttr: 'Csv'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        title: function () {
+                            return "User Subscription List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Excel</span>',
+                        titleAttr: 'Excel'
+                    },
+                    {
+                        extend: "print",
+                        exportOptions: {
+                            orientation: 'landscape'
+                        },
+                        pageSize: 'A0',
+                        customize: function (win) {
+                            var last = null;
+                            var current = null;
+                            var bod = [];
+
+                            var css = '@@page { size: landscape; }',
+                                head = win.document.head || win.document.getElementsByTagName('head')[0],
+                                style = win.document.createElement('style');
+
+                            style.type = 'text/css';
+                            style.media = 'print';
+
+                            if (style.styleSheet) {
+                                style.styleSheet.cssText = css;
+                            }
+                            else {
+                                style.appendChild(win.document.createTextNode(css));
+                            }
+                            head.appendChild(style);
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: function () {
+                            return "User Subscription List";
+                        },
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        text: '<span class="fa fa-file-pdf-o">PDF</span>',
+                        titleAttr: 'PDF'
+                    }
+                ]
+            });
+        }
+
+        function checkValidation() {
+            var isValid = true;
+            if ($('#ddlUser option:selected').val() == "0") {
+                $("#ddlUser").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlUser").focus();
+                isValid = false;
+            } else {
+                $("#ddlUser").attr('class', 'form-control');
+                $("#ddlUser").focus();
+            }
+
+            if ($("#txtFinancialYear").val() == "") {
+                $("#txtFinancialYear").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtFinancialYear").focus();
+                isValid = false;
+            } else {
+                $("#txtFinancialYear").attr('class', 'form-control');
+                $("#txtFinancialYear").focus();
+            }
+
+            if ($("#txtAmount").val() == "") {
+                $("#txtAmount").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtAmount").focus();
+                isValid = false;
+            } else {
+                $("#txtAmount").attr('class', 'form-control');
+                $("#txtAmount").focus();
+            }
+
+            if ($("#txtPaidDate").val() == "") {
+                $("#txtPaidDate").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtPaidDate").focus();
+                isValid = false;
+            } else {
+                $("#txtPaidDate").attr('class', 'form-control');
+                $("#txtPaidDate").focus();
+            }
+
+            if ($("#from-date-picker").val() == "") {
+                $("#from-date-picker").attr('class', 'form-control vaidationTextBoxError');
+                $("#from-date-picker").focus();
+                isValid = false;
+            } else {
+                $("#from-date-picker").attr('class', 'form-control');
+                $("#from-date-picker").focus();
+            }
+
+            if ($("#to-date-picker").val() == "") {
+                $("#to-date-picker").attr('class', 'form-control vaidationTextBoxError');
+                $("#to-date-picker").focus();
+                isValid = false;
+            } else {
+                $("#to-date-picker").attr('class', 'form-control');
+                $("#to-date-picker").focus();
+            }
+            return isValid;
+        }
+
+        function checkValidationOnChange() {
+            $(function () {
+                $("#ddlUser").change(function () {
+                    if ($('option:selected', this).val() == "0") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtFinancialYear").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtAmount").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtPaidDate").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#from-date-picker").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#to-date-picker").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+            });
+        }
+
+        function clearControls() {
+            $("#ddlUser").prop("selectedIndex", 0).val();
+            $("#from-date-picker").val("");
+            $("#to-date-picker").val("");
+            $("#txtFinancialYear").val("");
+            $("#txtAmount").val("");
+            $("#txtPaidDate").val("");
+            $("#chkIsActive").prop("checked", false);
+        }
+
+        function searchUserSubscription() {
+            if ($.fn.DataTable.isDataTable("#tblUserSubscription")) {
+                $('#tblUserSubscription tbody').empty();
+                $('#tblUserSubscription').DataTable().clear().destroy();
+            }
+            
+            var userId = $('#ddlUser option:selected').val();
+            var finYear = $("#txtFinancialYear").val();
+            var amount = $("#txtAmount").val();
+            var paidDate = $("#txtPaidDate").val();
+            var isActive = $("#chkIsActive").is(":checked");
+            var startDate = $("#from-date-picker").val();
+            var endDate = $("#to-date-picker").val();
+            var paidDt = paidDate.split("-").reverse().join("-");
+            var fromDate = startDate.split("-").reverse().join("-");
+            var toDate = endDate.split("-").reverse().join("-");
+
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "UserSubscription/searchUserSubscription")',
+                type: "GET",
+                dataType: "json",
+                data: {userId: userId, finYear: finYear, amount: amount, paidDate: paidDt, startDate: fromDate, endDate: toDate, isActive: isActive },
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        console.log(data);
+                        var rows = "";
+                        var row = "";
+                        $.each(data, function (i, item) {
+                            if (fullAccess === "True" || viewAccess === "True") {
+                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewUserSubscription(\'' + item.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || updateAccess === "True") {
+                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="editUserSubscription(\'' + item.id + '\');"> Edit <i class="typcn typcn-edit btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || deleteAccess === "True") {
+                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" onclick="deleteUserSubscription(\'' + item.id + '\');"> Delete <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                            }
+                            row = '<tr>' +
+                                '<td>' +
+                                '<div class="d-flex align-items-center">' +
+                                    viewButton +
+                                    updateButton +
+                                    deleteButton +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + item.userName + '</td>' +
+                                '<td>' + item.finYear + '</td>' +
+                                '<td>' + item.amount + '</td>' +
+                                '<td>' + item.paidDateString + '</td>' +
+                                '<td>' + item.startDateString + '</td>' +
+                                '<td>' + item.endDateString + '</td>' +
+                                '<td>' + item.isActive + '</td>' +
+                                '<td>' + item.createDate + '</td>' +
+                                '<td>' + item.createdBy + '</td>' +
+                                '<td>' + item.updateDate + '</td>' +
+                                '<td>' + item.updateBy + '</td>' +
+                                '</tr>';
+                            rows = rows + row;
+                        });
+                        $("#divUserSubscription").show();
+                        $("#tblUserSubscription").focus();
+                        bindDataTable();
+                        $("#userSubscriptionBody").html(rows);
+                        rows = "";
+                    }
+                    else {
+                        console.log(data);
+                        $.confirm({
+                            title: 'User Subscription List',
+                            content: 'User Subscription Not Found!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                        var row = '<tr>' +
+                            '<td>' +
+                            '<div class="d-flex align-items-center">' +
+                            '</div>' +
+                            '</td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td style="text-align:center">No Data Found!!!</td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '<td></td>' +
+                            '</tr>';
+                        $("#userSubscriptionBody").html(row);
+                    }
+                }
+            });
+            //}
+        }
+
+        function getUserSubscriptionList() {
+            if ($.fn.DataTable.isDataTable("#tblUserSubscription")) {
+                $('#tblUserSubscription tbody').empty();
+                $('#tblUserSubscription').DataTable().clear().destroy();
+            }
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "UserSubscription/getUserSubscriptionList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        var sno = 0;
+                        var rows = "";
+                        var row = "";
+                        $("#userSubscriptionBody").html("");
+                        $.each(data, function (i, item) {
+                            sno = sno + 1;
+                            if (fullAccess === "True" || viewAccess === "True") {
+                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewUserSubscription(\'' + item.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || updateAccess === "True") {
+                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="editUserSubscription(\'' + item.id + '\');"> Edit <i class="typcn typcn-edit btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || deleteAccess === "True") {
+                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" onclick="deleteUserSubscription(\'' + item.id + '\');"> Delete <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                            }
+                            row = '<tr>' +
+                                '<td>' +
+                                '<div class="d-flex align-items-center">' +
+                                viewButton +
+                                updateButton +
+                                deleteButton +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + item.userName + '</td>' +
+                                '<td>' + item.finYear + '</td>' +
+                                '<td>' + item.amount.toString() + '</td>' +
+                                '<td>' + item.paidDateString + '</td>' +
+                                '<td>' + item.startDateString + '</td>' +
+                                '<td>' + item.endDateString + '</td>' +
+                                '<td>' + item.isActive + '</td>' +
+                                '<td>' + item.createDate + '</td>' +
+                                '<td>' + item.createdBy + '</td>' +
+                                '<td>' + item.updateDate + '</td>' +
+                                '<td>' + item.updateBy + '</td>' +
+                                '</tr>';
+                            rows = rows + row;
+                            row = "";
+                            $("#tblUserSubscription").focus();
+                        });
+                        $("#userSubscriptionBody").append(rows);
+                        bindDataTable();
+                    } else {
+                        var row = '<tr>' +
+                            '<td colspan="12" style="text-align:center">No Data Found!!!</td>' +
+                            '</tr>';
+                        $("#userSubscriptionBody").html(row);
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,474 @@
+﻿@model VMS.ViewModel.VMDriverMaster
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+@if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div id="ladiv"></div>
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body" style="min-height:500px;">
+                    <h4 class="card-title">Driver Master Details</h4>
+                    <div>
+                        <form id="frmUserRole" name="frmUserRole" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDriverName">Driver Name:  </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.DriverName, new { @class = "form-control", id = "txtDriverName", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtFatherName">Father's Name:  </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.FatherName, new { @class = "form-control", id = "txtFatherName", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDriverAddress1">Driver Address 1:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextAreaFor(m => m.DriverAddress1, new { @class = "form-control", cols = "10", rows = "4", id = "txtDriverAddress1", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDriverAddress2">Driver Address 2: </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextAreaFor(m => m.DriverAddress2, new { @class = "form-control", cols = "10", rows = "4", id = "txtDriverAddress2", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDriverAddress3">Driver Address 3:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextAreaFor(m => m.DriverAddress3, new { @class = "form-control", cols = "10", rows = "4", id = "txtDriverAddress3", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtState">State: </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.StateName, new { @class = "form-control", id = "txtState", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDistrictName">District:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.DistrictName, new { @class = "form-control", id = "txtDistrictName", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtCity">City:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.CityName, new { @class = "form-control", id = "txtCity", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPinCode">Pincode:  </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.PinCode, new { @class = "form-control", id = "txtPinCode", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="aDriverPhotoLink">Driver Photo:</label>
+                                        <div class="col-sm-8">
+                                            <div class="image-set">
+                                                <a id="aDriverPhotoLink" target="_blank" data-magnify="gallery" data-caption="Rémi Bizouard triple champion du monde by malainxx24">
+                                                    <img id="imgDriverPhoto" alt="Image" style="width:100px; height:100px;" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPanNo">Pan No: </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.PanNo, new { @class = "form-control", id = "txtPanNo", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="aPanNoLink">Panno Image: </label>
+                                        <div class="col-sm-8">
+                                            <div class="image-set">
+                                                <a id="aPanNoLink" target="_blank" data-magnify="gallery" data-caption="Rémi Bizouard triple champion du monde by malainxx24">
+                                                    <img id="imgPanNoPhoto" alt="Image" style="width:260px; height:130px;" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtAadharNumber">Aadhar No:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.AadharNo, new { @class = "form-control", id = "txtAadharNumber", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="aAadharLink">Aadhar Image:</label>
+                                        <div class="col-sm-8">
+                                            <div class="image-set">
+                                                <a id="aAadharLink" target="_blank" data-magnify="gallery" data-caption="Rémi Bizouard triple champion du monde by malainxx24">
+                                                    <img id="imgAadharPhoto" alt="Image" style="width:260px; height:130px;" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDrivingLicenceNo">DL No:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.DrivingLicenceNo, new { @class = "form-control", id = "txtDrivingLicenceNo", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDrivingLicenceIssueAuth">DL Image:</label>
+                                        <div class="col-sm-8">
+                                            <div class="image-set">
+                                                <a id="aDLLink" target="_blank" data-magnify="gallery" data-caption="Rémi Bizouard triple champion du monde by malainxx24">
+                                                    <img id="imgDLPhoto" alt="Image" style="width:260px; height:130px;" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDrivingLicenceIssueAuth">DL Issue Auth:  </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.DrivingLicenceIssueAuth, new { @class = "form-control", id = "txtDrivingLicenceIssueAuth", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDrivingLicenceValidity">DL Validity:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.DrivingLicenceValidity, new { @class = "form-control", id = "txtDrivingLicenceValidity", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtMobileNumber1">Mobile Number 1:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.MobileNumber1, new { @class = "form-control", id = "txtMobileNumber1" , @readonly = "readonly"})
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtMobileNumber2">Mobile Number 2:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.MobileNumber2, new { @class = "form-control", id = "txtMobileNumber2", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtBankName">Bank Name :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.BankName, new { @class = "form-control", id = "txtBankName", @maxlength = "100", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtBankAccountNumber">Bank Account No:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.BankAccountNumber, new { @class = "form-control numberonly", id = "txtBankAccountNumber", @maxlength = "25", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtBankIFSCCode">Bank IFSC Code:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.BankIFSCCode, new { @class = "form-control", id = "txtBankIFSCCode", @maxlength = "30", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtExistingReference">Existing Reference:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.IsExistingReference, new { @class = "form-control", id = "txtExistingReference", @maxlength = "20", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtReferenceName">Reference Name :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ReferenceName, new { @class = "form-control", id = "txtReferenceName", @maxlength = "100", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtReferenceAddress1">Ref Address 1:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ReferenceAddress1, new { @class = "form-control", id = "txtReferenceAddress1", @maxlength = "500", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtReferenceAddress2">Ref Address 2</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ReferenceAddress2, new { @class = "form-control", id = "txtReferenceAddress2", @maxlength = "500", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtReferenceAddress3">Ref Address 3:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ReferenceAddress3, new { @class = "form-control", id = "txtReferenceAddress3", @maxlength = "500", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtReferenceCity">Reference City:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ReferenceCity, new { @class = "form-control", id = "txtReferenceCity", @maxlength = "100", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtReferencePinCode">Reference Pin:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ReferencePinCode, new { @class = "form-control numberonly", id = "txtReferencePinCode", @maxlength = "15", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtReferenceMobile">Reference Mobile:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ReferenceMobile, new { @class = "form-control numberonly", id = "txtReferenceMobile", @maxlength = "12", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active:</label>
+                                        <div class="col-sm-8">
+                                            @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", id = "chkIsActive" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        var fullAccess = 'True';
+        var viewAccess = 'True';
+
+         $(function() {
+             $("img.imgthumb").click(function(e) {
+                 var newImg = '<img src='
+                                + $(this).attr("src") + '></img>';
+                 $('#ladiv')
+                    .html($(newImg)
+                    .animate({ height: '300', width: '450' }, 1500));
+             });
+         });
+
+        $(document).ready(function () {
+            setSideMenu("driver-master");
+            if (fullAccess === "True" || viewAccess === "True") {
+                makeFieldsReadOnly();
+                var driverMasterID = GetParameterValues('driverMasterID');
+                getdriverMasterID(driverMasterID);
+            }
+        });
+
+        function makeFieldsReadOnly() {
+            $("#txtState").prop("readonly", true);
+            $("#txtCity").prop("readonly", true);
+            $("#txtDriverName").prop("readonly", true);
+            $("#txtDriverAddress1").prop("readonly", true);
+            $("#txtDriverAddress2").prop("readonly", true);
+            $("#txtDriverAddress3").prop("readonly", true);
+            $("#txtPinCode").prop("readonly", true);
+            $("#txtAadharNumber").prop("readonly", true);
+            $("#txtPanNo").prop("readonly", true);
+            $("#txtDrivingLicenceNo").prop("readonly", true);
+            $("#txtDrivingLicenceIssueAuth").prop("readonly", true);
+            $("#txtDrivingLicenceValidity").prop("readonly", true);
+            $("#txtMobileNumber1").prop("readonly", true);
+            $("#txtMobileNumber2").prop("readonly", true);
+            $("#chkIsActive").attr("disabled", true);
+            $("#txtFatherName").prop("readonly", true);
+            $("#txtDistrictName").prop("readonly", true);
+
+            $("#txtBankName").prop("readonly", true);
+            $("#txtBankAccountNumber").prop("readonly", true);
+            $("#txtBankIFSCCode").prop("readonly", true);
+            $("#txtExistingReference").prop("readonly", true);
+            $("#txtReferenceName").prop("readonly", true);
+            $("#txtReferenceAddress1").prop("readonly", true);
+            $("#txtReferenceAddress2").prop("readonly", true);
+            $("#txtReferenceAddress3").prop("readonly", true);
+            $("#txtReferenceCity").prop("readonly", true);
+            $("#txtReferencePinCode").prop("readonly", true);
+            $("#txtReferenceMobile").prop("readonly", true);
+        }
+
+        function getdriverMasterID(driverMasterID) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DriverMaster/getDriverMasterByID")',
+                type: "GET",
+                data: { driverMasterID: driverMasterID },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        $("#txtState").val(data.stateName);
+                        $("#txtCity").val(data.cityName);
+                        $("#txtDriverName").val(data.driverName);
+                        $("#txtDriverAddress1").val(data.driverAddress1);
+                        $("#txtDriverAddress2").val(data.driverAddress2);
+                        $("#txtDriverAddress3").val(data.driverAddress3);
+                        $("#txtPinCode").val(data.pinCode);
+                        $("#txtAadharNumber").val(data.aadharNo);
+                        $("#txtPanNo").val(data.panNo);
+                        $("#txtDrivingLicenceNo").val(data.drivingLicenceNo);
+                        $("#txtDrivingLicenceIssueAuth").val(data.drivingLicenceIssueAuth);
+                        $("#txtDrivingLicenceValidity").val(data.drivingLicenceValidity);
+                        $("#txtMobileNumber1").val(data.mobileNumber1);
+                        $("#txtMobileNumber2").val(data.mobileNumber2);
+                        $("#chkIsActive").prop('checked', data.isActive);
+                        $("#txtFatherName").val(data.fatherName);
+                        $("#txtDistrictName").val(data.districtName);
+
+                        $("#txtBankName").val(data.bankName);
+                        $("#txtBankAccountNumber").val(data.bankAccountNumber);
+                        $("#txtBankIFSCCode").val(data.bankIFSCCode);
+                        $("#txtExistingReference").val(data.isExistingReference);
+                        $("#txtReferenceName").val(data.referenceName);
+                        $("#txtReferenceAddress1").val(data.referenceAddress1);
+                        $("#txtReferenceAddress2").val(data.referenceAddress2);
+                        $("#txtReferenceAddress3").val(data.referenceAddress3);
+                        $("#txtReferenceCity").val(data.referenceCity);
+                        $("#txtReferencePinCode").val(data.referencePinCode);
+                        $("#txtReferenceMobile").val(data.referenceMobile);
+                         
+                        $("#imgDriverPhoto").attr('src', '@(utilityHelper.SiteUrl())' + data.driverPhoto);
+                        $("#imgDriverPhoto").attr('data-src', '@(utilityHelper.SiteUrl())' + data.driverPhoto);
+                        $("#aDriverPhotoLink").attr('href', '@(utilityHelper.SiteUrl())' + data.driverPhoto);
+
+                        $("#imgAadharPhoto").attr('src', '@(utilityHelper.SiteUrl())' + data.aadharNoImage);
+                        $("#imgAadharPhoto").attr('data-src', '@(utilityHelper.SiteUrl())' + data.aadharNoImage);
+                        $("#aAadharLink").attr('href', '@(utilityHelper.SiteUrl())' + data.aadharNoImage);
+
+                        $("#imgPanNoPhoto").attr('src', '@(utilityHelper.SiteUrl())' + data.panNoImage);
+                        $("#imgPanNoPhoto").attr('data-src', '@(utilityHelper.SiteUrl())' + data.panNoImage);
+                        $("#aPanNoLink").attr('href', '@(utilityHelper.SiteUrl())' + data.panNoImage);
+                        
+                        $("#imgDLPhoto").attr('src', '@(utilityHelper.SiteUrl())' + data.drivingLicenceImage);
+                        $("#imgDLPhoto").attr('data-src', '@(utilityHelper.SiteUrl())' + data.drivingLicenceImage);
+                        $("#aDLLink").attr('href', '@(utilityHelper.SiteUrl())' + data.drivingLicenceImage);
+
+                        
+                    } else {
+                        $.confirm({
+                            title: 'Driver Master',
+                            content: 'Driver Master does not Exists!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+    </script>
+}

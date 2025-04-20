@@ -1,0 +1,187 @@
+﻿@model VMS.ViewModel.VMUser
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+} *@
+@* @if (userAccess.AddUserFullAccess == true || userAccess.AddUserEntryViewAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">View User Details</h4>
+                    <div id="divSaveRateMaster">
+                        <form id="frmUser" name="frmUser" method="post" class="forms-sample">
+                            <input id="hdnUserID" name="hdnUserID" type="hidden">
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRoleName"> User Role:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.RoleName, new { @class = "form-control", id = "txtRoleName" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtUserId"> User Id:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.UserId, new { @class = "form-control", id = "txtUserId" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtFirstName"> Username:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.UserName, new { @class = "form-control", id = "txtUserName" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtEmail">Email:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.Email, new { @class = "form-control", id = "txtEmail" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPhone">Phone Number:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control", id = "txtPhone" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPassword">Password:</label>
+                                        <div class="col-sm-8">
+                                            @Html.PasswordFor(x => x.Password, new { @class = "form-control", id = "txtPassword" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLastName">From Date:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.StartDate, new { @class = "form-control", id = "txtStartDate" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtEndDate">To Date :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.EndDate, new { @class = "form-control", id = "txtEndDate" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active</label>
+                                        <div class="col-sm-8">
+                                            @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", @name = "Without Seal", id = "chkIsActive" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserFullAccess';
+        // var viewAccess = '@ViewBag.AddUserEntryViewAccess';
+        var fullAccess = 'True';
+        var viewAccess = 'True';
+
+        $(document).ready(function () {
+            setSideMenu("users-list");
+            if (fullAccess === "True" || viewAccess === "True") {
+                makeFieldsReadOnly();
+                getUserRole();
+                var userID = GetParameterValues('userID');
+                getUserbyID(userID);
+            }
+        });
+
+        function makeFieldsReadOnly() {
+            $('#txtRoleName').prop("readonly", true);
+            $('#txtStartDate').prop("readonly", true);
+            $('#txtEndDate').prop("readonly", true);
+            $('#txtPassword').prop("readonly", true);
+            $("#txtUserName").prop("readonly", true);
+            $("#txtEmail").prop("readonly", true);
+            $("#txtPhone").prop("readonly", true);
+            $("#txtUserId").prop("readonly", true);
+            $("#chkIsActive").attr("disabled", true);
+        }
+
+        function getUserbyID(userID) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "User/getUserbyID")',
+                type: "GET",
+                data: { userID: userID },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        $('#txtRoleName').val(data.roleName);
+                        $('#txtStartDate').val(data.startDateString);
+                        $('#txtEndDate').val(data.endDateString);
+                        $('#txtUserId').val(data.userId);
+                        $('#txtPassword').val(data.password);
+                        $('#txtUserName').val(data.userName);
+                        $('#txtEmail').val(data.email);
+                        $('#txtPhone').val(data.phoneNumber);
+                        $("#chkIsActive").prop('checked', data.isActive);
+                    } else {
+                        $.confirm({
+                            title: 'User',
+                            content: 'User does not Exists!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+    </script>
+}

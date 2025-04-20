@@ -1,0 +1,418 @@
+﻿@model VMS.ViewModel.VMDispatchDetails
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+@if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Dispatch Transaction Details</h4>
+                    <div>
+                        <form id="frmTransporterMaster" name="frmTransporterMaster" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtBillNo">Bill Number : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.BillNo, new { @class = "form-control", id = "txtBillNo" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtBillDt"> Bill Date : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.BillDate, new { @class = "form-control", id = "txtBillDt" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtSupplyingPlant"> Supplying Plant : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.SupplyingPlant, new { @class = "form-control", id = "txtSupplyingPlant" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtShipmentNo">Shipment No : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.ShipmentNo, new { @class = "form-control", id = "txtShipmentNo" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDeliveryNo">Delivery Number : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.DeliveryNo, new { @class = "form-control", id = "txtDeliveryNo" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtTruckNo"> Truck_No :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.TruckNo, new { @class = "form-control", id = "txtTruckNo" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLRGRNo">LR GR No : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.LrGrNo, new { @class = "form-control", id = "txtLRGRNo" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLRGRDate">LR GR Date : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.LrGrDate, new { @class = "form-control", id = "txtLRGRDate" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtShipToPartyTzone"> Ship to Party TZone : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.ShipToPartyTzone, new { @class = "form-control", id = "txtShipToPartyTzone" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="ddlUser">Dispatch Quantity : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.DispatchQtyRoad, new { @class = "form-control", id = "txtDispatchQuantity" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtEbidNetAmount">Ebid Net Amount : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.EbidNetAmt, new { @class = "form-control", id = "txtEbidNetAmount" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtCityName">Ebid Rate : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.EbidFrtRate, new { @class = "form-control", id = "txtEbidRate" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtForwardingAgentCode"> Forwarding Agent Code : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.ForwardingAgentCode, new { @class = "form-control", id = "txtForwardingAgentCode" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtForwardingAgentName"> Forwarding Agent Name : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.ForwardingAgentName, new { @class = "form-control", id = "txtForwardingAgentName" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRegionState"> Region State : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.RegionState, new { @class = "form-control", id = "txtRegionState" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPgiNo"> Pgi No : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.PgiNo, new { @class = "form-control", id = "txtPgiNo" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPgiDate">Pgi Date : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.PgiDate, new { @class = "form-control", id = "txtPgiDate" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDistributionChannel"> Distribution Channel : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.DistributionChannel, new { @class = "form-control", id = "txtDistributionChannel" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDivision"> Division : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.Division, new { @class = "form-control", id = "txtDivision" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtIncoTerm"> Inco Term: </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.IncoTerm, new { @class = "form-control", id = "txtIncoTerm" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRouteCode">Route Code : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.RouteCode, new { @class = "form-control", id = "txtRouteCode" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRouteDescription">Route Description : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.RouteDescription, new { @class = "form-control", id = "txtRouteDescription" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtEpodNo">Epod No :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.EpodNo, new { @class = "form-control", id = "txtEpodNo" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtEpodDate">Epod Date : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.EpodDate, new { @class = "form-control", id = "txtEpodDate" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtCgstRate">Cgst Rate : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.CgstRate, new { @class = "form-control", id = "txtCgstRate" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtSgstRate">Sgst Rate : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.SgstRate, new { @class = "form-control", id = "txtSgstRate" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtIgstRate">Igst Rate : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.IgstRate, new { @class = "form-control", id = "txtIgstRate" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtUgstRate">Ugst Rate : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.UtgstRate, new { @class = "form-control", id = "txtUgstRate" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtTotalAmount">Total Amount : </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.TotalAmount, new { @class = "form-control", id = "txtTotalAmount" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active: </label>
+                                        <div class="col-sm-8">
+                                            <input type="checkbox" id="chkIsActive" class="form-check-label checkboxStyle" name="chkIsActive" value="IsActive">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        var fullAccess = 'True';
+        var viewAccess = 'True';
+        
+        $(document).ready(function () {
+            //setSideMenu("transporter-master");
+            if (fullAccess === "True" || viewAccess === "True") {
+                makeFieldsReadOnly();
+                var dispatchId = GetParameterValues('dispatchId');
+                getDispatchDetails(dispatchId);
+            }
+        });
+
+        function makeFieldsReadOnly() {
+            $("#txtBillNo").prop("readonly", true);
+            $("#txtBillDt").prop("readonly", true);
+            $("#txtSupplyingPlant").prop("readonly", true);
+            $("#txtShipmentNo").prop("readonly", true);
+            $("#txtDeliveryNo").prop("readonly", true);
+            $("#txtTruckNo").prop("readonly", true);
+            $("#txtLRGRNo").prop("readonly", true);
+            $("#txtLRGRDate").prop("readonly", true);
+            $("#txtShipToPartyTzone").prop("readonly", true);
+            $("#txtDispatchQuantity").prop("readonly", true);
+            $("#txtEbidNetAmount").prop("readonly", true);
+            $("#txtEbidRate").prop("readonly", true);
+            $("#txtForwardingAgentCode").prop("readonly", true);
+            $("#txtForwardingAgentName").prop("readonly", true);
+            $("#txtForwardingAgentName").prop("readonly", true);
+            $("#txtRegionState").prop("readonly", true);
+            $("#txtPgiNo").prop("readonly", true);
+            $("#txtPgiDate").prop("readonly", true);
+            $("#txtDistributionChannel").prop("readonly", true);
+            $("#txtDivision").prop("readonly", true);
+            $("#txtIncoTerm").prop("readonly", true);
+            $("#txtRouteCode").prop("readonly", true);
+            $("#txtRouteDescription").prop("readonly", true);
+            $("#txtEpodNo").prop("readonly", true);
+            $("#txtEpodDate").prop("readonly", true);
+            $("#txtCgstRate").prop("readonly", true);
+            $("#txtSgstRate").prop("readonly", true);
+            $("#txtIgstRate").prop("readonly", true);
+            $("#txtUgstRate").prop("readonly", true);
+            $("#txtTotalAmount").prop("readonly", true);
+            $("#chkIsActive").attr("disabled", true);
+        }
+
+        function getDispatchDetails(dispatchId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "TransporterBill/getDispatchDetailsById")',
+                type: "GET",
+                data: { dispatchId: dispatchId },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                       
+                        $("#txtBillNo").val(data.billNo);
+                        $("#txtBillDt").val(data.billDate);
+                        $("#txtSupplyingPlant").val(data.supplyingPlant);
+                        $("#txtShipmentNo").val(data.shipmentNo);
+                        $("#txtDeliveryNo").val(data.deliveryNo);
+                        $("#txtTruckNo").val(data.truckNo);
+                        $("#txtLRGRNo").val(data.lrGrNo);
+                        $("#txtLRGRDate").val(data.lrGrDate);
+                        $("#txtShipToPartyTzone").val(data.shipToPartyTzone);
+                        $("#txtDispatchQuantity").val(data.dispatchQtyRoad);
+                        $("#txtEbidNetAmount").val(data.ebidNetAmt);
+                        $("#txtEbidRate").val(data.ebidFrtRate);
+                        $("#txtForwardingAgentCode").val(data.forwardingAgentCode);
+                        $("#txtForwardingAgentName").val(data.forwardingAgentName);
+                        $("#txtRegionState").val(data.regionState);
+                        // $("#txtPgiNo").val(data.pgiNo);
+                        $("#txtPgiDate").val(data.pgiDate);
+                        $("#txtDistributionChannel").val(data.distributionChannel);
+                        $("#txtDivision").val(data.division);
+                        $("#txtIncoTerm").val(data.incoTerm);
+                        $("#txtRouteCode").val(data.routeCode);
+                        $("#txtRouteDescription").val(data.routeDescription);
+                        $("#txtEpodNo").val(data.epodNo);
+                        $("#txtEpodDate").val(data.epodDate);
+                        $("#txtCgstRate").val(data.cgstRate);
+                        $("#txtSgstRate").val(data.sgstRate);
+                        $("#txtIgstRate").val(data.igstRate);
+                        $("#txtUgstRate").val(data.utgstRate);
+                        $("#txtTotalAmount").val(data.totalAmount);
+                        $("#chkIsActive").prop('checked', data.isActive);
+                    } else {
+                        $.confirm({
+                            title: 'Dispatch Transaction Details',
+                            content: 'Dispatch Transaction Details not Exists!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+    </script>
+}

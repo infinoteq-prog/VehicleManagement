@@ -1,0 +1,3999 @@
+﻿@using VMS.Helper
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"] - TBS</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="~/vendors/typicons/typicons.css">
+    <link rel="stylesheet" href="~/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="~/css/vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="~/images/favicon.ico" />
+
+    <style type="text/css">
+        .image-set {
+            margin-left: -5px;
+            margin-right: -5px;
+        }
+
+        .image-set img {
+            display: block;
+        }
+
+        .image-set a {
+            display: inline-block;
+            margin-left: 5px;
+            margin-right: 5px;
+            padding: 2px;
+            border: 1px solid #ddd;
+            transition: border-color .3s ease;
+        }
+
+        .image-set a:hover {
+            border-color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <input id="hdnLRGRNO" name="hdnLRGRNO" type="hidden">
+    <input id="hdnLRGRNoControl" name="hdnLRGRNoControl" type="hidden">
+    <input id="hdnExceptionalItem" name="hdnExceptionalItem" type="hidden"> 
+    <input id="hdnExceptionalItemControl" name="hdnExceptionalItemControl" type="hidden">
+    <div class="loader" id="AjaxLoader" style="display:none;">
+        <div style="text-align:center;">
+            <img src="~/images/LoadingBlack.gif" />
+            @*  <div class="strip-1"></div>
+            <div class="strip-2"></div>
+            <div class="strip-3"></div> *@
+        </div>
+    </div>
+    @* <div id="modelDialog" style="display: none">
+       <span id="modelText"></span>
+    </div> *@
+    <div class="row" id="proBanner">
+        @*<div class="col-12"> 
+            <span class="d-flex align-items-center purchase-popup">
+                <p>Get tons of UI components, Plugins, multiple layouts, 20+ sample pages, and more!</p>
+                <a href="https://bootstrapdash.com/demo/polluxui/template/index.html?utm_source=organic&utm_medium=banner&utm_campaign=free-preview" target="_blank" class="btn download-button purchase-button ml-auto">Upgrade To Pro</a>
+                <i class="typcn typcn-delete-outline" id="bannerClose"></i>
+            </span>
+        </div> *@
+    </div>
+    <div class="container-scroller">
+        <!-- partial:Shared/_navbar.cshtml -->
+        @await Html.PartialAsync("_navbar")
+        <!-- partial -->
+        <!-- partial"_navbar-breadcrumb.cshtml -->
+        @await Html.PartialAsync("_navbar-breadcrumb")
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">
+            <!-- partial:Shared/_settings-panel.cshtml -->
+            @await Html.PartialAsync("_settings-panel")
+            <!-- partial -->
+            <!-- partial:Shared/_sidebar.cshtml -->
+            @await Html.PartialAsync("_sidebar")
+            <!-- partial -->
+            <div class="main-panel">
+                @RenderBody()
+                <!-- content-wrapper ends -->
+                <!-- partial:Shared/_footer.cshtml -->
+                @await Html.PartialAsync("_footer")
+                <!-- partial -->
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- Bootstap Validator Popup -->
+    <div class="modal fade">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery Dialog Popup to Update LR GR NO -->
+    <div id="lrGRNOUpdateDialog" class="col-md-12" style="display: none;">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row rowHeight">
+                                <div class="col-md-12 div-table-style">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtUpdateLRGRNo">LR GR No :</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtUpdateLRGRNo" placeholder="Please Enter LR GR NO" class="form-control" maxlength="15" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12"></div>
+                            </div>
+                            <div class="row" style="text-align:center;margin-top:30px;">
+                                <div class="col-md-12">
+                                    <button id="btnUpdateLRGRNO" type="button" class="btn btn-primary mr-2" onclick="updateLRGRNO();">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Jquery Dialog Popup to Update Exceptional Entries Like SaleReturn and Backunloading  -->
+    <div id="exceptionalEntriesDialog" class="col-md-12" style="display: none;">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row rowHeight">
+                                <div class="col-md-12 div-table-style">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="ddlState">Exceptional Entry:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <select id="ddlExceptionalEntries" class="form-control form-control-lg" onchange="setDropDownStyle(this);">
+                                                <option value="0">Select an Item</option>
+                                                <option value="1">Sales_Return</option>
+                                                <option value="2">Backunloading</option>
+                                              </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12"></div>
+                            </div>
+                            <div class="row" style="text-align:center;margin-top:30px;">
+                                <div class="col-md-12">
+                                    <button id="btnUpdateExceptionalEntries" type="button" class="btn btn-primary mr-2" onclick="updateExceptionalEntry();">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- container-scroller -->
+    <!-- base:js -->
+    <script src="~/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <script src="~/vendors/chart.js/Chart.min.js"></script>
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    <script src="~/js/off-canvas.js"></script>
+    <script src="~/js/hoverable-collapse.js"></script>
+    <script src="~/js/template.js"></script>
+    <script src="~/js/settings.js"></script>
+    <script src="~/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="~/js/dashboard.js"></script>
+    <!-- End custom js for this page-->
+    <link rel="stylesheet" href="~/css/jquery-confirm.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script type="text/javascript" src="~/js/jquery-confirm.js"></script>
+    <script type="text/javascript" src="~/js/jquery.magnify.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+
+    <link href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" rel="stylesheet" type="text/css">
+
+    @* <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css" rel="stylesheet" type="text/css"> *@
+
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+
+    <script type="text/javascript">
+        var initialURL = '@(utilityHelper.SiteUrl())';
+        var started;
+        const Admin = "Admin";
+        const User = "User";
+        const SuperAdmin = "SuperAdmin";
+        var isMasterValid = true;
+        var timeoutID;
+        
+        function showLightBox()
+        {
+          if (started) return;
+          started = setTimeout(function(){
+              Lightbox.start(document.getElementById('firstImage'));
+              started;
+          },500);
+        }
+
+        function stopShowLightBox(){
+          if (started) {
+              clearTimeout(started)
+              started = 0;
+          }
+        }
+
+        $(document)
+            .ajaxStart(function () {
+                $('#AjaxLoader').show();
+            })
+            .ajaxStop(function () {
+                $('#AjaxLoader').hide();
+        });
+
+        $(document).ready(function () {
+            $("#lrGRNOUpdateDialog").dialog({
+                autoOpen: false,
+                modal: true,
+                title: "Update LR GR No",
+                width: "50%",
+                maxWidth: "500px"
+            });
+
+            $("#exceptionalEntriesDialog").dialog({
+                autoOpen: false,
+                modal: true,
+                title: "Update Exceptional Entry",
+                width: "50%",
+                maxWidth: "500px"
+            });
+
+            $(function () {
+                $("#from-date-picker").datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    changeYear: true,
+                    changeMonth: true,
+                });
+
+                $("#to-date-picker").datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    changeYear: true,
+                    changeMonth: true,
+                });
+
+                $("#txtBillDate").datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    changeYear: true,
+                    changeMonth: true,
+                    defaultDate: "today"
+                });
+
+                 $("#txtPaidDate").datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    changeYear: true,
+                    changeMonth: true,
+                });
+
+                 $("#txtEffectiveDate").datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    changeYear: true,
+                    changeMonth: true,
+                });
+
+                $("#txtEndDate").datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    changeYear: true,
+                    changeMonth: true,
+                });
+            });
+            //$('#AjaxLoader').show();
+            $(window).on("load", function () {
+                $('#AjaxLoader').hide();
+            });
+            getUserDetails();
+            $(".close").on("click", function () { $(".popup").removeClass("visible"); });
+            getUserAccess();
+            setup();
+
+            //Commmon JQuery Validation Functions
+            $('.numberonly').keypress(function (e) {
+                var charCode = (e.which) ? e.which : event.keyCode
+                if (String.fromCharCode(charCode).match(/[^0-9]/g))
+                    return false;
+            });
+
+            $('.alphanumericonly').keypress(function (e) {
+                var charCode = (e.which) ? e.which : event.keyCode
+                if (String.fromCharCode(charCode).match(/[^A-Za-z0-9]/g))
+                    return false;
+            });
+
+            $('.alphanumericonlywithspace').keypress(function (e) {
+                var charCode = (e.which) ? e.which : event.keyCode
+                if (String.fromCharCode(charCode).match(/[^a-zA-Z0-9 ]/g))
+                    return false;
+            });
+
+            $('.decimalnumberonly').keypress(function (e) {
+                var charCode = (e.which) ? e.which : event.keyCode
+                if (String.fromCharCode(charCode).match(/[^0-9.]/g))
+                    return false;
+            });
+
+            $(".panNo").keyup(function () {
+                $(this).val($(this).val().toUpperCase());
+            });
+
+            $(".gstNo").keyup(function () {
+                $(this).val($(this).val().toUpperCase());
+            });
+
+           //  $(".mobileNumber").change(function () {
+           //      var inputtext = $(this).val();
+           //      var regex = /^(0|91)?[6-9][0-9]{9}$/;
+           //      if (regex.test(inputtext)) {
+           //          $(this).removeClass('vaidationTextBoxError');
+           //          $(this).focus();
+           //          isMasterValid = true;
+           //      } else {
+           //         $(this).addClass('vaidationTextBoxError');
+           //         $(this).focus();
+           //         isMasterValid = false;
+           //      }
+           //  });
+
+           // $(".emailAddress").change(function () {
+           //      //Validating Email
+           //      var email = $(this).val();
+           //      regex = /^([a-zA-Z0-9_\.\-\+])+\@@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+           //      if (regex.test(email)) {
+           //         $(this).removeClass('vaidationTextBoxError');
+           //         $(this).focus();
+           //         isMasterValid = true;
+           //      }
+           //      else {
+           //         $(this).addClass('vaidationTextBoxError');
+           //         $(this).focus();
+           //         isMasterValid = false;
+           //      }
+           //  });
+
+           //  $(".gstNo").change(function () {
+           //      var inputvalues = $(this).val();
+           //      var gstinformat = new RegExp('^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]1}[1-9A-Z]{1}Z[0-9A-Z]{1}$');
+           //      if (gstinformat.test(inputvalues)) {
+           //          $(this).removeClass('vaidationTextBoxError');
+           //          $(this).focus();
+           //          isMasterValid = true;
+           //      } else {
+           //          $(this).addClass('vaidationTextBoxError');
+           //          $(this).focus();
+           //          isMasterValid = false;
+           //      }
+           //  });
+
+           //  $(".panNo").change(function () {
+           //      var regex = /([A-Z]){5}([0-9]){4}([A-Z]){1}$/;
+           //      if (regex.test($(this).val().toUpperCase())) {
+           //          $(this).removeClass('vaidationTextBoxError');
+           //          $(this).focus();
+           //          isMasterValid = true;
+           //      } else {
+           //          $(this).addClass('vaidationTextBoxError');
+           //          $(this).focus();
+           //          isMasterValid = false;
+           //      }
+           //  });
+        });
+
+        //LR GR NO Popup Validation
+        function checkLRGRNoPopUpValidation() {
+            var isValid = true;
+            if ($("#txtUpdateLRGRNo").val() == "") {
+                $("#txtUpdateLRGRNo").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtUpdateLRGRNo").focus();
+                isValid = false;
+            } else {
+                $("#txtUpdateLRGRNo").attr('class', 'form-control');
+                $("#txtUpdateLRGRNo").focus();
+            }
+
+            if($("#hdnLRGRNO").val() == "" || $("#hdnLRGRNoControl").val() == ""){
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        //LR GR NO Popup Validation
+        function checkExceptionalItemPopUpValidation() {
+            var isValid = true;
+            if ($('#ddlExceptionalEntries option:selected').val() == "0") {
+                $("#ddlExceptionalEntries").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlExceptionalEntries").focus();
+                isValid = false;
+            } else {
+                $("#ddlExceptionalEntries").attr('class', 'form-control');
+                $("#ddlExceptionalEntries").focus();
+            }
+
+            if($("#hdnExceptionalItem").val() == "" || $("#hdnExceptionalItemControl").val() == ""){
+                isValid = false;
+            }
+            return isValid;
+        }
+        
+        //Function to Set Exceptional Entries and ControlId
+        function setExceptionalItem(id,cltr) {
+            $("#hdnExceptionalItem").val(id);
+            $("#hdnExceptionalItemControl").val(cltr);
+            $('#exceptionalEntriesDialog').dialog('open');
+        }
+
+        //Function to Set LRGRNO and ControlId
+        function setLRGRNO(id,cltr) {
+            $("#hdnLRGRNO").val(id);
+            $("#hdnLRGRNoControl").val(cltr);
+            $('#lrGRNOUpdateDialog').dialog('open');
+        }
+
+        //Function to Update Exceptional Items 
+        function updateExceptionalEntry() {
+           var isValid = checkExceptionalItemPopUpValidation();
+            if(isValid == true){
+                var id = $("#hdnExceptionalItem").val();
+                var exceptionalEntry = $('#ddlExceptionalEntries option:selected').text();
+                $.ajax({
+                    cache: false,
+                    url: '@(utilityHelper.SiteUrl() + "TransporterBill/updateExceptionalEntries")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { id: id, exceptionalEntry: exceptionalEntry },
+                    success: function (data) {
+                        if (data != null && data != undefined) {
+                            if (data.transactionMessage.status == '@((byte)TransactionStatus.Success)') {
+                                console.log(data);
+                                $.confirm({
+                                    title: 'Update Exceptional Entry!',
+                                    content: data.transactionMessage.message,
+                                    type: 'green',
+                                    buttons: {
+                                        omg: {
+                                            text: 'OK',
+                                            btnClass: 'btn-green',
+                                            action: function () {
+                                                var cltr = $("#hdnExceptionalItemControl").val();
+                                                $("#" + cltr).html($('#ddlExceptionalEntries option:selected').text());
+                                                $("#ddlExceptionalEntries").prop("selectedIndex", 0).val();
+                                                $('#exceptionalEntriesDialog').dialog('close');
+                                            }
+                                        },
+                                    }
+                                });
+                            } else if (data.transactionMessage.status == '@((byte)TransactionStatus.Failed)') {
+                                $.confirm({
+                                    title: 'Disptach Entry Does Not Exists!',
+                                    content: data.transactionMessage.message,
+                                    icon: 'fa fa-warning',
+                                    type: 'red',
+                                    buttons: {
+                                        omg: {
+                                            text: 'OK',
+                                            btnClass: 'btn-red',
+                                        },
+                                    }
+                                });
+                            }
+                        } else {
+                            console.log(data);
+                            $.confirm({
+                                title: 'Disptach Entry Not Exists!',
+                                content: data.transactionMessage.message,
+                                icon: 'fa fa-warning',
+                                type: 'red',
+                                buttons: {
+                                    omg: {
+                                        text: 'OK',
+                                        btnClass: 'btn-red',
+                                    },
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
+        
+        //Function to Update Update LRGRNO
+        function updateLRGRNO() {
+           var isValid = checkLRGRNoPopUpValidation();
+            if(isValid == true){
+                    var id = $("#hdnLRGRNO").val();
+                    var lrGrNo = $("#txtUpdateLRGRNo").val();
+                    $.ajax({
+                        cache: false,
+                        url: '@(utilityHelper.SiteUrl() + "TransporterBill/updateLRGRNo")',
+                        type: "POST",
+                        dataType: "json",
+                        data: { id: id, lrGrNo: lrGrNo },
+                        success: function (data) {
+                            if (data != null && data != undefined) {
+                                if (data.transactionMessage.status == '@((byte)TransactionStatus.Success)') {
+                                    console.log(data);
+                                    $.confirm({
+                                        title: 'Update LR GR NO!',
+                                        content: data.transactionMessage.message,
+                                        type: 'green',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-green',
+                                                action: function () {
+                                                   var cltr = $("#hdnLRGRNoControl").val();
+                                                   $("#" + cltr).html($("#txtUpdateLRGRNo").val());
+                                                   $("#txtUpdateLRGRNo").val("");
+                                                   $('#lrGRNOUpdateDialog').dialog('close');
+                                                }
+                                            },
+                                        }
+                                    });
+                                } else if (data.transactionMessage.status == '@((byte)TransactionStatus.Failed)') {
+                                    $.confirm({
+                                        title: 'LR GR NO Not Exists!',
+                                        content: data.transactionMessage.message,
+                                        icon: 'fa fa-warning',
+                                        type: 'red',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-red',
+                                            },
+                                        }
+                                    });
+                                }
+                            } else {
+                                console.log(data);
+                                $.confirm({
+                                        title: 'LR GR NO Exists!',
+                                        content: data.transactionMessage.message,
+                                        icon: 'fa fa-warning',
+                                        type: 'red',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-red',
+                                            },
+                                        }
+                                    });
+                            }
+                        }
+                    });
+            }
+        }
+
+        //Function to Set Side Menu Options on Page Load
+        function setSideMenu(pageName){
+           if(pageName == "dashboard")
+           {
+                $("#lnkMakeMaster").attr("aria-expanded","false");
+                $('#lnkMakeMaster').addClass('collapsed');
+                $('#make-master').removeClass('show');
+
+                $("#lnkModelMaster").attr("aria-expanded","false");
+                $('#lnkModelMaster').addClass('collapsed');
+                $('#model-master').removeClass('show');
+
+                $("#lnkDriverMaster").attr("aria-expanded","false");
+                $('#lnkDriverMaster').addClass('collapsed');
+                $('#driver-master').removeClass('show');
+
+                $("#lnkVehicleMaster").attr("aria-expanded","false");
+                $('#lnkVehicleMaster').addClass('collapsed');
+                $('#vehicle-master').removeClass('show');
+
+                $("#lnkDistanceMaster").attr("aria-expanded","false");
+                $('#lnkDistanceMaster').addClass('collapsed');
+                $('#distance-master').removeClass('show');
+
+                $("#lnkExpenseMaster").attr("aria-expanded","false");
+                $('#lnkExpenseMaster').addClass('collapsed');
+                $('#expense-master').removeClass('show');
+
+                $("#lnkDieselHisabMaster").attr("aria-expanded","false");
+                $('#lnkDieselHisabMaster').addClass('collapsed');
+                $('#diesel-hisab-master').removeClass('show');
+
+                $("#lnkDriverHisabMaster").attr("aria-expanded","false");
+                $('#lnkDriverHisabMaster').addClass('collapsed');
+                $('#driver-hisab-master').removeClass('show');
+
+                $("#lnkUsersList").attr("aria-expanded","false");
+                $('#lnkUsersList').addClass('collapsed');
+                $('#users-list').removeClass('show');
+
+                $("#lnkUserRole").attr("aria-expanded","false");
+                $('#lnkUserRole').addClass('collapsed');
+                $('#users-role').removeClass('show');
+
+                $("#lnkFunctionMaster").attr("aria-expanded","false");
+                $('#lnkFunctionMaster').addClass('collapsed');
+                $('#function-master').removeClass('show');
+
+                $("#lnkUserAccess").attr("aria-expanded","false");
+                $('#lnkUserAccess').addClass('collapsed');
+                $('#users-access').removeClass('show');
+           }else if(pageName == "make-master"){
+                $("#lnkMakeMaster").attr("aria-expanded","true");
+                $('#lnkMakeMaster').removeClass('collapsed');
+                $('#make-master').addClass('show');
+                $('#make-master').focus();
+
+                $("#lnkModelMaster").attr("aria-expanded","false");
+                $('#lnkModelMaster').addClass('collapsed');
+                $('#model-master').removeClass('show');
+
+                $("#lnkDriverMaster").attr("aria-expanded","false");
+                $('#lnkDriverMaster').addClass('collapsed');
+                $('#driver-master').removeClass('show');
+
+                $("#lnkVehicleMaster").attr("aria-expanded","false");
+                $('#lnkVehicleMaster').addClass('collapsed');
+                $('#vehicle-master').removeClass('show');
+
+                $("#lnkDistanceMaster").attr("aria-expanded","false");
+                $('#lnkDistanceMaster').addClass('collapsed');
+                $('#distance-master').removeClass('show');
+
+                $("#lnkExpenseMaster").attr("aria-expanded","false");
+                $('#lnkExpenseMaster').addClass('collapsed');
+                $('#expense-master').removeClass('show');
+
+                $("#lnkDieselHisabMaster").attr("aria-expanded","false");
+                $('#lnkDieselHisabMaster').addClass('collapsed');
+                $('#diesel-hisab-master').removeClass('show');
+
+                $("#lnkDriverHisabMaster").attr("aria-expanded","false");
+                $('#lnkDriverHisabMaster').addClass('collapsed');
+                $('#driver-hisab-master').removeClass('show');
+
+                $("#lnkUsersList").attr("aria-expanded","false");
+                $('#lnkUsersList').addClass('collapsed');
+                $('#users-list').removeClass('show');
+
+                $("#lnkUserRole").attr("aria-expanded","false");
+                $('#lnkUserRole').addClass('collapsed');
+                $('#users-role').removeClass('show');
+
+                $("#lnkFunctionMaster").attr("aria-expanded","false");
+                $('#lnkFunctionMaster').addClass('collapsed');
+                $('#function-master').removeClass('show');
+
+                $("#lnkUserAccess").attr("aria-expanded","false");
+                $('#lnkUserAccess').addClass('collapsed');
+                $('#users-access').removeClass('show');
+           }else if(pageName == "model-master"){
+                $("#lnkModelMaster").attr("aria-expanded","true");
+                $('#lnkModelMaster').removeClass('collapsed');
+                $('#model-master').addClass('show');
+                $('#model-master').focus();
+
+                $("#lnkMakeMaster").attr("aria-expanded","false");
+                $('#lnkMakeMaster').addClass('collapsed');
+                $('#make-master').removeClass('show');
+
+                $("#lnkDriverMaster").attr("aria-expanded","false");
+                $('#lnkDriverMaster').addClass('collapsed');
+                $('#driver-master').removeClass('show');
+
+                $("#lnkVehicleMaster").attr("aria-expanded","false");
+                $('#lnkVehicleMaster').addClass('collapsed');
+                $('#vehicle-master').removeClass('show');
+
+                $("#lnkDistanceMaster").attr("aria-expanded","false");
+                $('#lnkDistanceMaster').addClass('collapsed');
+                $('#distance-master').removeClass('show');
+
+                $("#lnkExpenseMaster").attr("aria-expanded","false");
+                $('#lnkExpenseMaster').addClass('collapsed');
+                $('#expense-master').removeClass('show');
+
+                $("#lnkDieselHisabMaster").attr("aria-expanded","false");
+                $('#lnkDieselHisabMaster').addClass('collapsed');
+                $('#diesel-hisab-master').removeClass('show');
+
+                $("#lnkDriverHisabMaster").attr("aria-expanded","false");
+                $('#lnkDriverHisabMaster').addClass('collapsed');
+                $('#driver-hisab-master').removeClass('show');
+
+                $("#lnkUsersList").attr("aria-expanded","false");
+                $('#lnkUsersList').addClass('collapsed');
+                $('#users-list').removeClass('show');
+
+                $("#lnkUserRole").attr("aria-expanded","false");
+                $('#lnkUserRole').addClass('collapsed');
+                $('#users-role').removeClass('show');
+
+                $("#lnkFunctionMaster").attr("aria-expanded","false");
+                $('#lnkFunctionMaster').addClass('collapsed');
+                $('#function-master').removeClass('show');
+
+                $("#lnkUserAccess").attr("aria-expanded","false");
+                $('#lnkUserAccess').addClass('collapsed');
+                $('#users-access').removeClass('show');
+           }else if(pageName == "driver-master"){
+                $("#lnkDriverMaster").attr("aria-expanded","true");
+                $('#lnkDriverMaster').removeClass('collapsed');
+                $('#driver-master').addClass('show');
+                $('#driver-master').focus();
+
+                $("#lnkMakeMaster").attr("aria-expanded","false");
+                $('#lnkMakeMaster').addClass('collapsed');
+                $('#make-master').removeClass('show');
+
+                $("#lnkModelMaster").attr("aria-expanded","false");
+                $('#lnkModelMaster').addClass('collapsed');
+                $('#model-master').removeClass('show');
+
+                $("#lnkVehicleMaster").attr("aria-expanded","false");
+                $('#lnkVehicleMaster').addClass('collapsed');
+                $('#vehicle-master').removeClass('show');
+
+                $("#lnkDistanceMaster").attr("aria-expanded","false");
+                $('#lnkDistanceMaster').addClass('collapsed');
+                $('#distance-master').removeClass('show');
+
+                $("#lnkExpenseMaster").attr("aria-expanded","false");
+                $('#lnkExpenseMaster').addClass('collapsed');
+                $('#expense-master').removeClass('show');
+
+                $("#lnkDieselHisabMaster").attr("aria-expanded","false");
+                $('#lnkDieselHisabMaster').addClass('collapsed');
+                $('#diesel-hisab-master').removeClass('show');
+
+                $("#lnkDriverHisabMaster").attr("aria-expanded","false");
+                $('#lnkDriverHisabMaster').addClass('collapsed');
+                $('#driver-hisab-master').removeClass('show');
+
+                $("#lnkUsersList").attr("aria-expanded","false");
+                $('#lnkUsersList').addClass('collapsed');
+                $('#users-list').removeClass('show');
+
+                $("#lnkUserRole").attr("aria-expanded","false");
+                $('#lnkUserRole').addClass('collapsed');
+                $('#users-role').removeClass('show');
+
+                $("#lnkFunctionMaster").attr("aria-expanded","false");
+                $('#lnkFunctionMaster').addClass('collapsed');
+                $('#function-master').removeClass('show');
+
+                $("#lnkUserAccess").attr("aria-expanded","false");
+                $('#lnkUserAccess').addClass('collapsed');
+                $('#users-access').removeClass('show');
+           }else if(pageName == "vehicle-master"){
+                $("#lnkVehicleMaster").attr("aria-expanded","true");
+                $('#lnkVehicleMaster').removeClass('collapsed');
+                $('#vehicle-master').addClass('show');
+                $('#vehicle-master').focus();
+
+                $("#lnkMakeMaster").attr("aria-expanded","false");
+                $('#lnkMakeMaster').addClass('collapsed');
+                $('#make-master').removeClass('show');
+
+                $("#lnkModelMaster").attr("aria-expanded","false");
+                $('#lnkModelMaster').addClass('collapsed');
+                $('#model-master').removeClass('show');
+
+                $("#lnkDriverMaster").attr("aria-expanded","false");
+                $('#lnkDriverMaster').addClass('collapsed');
+                $('#driver-master').removeClass('show');
+
+                $("#lnkDistanceMaster").attr("aria-expanded","false");
+                $('#lnkDistanceMaster').addClass('collapsed');
+                $('#distance-master').removeClass('show');
+
+                $("#lnkExpenseMaster").attr("aria-expanded","false");
+                $('#lnkExpenseMaster').addClass('collapsed');
+                $('#expense-master').removeClass('show');
+
+                $("#lnkDieselHisabMaster").attr("aria-expanded","false");
+                $('#lnkDieselHisabMaster').addClass('collapsed');
+                $('#diesel-hisab-master').removeClass('show');
+
+                $("#lnkDriverHisabMaster").attr("aria-expanded","false");
+                $('#lnkDriverHisabMaster').addClass('collapsed');
+                $('#driver-hisab-master').removeClass('show');
+
+                $("#lnkUsersList").attr("aria-expanded","false");
+                $('#lnkUsersList').addClass('collapsed');
+                $('#users-list').removeClass('show');
+
+                $("#lnkUserRole").attr("aria-expanded","false");
+                $('#lnkUserRole').addClass('collapsed');
+                $('#users-role').removeClass('show');
+
+                $("#lnkFunctionMaster").attr("aria-expanded","false");
+                $('#lnkFunctionMaster').addClass('collapsed');
+                $('#function-master').removeClass('show');
+
+                $("#lnkUserAccess").attr("aria-expanded","false");
+                $('#lnkUserAccess').addClass('collapsed');
+                $('#users-access').removeClass('show');
+           }
+           else if(pageName == "distance-master"){
+                $("#lnkDistanceMaster").attr("aria-expanded","true");
+                $('#lnkDistanceMaster').removeClass('collapsed');
+                $('#distance-master').addClass('show');
+                $('#distance-master').focus();
+
+                $("#lnkMakeMaster").attr("aria-expanded","false");
+                $('#lnkMakeMaster').addClass('collapsed');
+                $('#make-master').removeClass('show');
+
+                $("#lnkModelMaster").attr("aria-expanded","false");
+                $('#lnkModelMaster').addClass('collapsed');
+                $('#model-master').removeClass('show');
+
+                $("#lnkDriverMaster").attr("aria-expanded","false");
+                $('#lnkDriverMaster').addClass('collapsed');
+                $('#driver-master').removeClass('show');
+
+                $("#lnkVehicleMaster").attr("aria-expanded","false");
+                $('#lnkVehicleMaster').addClass('collapsed');
+                $('#vehicle-master').removeClass('show');
+
+                $("#lnkExpenseMaster").attr("aria-expanded","false");
+                $('#lnkExpenseMaster').addClass('collapsed');
+                $('#expense-master').removeClass('show');
+
+                $("#lnkDieselHisabMaster").attr("aria-expanded","false");
+                $('#lnkDieselHisabMaster').addClass('collapsed');
+                $('#diesel-hisab-master').removeClass('show');
+
+                $("#lnkDriverHisabMaster").attr("aria-expanded","false");
+                $('#lnkDriverHisabMaster').addClass('collapsed');
+                $('#driver-hisab-master').removeClass('show');
+
+                $("#lnkUsersList").attr("aria-expanded","false");
+                $('#lnkUsersList').addClass('collapsed');
+                $('#users-list').removeClass('show');
+
+                $("#lnkUserRole").attr("aria-expanded","false");
+                $('#lnkUserRole').addClass('collapsed');
+                $('#users-role').removeClass('show');
+
+                $("#lnkFunctionMaster").attr("aria-expanded","false");
+                $('#lnkFunctionMaster').addClass('collapsed');
+                $('#function-master').removeClass('show');
+
+                $("#lnkUserAccess").attr("aria-expanded","false");
+                $('#lnkUserAccess').addClass('collapsed');
+                $('#users-access').removeClass('show');
+           }
+           else if(pageName == "expense-master"){
+                $("#lnkExpenseMaster").attr("aria-expanded","true");
+                $('#lnkExpenseMaster').removeClass('collapsed');
+                $('#expense-master').addClass('show');
+                $('#expense-master').focus();
+
+                $("#lnkDieselHisabMaster").attr("aria-expanded","false");
+                $('#lnkDieselHisabMaster').addClass('collapsed');
+                $('#diesel-hisab-master').removeClass('show');
+
+                $("#lnkDriverHisabMaster").attr("aria-expanded","false");
+                $('#lnkDriverHisabMaster').addClass('collapsed');
+                $('#driver-hisab-master').removeClass('show');
+
+                $("#lnkMakeMaster").attr("aria-expanded","false");
+                $('#lnkMakeMaster').addClass('collapsed');
+                $('#make-master').removeClass('show');
+
+                $("#lnkModelMaster").attr("aria-expanded","false");
+                $('#lnkModelMaster').addClass('collapsed');
+                $('#model-master').removeClass('show');
+
+                $("#lnkDriverMaster").attr("aria-expanded","false");
+                $('#lnkDriverMaster').addClass('collapsed');
+                $('#driver-master').removeClass('show');
+
+                $("#lnkVehicleMaster").attr("aria-expanded","false");
+                $('#lnkVehicleMaster').addClass('collapsed');
+                $('#vehicle-master').removeClass('show');
+
+                $("#lnkDistanceMaster").attr("aria-expanded","false");
+                $('#lnkDistanceMaster').addClass('collapsed');
+                $('#distance-master').removeClass('show');
+
+                $("#lnkUsersList").attr("aria-expanded","false");
+                $('#lnkUsersList').addClass('collapsed');
+                $('#users-list').removeClass('show');
+
+                $("#lnkUserRole").attr("aria-expanded","false");
+                $('#lnkUserRole').addClass('collapsed');
+                $('#users-role').removeClass('show');
+
+                $("#lnkFunctionMaster").attr("aria-expanded","false");
+                $('#lnkFunctionMaster').addClass('collapsed');
+                $('#function-master').removeClass('show');
+
+                $("#lnkUserAccess").attr("aria-expanded","false");
+                $('#lnkUserAccess').addClass('collapsed');
+                $('#users-access').removeClass('show');
+           }
+           else if(pageName == "diesel-hisab-master"){
+                $("#lnkDieselHisabMaster").attr("aria-expanded","true");
+                $('#lnkDieselHisabMaster').removeClass('collapsed');
+                $('#diesel-hisab-master').addClass('show');
+                $('#diesel-hisab-master').focus();
+
+                $("#lnkMakeMaster").attr("aria-expanded","false");
+                $('#lnkMakeMaster').addClass('collapsed');
+                $('#make-master').removeClass('show');
+
+                $("#lnkModelMaster").attr("aria-expanded","false");
+                $('#lnkModelMaster').addClass('collapsed');
+                $('#model-master').removeClass('show');
+
+                $("#lnkDriverMaster").attr("aria-expanded","false");
+                $('#lnkDriverMaster').addClass('collapsed');
+                $('#driver-master').removeClass('show');
+
+                $("#lnkVehicleMaster").attr("aria-expanded","false");
+                $('#lnkVehicleMaster').addClass('collapsed');
+                $('#vehicle-master').removeClass('show');
+
+                $("#lnkDistanceMaster").attr("aria-expanded","false");
+                $('#lnkDistanceMaster').addClass('collapsed');
+                $('#distance-master').removeClass('show');
+
+                $("#lnkExpenseMaster").attr("aria-expanded","false");
+                $('#lnkExpenseMaster').addClass('collapsed');
+                $('#expense-master').removeClass('show');
+                 
+                $("#lnkUsersList").attr("aria-expanded","false");
+                $('#lnkUsersList').addClass('collapsed');
+                $('#users-list').removeClass('show');
+
+                $("#lnkDriverHisabMaster").attr("aria-expanded","false");
+                $('#lnkDriverHisabMaster').addClass('collapsed');
+                $('#driver-hisab-master').removeClass('show');
+
+                $("#lnkUserRole").attr("aria-expanded","false");
+                $('#lnkUserRole').addClass('collapsed');
+                $('#users-role').removeClass('show');
+
+                $("#lnkFunctionMaster").attr("aria-expanded","false");
+                $('#lnkFunctionMaster').addClass('collapsed');
+                $('#function-master').removeClass('show');
+
+                $("#lnkUserAccess").attr("aria-expanded","false");
+                $('#lnkUserAccess').addClass('collapsed');
+                $('#users-access').removeClass('show');
+           }
+           else if(pageName == "driver-hisab-master"){
+                $("#lnkDriverHisabMaster").attr("aria-expanded","true");
+                $('#lnkDriverHisabMaster').removeClass('collapsed');
+                $('#driver-hisab-master').addClass('show');
+                $('#driver-hisab-master').focus();
+
+                $("#lnkMakeMaster").attr("aria-expanded","false");
+                $('#lnkMakeMaster').addClass('collapsed');
+                $('#make-master').removeClass('show');
+
+                $("#lnkModelMaster").attr("aria-expanded","false");
+                $('#lnkModelMaster').addClass('collapsed');
+                $('#model-master').removeClass('show');
+
+                $("#lnkDriverMaster").attr("aria-expanded","false");
+                $('#lnkDriverMaster').addClass('collapsed');
+                $('#driver-master').removeClass('show');
+
+                $("#lnkVehicleMaster").attr("aria-expanded","false");
+                $('#lnkVehicleMaster').addClass('collapsed');
+                $('#vehicle-master').removeClass('show');
+
+                $("#lnkDistanceMaster").attr("aria-expanded","false");
+                $('#lnkDistanceMaster').addClass('collapsed');
+                $('#distance-master').removeClass('show');
+
+                $("#lnkExpenseMaster").attr("aria-expanded","false");
+                $('#lnkExpenseMaster').addClass('collapsed');
+                $('#expense-master').removeClass('show');
+
+                $("#lnkUsersList").attr("aria-expanded","false");
+                $('#lnkUsersList').addClass('collapsed');
+                $('#users-list').removeClass('show');
+                
+                $("#lnkDieselHisabMaster").attr("aria-expanded","false");
+                $('#lnkDieselHisabMaster').addClass('collapsed');
+                $('#diesel-hisab-master').removeClass('show');
+
+                $("#lnkUserRole").attr("aria-expanded","false");
+                $('#lnkUserRole').addClass('collapsed');
+                $('#users-role').removeClass('show');
+
+                $("#lnkFunctionMaster").attr("aria-expanded","false");
+                $('#lnkFunctionMaster').addClass('collapsed');
+                $('#function-master').removeClass('show');
+
+                $("#lnkUserAccess").attr("aria-expanded","false");
+                $('#lnkUserAccess').addClass('collapsed');
+                $('#users-access').removeClass('show');
+           }
+           else if(pageName == "users-list"){
+                $("#lnkUsersList").attr("aria-expanded","true");
+                $('#lnkUsersList').removeClass('collapsed');
+                $('#users-list').addClass('show');
+                $('#users-list').focus();
+
+                $("#lnkMakeMaster").attr("aria-expanded","false");
+                $('#lnkMakeMaster').addClass('collapsed');
+                $('#make-master').removeClass('show');
+
+                $("#lnkModelMaster").attr("aria-expanded","false");
+                $('#lnkModelMaster').addClass('collapsed');
+                $('#model-master').removeClass('show');
+
+                $("#lnkDriverMaster").attr("aria-expanded","false");
+                $('#lnkDriverMaster').addClass('collapsed');
+                $('#driver-master').removeClass('show');
+
+                $("#lnkVehicleMaster").attr("aria-expanded","false");
+                $('#lnkVehicleMaster').addClass('collapsed');
+                $('#vehicle-master').removeClass('show');
+
+                $("#lnkDistanceMaster").attr("aria-expanded","false");
+                $('#lnkDistanceMaster').addClass('collapsed');
+                $('#distance-master').removeClass('show');
+
+                $("#lnkExpenseMaster").attr("aria-expanded","false");
+                $('#lnkExpenseMaster').addClass('collapsed');
+                $('#expense-master').removeClass('show');
+
+                $("#lnkDieselHisabMaster").attr("aria-expanded","false");
+                $('#lnkDieselHisabMaster').addClass('collapsed');
+                $('#diesel-hisab-master').removeClass('show');
+
+                $("#lnkDriverHisabMaster").attr("aria-expanded","false");
+                $('#lnkDriverHisabMaster').addClass('collapsed');
+                $('#driver-hisab-master').removeClass('show');
+
+                $("#lnkUserRole").attr("aria-expanded","false");
+                $('#lnkUserRole').addClass('collapsed');
+                $('#users-role').removeClass('show');
+
+                $("#lnkFunctionMaster").attr("aria-expanded","false");
+                $('#lnkFunctionMaster').addClass('collapsed');
+                $('#function-master').removeClass('show');
+
+                $("#lnkUserAccess").attr("aria-expanded","false");
+                $('#lnkUserAccess').addClass('collapsed');
+                $('#users-access').removeClass('show');
+           }
+           else if(pageName == "users-role"){
+                $("#lnkUserRole").attr("aria-expanded","true");
+                $('#lnkUserRole').removeClass('collapsed');
+                $('#users-role').addClass('show');
+                $('#users-role').focus();
+
+                $("#lnkMakeMaster").attr("aria-expanded","false");
+                $('#lnkMakeMaster').addClass('collapsed');
+                $('#make-master').removeClass('show');
+
+                $("#lnkModelMaster").attr("aria-expanded","false");
+                $('#lnkModelMaster').addClass('collapsed');
+                $('#model-master').removeClass('show');
+
+                $("#lnkDriverMaster").attr("aria-expanded","false");
+                $('#lnkDriverMaster').addClass('collapsed');
+                $('#driver-master').removeClass('show');
+
+                $("#lnkVehicleMaster").attr("aria-expanded","false");
+                $('#lnkVehicleMaster').addClass('collapsed');
+                $('#vehicle-master').removeClass('show');
+
+                $("#lnkDistanceMaster").attr("aria-expanded","false");
+                $('#lnkDistanceMaster').addClass('collapsed');
+                $('#distance-master').removeClass('show');
+
+                $("#lnkExpenseMaster").attr("aria-expanded","false");
+                $('#lnkExpenseMaster').addClass('collapsed');
+                $('#expense-master').removeClass('show');
+
+                $("#lnkDieselHisabMaster").attr("aria-expanded","false");
+                $('#lnkDieselHisabMaster').addClass('collapsed');
+                $('#diesel-hisab-master').removeClass('show');
+
+                $("#lnkDriverHisabMaster").attr("aria-expanded","false");
+                $('#lnkDriverHisabMaster').addClass('collapsed');
+                $('#driver-hisab-master').removeClass('show');
+
+                $("#lnkUsersList").attr("aria-expanded","false");
+                $('#lnkUsersList').addClass('collapsed');
+                $('#users-list').removeClass('show');
+
+                $("#lnkFunctionMaster").attr("aria-expanded","false");
+                $('#lnkFunctionMaster').addClass('collapsed');
+                $('#function-master').removeClass('show');
+
+                $("#lnkUserAccess").attr("aria-expanded","false");
+                $('#lnkUserAccess').addClass('collapsed');
+                $('#users-access').removeClass('show');
+           } else if(pageName == "function-master"){
+                $("#lnkFunctionMaster").attr("aria-expanded","true");
+                $('#lnkFunctionMaster').removeClass('collapsed');
+                $('#function-master').addClass('show');
+                $('#function-master').focus();
+
+                 $("#lnkMakeMaster").attr("aria-expanded","false");
+                $('#lnkMakeMaster').addClass('collapsed');
+                $('#make-master').removeClass('show');
+
+                $("#lnkModelMaster").attr("aria-expanded","false");
+                $('#lnkModelMaster').addClass('collapsed');
+                $('#model-master').removeClass('show');
+
+                $("#lnkDriverMaster").attr("aria-expanded","false");
+                $('#lnkDriverMaster').addClass('collapsed');
+                $('#driver-master').removeClass('show');
+
+                $("#lnkVehicleMaster").attr("aria-expanded","false");
+                $('#lnkVehicleMaster').addClass('collapsed');
+                $('#vehicle-master').removeClass('show');
+
+                $("#lnkDistanceMaster").attr("aria-expanded","false");
+                $('#lnkDistanceMaster').addClass('collapsed');
+                $('#distance-master').removeClass('show');
+
+                $("#lnkExpenseMaster").attr("aria-expanded","false");
+                $('#lnkExpenseMaster').addClass('collapsed');
+                $('#expense-master').removeClass('show');
+
+                $("#lnkDieselHisabMaster").attr("aria-expanded","false");
+                $('#lnkDieselHisabMaster').addClass('collapsed');
+                $('#diesel-hisab-master').removeClass('show');
+
+                $("#lnkDriverHisabMaster").attr("aria-expanded","false");
+                $('#lnkDriverHisabMaster').addClass('collapsed');
+                $('#driver-hisab-master').removeClass('show');
+
+                $("#lnkUsersList").attr("aria-expanded","false");
+                $('#lnkUsersList').addClass('collapsed');
+                $('#users-list').removeClass('show');
+
+                $("#lnkUserRole").attr("aria-expanded","false");
+                $('#lnkUserRole').addClass('collapsed');
+                $('#users-role').removeClass('show');
+
+                $("#lnkUserAccess").attr("aria-expanded","false");
+                $('#lnkUserAccess').addClass('collapsed');
+                $('#users-access').removeClass('show');
+           }
+           else if(pageName == "users-access"){
+                $("#lnkUserAccess").attr("aria-expanded","true");
+                $('#lnkUserAccess').removeClass('collapsed');
+                $('#users-access').addClass('show');
+                $('#users-access').focus();
+
+                 $("#lnkMakeMaster").attr("aria-expanded","false");
+                $('#lnkMakeMaster').addClass('collapsed');
+                $('#make-master').removeClass('show');
+
+                $("#lnkModelMaster").attr("aria-expanded","false");
+                $('#lnkModelMaster').addClass('collapsed');
+                $('#model-master').removeClass('show');
+
+                $("#lnkDriverMaster").attr("aria-expanded","false");
+                $('#lnkDriverMaster').addClass('collapsed');
+                $('#driver-master').removeClass('show');
+
+                $("#lnkVehicleMaster").attr("aria-expanded","false");
+                $('#lnkVehicleMaster').addClass('collapsed');
+                $('#vehicle-master').removeClass('show');
+
+                $("#lnkDistanceMaster").attr("aria-expanded","false");
+                $('#lnkDistanceMaster').addClass('collapsed');
+                $('#distance-master').removeClass('show');
+
+                $("#lnkExpenseMaster").attr("aria-expanded","false");
+                $('#lnkExpenseMaster').addClass('collapsed');
+                $('#expense-master').removeClass('show');
+
+                $("#lnkDieselHisabMaster").attr("aria-expanded","false");
+                $('#lnkDieselHisabMaster').addClass('collapsed');
+                $('#diesel-hisab-master').removeClass('show');
+
+                $("#lnkDriverHisabMaster").attr("aria-expanded","false");
+                $('#lnkDriverHisabMaster').addClass('collapsed');
+                $('#driver-hisab-master').removeClass('show');
+
+                $("#lnkUsersList").attr("aria-expanded","false");
+                $('#lnkUsersList').addClass('collapsed');
+                $('#users-list').removeClass('show');
+
+                $("#lnkUserRole").attr("aria-expanded","false");
+                $('#lnkUserRole').addClass('collapsed');
+                $('#users-role').removeClass('show');
+
+                $("#lnkFunctionMaster").attr("aria-expanded","false");
+                $('#lnkFunctionMaster').addClass('collapsed');
+                $('#function-master').removeClass('show');
+           }
+        }
+
+        function setDatetoDDMMYYYY(dt)
+        {
+            let today = "";
+            if(dt === "" || dt === "-"){
+               today = "-";
+            }else{
+                if(dt != "N/A"){
+                    today = new Date(dt);
+
+                    let dd = today.getDate();
+                    let mm = today.getMonth() + 1;
+
+                    let yyyy = today.getFullYear();
+
+                    if (dd < 10) {
+                        dd = '0' + dd;
+                    }
+                    if (mm < 10) {
+                        mm = '0' + mm;
+                    }
+                    today = dd + '-' + mm + '-' + yyyy;
+
+                    console.log(today);
+                }else{
+                    today = "N/A";
+                }
+            }
+            return today;
+        }
+
+        function getUserAccess(){
+           var viewAccess = '@ViewBag.RateMasterViewAccess';
+            var updateAccess = '@ViewBag.RateMasterUpdateAccess';
+            var deleteAccess = '@ViewBag.RateMasterDeleteAccess';
+        }
+
+        function getUserDetails() {
+            $.ajax({
+                type: "GET",
+                url: '@(utilityHelper.SiteUrl() + "Login/getUserDetails")',
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    console.log(data);
+                    if (data != null) {
+                        $("#lblUsername").html("Name: " + data.userName);
+                        if(data.transporterName != null && data.transporterName != undefined){
+                            $("#lblTransporterName").html("&nbsp;|&nbsp; Transporter:&nbsp;" + data.transporterName);
+                        }
+                        $("#lblLastLoginTime").html("Last Login: " + data.lastLoginTime);
+                    } else {
+                        $.confirm({
+                            title: 'Session Logout!',
+                            content: "Your session has ended due to inactivity. Please Login to continue!",
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                    action: function () {
+                                        window.location.href = '@Url.Action("Index", "Login")';
+                                    }
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    $("#lblMessage").html("Error while authenticating user credentials!");
+                }
+            });
+        }
+
+        function logout() {
+            $.ajax({
+                type: "POST",
+                url: '@(utilityHelper.SiteUrl() + "Login/Logout")',
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    if (data == true) {
+                         window.location.href = '@(utilityHelper.SiteUrl() + "Login/Index")'
+                    // Log out a user and make session Inactive
+                        // $.confirm({
+                        //     title: 'Session Logout!',
+                        //     content: "You have been successfully logged out from the system! Please Login to continue!",
+                        //     icon: 'fa fa-warning',
+                        //     type: 'red',
+                        //     buttons: {
+                        //         omg: {
+                        //             text: 'OK',
+                        //             btnClass: 'btn-red',
+                        //             action: function () {
+                        //                // window.location.href = '@Url.Action("Index", "Login")';
+                        //                window.location.href = '@(utilityHelper.SiteUrl() + "Login/Index")'
+                        //             }
+                        //         },
+                        //     }
+                        // });
+                    }
+                },
+                error: function () {
+                    $("#lblMessage").html("Error while authenticating user credentials!");
+                }
+            });
+        }
+
+
+        function changeYourPasssword() {
+             window.location.href = '@(utilityHelper.SiteUrl() + "Login/ChangePassword")'
+        }
+
+        function returnAMPM(time) {
+            if (time != "" && time.length > 2) {
+                var timeArr = time.split(':');
+                if (timeArr.length > 0) {
+                    var hour = parseInt(timeArr[0]);
+                    if (hour >= 12) {
+                        return time + " PM";
+                    } else {
+                        return time + " AM";
+                    }
+                }
+            }
+            return time;
+        }
+
+        function GetParameterValues(param) {
+            var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < url.length; i++) {
+                var urlparam = url[i].split('=');
+                if (urlparam[0] == param) {
+                    return urlparam[1];
+                }
+            }
+        }
+
+        function setup() {
+            this.addEventListener("mousemove", resetTimer, false);
+            this.addEventListener("mousedown", resetTimer, false);
+            this.addEventListener("keypress", resetTimer, false);
+            this.addEventListener("DOMMouseScroll", resetTimer, false);
+            this.addEventListener("mousewheel", resetTimer, false);
+            this.addEventListener("touchmove", resetTimer, false);
+            this.addEventListener("MSPointerMove", resetTimer, false);
+
+            startTimer();
+        }
+
+        function checkNullValues(val){
+            var newVal = "";
+            if(val === null || val === undefined || val === ""){
+                newVal = "-";
+            }else{
+                newVal = val.toString();
+            }
+            return newVal;
+        }
+
+        function checkNullValues1(val){
+            var newVal = "";
+            if(val === null || val === undefined || val === ""){
+                newVal = "-";
+            }else{
+                newVal = val.toString();
+            }
+            return newVal;
+        }
+
+        function startTimer() {
+            // wait 2 seconds before calling goInactive
+            timeoutID = window.setTimeout(goInactive, 1800000);
+        }
+
+        function resetTimer(e) {
+            window.clearTimeout(timeoutID);
+            goActive();
+        }
+
+        //Function to be call when user is inactive
+        function goInactive() {
+            logout();
+        }
+
+        function goActive() {
+            // do something
+            startTimer();
+        }
+
+        function viewImageModel(url){
+            window.open(url, '_blank');
+        }
+
+        function getBillNumber(transporterCode) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "TransporterBill/getBillNumber")',
+                type: "GET",
+                data: { transporterCode: transporterCode },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        $("#txtBillNumber").val(data);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getDriverMaster() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DriverMaster/getDriverMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Driver</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].driverId + '">' + data[i].driverName + '</option>';
+                        }
+                        $("#ddlDriver").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getDriverMasterWithSelect(driverId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DriverMaster/getDriverMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Driver</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].driverId === driverId){
+                                 s += '<option selected="selected" value="' + data[i].driverId + '">' + data[i].driverName + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].driverId + '">' + data[i].driverName + '</option>';
+                            }
+                        }
+                        $("#ddlDriver").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+
+        function getModelMaster() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "ModelMaster/getModelMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Model</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].modelId + '">' + data[i].modelName + '</option>';
+                        }
+                        $("#ddlModelMaster").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getModelMasterWithSelect(modelId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "ModelMaster/getModelMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Model</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].modelId === modelId){
+                                 s += '<option selected="selected" value="' + data[i].modelId + '">' + data[i].modelName + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].modelId + '">' + data[i].modelName + '</option>';
+                            }
+                        }
+                        $("#ddlModelMaster").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getMakeMaster() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "MakeMaster/getMakeMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Make</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
+                        }
+                        $("#ddlMakeMaster").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getMakeMasterWithSelect(makeId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "MakeMaster/getMakeMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Make</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].id === makeId){
+                                 s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
+                            }
+                        }
+                        $("#ddlMakeMaster").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+
+        function getExpenseMaster() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "MakeMaster/getExpenseMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Expense</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
+                        }
+                        $("#ddlExpenseMaster").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getExpenseMasterWithSelect(expenseId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "MakeMaster/getExpenseMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Expense</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].id === expenseId){
+                                 s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
+                            }
+                        }
+                        $("#ddlExpenseMaster").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+         function getVehicleNumber() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "VehicleMaster/getVehicleMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Vehicle</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].vehicleId + '">' + data[i].vehicleName + '</option>';
+                        }
+                        $("#ddlVehicleNo").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getVehicleNumberWithSelect(vehicleNo) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "VehicleMaster/getVehicleMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Vechile</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].id === vehicleNo){
+                                 s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].vehicleId + '">' + data[i].vehicleName + '</option>';
+                            }
+                        }
+                        $("#ddlVehicleType").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getVehicleTypeMaster() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "MakeMaster/getVehicleTypeMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Vehicle Type</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
+                        }
+                        $("#ddlVehicleType").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getVehicleTypeMasterWithSelect(vehicleTypeId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "MakeMaster/getVehicleTypeMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Vechile Type</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].id === vehicleTypeId){
+                                 s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
+                            }
+                        }
+                        $("#ddlVehicleType").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getBodyTypeMaster() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "MakeMaster/getBodyTypeMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Body Type</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
+                        }
+                        $("#ddlBodyType").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getBodyTypeMasterWithSelect(bodyTypeId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "MakeMaster/getVehicleTypeMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Body Type</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].id === bodyTypeId){
+                                 s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
+                            }
+                        }
+                        $("#ddlBodyType").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getManufacturerTypeMaster() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "MakeMaster/getManufacturerTypeMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Manufacturer Type</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
+                        }
+                        $("#ddlManufacturerType").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getManufacturerTypeMaster(manufacturerId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "MakeMaster/getManufacturerTypeMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Body Type</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].id === manufacturerId){
+                                 s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
+                            }
+                        }
+                        $("#ddlManufacturerType").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getUserRole() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "User/getUserRole")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a User</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].roleID + '">' + data[i].roleName + '</option>';
+                        }
+                        $("#ddlRole").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function setTextboxStyle(cltr) {
+            if ($(cltr).val() == "") {
+                $(cltr).attr('class', 'form-control vaidationTextBoxError');
+            } else {
+                $(cltr).attr('class', 'form-control');
+            }
+        }
+
+        function setDropDownStyle(cltr) {
+            if ($(cltr).find(":selected").val() == "0") {
+                $(cltr).attr('class', 'form-control vaidationTextBoxError');
+            } else {
+                $(cltr).attr('class', 'form-control');
+            }
+        }
+        //Fetch Master DropDownList
+        function getAllUserRole() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "User/getUserRole")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Role</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].roleID + '">' + data[i].roleName + '</option>';
+                        }
+                        $("#ddlRole").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+         function getUserRole(userId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getUserRole")',
+                type: "GET",
+                data: { userId: userId },
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        $("#ddlRole").val(data.roleId);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getUserList() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "UserRoleAccess/getUsersList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a User</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $("#ddlUser").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getUserListByRole() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "User/getUserListByRole")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a User</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].userName + '</option>';
+                        }
+                        $("#ddlUser").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getRoleList() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "UserRoleAccess/getRolesList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Role</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $("#ddlRole").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getFunctionList() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "UserRoleAccess/getFunctionsList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Function</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $("#ddlFunction").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+         function getCompanyMasterList() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getCompanyMasterList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select Bill To</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].companyName + '</option>';
+                        }
+                        $("#ddlCompanyMaster").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getCompanyMasterListWithCode() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getCompanyMasterList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select Bill To</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].companyName + '</option>';
+                        }
+                        $("#ddlCompanyMaster").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getCountryList() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getCountryList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Country</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $("#dllCountry").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        
+        function getTransporterList() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getTransporterList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a transporter</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].transporterName + '</option>';
+                        }
+                        $("#ddlTransporter").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getTransporterListWithSelect(transporterId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getTransporterList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a transporter</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].id === transporterId){
+                                 s += '<option selected="selected" value="' + data[i].id + '">' + data[i].transporterName + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].id + '">' + data[i].transporterName + '</option>';
+                            }
+                        }
+                        $("#ddlTransporter").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getStateList() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getStateList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a State</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $("#ddlState").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getDistrictList() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getDistrictList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a District</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $("#ddlDistrict").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getCityList() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getCityList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a City</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $("#ddlCity").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getUserListWithSelect(userId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "UserRoleAccess/getUsersList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a User</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].id === userId){
+                                 s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }
+                        }
+                        $("#ddlUser").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getStateByCountryId(countryId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getStateByCountryId")',
+                type: "GET",
+                data: { countryId: countryId },
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a State</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $("#ddlState").html(s);
+                    } else {
+                        var s = '<option value="0">Select a State</option>';
+                        $("#ddlState").html(s);
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getUserList(userId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "UserRoleAccess/getUsersList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a User</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].id === userId){
+                                 s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }
+                        }
+                        $("#ddlUser").html(s);
+                    } else {
+                        var s = '<option value="0">Select a User</option>';
+                        $("#ddlUser").html(s);
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        // function getUserList(userId) {
+        //     $.ajax({
+        //         cache: false,
+        //         url: '@(utilityHelper.SiteUrl() + "UserRoleAccess/getUsersList")',
+        //         type: "GET",
+        //         dataType: "json",
+        //         success: function (data) {
+        //             if (data != null && data != undefined) {
+        //                 var s = '<option value="0">Select a User</option>';
+        //                 for (var i = 0; i < data.length; i++) {
+        //                     console.log(data[i])
+        //                     if(data[i].id === userId){
+        //                          s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
+        //                     }else{
+        //                          s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+        //                     }
+        //                 }
+        //                 $("#ddlUser").html(s);
+        //             } else {
+        //                 var s = '<option value="0">Select a User</option>';
+        //                 $("#ddlUser").html(s);
+        //                 console.log(data);
+        //             }
+        //         }
+        //     });
+        // }
+
+        function getAllUserRole(roleName) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "User/getUserRole")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Role</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].roleName === roleName){
+                                 s += '<option selected="selected" value="' + data[i].roleID + '">' + data[i].roleName + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].roleID + '">' + data[i].roleName + '</option>';
+                            }
+                        }
+                        $("#ddlRole").html(s);
+                    } else {
+                        var s = '<option value="0">Select a Role</option>';
+                        $("#ddlRole").html(s);
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getRoleList(roleId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "UserRoleAccess/getRolesList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Role</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].id === roleId){
+                                 s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }
+                        }
+                        $("#ddlRole").html(s);
+                    } else {
+                         var s = '<option value="0">Select a Role</option>';
+                        $("#ddlRole").html(s);
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getFunctionList(functionId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "UserRoleAccess/getFunctionsList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Function</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].id === functionId){
+                                 s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }else{
+                                s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }
+                        }
+                        $("#ddlFunction").html(s);
+                    } else {
+                         var s = '<option value="0">Select a Function</option>';
+                        $("#ddlFunction").html(s);
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getStateByCountryIdWithSelect(countryId, stateId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getStateByCountryId")',
+                type: "GET",
+                data: { countryId: countryId },
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a State</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].id === stateId){
+                                 s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }
+                        }
+                        $("#ddlState").html(s);
+                    } else {
+                        var s = '<option value="0">Select a State</option>';
+                        $("#ddlState").html(s);
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getDistrictByStateId(stateId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getDistrictByStateId")',
+                type: "GET",
+                data: { stateId: stateId },
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a District</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $("#ddlDistrict").html(s);
+                    } else {
+                        var s = '<option value="0">Select a District</option>';
+                        $("#ddlDistrict").html(s);
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+         function getDistrictByStateIdWithSelect(stateId, districtId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getDistrictByStateId")',
+                type: "GET",
+                data: { stateId: stateId },
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a District</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].id === districtId){
+                                 s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }
+                        }
+                        $("#ddlDistrict").html(s);
+                    } else {
+                        var s = '<option value="0">Select a District</option>';
+                        $("#ddlDistrict").html(s);
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getCityByDisctrictId(districtId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getCityByDisctrictId")',
+                type: "GET",
+                data: { districtId: districtId },
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a City</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $("#ddlCity").html(s);
+                    } else {
+                        var s = '<option value="0">Select a City</option>';
+                        $("#ddlCity").html(s);
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getExpenseMasterWithSelect(expType) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "MakeMaster/getExpenseMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Expense</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].id === expType){
+                                 s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
+                            }
+                        }
+                        $("#ddlExpenseMaster").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getCityByDisctrictIdWithSelect(districtId, cityId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getCityByDisctrictId")',
+                type: "GET",
+                data: { districtId: districtId },
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a City</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].id === cityId){
+                                 s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }
+                        }
+                        $("#ddlCity").html(s);
+                    } else {
+                        var s = '<option value="0">Select a City</option>';
+                        $("#ddlCity").html(s);
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getCodeMaster(codeType) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getCodeMaster")',
+                type: "GET",
+                data: { codeType: codeType },
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '';
+                        if(codeType == "CATEGORY"){
+                            s = '<option value="0">Select a Bill Category</option>';
+                        }else if(codeType == "INCOTERM"){
+                            s = '<option value="0">Select a Inco Term</option>';
+                        }else if(codeType == "DIVISION"){
+                            s = '<option value="0">Select a Division</option>';
+                        }
+                        
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(codeType == "CATEGORY"){
+                                if(data[i].code == "TR"){
+                                    s += '<option selected="selected" value="' + data[i].id + '">' + data[i].code + '</option>';
+                                }else{
+                                    s += '<option value="' + data[i].id + '">' + data[i].code + '</option>';
+                                }
+                            }else if(codeType == "INCOTERM"){
+                                if(data[i].code == "FF"){
+                                    s += '<option selected="selected" value="' + data[i].id + '">' + data[i].code + '</option>';
+                                }else{
+                                    s += '<option value="' + data[i].id + '">' + data[i].code + '</option>';
+                                }
+                            }else if(codeType == "DIVISION"){
+                              if(data[i].code == "CM"){
+                                    s += '<option selected="selected" value="' + data[i].id + '">' + data[i].code + '</option>';
+                                }else{
+                                    s += '<option value="' + data[i].id + '">' + data[i].code + '</option>';
+                                }
+                            }
+                        }
+
+                        if(codeType == "CATEGORY"){
+                            $("#ddlBillCategory").html(s);
+                        }else if(codeType == "INCOTERM"){
+                           $("#ddlCode").html(s);
+                        }else if(codeType == "DIVISION"){
+                            $("#ddlDivision").html(s);
+                        }
+                        
+                    } else {
+                        var s = '';
+                        if(codeType == "CATEGORY"){
+                            s = '<option value="0">Select a Bill Category</option>';
+                            $("#ddlBillCategory").html(s);
+                        }else if(codeType == "INCOTERM"){
+                            s = '<option value="0">Select a Inco Term</option>';
+                            $("#ddlCode").html(s);
+                        }else if(codeType == "DIVISION"){
+                            s = '<option value="0">Select a Division</option>';
+                            $("#ddlDivision").html(s);
+                        }
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getDistrict(districtId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getDisctrict")',
+                type: "GET",
+                data: { districtId: districtId },
+                dataType: "json",
+                success: function (data) {
+
+                    if (data != null && data != undefined) {
+                        var s = '';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        //alert(data.length);
+                        $("#ddlDistrict").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+         function getCity(cityId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Master/getCity")',
+                type: "GET",
+                data: { cityId: cityId },
+                dataType: "json",
+                success: function (data) {
+
+                    if (data != null && data != undefined) {
+                        var s = '';
+
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+
+                        $("#ddlCity").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        //Function Vehicle Master List Functions
+        function viewVehicleMaster(vehicleMasterID) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "VehicleMaster/Details?vehicleMasterID=")' + vehicleMasterID;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function editVehicleMaster(vehicleMasterID) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "VehicleMaster/Update?vehicleMasterID=")' + vehicleMasterID;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function deleteVehicleMaster(vehicleMasterID) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete vehicle master entry?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete Vehicle Master Entry',
+                                content: 'Once you delete vehicle master entry, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "VehicleMaster/deleteVehicleMaster?vehicleMasterID=")' + vehicleMasterID,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Transaction Success!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "VehicleMaster/Index")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Transaction Failed!',
+                                                        content: data.transactionMessage.message,
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+        //Function Expense Master List Functions
+        function viewExpenseMaster(expenseMasterId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "ExpenseMaster/Details?expenseMasterId=")' + expenseMasterId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function editExpenseMaster(expenseMasterId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "ExpenseMaster/Update?expenseMasterId=")' + expenseMasterId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function deleteExpenseMaster(expenseMasterId) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete expense master entry?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete Expense Master Entry',
+                                content: 'Once you delete expense master entry, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "ExpenseMaster/deleteExpenseMaster?expenseMasterId=")' + expenseMasterId,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Transaction Success!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "ExpenseMaster/Index")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Transaction Failed!',
+                                                        content: data.transactionMessage.message,
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+        //Function Distance Master List Functions
+        function viewDistanceMaster(distanceMasterId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DistanceMaster/Details?distanceMasterId=")' + distanceMasterId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function editDistanceMaster(distanceMasterId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DistanceMaster/Update?distanceMasterId=")' + distanceMasterId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function deleteDistanceMaster(distanceMasterId) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete distance master entry?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete Distance Master Entry',
+                                content: 'Once you delete distance master entry, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "DistanceMaster/deleteDistanceMaster?distanceMasterId=")' + distanceMasterId,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Transaction Success!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "DistanceMaster/Index")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Transaction Failed!',
+                                                        content: data.transactionMessage.message,
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+        //Function View Disptach Details
+        function viewDispatchDetails(dispatchId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/ViewDispatchDetails?dispatchId=")' + dispatchId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        //Function View Disptach Details
+        function viewDispatchDetails(dispatchId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/ViewDispatchDetails?dispatchId=")' + dispatchId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        //Function Transporter Bill
+        function viewTransportBillDetails(billNo) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/ViewBillDetails?billno=")' + billNo;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        //Function GST Master List Functions
+        function viewGSTMaster(gstMasterId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "GSTMaster/Details?gstMasterId=")' + gstMasterId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function editGSTMaster(gstMasterId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "GSTMaster/Update?gstMasterId=")' + gstMasterId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function deleteGSTMaster(gstMasterId) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete gst rate master entry?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete Gst Master Entry',
+                                content: 'Once you delete gst master entry, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "GSTMaster/deleteGstMaster?gstMasterId=")' + gstMasterId,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Transaction Success!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "GSTMaster/Index")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Transaction Failed!',
+                                                        content: data.transactionMessage.message,
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+        //Function GST Rate Master List Functions
+        function viewGSTMaster(gstMasterId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "GSTMaster/Details?gstMasterId=")' + gstMasterId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function editGSTMaster(gstMasterId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "GSTMaster/Update?gstMasterId=")' + gstMasterId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function deleteGSTMaster(gstMasterId) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete gst master entry?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete GST Master Entry',
+                                content: 'Once you delete gst master entry, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "GSTMaster/deleteGstMaster?gstMasterId=")' + gstMasterId,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Transaction Success!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "GSTMaster/Index")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Transaction Failed!',
+                                                        content: data.transactionMessage.message,
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+        //Function User List Functions
+        function viewUser(userID) {
+            //window.location.href = '@Url.Action("Details", "RateMaster")?rateID=' + rateID;
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "User/Details?userID=")' + userID;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function editUser(userID) {
+            //window.location.href = '@Url.Action("Update", "RateMaster")?rateID=' + rateID;
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "User/Update?userID=")' + userID;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function deleteUser(userID) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete user?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete User!',
+                                content: 'Once you delete a user, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "User/deleteUser?userID=")' + userID,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Transaction Success!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    //getUserList();
+                                                                    //clearControls();
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "Home/Index")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Transaction Failed!',
+                                                        content: data.transactionMessage.message,
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+        //Function User Role List Functions
+        function viewUserRole(userRoleID) {
+            //window.location.href = '@Url.Action("Details", "RateMaster")?rateID=' + rateID;
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "UserRole/Details?userRoleID=")' + userRoleID;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function editUserRole(userRoleID) {
+            //window.location.href = '@Url.Action("Update", "RateMaster")?rateID=' + rateID;
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "UserRole/Update?userRoleID=")' + userRoleID;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function deleteUserRole(userRoleID) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete user role?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete User Role!',
+                                content: 'Once you delete a user role, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "UserRole/deleteUserRole?userRoleID=")' + userRoleID,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Delete User Role Success!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    //getUserList();
+                                                                    //clearControls();
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "UserRole/List")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Delete User Role Failed!',
+                                                        content: data.transactionMessage.message,
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+        //Funcion Master Common Functions List
+        function viewFunctionMaster(functionMasterId) {
+            //window.location.href = '@Url.Action("Details", "RateMaster")?rateID=' + rateID;
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "FunctionMaster/Details?functionMasterId=")' + functionMasterId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function editFunctionMaster(functionMasterId) {
+            //window.location.href = '@Url.Action("Update", "RateMaster")?rateID=' + rateID;
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "FunctionMaster/Update?functionMasterId=")' + functionMasterId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function deleteFunctionMaster(functionMasterId) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete function master?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete Function Master!',
+                                content: 'Once you delete a function master, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "FunctionMaster/deleteFunctionMaster?functionMasterId=")' + functionMasterId,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Delete Function Master!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "FunctionMaster/Index")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Delete Function Master Failed!',
+                                                        content: data.transactionMessage.message,
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+        //Function User Role Access List Functions
+        function viewUserRoleAccess(userRoleAccessId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "UserRoleAccess/Details?userRoleAccessId=")' + userRoleAccessId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function editUserRoleAccess(userRoleAccessId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "UserRoleAccess/Update?userRoleAccessId=")' + userRoleAccessId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function deleteUserRoleAccess(userRoleAccessId) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete user role access?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete User Role Access!',
+                                content: 'Once you delete a user role access, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "UserRoleAccess/deleteUserRoleAccess?userRoleAccessId=")' + userRoleAccessId,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Delete User Role Access Success!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    //getUserList();
+                                                                    //clearControls();
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "UserRoleAccess/List")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Delete User Role Access Failed!',
+                                                        content: data.transactionMessage.message,
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+        //User Subscripton Common Function List
+        function viewUserSubscription(userSubscriptionId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "UserSubscription/Details?userSubscriptionId=")' + userSubscriptionId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function editUserSubscription(userSubscriptionId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "UserSubscription/Update?userSubscriptionId=")' + userSubscriptionId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function deleteUserSubscription(userSubscriptionId) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete user role?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete User Subscription!',
+                                content: 'Once you delete a user role, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "UserSubscription/deleteUserSubscription?userSubscriptionId=")' + userSubscriptionId,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Delete User Subscription!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "UserSubscription/Index")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Delete User Subscription Failed!',
+                                                        content: data.transactionMessage.message,
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+        //Transporter Master Common Function List
+        function viewTransporterMaster(transporterMasterId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterMaster/Details?transporterMasterId=")' + transporterMasterId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function editTransporterMaster(transporterMasterId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterMaster/Update?transporterMasterId=")' + transporterMasterId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function deleteTransporterMaster(transporterMasterId) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete transporter master?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete Transporter Master!',
+                                content: 'Once you delete transporter master, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "TransporterMaster/deleteTransporterMaster?transporterMasterId=")' + transporterMasterId,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Delete Transporter Master!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "TransporterMaster/Index")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Delete Transporter Master Failed!',
+                                                        content: "Transporter Mater Entry Deletion Failed!",
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+        //Company Master Common Function List
+        function viewCompanyMaster(companyMasterId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "CompanyMaster/Details?companyMasterId=")' + companyMasterId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function editCompanyMaster(companyMasterId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "CompanyMaster/Update?companyMasterId=")' + companyMasterId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function deleteCompanyMaster(companyMasterId) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete company master?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete Transporter Master!',
+                                content: 'Once you delete a company master, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "CompanyMaster/deleteCompanyMaster?companyMastersId=")' + companyMasterId,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Delete Company Master!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "CompanyMaster/Index")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Delete Company Master Failed!',
+                                                        content: data.transactionMessage.message,
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+        function clearFileUploadControl(cltr){
+            let $el = cltr;
+                $el.wrap('<form>').closest('form').get(0).reset();
+                $el.unwrap();
+        }
+
+        //Transporter Not Found
+        function transporterNotFound(){
+            $.confirm({
+                title: "Transporter Not Found!",
+                content: "Transporter Not Found! Please contact to the Administrator!",
+                icon: 'fa fa-warning',
+                type: 'red',
+                buttons: {
+                    omg: {
+                        text: 'OK',
+                        btnClass: 'btn-red',
+                        action: function () {
+                            window.location.href = '@(utilityHelper.SiteUrl() + "Home/Index")';
+                        }
+                    },
+                }
+            });
+        }
+
+        //Function Driver Master List Functions
+        function viewDriverMaster(driverMasterID) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/Details?driverMasterID=")' + driverMasterID;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function editDriverMaster(driverMasterID) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/Update?driverMasterID=")' + driverMasterID;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function deleteDriverMaster(driverMasterID) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete driver master entry?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete Driver Master Entry',
+                                content: 'Once you delete driver master entry, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "DriverMaster/deleteDriverMaster?driverMasterID=")' + driverMasterID,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Transaction Success!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "DriverMaster/Index")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Transaction Failed!',
+                                                        content: data.transactionMessage.message,
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+
+        //Function Model Master List Functions
+        function viewModelMaster(modelMasterID) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "ModelMaster/Details?modelMasterID=")' + modelMasterID;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function editModelMaster(modelMasterID) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "ModelMaster/Update?modelMasterID=")' + modelMasterID;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function deleteModelMaster(modelMasterID) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete model master entry?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete Model Master Entry',
+                                content: 'Once you delete model master entry, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "ModelMaster/deleteModelMaster?modelMasterID=")' + modelMasterID,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Transaction Success!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "ModelMaster/Index")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Transaction Failed!',
+                                                        content: data.transactionMessage.message,
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+        //Function Make Master List Functions
+        function viewMakeMaster(makeMasterID) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "MakeMaster/Details?makeMasterID=")' + makeMasterID;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function editMakeMaster(makeMasterID) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "MakeMaster/Update?makeMasterID=")' + makeMasterID;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        function deleteMakeMaster(makeMasterID) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete model master entry?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete Make Master Entry',
+                                content: 'Once you delete make master entry, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "MakeMaster/deleteMakeMaster?makeMasterID=")' + makeMasterID,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Transaction Success!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "MakeMaster/Index")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Transaction Failed!',
+                                                        content: data.transactionMessage.message,
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

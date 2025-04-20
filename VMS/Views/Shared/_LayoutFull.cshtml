@@ -1,0 +1,278 @@
+﻿@using VMS.Helper
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"] - TBS</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="~/vendors/typicons/typicons.css">
+    <link rel="stylesheet" href="~/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="~/css/vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="~/images/favicon.ico" />
+</head>
+<body>
+    <div class="loader" id="AjaxLoader" style="display:none;">
+        <div style="text-align:center;">
+            <img src="~/images/LoadingBlack.gif" />
+           @*  <div class="strip-1"></div>
+            <div class="strip-2"></div>
+            <div class="strip-3"></div> *@
+        </div>
+    </div>
+    @* <div id="modelDialog" style="display: none">
+       <span id="modelText"></span>
+    </div> *@
+    <div class="row" id="proBanner">
+      @*<div class="col-12">
+            <span class="d-flex align-items-center purchase-popup">
+                <p>Get tons of UI components, Plugins, multiple layouts, 20+ sample pages, and more!</p>
+                <a href="https://bootstrapdash.com/demo/polluxui/template/index.html?utm_source=organic&utm_medium=banner&utm_campaign=free-preview" target="_blank" class="btn download-button purchase-button ml-auto">Upgrade To Pro</a>
+                <i class="typcn typcn-delete-outline" id="bannerClose"></i>
+            </span>
+        </div> *@
+    </div>
+    <div class="container-scroller">      
+        <!-- partial:Shared/_navbar.cshtml -->
+        @await Html.PartialAsync("_navbar")
+        <!-- partial -->
+        <!-- partial"_navbar-breadcrumb.cshtml -->
+        @await Html.PartialAsync("_navbar-breadcrumb")
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">
+            <!-- partial:Shared/_settings-panel.cshtml -->
+            @await Html.PartialAsync("_settings-panel")
+            <!-- partial -->
+            <!-- partial:Shared/_sidebar.cshtml -->
+            <!-- @await Html.PartialAsync("_sidebar")-->
+            <!-- partial -->
+            <div class="main-panel">
+                @RenderBody()
+                <!-- content-wrapper ends -->
+                <!-- partial:Shared/_footer.cshtml -->
+                @await Html.PartialAsync("_footerFull")
+                <!-- partial -->
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- base:js -->
+    <script src="~/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <script src="~/vendors/chart.js/Chart.min.js"></script>
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    <script src="~/js/off-canvas.js"></script>
+    <script src="~/js/hoverable-collapse.js"></script>
+    <script src="~/js/template.js"></script>
+    <script src="~/js/settings.js"></script>
+    <script src="~/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="~/js/dashboard.js"></script>
+    <!-- End custom js for this page-->
+    <link rel="stylesheet" href="~/css/jquery-confirm.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script type="text/javascript" src="~/js/jquery-confirm.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+
+    <link href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" rel="stylesheet" type="text/css">
+
+    @* <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css" rel="stylesheet" type="text/css"> *@
+
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script type="text/javascript">
+        $(document)
+            .ajaxStart(function () {
+                $('#AjaxLoader').show();
+            })
+            .ajaxStop(function () {
+                $('#AjaxLoader').hide();
+            });
+
+        $(document).ready(function () {
+
+            getUserDetails();
+            $(".close").on("click", function () { $(".popup").removeClass("visible"); });
+        });
+
+        function getUserDetails() {
+            $.ajax({
+                type: "GET",
+                url: '@(utilityHelper.SiteUrl() + "Login/getUserDetails")',
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    console.log(data);
+                    if (data != null) {
+                       $("#lblUsername").html("Name: " + data.userName);
+                        if(data.transporterName != null && data.transporterName != undefined){
+                            $("#lblTransporterName").html("&nbsp; | &nbsp; Transporter:&nbsp;" + data.transporterName);
+                        }
+                        $("#lblLastLoginTime").html("Last Login: " + data.lastLoginTime);
+                    } else { 
+                        $.confirm({
+                            title: 'Session Logout!',
+                            content: "Your session has ended due to inactivity. Please Login to continue!",
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                    action: function () {
+                                        window.location.href = '@Url.Action("Index", "Login")';
+                                    }
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    $("#lblMessage").html("Error while authenticating user credentials!");
+                }
+            });
+        }
+
+        function logout() {
+            $.ajax({
+                type: "POST",
+                url: '@(utilityHelper.SiteUrl() + "Login/Logout")',
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    if (data == true) {
+                        window.location.href = '@(utilityHelper.SiteUrl() + "Login/Index")';
+                    }
+                },
+                error: function () {
+                    $("#lblMessage").html("Error while authenticating user credentials!");
+                }
+            });
+        }
+
+         function checkNullValues(val){
+            var newVal = "";
+            if(val === null || val === undefined || val === ""){
+                newVal = "-";
+            }else{
+                newVal = val.toString();
+            }
+            return newVal;
+        }
+
+        function setDatetoDDMMYYYY(dt)
+        {
+            let today = "";
+
+            if(dt != "N/A"){
+                today = new Date(dt);
+
+                let dd = today.getDate();
+                let mm = today.getMonth() + 1;
+
+                let yyyy = today.getFullYear();
+
+                if (dd < 10) {
+                    dd = '0' + dd;
+                }
+                if (mm < 10) {
+                    mm = '0' + mm;
+                }
+                today = dd + '-' + mm + '-' + yyyy;
+
+                console.log(today);
+            }else{
+                today = "N/A";
+            }
+            return today;
+        }
+
+        function returnAMPM(time) {
+            if (time != "" && time.length > 2) {
+                var timeArr = time.split(':');
+                if (timeArr.length > 0) {
+                    var hour = parseInt(timeArr[0]);
+                    if (hour >= 12) {
+                        return time + " PM";
+                    } else {
+                        return time + " AM";
+                    }
+                }
+            }
+            return time;
+        }
+
+        function GetParameterValues(param) {
+            var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < url.length; i++) {
+                var urlparam = url[i].split('=');
+                if (urlparam[0] == param) {
+                    return urlparam[1];
+                }
+            }
+        }
+
+        function getUserRole() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "User/getUserRole")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a User</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].roleID + '">' + data[i].roleName + '</option>';
+                        }
+                        $("#ddlRole").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function setTextboxStyle(cltr) {
+            if ($(cltr).val() == "") {
+                $(cltr).attr('class', 'form-control vaidationTextBoxError');
+            } else {
+                $(cltr).attr('class', 'form-control');
+            }
+        }
+
+        function setDropDownStyle(cltr) {
+            if ($(cltr).find(":selected").val() == "0") {
+                $(cltr).attr('class', 'form-control vaidationTextBoxError');
+            } else {
+                $(cltr).attr('class', 'form-control');
+            }
+        }
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

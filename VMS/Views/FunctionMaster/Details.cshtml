@@ -1,0 +1,130 @@
+﻿@model VMS.ViewModel.VMUserRole
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+@if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">User Role Details</h4>
+                    <div>
+                        <form id="frmUserRole" name="frmUserRole" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <input id="hdnUserRoleID" name="hdnUserRoleID" type="hidden">
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtFirstName"> Function Name</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.Role, new { @class = "form-control", id = "txtFunctionName" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active</label>
+                                        <div class="col-sm-8">
+                                            @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", id = "chkIsActive" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLastName">From Date:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.StartDate, new { @class = "form-control", id = "txtStartDate" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtEndDate">To Date :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.EndDate, new { @class = "form-control", id = "txtEndDate" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        var fullAccess = 'True';
+        var viewAccess = 'True';
+
+        $(document).ready(function () {
+            setSideMenu("function-master");
+            if (fullAccess === "True" || viewAccess === "True") {
+                makeFieldsReadOnly();
+                var functionMasterId = GetParameterValues('functionMasterId');
+                getFunctionMasterById(functionMasterId);
+            }
+        });
+
+        function makeFieldsReadOnly() {
+            $("#txtFunctionName").prop("readonly", true);
+            $("#chkIsActive").attr("disabled", true);
+            $("#txtStartDate").prop("readonly", true);
+            $("#txtEndDate").prop("readonly", true);
+        }
+
+        function getFunctionMasterById(functionMasterId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "FunctionMaster/getFunctionMasterById")',
+                type: "GET",
+                data: { functionMasterId: functionMasterId },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        $('#txtFunctionName').val(data.functionName);
+                        $('#txtStartDate').val(item.startDateString);
+                        $('#txtEndDate').val(item.endDateString);
+                        $("#chkIsActive").prop('checked', data.isActive);
+                    } else {
+                        $.confirm({
+                            title: 'Function Master',
+                            content: 'Function Master does not Exists!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+    </script>
+}

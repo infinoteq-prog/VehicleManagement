@@ -1,0 +1,437 @@
+﻿@model VMS.ViewModel.VMCodeMaster
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+
+@if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleAddAccess == true)
+{
+ *@
+ <div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Add Code Master</h4>
+                    <div>
+                        <form id="frmUserRole" name="frmUserRole" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <label id="lblMandatoryMessage" class="reqFields">@utilityHelper.reqFieldMessage</label>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtCodeType">Code Type: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.CodeType, new { @class = "form-control", id = "txtCodeType" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtCode">Code: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Code, new { @class = "form-control", id = "txtCode" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDescription">Description: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", id = "txtDescription" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        @* <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active:</label>
+                                        <div class="col-sm-8">
+                                            @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", id = "chkIsActive" })
+                                        </div> *@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12"></div>
+                            </div>
+                           @*  @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleAddAccess == true)
+                            { *@
+                                <div class="row rowHeight" style="text-align:center;">
+                                    <div class="col-md-12">
+                                        <button type="button" class="btn btn-primary mr-2" onclick="saveMakeMaster();">Save</button>
+                                        <button type="button" class="btn btn-light" onclick="clearControls();">Clear</button>
+                                    </div>
+                                </div>
+                            @* } *@
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                   @*  @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+                        { *@
+                        <div id="divMakeMaster">
+                            <div class="table-responsive pt-3">
+                            <table id="tblMakeMaster" class="table table-striped project-orders-table nowrap hover order-column row-border stripe display" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Actions</th>
+                                        <th>Code Type</th>
+                                        <th>Code</th>
+                                        <th>Description</th>
+                                        <th>Is Active</th>
+                                        <th>Creation Date</th>
+                                        <th>Created By</th>
+                                        <th>Update Date</th>
+                                        <th>Updatd By</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="makeMasterBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                  @*   } *@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var addAccess = '@ViewBag.AddUserRoleAddAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        // var updateAccess = '@ViewBag.AddUserRoleUpdateAccess';
+        // var deleteAccess = '@ViewBag.AddUserRoleDeleteAccess';
+        var fullAccess = 'True';
+        var addAccess = 'True';
+        var viewAccess = 'True';
+        var updateAccess = 'True';
+        var deleteAccess = 'True';
+        
+        var viewButton = "";
+        var updateButton = "";
+        var deleteButton = "";
+
+        $(document).ready(function () {
+            setSideMenu("make-master");
+            $("#chkIsActive").attr("checked", true);
+            $("#chkIsActive").attr("disabled", true);
+
+            if (fullAccess === "True" || addAccess === "True") {
+                checkValidationOnChange();
+            }
+            if (fullAccess === "True" || viewAccess === "True") {
+                getUserRoleList();
+            }
+
+            $(function () {
+                $("#from-date-picker").datepicker({
+                    dateFormat: 'dd-mm-yy'
+                });
+
+                $("#to-date-picker").datepicker({
+                    dateFormat: 'dd-mm-yy'
+                });
+            });
+        });
+
+        function bindDataTable() {
+            $('#tblMakeMaster').DataTable({
+                deferRender: true,
+                scroller: true,
+                scrollX: true,
+                scrollY: true,
+                searching: true,
+                info: true,
+                paging: true,
+                dom: 'Bfrtip',
+                "bDestroy": true,
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: 'Copy'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: 'Csv',
+                        title: function () {
+                            return "Code Master List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Csv</span>',
+                        titleAttr: 'Csv'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        title: function () {
+                            return "Code Master List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Excel</span>',
+                        titleAttr: 'Excel'
+                    },
+                    {
+                        extend: "print",
+                        exportOptions: {
+                            orientation: 'landscape'
+                        },
+                        pageSize: 'A0',
+                        customize: function (win) {
+                            var last = null;
+                            var current = null;
+                            var bod = [];
+
+                            var css = '@@page { size: landscape; }',
+                                head = win.document.head || win.document.getElementsByTagName('head')[0],
+                                style = win.document.createElement('style');
+
+                            style.type = 'text/css';
+                            style.media = 'print';
+
+                            if (style.styleSheet) {
+                                style.styleSheet.cssText = css;
+                            }
+                            else {
+                                style.appendChild(win.document.createTextNode(css));
+                            }
+                            head.appendChild(style);
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: function () {
+                            return "Code Master List";
+                        },
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        text: '<span class="fa fa-file-pdf-o">PDF</span>',
+                        titleAttr: 'PDF'
+                    }
+                ]
+            });
+        }
+
+        function checkValidation() {
+            var isValid = true;
+            if ($("#txtCodeType").val() == "") {
+                $("#txtCodeType").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtCodeType").focus();
+                isValid = false;
+            } else {
+                $("#txtCodeType").attr('class', 'form-control');
+                $("#txtCodeType").focus();
+            }
+
+            if ($("#txtCode").val() == "") {
+                $("#txtCode").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtCode").focus();
+                isValid = false;
+            } else {
+                $("#txtCode").attr('class', 'form-control');
+                $("#txtCode").focus();
+            }
+
+            if ($("#txtDescription").val() == "") {
+                $("#txtDescription").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtDescription").focus();
+                isValid = false;
+            } else {
+                $("#txtDescription").attr('class', 'form-control');
+                $("#txtDescription").focus();
+            }
+            return isValid;
+        }
+
+        function checkValidationOnChange() {
+            $(function () {
+                $("#txtCodeType").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtCode").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtDescription").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+            });
+        }
+
+        function clearControls() {
+            $("#txtCodeType").val("");
+            $("#txtCode").val("");
+            $("#txtDescription").val("");
+        }
+
+        function getUserRoleList() {
+            if ($.fn.DataTable.isDataTable("#tblMakeMaster")) {
+                $('#tblMakeMaster tbody').empty();
+                $('#tblMakeMaster').DataTable().clear().destroy();
+            }
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "MakeMaster/getMakeMasterList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        $.each(data, function (i, item) {
+                            var sno = 0;
+                            var rows = "";
+                            var row = "";
+                            sno = sno + 1;
+                            if (fullAccess === "True" || viewAccess === "True") {
+                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewMakeMaster(\'' + item.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || updateAccess === "True") {
+                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="editMakeMaster(\'' + item.id + '\');"> Edit <i class="typcn typcn-edit btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || deleteAccess === "True") {
+                                deleteButton =  '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" onclick="deleteMakeMaster(\'' + item.id + '\');"> Delete <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                            }
+                            row = '<tr>' +
+                                '<td>' +
+                                '<div class="d-flex align-items-center">' +
+                                viewButton +
+                                updateButton +
+                                deleteButton +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + item.codeType + '</td>' +
+                                '<td>' + item.code + '</td>' +
+                                '<td>' + item.description + '</td>' +
+                                '<td>' + item.isActive + '</td>' +
+                                '<td>' + item.creationDate + '</td>' +
+                                '<td>' + item.createdByName + '</td>' +
+                                '<td>' + item.updateDate + '</td>' +
+                                '<td>' + item.updatedByName + '</td>' +
+                                '</tr>';
+                            rows = rows + row;
+                            $("#makeMasterBody").append(rows);
+                            rows = "";
+                            $("#tblMakeMaster").focus();
+                        });
+                        bindDataTable();
+                    } else {
+                        var row = '<tr>' +
+                            '<td colspan="9" style="text-align:center">No Data Found!!!</td>' +
+                            '</tr>';
+                        $("#makeMasterBody").html(row);
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+
+        function saveMakeMaster() {
+            var isValid = checkValidation();
+
+            if (isValid == true) {
+                if ($("#txtCodeType").val() != "" 
+                    && $("#txtCode").val() != "" 
+                    && $("#txtDescription").val() != "") {
+                    var codeType = $("#txtCodeType").val();
+                    var code = $("#txtCode").val();
+                    var description = $("#txtDescription").val()
+                    var isActive = true;
+                    $.ajax({
+                        cache: false,
+                        url: '@(utilityHelper.SiteUrl() + "MakeMaster/Save")',
+                        type: "POST",
+                        dataType: "json",
+                        data: { codeType : codeType,code: code,description: description, isActive: isActive },
+                        success: function (data) {
+                            if (data != null && data != undefined) {
+                                if (data.transactionMessage.status == '@((byte)TransactionStatus.Success)') {
+                                    console.log(data);
+                                    $.confirm({
+                                        title: 'Save Code Master!',
+                                        content: "Code Master has been saved successfully!",
+                                        type: 'green',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-green',
+                                                action: function () {
+                                                    //getUserList();
+                                                    //clearControls();
+                                                    window.location.href = '@(utilityHelper.SiteUrl() + "MakeMaster/Index")';
+                                                }
+                                            },
+                                        }
+                                    });
+                                } else if (data.transactionMessage.status == '@((byte)TransactionStatus.Failed)') {
+                                    $.confirm({
+                                        title: 'Code Master Already Exists!',
+                                        content: data.transactionMessage.message,
+                                        icon: 'fa fa-warning',
+                                        type: 'red',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-red',
+                                            },
+                                        }
+                                    });
+                                    $("#divMakeMaster").hide();
+                                }
+                            } else {
+                                console.log(data);
+                                //clearControls();
+                                $.confirm({
+                                    title: 'Error Occoured!',
+                                    content: data.transactionMessage.message,
+                                    icon: 'fa fa-warning',
+                                    type: 'red',
+                                    buttons: {
+                                        omg: {
+                                            text: 'OK',
+                                            btnClass: 'btn-red',
+                                        },
+                                    }
+                                });
+                                $("#divMakeMaster").hide();
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+}

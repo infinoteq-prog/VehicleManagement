@@ -1,0 +1,768 @@
+﻿@model VMS.ViewModel.VMUser
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+
+@if (userAccess.AddUserFullAccess == true || userAccess.AddUserUpdateAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Update User</h4>
+                    <div id="divSaveRateMaster">
+                        <form id="frmUser" name="frmUser" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <input id="hdnUserID" name="hdnUserID" type="hidden">
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <label id="lblMandatoryMessage" class="reqFields">@SiteConstants.ReqFieldMessage</label>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="ddlRole"> User Role: <span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" id="ddlRole" name="ddlRole" onchange="setDropDownStyle(this);"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtUserId">User Id: <span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.UserId, new { @class = "form-control", id = "txtUserId" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPassword">Password: <span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            @Html.PasswordFor(x => x.Password, new { @class = "form-control", id = "txtPassword" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtUserName">User Name: <span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.UserName, new { @class = "form-control", id = "txtUserName" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtEmail">Email: <span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.Email, new { @class = "form-control", id = "txtEmail" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPhone">Phone Number: <span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control", id = "txtPhone" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="from-date-picker">From Date: <span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="from-date-picker" placeholder="Select From Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="to-date-picker">To Date: <span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="to-date-picker" placeholder="Select To Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active</label>
+                                        <div class="col-sm-8">
+                                            @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", @name = "Without Seal", id = "chkIsActive" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12"></div>
+                            </div>
+                           @*  @if (userAccess.AddUserFullAccess == true || userAccess.AddUserUpdateAccess == true)
+                            { *@
+                                <div class="row rowHeight" style="text-align:center;">
+                                    <div class="col-md-12">
+                                        <button type="button" class="btn btn-primary mr-2" onclick="updateUser();">Update</button>
+                                        <button type="button" class="btn btn-light" onclick="clearControls();">Clear</button>
+                                    </div>
+                                </div>
+                          @*   } *@
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                    @* @if (userAccess.AddUserFullAccess == true || userAccess.AddUserEntryViewAccess == true)
+                    { *@
+                        <div id="divUser">
+                            <div class="table-responsive pt-3">
+                                <table id="tblUser" class="table table-striped project-orders-table nowrap hover order-column row-border stripe display" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Actions</th>
+                                            <th>Role</th>
+                                            <th>User Id</th>
+                                            <th>User Name</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Is Active</th>
+                                            <th>Creation Date</th>
+                                            <th>Created By</th>
+                                            <th>Update Date</th>
+                                            <th>Updatd By</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="userBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <input id="hdnSaveRate" name="hdnTotalBasicRate" type="hidden">
+                        </div>
+                   @*  } *@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserFullAccess';
+        // var addAccess = '@ViewBag.AddUserAddAccess';
+        // var viewAccess = '@ViewBag.AddUserEntryViewAccess';
+        // var updateAccess = '@ViewBag.AddUserUpdateAccess';
+        // var deleteAccess = '@ViewBag.AddUserDeleteAccess';
+        var fullAccess = 'True';
+        var addAccess = 'True';
+        var viewAccess = 'True';
+        var updateAccess = 'True';
+        var deleteAccess = 'True';
+        var viewButton = "";
+        var updateButton = "";
+        var deleteButton = "";
+        $(document).ready(function () {
+            setSideMenu("users-list");
+            if (fullAccess === "True" || viewAccess === "True") {
+                checkValidationOnChange();
+                getAllUserRole();
+                //getUserList();
+                var userID = GetParameterValues('userID');
+                getUserbyID(userID)
+            }
+        }); 
+
+        function bindDataTable() {
+            $('#tblUser').DataTable({
+                deferRender: true,
+                scroller: true,
+                scrollX: true,
+                scrollY: true,
+                searching: true,
+                info: true,
+                paging: true,
+                dom: 'Bfrtip',
+                "bDestroy": true,
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: 'Copy'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: 'Csv',
+                        title: function () {
+                            return "User List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Csv</span>',
+                        titleAttr: 'Csv'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        title: function () {
+                            return "User List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Excel</span>',
+                        titleAttr: 'Excel'
+                    },
+                    {
+                        extend: "print",
+                        exportOptions: {
+                            orientation: 'landscape'
+                        },
+                        pageSize: 'A0',
+                        customize: function (win) {
+                            var last = null;
+                            var current = null;
+                            var bod = [];
+
+                            var css = '@@page { size: landscape; }',
+                                head = win.document.head || win.document.getElementsByTagName('head')[0],
+                                style = win.document.createElement('style');
+
+                            style.type = 'text/css';
+                            style.media = 'print';
+
+                            if (style.styleSheet) {
+                                style.styleSheet.cssText = css;
+                            }
+                            else {
+                                style.appendChild(win.document.createTextNode(css));
+                            }
+                            head.appendChild(style);
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: function () {
+                            return "User List";
+                        },
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        text: '<span class="fa fa-file-pdf-o">PDF</span>',
+                        titleAttr: 'PDF'
+                    }
+                ]
+            });
+        }
+
+        function checkValidation() {
+            var regex = "";
+            var isValid = true;
+            if ($('#ddlRole option:selected').val() == "0") {
+                $("#ddlRole").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlRole").focus();
+                isValid = false;
+            } else {
+                $("#ddlRole").attr('class', 'form-control');
+                $("#ddlRole").focus();
+            }
+
+            if ($("#from-date-picker").val() == "") {
+                $("#from-date-picker").attr('class', 'form-control vaidationTextBoxError');
+                $("#from-date-picker").focus();
+                isValid = false;
+            } else {
+                $("#from-date-picker").attr('class', 'form-control');
+                $("#from-date-picker").focus();
+            }
+
+            // if ($("#to-date-picker").val() == "") {
+            //     $("#to-date-picker").attr('class', 'form-control vaidationTextBoxError');
+            //     $("#to-date-picker").focus();
+            //     isValid = false;
+            // } else {
+            //     $("#to-date-picker").attr('class', 'form-control');
+            //     $("#to-date-picker").focus();
+            // }
+
+
+            if ($("#txtUserId").val() == "") {
+                $("#txtUserId").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtUserId").focus();
+                isValid = false;
+            } else {
+                $("#txtUserId").attr('class', 'form-control');
+                $("#txtUserId").focus();
+            }
+
+            if ($("#txtUserName").val() == "") {
+                $("#txtUserName").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtUserName").focus();
+                isValid = false;
+            } else {
+                $("#txtUserName").attr('class', 'form-control');
+                $("#txtUserName").focus();
+            }
+
+            if ($("#txtPassword").val() == "") {
+                $("#txtPassword").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtPassword").focus();
+                isValid = false;
+            } else {
+                $("#txtPassword").attr('class', 'form-control');
+                $("#txtPassword").focus();
+            }
+
+            if ($("#txtEmail").val() == "") {
+                $("#txtEmail").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtEmail").focus();
+                isValid = false;
+            } else {
+                $("#txtEmail").attr('class', 'form-control');
+                $("#txtEmail").focus();
+            }
+
+            if ($("#txtPhone").val() == "") {
+                $("#txtPhone").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtPhone").focus();
+                isValid = false;
+            } else {
+                $("#txtPhone").attr('class', 'form-control');
+                $("#txtPhone").focus();
+            }
+
+            //Validating Email
+            var email = $('#txtEmail').val();
+            regex = /^([a-zA-Z0-9_\.\-\+])+\@@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            if (!regex.test(email)) {
+                $("#txtEmail").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtEmail").focus();
+                isValid = false;
+            }
+            else {
+                $("#txtEmail").attr('class', 'form-control');
+                $("#txtEmail").focus();
+            }
+
+            //Validating Phone Number
+            regex = /^(0|91)?[6-9][0-9]{9}$/;
+            if (!regex.test($('#txtPhone').val())) {
+                $("#txtPhone").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtPhone").focus();
+                isValid = false;
+            } else {
+                $("#txtPhone").attr('class', 'form-control');
+                $("#txtPhone").focus();
+            }
+
+            return isValid;
+        }
+
+        function checkValidationOnChange() {
+            $(function () {
+                $("#ddlRole").change(function () {
+                    //alert( $('option:selected', this).text() == "0" );
+                    if ($('option:selected', this).val() == "0") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#from-date-picker").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                // $("#to-date-picker").on("input", function () {
+                //     if ($(this).val() == "") {
+                //         $(this).attr('class', 'form-control vaidationTextBoxError');
+                //         $(this).focus();
+                //     } else {
+                //         $(this).attr('class', 'form-control');
+                //         $(this).focus();
+                //     }
+                // });
+
+                $("#txtUserId").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtUserName").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtPassword").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtEmail").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $('#txtEmail').change(function () {
+                    var email = $(this).val();
+                    const regex = /^([a-zA-Z0-9_\.\-\+])+\@@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+                    if (!regex.test(email)) {
+                        $("#txtEmail").attr('class', 'form-control vaidationTextBoxError');
+                        $("#txtEmail").focus();
+                        return false;
+                    }
+                    else {
+                        $("#txtEmail").attr('class', 'form-control');
+                        $("#txtEmail").focus();
+                        return true;
+                    }
+                });
+
+                $("#txtPhone").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                // $('#txtPhone').change(function () {
+                //     var regex = /^(0|91)?[6-9][0-9]{9}$/;
+                //     if (!regex.test($(this).val())) {
+                //         $("#txtPhone").attr('class', 'form-control vaidationTextBoxError');
+                //         $("#txtPhone").focus();
+                //         return false;
+                //     } else {
+                //         $("#txtPhone").attr('class', 'form-control');
+                //         $("#txtPhone").focus();
+                //         return true;
+                //     }
+                // });
+
+                $('.numberonly').keypress(function (e) {
+                    var charCode = (e.which) ? e.which : event.keyCode
+                    if (String.fromCharCode(charCode).match(/[^0-9]/g))
+                        return false;
+                });
+
+                $('#txtPhone').keypress(function (e) {
+                    var charCode = (e.which) ? e.which : event.keyCode
+                    if (String.fromCharCode(charCode).match(/[^0-9]/g))
+                        return false;
+                });
+            });
+        }
+
+        function clearControls() {
+            $("#ddlRole").prop("selectedIndex", 0).val();
+            $("#from-date-picker").val("");
+            $("#to-date-picker").val("");
+            $("#txtUserName").val("");
+            $("#txtPassword").val("");
+            $("#txtEmail").val("");
+            $("#txtPhone").val("");
+            $("#txtUserId").val("");
+            $("#chkIsActive").prop("checked", false);
+        }
+
+        function getUserbyID(userID) {
+            if ($.fn.DataTable.isDataTable("#tblUser")) {
+                $('#tblUser tbody').empty();
+                $('#tblUser').DataTable().clear().destroy();
+            }
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "User/getUserbyID")',
+                type: "GET",
+                data: { userID: userID },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        var sno = 0;
+                        var rows = "";
+                        var row = "";
+                        sno = sno + 1;
+                        if (fullAccess === "True" || viewAccess === "True") {
+                            viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewUser(\'' + data.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                        }
+
+                        if (fullAccess === "True" || updateAccess === "True") {
+                            updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="editUser(\'' + data.id + '\');"> Edit <i class="typcn typcn-edit btn-icon-append"></i></button> ';
+                        }
+
+                        if (fullAccess === "True" || deleteAccess === "True") {
+                            deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" onclick="deleteUser(\'' + data.id + '\');"> Delete <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                        }
+                        row = '<tr>' +
+                            '<td>' +
+                            '<div class="d-flex align-items-center">' +
+                            viewButton +
+                            updateButton +
+                            deleteButton +
+                            '</div>' +
+                            '</td>' +
+                            '<td>' + data.roleName + '</td>' +
+                            '<td>' + data.userId + '</td>' +
+                            '<td>' + data.userName + '</td>' +
+                            '<td>' + data.email + '</td>' +
+                            '<td>' + data.phoneNumber + '</td>' +
+                            '<td>' + data.startDateString + '</td>' +
+                            '<td>' + data.endDateString + '</td>' +
+                            '<td>' + data.isActive + '</td>' +
+                            '<td>' + data.createDate + '</td>' +
+                            '<td>' + data.createdBy + '</td>' +
+                            '<td>' + data.updateDate + '</td>' +
+                            '<td>' + data.updateBy + '</td>' +
+                            '</tr>';
+
+                        //Setting User Details to Page Controls
+                        // $('#ddlRole option').map(function () {
+                        //     if ($(this).text() == data.roleName) return this;
+                        // }).attr('selected', 'selected');
+
+                        getAllUserRole(data.roleName);
+
+                        // $("#ddlRole option").prop('selected', false).filter(function() {
+                        //     return $(this).text() === data.roleName;
+                        // }).prop('selected', true);
+
+                        $('#txtFirstName').val(data.firstName);
+                        $('#from-date-picker').val(data.startDateString);
+                        $('#to-date-picker').val(data.endDateString);
+                        
+                        $('#txtUserId').val(data.userId);
+                        $('#txtEmail').val(data.email);
+                        $('#txtPhone').val(data.phoneNumber);
+                        $("#chkIsActive").prop('checked', data.isActive);
+                        $('#hdnUserID').val(data.id);
+
+                        rows = rows + row;
+                        $("#userBody").html(rows);
+                        rows = "";
+                        $("#tblUser").focus();
+
+                        bindDataTable(); 
+                    } else {
+                        var row = '<tr>' +
+                            '<td colspan="13" style="text-align:center">No Data Found!!!</td>' +
+                            '</tr>';
+                        $("#userBody").html(row);
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+
+        function getUserList() {
+            if ($.fn.DataTable.isDataTable("#tblUser")) {
+                $('#tblUser tbody').empty();
+                $('#tblUser').DataTable().clear().destroy();
+            }
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "User/getUserList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        $.each(data, function (i, item) {
+                            var sno = 0;
+                            var rows = "";
+                            var row = "";
+                            sno = sno + 1;
+                            if (fullAccess === "True" || viewAccess === "True") {
+                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewUser(\'' + item.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || updateAccess === "True") {
+                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="editUser(\'' + item.id + '\');"> Edit <i class="typcn typcn-edit btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || deleteAccess === "True") {
+                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" onclick="deleteUser(\'' + item.id + '\');"> Delete <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                            }
+                            row = '<tr>' +
+                                '<td>' +
+                                '<div class="d-flex align-items-center">' +
+                                viewButton +
+                                updateButton +
+                                deleteButton +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + item.roleName + '</td>' +
+                                '<td>' + item.userId + '</td>' +
+                                '<td>' + item.userName + '</td>' +
+                                '<td>' + item.email + '</td>' +
+                                '<td>' + item.phoneNumber + '</td>' +
+                                '<td>' + item.startDateString + '</td>' +
+                                '<td>' + item.endDateString + '</td>' +
+                                '<td>' + item.isActive + '</td>' +
+                                '<td>' + item.createDate + '</td>' +
+                                '<td>' + item.createdBy + '</td>' +
+                                '<td>' + item.updateDate + '</td>' +
+                                '<td>' + item.updateBy + '</td>' +
+                                '</tr>';
+                            rows = rows + row;
+                            $("#userBody").append(rows);
+                            rows = "";
+                            $("#tblUser").focus();
+                        });
+                        bindDataTable();
+                    } else {
+                        var row = '<tr>' +
+                            '<td colspan="13" style="text-align:center">No Data Found!!!</td>' +
+                            '</tr>';
+                        $("#userBody").html(row);
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+
+        function updateUser() {
+            var isValid = checkValidation();
+
+            if (isValid == true) {
+                if ($('#ddlRole option:selected').val() != "0"
+                    && $("#txtFirstName").val() != ""
+                    && $("#txtLastName").val() != ""
+                    && $("#txtUserName").val() != ""
+                    && $("#txtPassword").val() != ""
+                    && $("#txtEmail").val() != ""
+                    && $("#txtPhone").val() != ""
+                    && $("#txtUserId").val() != "") {
+
+                    var id = $('#hdnUserID').val();
+                    var role = $('#ddlRole option:selected').val();
+                    var userId = $("#txtUserId").val();
+                    //var stDate = $("#from-date-picker").val();
+                    //var enDate = $("#to-date-picker").val();
+                    var userName = $("#txtUserName").val();
+                    var password = $("#txtPassword").val();
+                    var email = $("#txtEmail").val();
+                    var phone = $("#txtPhone").val();
+                    var isActive = $("#chkIsActive").is(":checked");
+                    // var fDate = stDate.split("-").reverse().join("-");
+                    // var tDate = enDate.split("-").reverse().join("-");
+
+                    var startDate = $("#from-date-picker").val();
+                    var endDate = $("#to-date-picker").val();
+
+                    //var fromDate = startDate.split("-").reverse().join("-");
+                    //var toDate = endDate.split("-").reverse().join("-");
+
+                    var fDate = startDate.split("-").reverse().join("-");
+                    var tDate = "";
+                    if(endDate != "") {
+                       tDate = endDate.split("-").reverse().join("-");
+                    }
+
+                    $.ajax({
+                        cache: false,
+                        url: '@(utilityHelper.SiteUrl() + "User/Update")',
+                        type: "POST",
+                        dataType: "json",
+                        data: { id: id, role: role, startDate: fDate, endDate: tDate, userName: userName, userId: userId, password: password, email: email, phone: phone, isActive: isActive },
+                        success: function (data) {
+                            if (data != null && data != undefined) {
+                                if (data.transactionMessage.status == '@((byte)TransactionStatus.Success)') {
+                                    console.log(data);
+                                    $.confirm({
+                                        title: 'User Saved Successfully!',
+                                        content: "User Detail has been updated successfully.",
+                                        type: 'green',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-green',
+                                                action: function () {
+                                                    window.location.href = '@(utilityHelper.SiteUrl() + "User/Update?userID=")' + $("#hdnUserID").val();
+                                                }
+                                            },
+                                        }
+                                    });
+                                } else if (data.transactionMessage.status == '@((byte)TransactionStatus.Failed)') {
+                                    $.confirm({
+                                        title: 'User Already Exists!',
+                                        content: data.transactionMessage.message,
+                                        icon: 'fa fa-warning',
+                                        type: 'red',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-red',
+                                            },
+                                        }
+                                    });
+                                    $("#divUser").hide();
+                                }
+                            } else {
+                                console.log(data);
+                                //clearControls();
+                                $.confirm({
+                                    title: 'Error Occoured!',
+                                    content: data.transactionMessage.message,
+                                    icon: 'fa fa-warning',
+                                    type: 'red',
+                                    buttons: {
+                                        omg: {
+                                            text: 'OK',
+                                            btnClass: 'btn-red',
+                                        },
+                                    }
+                                });
+                                $("#divUser").hide();
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+}

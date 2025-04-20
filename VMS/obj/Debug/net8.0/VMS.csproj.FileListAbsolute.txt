@@ -1,0 +1,364 @@
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\VMS.csproj.AssemblyReference.cache
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\VMS.GeneratedMSBuildEditorConfig.editorconfig
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\VMS.AssemblyInfoInputs.cache
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\VMS.AssemblyInfo.cs
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\VMS.csproj.CoreCompileInputs.cache
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\VMS.MvcApplicationPartsAssemblyInfo.cache
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\VMS.RazorAssemblyInfo.cache
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\VMS.RazorAssemblyInfo.cs
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\appsettings.Development.json
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\appsettings.json
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\VMS.staticwebassets.runtime.json
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\VMS.staticwebassets.endpoints.json
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\VMS.exe
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\VMS.deps.json
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\VMS.runtimeconfig.json
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\VMS.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\VMS.pdb
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Azure.Core.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Azure.Identity.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ClosedXML.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ClosedXML.Parser.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\DocumentFormat.OpenXml.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\DocumentFormat.OpenXml.Framework.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ExcelNumberFormat.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Humanizer.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\itextsharp.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\itextsharp.xmlworker.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.Build.Locator.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.Identity.Client.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Mono.TextTemplating.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\Newtonsoft.Json.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\RBush.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\SixLabors.Fonts.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.ClientModel.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.CodeDom.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Composition.Convention.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Composition.Hosting.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Composition.Runtime.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Composition.TypedParts.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Data.OleDb.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Diagnostics.EventLog.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Formats.Asn1.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.IO.Packaging.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.IO.Pipelines.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Memory.Data.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Runtime.Caching.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Text.Encodings.Web.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\System.Text.Json.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Data.OleDb.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.PerformanceCounter.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\scopedcss\Views\Shared\_LayoutFull.cshtml.rz.scp.css
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\scopedcss\Views\Shared\_LoginLayout.cshtml.rz.scp.css
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\scopedcss\bundle\VMS.styles.css
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\scopedcss\projectbundle\VMS.bundle.scp.css
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\staticwebassets.build.json
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\staticwebassets.development.json
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\staticwebassets\msbuild.VMS.Microsoft.AspNetCore.StaticWebAssets.props
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\staticwebassets\msbuild.VMS.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\staticwebassets\msbuild.build.VMS.props
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.VMS.props
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.VMS.props
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\staticwebassets.pack.json
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\VMS.csproj.Up2Date
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\VMS.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\refint\VMS.dll
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\VMS.pdb
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\VMS.genruntimeconfig.cache
+F:\.NET PROJ\SK Goswami Sir Project\VMS\Code\VMS\VMS\obj\Debug\net8.0\ref\VMS.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\appsettings.Development.json
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\appsettings.json
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\VMS.staticwebassets.runtime.json
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\VMS.exe
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\VMS.deps.json
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\VMS.runtimeconfig.json
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\VMS.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\VMS.pdb
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Azure.Core.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Azure.Identity.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ClosedXML.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ClosedXML.Parser.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\DocumentFormat.OpenXml.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\DocumentFormat.OpenXml.Framework.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ExcelNumberFormat.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Humanizer.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\itextsharp.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\itextsharp.xmlworker.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.Build.Locator.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.Identity.Client.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\RBush.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\SixLabors.Fonts.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.ClientModel.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.CodeDom.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Composition.Convention.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Composition.Hosting.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Composition.Runtime.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Composition.TypedParts.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Data.OleDb.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Diagnostics.EventLog.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Formats.Asn1.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.IO.Packaging.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.IO.Pipelines.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Memory.Data.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Runtime.Caching.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Text.Encodings.Web.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\System.Text.Json.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Data.OleDb.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.PerformanceCounter.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\VMS.csproj.AssemblyReference.cache
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\VMS.GeneratedMSBuildEditorConfig.editorconfig
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\VMS.AssemblyInfoInputs.cache
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\VMS.AssemblyInfo.cs
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\VMS.csproj.CoreCompileInputs.cache
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\VMS.MvcApplicationPartsAssemblyInfo.cache
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\VMS.RazorAssemblyInfo.cache
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\VMS.RazorAssemblyInfo.cs
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\staticwebassets.build.json
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\staticwebassets.development.json
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\staticwebassets\msbuild.VMS.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\staticwebassets\msbuild.build.VMS.props
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.VMS.props
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.VMS.props
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\scopedcss\Views\Shared\_LayoutFull.cshtml.rz.scp.css
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\scopedcss\Views\Shared\_LoginLayout.cshtml.rz.scp.css
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\scopedcss\bundle\VMS.styles.css
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\scopedcss\projectbundle\VMS.bundle.scp.css
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\VMS.csproj.Up2Date
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\VMS.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\refint\VMS.dll
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\VMS.pdb
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\VMS.genruntimeconfig.cache
+C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\obj\Debug\net8.0\ref\VMS.dll

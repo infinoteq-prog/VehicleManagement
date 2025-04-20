@@ -1,0 +1,477 @@
+﻿@model VMS.ViewModel.VMExpenseMaster
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Update Expense Master</h4>
+                    <div id="divUpdateUserRole">
+                        <form id="frmUserRole" name="frmUserRole" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <input id="hdnExpenseMasterId" name="hdnExpenseMasterId" type="hidden">
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <label id="lblMandatoryMessage" class="reqFields">@utilityHelper.reqFieldMessage</label>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="ddlExpenseMaster">Expense Type: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" id="ddlExpenseMaster" name="ddlExpenseMaster" onchange="setDropDownStyle(this);"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtExpCode">Expense Code: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ExpCode, new { @class = "form-control", id = "txtExpCode", @maxlength = "100" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtExpOther">Expense Other: </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ExpOther, new { @class = "form-control", id = "txtExpOther", @maxlength = "100" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtExpDescription">Expense Description: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ExpDescription, new { @class = "form-control", id = "txtExpDescription", @maxlength = "200" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active:</label>
+                                        <div class="col-sm-8">
+                                            @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", id = "chkIsActive" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12"></div>
+                            </div>
+                            @*  @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleUpdateAccess == true)
+                            { *@
+                            <div class="row rowHeight" style="text-align:center;">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-primary mr-2" onclick="updateExpenseMaster();">Update</button>
+                                    <button type="button" class="btn btn-light" onclick="clearControls();">Clear</button>
+                                </div>
+                            </div>
+                            @*  } *@
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                    @* @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+                        { *@
+                    <div id="divExpenseMaster">
+                        <div class="table-responsive pt-3">
+                            <table id="tblExpenseMaster" class="table table-striped project-orders-table nowrap hover order-column row-border stripe display" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Actions</th>
+                                        <th>Expense Type</th>
+                                        <th>Expense Code</th>
+                                        <th>Expense Other</th>
+                                        <th>Expense Description</th>
+                                        <th>Is Active</th>
+                                        <th>Creation Date</th>
+                                        <th>Created By</th>
+                                        <th>Update Date</th>
+                                        <th>Updatd By</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ExpenseMasterBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @* } *@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var addAccess = '@ViewBag.AddUserRoleAddAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        // var updateAccess = '@ViewBag.AddUserRoleUpdateAccess';
+        // var deleteAccess = '@ViewBag.AddUserRoleDeleteAccess';
+        var fullAccess = 'True';
+        var addAccess = 'True';
+        var viewAccess = 'True';
+        var updateAccess = 'True';
+        var deleteAccess = 'True';
+        var viewButton = "";
+        var updateButton = "";
+        var deleteButton = "";
+        $(document).ready(function () {
+            setSideMenu("expense-master");
+            if (fullAccess === "True" || viewAccess === "True") {
+                clearControls();
+                getExpenseMaster();
+                checkValidationOnChange();
+                var expenseMasterId = GetParameterValues('expenseMasterId');
+                getExpenseMasterById(expenseMasterId);
+                $(function () {
+                    $("#from-date-picker").datepicker({
+                        dateFormat: 'dd-mm-yy'
+                    });
+
+                    $("#to-date-picker").datepicker({
+                        dateFormat: 'dd-mm-yy'
+                    });
+                });
+            }
+        });
+
+        function bindDataTable() {
+            $('#tblExpenseMaster').DataTable({
+                deferRender: true,
+                scroller: true,
+                scrollX: true,
+                scrollY: true,
+                searching: true,
+                info: true,
+                paging: true,
+                dom: 'Bfrtip',
+                "bDestroy": true,
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: 'Copy'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: 'Csv',
+                        title: function () {
+                            return "Expense Master List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Csv</span>',
+                        titleAttr: 'Csv'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        title: function () {
+                            return "Expense Master List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Excel</span>',
+                        titleAttr: 'Excel'
+                    },
+                    {
+                        extend: "print",
+                        exportOptions: {
+                            orientation: 'landscape'
+                        },
+                        pageSize: 'A0',
+                        customize: function (win) {
+                            var last = null;
+                            var current = null;
+                            var bod = [];
+
+                            var css = '@@page { size: landscape; }',
+                                head = win.document.head || win.document.getElementsByTagName('head')[0],
+                                style = win.document.createElement('style');
+
+                            style.type = 'text/css';
+                            style.media = 'print';
+
+                            if (style.styleSheet) {
+                                style.styleSheet.cssText = css;
+                            }
+                            else {
+                                style.appendChild(win.document.createTextNode(css));
+                            }
+                            head.appendChild(style);
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: function () {
+                            return "Expense Master List";
+                        },
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        text: '<span class="fa fa-file-pdf-o">PDF</span>',
+                        titleAttr: 'PDF'
+                    }
+                ]
+            });
+        }
+
+        function checkValidation() {
+            var isValid = true;
+
+            if ($('#ddlExpenseMaster option:selected').val() == "0") {
+                $("#ddlExpenseMaster").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlExpenseMaster").focus();
+                isValid = false;
+            } else {
+                $("#ddlExpenseMaster").attr('class', 'form-control');
+                $("#ddlExpenseMaster").focus();
+            }
+
+            if ($("#txtExpCode").val() == "") {
+                $("#txtExpCode").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtExpCode").focus();
+                isValid = false;
+            } else {
+                $("#txtExpCode").attr('class', 'form-control');
+                $("#txtExpCode").focus();
+            }
+
+            // if ($("#txtExpOther").val() == "") {
+            //     $("#txtExpOther").attr('class', 'form-control vaidationTextBoxError');
+            //     $("#txtExpOther").focus();
+            //     isValid = false;
+            // } else {
+            //     $("#txtExpOther").attr('class', 'form-control');
+            //     $("#txtExpOther").focus();
+            // }
+
+            if ($("#txtExpDescription").val() == "") {
+                $("#txtExpDescription").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtExpDescription").focus();
+                isValid = false;
+            } else {
+                $("#txtExpDescription").attr('class', 'form-control');
+                $("#txtExpDescription").focus();
+            }
+            return isValid;
+        }
+
+        function checkValidationOnChange() {
+            $(function () {
+                $("#ddlExpenseMaster").change(function () {
+                    if ($('option:selected', this).val() == "0") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtExpCode").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                // $("#txtExpOther").on("input", function () {
+                //     if ($(this).val() == "") {
+                //         $(this).attr('class', 'form-control vaidationTextBoxError');
+                //         $(this).focus();
+                //     } else {
+                //         $(this).attr('class', 'form-control');
+                //         $(this).focus();
+                //     }
+                // });
+
+                $("#txtExpDescription").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+            });
+        }
+
+        function clearControls() {
+            $("#ddlExpenseMaster").prop("selectedIndex", 0).val();
+            $("#txtExpCode").val("");
+            $("#txtExpOther").val("");
+            $("#txtExpDescription").val("");
+            $("#chkIsActive").prop("checked", false);
+        }
+
+        function updateExpenseMaster() {
+            var isValid = checkValidation();
+
+            if (isValid == true) {
+               if ($('#ddlExpenseMaster option:selected').val() != "0"
+                    && $("#txtExpCode").val() != ""
+                    && $("#txtExpDescription").val() != "") {
+                    var expCode = $("#txtExpCode").val();
+                    var expType = $('#ddlExpenseMaster option:selected').val();
+                    var expOther = $("#txtExpOther").val();
+                    var expDescription = $("#txtExpDescription").val();
+                    var isActive = $("#chkIsActive").is(":checked");
+                    var id = $('#hdnExpenseMasterId').val();
+                    $.ajax({
+                        cache: false,
+                        url: '@(utilityHelper.SiteUrl() + "ExpenseMaster/Update")',
+                        type: "POST",
+                        dataType: "json",
+                        data: { id: id, expCode : expCode, expType: expType, expOther: expOther, expDescription: expDescription, isActive: isActive },
+                        success: function (data) {
+                            if (data != null && data != undefined) {
+                                if (data.transactionMessage.status == '@((byte)TransactionStatus.Success)') {
+                                    console.log(data);
+                                    $.confirm({
+                                        title: 'Update Expense Master!',
+                                        content: "Expense Master has been updated successfully!",
+                                        type: 'green',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-green',
+                                                action: function () {
+                                                    clearControls();
+                                                    window.location.href = '@(utilityHelper.SiteUrl() + "ExpenseMaster/Update?expenseMasterId=")' + $("#hdnExpenseMasterId").val();
+                                                }
+                                            },
+                                        }
+                                    });
+                                } else if (data.transactionMessage.status == '@((byte)TransactionStatus.Failed)') {
+                                    $.confirm({
+                                        title: 'Expense Master Already Exists!',
+                                        content: data.transactionMessage.message,
+                                        icon: 'fa fa-warning',
+                                        type: 'red',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-red',
+                                            },
+                                        }
+                                    });
+                                    $("#divExpenseMaster").hide();
+                                }
+                            } else {
+                                console.log(data);
+                                //clearControls();
+                                $.confirm({
+                                    title: 'Error Occoured!',
+                                    content: data.transactionMessage.message,
+                                    icon: 'fa fa-warning',
+                                    type: 'red',
+                                    buttons: {
+                                        omg: {
+                                            text: 'OK',
+                                            btnClass: 'btn-red',
+                                        },
+                                    }
+                                });
+                                $("#divExpenseMaster").hide();
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        function getExpenseMasterById(expenseMasterId) {
+            if ($.fn.DataTable.isDataTable("#tblExpenseMaster")) {
+                $('#tblExpenseMaster tbody').empty();
+                $('#tblExpenseMaster').DataTable().clear().destroy();
+            }
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "ExpenseMaster/getExpenseMasterById")',
+                type: "GET",
+                data: { expenseMasterId: expenseMasterId },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        var sno = 0;
+                        var rows = "";
+                        var row = "";
+                        sno = sno + 1;
+                        if (fullAccess === "True" || viewAccess === "True") {
+                            viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewExpenseMaster(\'' + data.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                        }
+
+                        if (fullAccess === "True" || updateAccess === "True") {
+                            updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="editExpenseMaster(\'' + data.id + '\');"> Edit <i class="typcn typcn-edit btn-icon-append"></i></button> ';
+                        }
+
+                        if (fullAccess === "True" || deleteAccess === "True") {
+                            deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" onclick="deleteExpenseMaster(\'' + data.id + '\');"> Delete <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                        }
+                        row = '<tr>' +
+                            '<td>' +
+                            '<div class="d-flex align-items-center">' +
+                            viewButton +
+                            updateButton +
+                            deleteButton +
+                            '</div>' +
+                            '</td>' +
+                            '<td>' + data.expTypeName + '</td>' +
+                            '<td>' + data.expCode + '</td>' +
+                            '<td>' + data.expOther + '</td>' +
+                            '<td>' + data.expDescription + '</td>' +
+                            '<td>' + data.isActive + '</td>' +
+                            '<td>' + data.creationDate + '</td>' +
+                            '<td>' + data.createdByName + '</td>' +
+                            '<td>' + data.updateDate + '</td>' +
+                            '<td>' + data.updatedByName + '</td>' +
+                            '</tr>';
+
+                        //Setting Expense Master Details to Page Controls
+                        $('#txtExpCode').val(data.expCode);
+
+                        getExpenseMasterWithSelect(data.expType);
+
+                        $('#txtExpOther').val(data.expOther);
+                        $('#txtExpDescription').val(data.expDescription);
+                        $("#chkIsActive").prop('checked', data.isActive);
+                        $('#hdnExpenseMasterId').val(data.id);
+
+                        rows = rows + row;
+                        $("#ExpenseMasterBody").html(rows);
+                        rows = "";
+                        $("#tblExpenseMaster").focus();
+
+                        bindDataTable();
+                    } else {
+                        var row = '<tr>' +
+                            '<td colspan="10" style="text-align:center">No Data Found!!!</td>' +
+                            '</tr>';
+                        $("#ExpenseMasterBody").html(row);
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+    </script>
+}

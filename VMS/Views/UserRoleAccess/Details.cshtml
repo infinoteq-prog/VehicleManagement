@@ -1,0 +1,165 @@
+﻿@model VMS.ViewModel.VMUserRoleAccess
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+@if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+{ *@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">User Role Access Details</h4>
+                    <div>
+                        <form id="frmUserRoleAccess" name="frmUserRoleAccess" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <input id="hdnUserRoleAccessId" name="hdnUserRoleAccessId" type="hidden">
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtUserName"> User Name:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.UserName, new { @class = "form-control", id = "txtUserName" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRoleName">Role Name:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.RoleName, new { @class = "form-control", id = "txtRoleName" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtFunctionMasterName">Function Master Name:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.FunctionMasterName, new { @class = "form-control", id = "txtFunctionMasterName" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtFunctionName"> Function Name:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.FunctionName, new { @class = "form-control", id = "txtFunctionName" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="from-date-picker">From Date :</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="from-date-picker" placeholder="Select From Date" class="form-control" onchange="setTextboxStyle(this);" readonly=" readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="to-date-picker">To Date :</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="to-date-picker" placeholder="Select To Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active:</label>
+                                        <div class="col-sm-8">
+                                            @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", id = "chkIsActive" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"></div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        var fullAccess = 'True';
+        var viewAccess = 'True';
+
+        $(document).ready(function () {
+            setSideMenu("users-access");
+            if (fullAccess === "True" || viewAccess === "True") {
+                makeFieldsReadOnly();
+                var userRoleAccessId = GetParameterValues('userRoleAccessId');
+                getUserRoleAccessbyId(userRoleAccessId);
+            }
+        });
+
+        function makeFieldsReadOnly() {
+            $("#txtUserName").attr("readonly", true);
+            $("#txtRoleName").attr("readonly", true);
+            $("#txtFunctionMasterName").attr("readonly", true);
+            $("#txtFunctionName").attr("readonly", true);
+            $("#from-date-picker").attr("readonly", true);
+            $("#to-date-picker").attr("readonly", true);
+            $("#chkIsActive").attr("disabled", true);
+        }
+
+        function getUserRoleAccessbyId(userRoleAccessId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "UserRoleAccess/getUserRoleAccessbyId")',
+                type: "GET",
+                data: { userRoleAccessId: userRoleAccessId },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        $('#txtUserName').val(data.userName);
+                        $('#txtRoleName').val(data.roleName);
+                        $('#txtFunctionMasterName').val(data.functionMasterName);
+                        $('#txtFunctionName').val(data.functionName);
+                        $('#from-date-picker').val(data.startDateString);
+                        $('#to-date-picker').val(data.endDateString);
+                        $("#chkIsActive").prop('checked', data.isActive);
+                    } else {
+                        $.confirm({
+                            title: 'User Role Access',
+                            content: 'User Role Access does not Exists!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+    </script>
+}

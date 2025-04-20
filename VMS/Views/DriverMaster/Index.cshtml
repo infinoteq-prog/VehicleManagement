@@ -1,0 +1,1089 @@
+﻿@model VMS.ViewModel.VMDriverMaster
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@* @{
+    var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
+}
+
+@if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleAddAccess == true)
+{
+ *@
+ <div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Add Driver Master</h4>
+                    <div>
+                        <form id="frmDriverMaster" name="frmDriverMaster" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <label id="lblMandatoryMessage" class="reqFields">@utilityHelper.reqFieldMessage</label>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDriverName">Driver Name: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.DriverName, new { @class = "form-control", id = "txtDriverName", @maxlength = "100" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtFatherName">Father's Name:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.FatherName, new { @class = "form-control", id = "txtFatherName", @maxlength = "100" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDriverAddress1">Driver Address 1:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.DriverAddress1, new { @class = "form-control", id = "txtDriverAddress1", @maxlength = "500" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDriverAddress2">Driver Address 2: </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.DriverAddress2, new { @class = "form-control", id = "txtDriverAddress2", @maxlength = "500" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDriverAddress3">Driver Address 3:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.DriverAddress3, new { @class = "form-control", id = "txtDriverAddress3", @maxlength = "500" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="ddlState">State:<span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" id="ddlState" name="ddlState" onchange="setDropDownStyle(this);"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="ddlDistrict">District:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" id="ddlDistrict" name="ddlDistrict" onchange="setDropDownStyle(this);"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="ddlCity">City:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" id="ddlCity" name="ddlCity" onchange="setDropDownStyle(this);"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPinCode">Pincode: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.PinCode, new { @class = "form-control numberonly", id = "txtPinCode", @maxlength = "10" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDriverPhoto">Upload Driver Photo:</label>
+                                        <div class="col-sm-8">
+                                            <input id="txtDriverPhoto" type="file" name="txtDriverPhoto" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPanNo">Pan No: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.PanNo, new { @class = "form-control", id = "txtPanNo", @maxlength = "10" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPanNoImage">Upload PanNo Image:</label>
+                                        <div class="col-sm-8">
+                                            <input id="txtPanNoImage" type="file" name="txtPanNoImage" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtAadharNo">Aadhar No: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.AadharNo, new { @class = "form-control numberonly", id = "txtAadharNo", @maxlength = "12" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtAadharNoImage">Upload Aadhar Image:</label>
+                                        <div class="col-sm-8">
+                                            <input id="txtAadharNoImage" type="file" name="txtAadharNoImage" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtBankName">Bank Name :<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.BankName, new { @class = "form-control", id = "txtBankName", @maxlength = "100" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtBankAccountNumber">Bank Account No:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.BankAccountNumber, new { @class = "form-control numberonly", id = "txtBankAccountNumber", @maxlength = "25" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtBankIFSCCode">Bank IFSC Code:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.BankIFSCCode, new { @class = "form-control", id = "txtBankIFSCCode", @maxlength = "30" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDrivingLicenceNo">DL No:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.DrivingLicenceNo, new { @class = "form-control", id = "txtDrivingLicenceNo", @maxlength = "20" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDrivingLicenceIssueAuth">DL Issue Auth: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.DrivingLicenceIssueAuth, new { @class = "form-control", id = "txtDrivingLicenceIssueAuth", @maxlength = "500" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDrivingLicenceValidity">DL Validity:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtDrivingLicenceValidity" placeholder="Select Driving Licence Validity" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDrivingLicenceImage">DL Image :</label>
+                                        <div class="col-sm-8">
+                                            <input id="txtDrivingLicenceImage" type="file" name="txtDrivingLicenceImage" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtMobileNumber1">Mobile Number 1: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.MobileNumber1, new { @class = "form-control numberonly", id = "txtMobileNumber1", @maxlength = "15" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtMobileNumber2">Mobile Number 2:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.MobileNumber2, new { @class = "form-control numberonly", id = "txtMobileNumber2", @maxlength = "15" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="ddlExistingReference">Existing Reference :</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" id="ddlExistingReference" name="ddlExistingReference" onchange="setDropDownStyle(this);">
+                                                <option value="0">Select Existing Reference</option>
+                                                <option value="True">Yes</option>
+                                                <option value="False">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtReferenceName">Reference Name :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ReferenceName, new { @class = "form-control", id = "txtReferenceName", @maxlength = "100" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtReferenceAddress1">Ref Address 1:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ReferenceAddress1, new { @class = "form-control", id = "txtReferenceAddress1", @maxlength = "500" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtReferenceAddress2">Ref Address 2</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ReferenceAddress2, new { @class = "form-control", id = "txtReferenceAddress2", @maxlength = "500" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtReferenceAddress3">Ref Address 3:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ReferenceAddress3, new { @class = "form-control", id = "txtReferenceAddress3", @maxlength = "500" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtReferenceCity">Reference City:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ReferenceCity, new { @class = "form-control", id = "txtReferenceCity", @maxlength = "100" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtReferencePinCode">Reference Pin:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ReferencePinCode, new { @class = "form-control numberonly", id = "txtReferencePinCode", @maxlength = "15" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                         <label class="col-sm-4 col-form-label" for="txtReferenceMobile">Reference Mobile:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ReferenceMobile, new { @class = "form-control numberonly", id = "txtReferenceMobile", @maxlength = "12" })
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active:</label>
+                                        <div class="col-sm-8">
+                                            @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-label checkboxStyle", id = "chkIsActive" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12"></div>
+                            </div>
+                           @*  @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleAddAccess == true)
+                            { *@
+                                <div class="row rowHeight" style="text-align:center;">
+                                    <div class="col-md-12">
+                                        <button type="button" class="btn btn-primary mr-2" onclick="saveDriverMaster();">Save</button>
+                                        <button type="button" class="btn btn-light" onclick="clearControls();">Clear</button>
+                                    </div>
+                                </div>
+                            @* } *@
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                   @*  @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+                        { *@
+                        <div id="divDriverMaster">
+                            <div class="table-responsive pt-3">
+                            <table id="tblDriverMaster" class="table table-striped project-orders-table nowrap hover order-column row-border stripe display" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Actions</th>
+                                        <th>Driver Name</th>
+                                        <th>Father's Name</th>
+                                        <th>Driver Address 1</th>
+                                        <th>Driver Address 2</th>
+                                        <th>Driver Address 3</th>
+                                        <th>Driver Photo</th>
+                                        <th>State</th>
+                                        <th>District</th>
+                                        <th>City</th>
+                                        <th>Pin Code</th>
+                                        <th>Aadhar Number</th>
+                                        <th>Aadhar Image</th>
+                                        <th>Pan Number</th>
+                                        <th>Pan No Image</th>
+                                        <th>Bank Name</th>
+                                        <th>Bank Account No</th>
+                                        <th>Bank IFSC Code</th>
+                                        <th>DL No</th>
+                                        <th>DL Issue Auth</th>
+                                        <th>DL Validity</th>
+                                        <th>DL Image</th>
+                                        <th>Mobile Number 1</th>
+                                        <th>Mobile Number 2</th>
+                                        <th>Is Existing Ref</th>
+                                        <th>Reference Name</th>
+                                        <th>Reference Address 1</th>
+                                        <th>Reference Address 2</th>
+                                        <th>Reference Address 3</th>
+                                        <th>Reference City</th>
+                                        <th>Reference Pin</th>
+                                        <th>Reference Mobile</th>
+                                        <th>Is Active</th>
+                                        <th>Creation Date</th>
+                                        <th>Created By</th>
+                                        <th>Update Date</th>
+                                        <th>Updatd By</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="modelDriverBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                  @*   } *@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var addAccess = '@ViewBag.AddUserRoleAddAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        // var updateAccess = '@ViewBag.AddUserRoleUpdateAccess';
+        // var deleteAccess = '@ViewBag.AddUserRoleDeleteAccess';
+        var fullAccess = 'True';
+        var addAccess = 'True';
+        var viewAccess = 'True';
+        var updateAccess = 'True';
+        var deleteAccess = 'True';
+        
+        var viewButton = "";
+        var updateButton = "";
+        var deleteButton = "";
+
+        $(document).ready(function () {
+            setSideMenu("driver-master");
+            //Fill Driver Master DropdownList
+            $("#chkIsActive").attr("checked", true);
+            $("#chkIsActive").attr("disabled", true);
+
+            getStateByCountryId(1);
+
+            if (fullAccess === "True" || addAccess === "True") {
+                checkValidationOnChange();
+            }
+            if (fullAccess === "True" || viewAccess === "True") {
+                getDriverMasterList();
+            }
+
+            $(function () {
+                $("#txtDrivingLicenceValidity").datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    changeYear: true,
+                    changeMonth: true,
+                });
+            });
+
+            $("#ddlState").on("change", function () {
+                getDistrictByStateId($(this).val());
+            });
+
+            $("#ddlDistrict").on("change", function () {
+                getCityByDisctrictId($(this).val());
+            });
+        });
+
+        function setDropDownStyle(cltr){
+            if ($(cltr).find(":selected").val() == "0") {
+                $(cltr).attr('class', 'form-control vaidationTextBoxError');
+            } else {
+                $(cltr).attr('class', 'form-control');
+            }
+        }
+
+        function setTextboxStyle(cltr) {
+            if ($(cltr).val() == "") {
+                $(cltr).attr('class', 'form-control vaidationTextBoxError');
+            } else {
+                $(cltr).attr('class', 'form-control');
+            }
+        }
+
+        function bindDataTable() {
+            $('#tblDriverMaster').DataTable({
+                deferRender: true,
+                scroller: true,
+                scrollX: true,
+                scrollY: true,
+                searching: true,
+                info: true,
+                paging: true,
+                dom: 'Bfrtip',
+                "bDestroy": true,
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: 'Copy'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: 'Csv',
+                        title: function () {
+                            return "Driver Master List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Csv</span>',
+                        titleAttr: 'Csv'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        title: function () {
+                            return "Driver Master List";
+                        },
+                        text: '<span class="fa fa-file-pdf-o">Excel</span>',
+                        titleAttr: 'Excel'
+                    },
+                    {
+                        extend: "print",
+                        exportOptions: {
+                            orientation: 'landscape'
+                        },
+                        pageSize: 'A0',
+                        customize: function (win) {
+                            var last = null;
+                            var current = null;
+                            var bod = [];
+
+                            var css = '@@page { size: landscape; }',
+                                head = win.document.head || win.document.getElementsByTagName('head')[0],
+                                style = win.document.createElement('style');
+
+                            style.type = 'text/css';
+                            style.media = 'print';
+
+                            if (style.styleSheet) {
+                                style.styleSheet.cssText = css;
+                            }
+                            else {
+                                style.appendChild(win.document.createTextNode(css));
+                            }
+                            head.appendChild(style);
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: function () {
+                            return "Driver Master List";
+                        },
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        text: '<span class="fa fa-file-pdf-o">PDF</span>',
+                        titleAttr: 'PDF'
+                    }
+                ]
+            });
+        }
+
+        function checkValidation() {
+            var isValid = true;
+           
+            if ($('#ddlState option:selected').val() == "0" || $('#ddlState option:selected').val() == "") {
+                $("#ddlState").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlState").focus();
+                isValid = false;
+            } else {
+                $("#ddlState").attr('class', 'form-control');
+                $("#ddlState").focus();
+            }
+
+            if ($('#ddlDistrict option:selected').val() == "0" || $('#ddlDistrict option:selected').val() == "") {
+                $("#ddlDistrict").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlDistrict").focus();
+                isValid = false;
+            } else {
+                $("#ddlDistrict").attr('class', 'form-control');
+                $("#ddlDistrict").focus();
+            }
+
+            if ($('#ddlCity option:selected').val() == "0" || $('#ddlCity option:selected').val() == "") {
+                $("#ddlCity").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlCity").focus();
+                isValid = false;
+            } else {
+                $("#ddlCity").attr('class', 'form-control');
+                $("#ddlCity").focus();
+            }
+
+            if ($("#txtDriverName").val() == "") {
+                $("#txtDriverName").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtDriverName").focus();
+                isValid = false;
+            } else {
+                $("#txtDriverName").attr('class', 'form-control');
+                $("#txtDriverName").focus();
+            }
+
+            if ($("#txtFatherName").val() == "") {
+                $("#txtFatherName").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtFatherName").focus();
+                isValid = false;
+            } else {
+                $("#txtFatherName").attr('class', 'form-control');
+                $("#txtFatherName").focus();
+            }
+
+            if ($("#txtDriverAddress1").val() == "") {
+                $("#txtDriverAddress1").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtDriverAddress1").focus();
+                isValid = false;
+            } else {
+                $("#txtDriverAddress1").attr('class', 'form-control');
+                $("#txtDriverAddress1").focus();
+            }
+
+            if ($("#txtPinCode").val() == "") {
+                $("#txtPinCode").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtPinCode").focus();
+                isValid = false;
+            } else {
+                $("#txtPinCode").attr('class', 'form-control');
+                $("#txtPinCode").focus();
+            }
+
+            if ($("#txtAadharNo").val() == "") {
+                $("#txtAadharNo").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtAadharNo").focus();
+                isValid = false;
+            } else {
+                $("#txtAadharNo").attr('class', 'form-control');
+                $("#txtAadharNo").focus();
+            }
+
+            if ($("#txtPanNo").val() == "") {
+                $("#txtPanNo").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtPanNo").focus();
+                isValid = false;
+            } else {
+                $("#txtPanNo").attr('class', 'form-control');
+                $("#txtPanNo").focus();
+            }
+
+            if ($("#txtBankName").val() == "") {
+                $("#txtBankName").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtBankName").focus();
+                isValid = false;
+            } else {
+                $("#txtBankName").attr('class', 'form-control');
+                $("#txtBankName").focus();
+            }
+
+            if ($("#txtBankAccountNumber").val() == "") {
+                $("#txtBankAccountNumber").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtBankAccountNumber").focus();
+                isValid = false;
+            } else {
+                $("#txtBankAccountNumber").attr('class', 'form-control');
+                $("#txtBankAccountNumber").focus();
+            }
+
+            if ($("#txtBankIFSCCode").val() == "") {
+                $("#txtBankIFSCCode").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtBankIFSCCode").focus();
+                isValid = false;
+            } else {
+                $("#txtBankIFSCCode").attr('class', 'form-control');
+                $("#txtBankIFSCCode").focus();
+            }
+
+            if ($("#txtDrivingLicenceNo").val() == "") {
+                $("#txtDrivingLicenceNo").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtDrivingLicenceNo").focus();
+                isValid = false;
+            } else {
+                $("#txtDrivingLicenceNo").attr('class', 'form-control');
+                $("#txtDrivingLicenceNo").focus();
+            }
+
+            if ($("#txtDrivingLicenceIssueAuth").val() == "") {
+                $("#txtDrivingLicenceIssueAuth").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtDrivingLicenceIssueAuth").focus();
+                isValid = false;
+            } else {
+                $("#txtDrivingLicenceIssueAuth").attr('class', 'form-control');
+                $("#txtDrivingLicenceIssueAuth").focus();
+            }
+
+            if ($("#txtDrivingLicenceValidity").val() == "") {
+                $("#txtDrivingLicenceValidity").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtDrivingLicenceValidity").focus();
+                isValid = false;
+            } else {
+                $("#txtDrivingLicenceValidity").attr('class', 'form-control');
+                $("#txtDrivingLicenceValidity").focus();
+            }
+
+             if ($("#txtMobileNumber1").val() == "") {
+                $("#txtMobileNumber1").attr('class', 'form-control vaidationTextBoxError');
+                $("#txtMobileNumber1").focus();
+                isValid = false;
+            } else {
+                $("#txtMobileNumber1").attr('class', 'form-control');
+                $("#txtMobileNumber1").focus();
+            }
+            return isValid;
+        }
+
+        function checkValidationOnChange() {
+            $(function () {
+                $("#ddlState").change(function () {
+                    if ($('option:selected', this).val() == "0" || $('option:selected', this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#ddlDistrict").change(function () {
+                    if ($('option:selected', this).val() == "0" || $('option:selected', this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#ddlCity").change(function () {
+                    if ($('option:selected', this).val() == "0" || $('option:selected', this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtDriverName").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                 $("#txtFatherName").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                 $("#txtDriverAddress1").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+               
+                 $("#txtPinCode").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                 $("#txtAadharNo").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                 $("#txtPanNo").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                 $("#txtBankName").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtBankAccountNumber").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                 $("#txtBankIFSCCode").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+                 $("#txtDrivingLicenceNo").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                $("#txtDrivingLicenceIssueAuth").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+
+                });
+
+                $("#txtDrivingLicenceValidity").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
+                 $("#txtMobileNumber1").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+            });
+        }
+
+        function clearControls() {
+            $("#ddlState").prop("selectedIndex", 0).val();
+            $("#ddlDistrict").prop("selectedIndex", 0).val();
+            $("#ddlCity").prop("selectedIndex", 0).val();
+            $("#txtDriverName").val("");
+            $("#txtFatherName").val("");
+            $("#txtDriverAddress1").val("");
+            $("#txtDriverAddress2").val("");
+            $("#txtDriverAddress3").val("");
+            $("#txtPinCode").val("");
+            $("#txtAadharNo").val("");  
+            $("#txtPanNo").val("");
+            $("#txtBankName").val("");
+            $("#txtBankAccountNumber").val("");
+            $("#txtBankIFSCCode").val("");
+            $("#txtDrivingLicenceNo").val("");
+            $("#txtDrivingLicenceIssueAuth").val("");
+            $("#txtDrivingLicenceValidity").val("");
+            $("#txtMobileNumber1").val("");
+            $("#txtMobileNumber2").val("");
+            $("#chkIsActive").prop("checked", false);
+        }
+
+        function getDriverMasterList() {
+            if ($.fn.DataTable.isDataTable("#tblDriverMaster")) {
+                $('#tblDriverMaster tbody').empty();
+                $('#tblDriverMaster').DataTable().clear().destroy();
+            }
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DriverMaster/getDriverMasterList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        $.each(data, function (i, item) {
+                            var sno = 0;
+                            var rows = "";
+                            var row = "";
+                            sno = sno + 1;
+                            if (fullAccess === "True" || viewAccess === "True") {
+                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewDriverMaster(\'' + item.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || updateAccess === "True") {
+                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="editDriverMaster(\'' + item.id + '\');"> Edit <i class="typcn typcn-edit btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || deleteAccess === "True") {
+                                deleteButton =  '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" onclick="deleteDriverMaster(\'' + item.id + '\');"> Delete <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                            }
+                            
+                            row = '<tr>' +
+                                '<td>' +
+                                '<div class="d-flex align-items-center">' +
+                                viewButton +
+                                updateButton +
+                                deleteButton +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + item.driverName + '</td>' +
+                                '<td>' + item.fatherName + '</td>' +
+                                '<td>' + item.driverAddress1 + '</td>' +
+                                '<td>' + item.driverAddress2 + '</td>' +
+                                '<td>' + item.driverAddress3 + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.driverPhoto + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.stateName + '</td>' +
+                                '<td>' + item.districtName + '</td>' +
+                                '<td>' + item.cityName + '</td>' +
+                                '<td>' + item.pinCode + '</td>' +
+                                '<td>' + item.aadharNo + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.aadharNoImage + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.panNo + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.panNoImage + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.bankName + '</td>' +
+                                '<td>' + item.bankAccountNumber + '</td>' +
+                                '<td>' + item.bankIFSCCode + '</td>' +
+                                '<td>' + item.drivingLicenceNo + '</td>' +
+                                '<td>' + item.drivingLicenceIssueAuth + '</td>' +
+                                '<td>' + item.drivingLicenceValidity + '</td>' +
+                                '<td style="text-align:center"><a href="' + initialURL + item.drivingLicenceImage + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
+                                '<td>' + item.mobileNumber1 + '</td>' +
+                                '<td>' + item.mobileNumber2 + '</td>' +
+                                '<td>' + item.isExistingReference + '</td>' +
+                                '<td>' + item.referenceName + '</td>' +
+                                '<td>' + item.referenceAddress1 + '</td>' +
+                                '<td>' + item.referenceAddress2 + '</td>' +
+                                '<td>' + item.referenceAddress3 + '</td>' +
+                                '<td>' + item.referenceCity + '</td>' +
+                                '<td>' + item.referencePinCode + '</td>' +
+                                '<td>' + item.referenceMobile + '</td>' +
+                                '<td>' + item.isActive + '</td>' +
+                                '<td>' + item.creationDate + '</td>' +
+                                '<td>' + item.createdByName + '</td>' +
+                                '<td>' + item.updateDate + '</td>' +
+                                '<td>' + item.updatedByName + '</td>' +
+                                '</tr>';
+                            rows = rows + row;
+                            $("#modelDriverBody").append(rows);
+                            rows = "";
+                            $("#tblDriverMaster").focus();
+                        });
+                        bindDataTable();
+                    } else {
+                        var row = '<tr>' +
+                            '<td colspan="37" style="text-align:center">No Data Found!!!</td>' +
+                            '</tr>';
+                        $("#modelDriverBody").html(row);
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+
+        function saveDriverMaster() {
+            var isValid = checkValidation(); 
+
+            if (isValid == true) {
+                if ($('#ddlState option:selected').val() != "0" &&
+                    $('#ddlDistrict option:selected').val() != "0" &&
+                    $('#ddlCity option:selected').val() != "0" &&
+                    $("#txtDriverName").val() != "" &&
+                    $("#txtFatherName").val() != "" &&
+                    $("#txtDriverAddress1").val() != "" &&
+                    $("#txtPinCode").val() != "" &&
+                    $("#txtAadharNo").val() != "" &&
+                    $("#txtPanNo").val() != "" &&
+                    $("#txtBankName").val() != "" &&
+                    $("#txtBankAccountNumber").val() != "" &&
+                    $("#txtBankIFSCCode").val() != "" &&
+                    $("#txtDrivingLicenceNo").val() != "" &&
+                    $("#txtDrivingLicenceIssueAuth").val() != "" &&
+                    $("#txtDrivingLicenceValidity").val() != "" &&
+                    $("#txtMobileNumber1").val() != "") {
+                    var drivingLicenceValidity = $("#txtDrivingLicenceValidity").val();
+                    drivingLicenceValidity = drivingLicenceValidity.split("-").reverse().join("-");
+
+                    var formData = new FormData();
+                    formData.append("driverName", $('#txtDriverName').val());
+                    formData.append("fatherName", $("#txtFatherName").val());
+                    formData.append("driverAddress1", $("#txtDriverAddress1").val());
+                    formData.append("driverAddress2", $("#txtDriverAddress2").val());
+                    formData.append("driverAddress3", $("#txtDriverAddress3").val());
+                    formData.append("stateId", $("#ddlState option:selected").val());
+                    formData.append("districtId", $("#ddlDistrict option:selected").val());
+                    formData.append("cityId", $("#ddlCity option:selected").val());
+                    formData.append("pinCode", $("#txtPinCode").val());
+                    formData.append("driverPhoto", $("#txtDriverPhoto")[0].files[0]);
+                    formData.append("aadharNo", $("#txtAadharNo").val());
+                    formData.append("aadharNoImage", $("#txtAadharNoImage")[0].files[0]);
+                    formData.append("panNo", $("#txtPanNo").val());
+                    formData.append("panNoImage", $("#txtPanNoImage")[0].files[0]);
+                    formData.append("bankName", $("#txtBankName").val());
+                    formData.append("bankAccountNumber", $("#txtBankAccountNumber").val());
+                    formData.append("bankIfscCode", $("#txtBankIFSCCode").val());
+                    formData.append("drivingLicenceNo", $("#txtDrivingLicenceNo").val());
+                    formData.append("drivingLicenceAuth", $("#txtDrivingLicenceIssueAuth").val());
+                    formData.append("drivingLicenceValidity", drivingLicenceValidity);
+                    formData.append("drivingLicenceImage", $("#txtDrivingLicenceImage")[0].files[0]);
+                    formData.append("mobileNo1", $("#txtMobileNumber1").val());
+                    formData.append("mobileNo2", $("#txtMobileNumber2").val());
+                    formData.append("isExistingReference", $('#ddlExistingReference option:selected').val());
+                    formData.append("referenceName", $("#txtReferenceName").val());
+                    formData.append("referenceAddress1", $("#txtReferenceAddress1").val());
+                    formData.append("referenceAddress2", $("#txtReferenceAddress2").val());
+                    formData.append("referenceAddress3", $("#txtReferenceAddress3").val());
+                    formData.append("referenceCity", $("#txtReferenceCity").val());
+                    formData.append("referencePin", $("#txtReferencePinCode").val());
+                    formData.append("referenceMobile", $("#txtReferenceMobile").val());
+                    formData.append("isActive", $("#chkIsActive").is(":checked"));
+
+                    $.ajax({
+                        cache: false,
+                        url: '@(utilityHelper.SiteUrl() + "DriverMaster/Save")',
+                        type: "POST",
+                        dataType: "json",
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        success: function (data) {
+                            if (data != null && data != undefined) {
+                                if (data.transactionMessage.status == '@((byte)TransactionStatus.Success)') {
+                                    console.log(data);
+                                    $.confirm({
+                                        title: 'Save Driver Master!',
+                                        content: "Driver Master has been saved successfully!",
+                                        type: 'green',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-green',
+                                                action: function () {
+                                                    //getUserList();
+                                                    //clearControls();
+                                                    window.location.href = '@(utilityHelper.SiteUrl() + "DriverMaster/Index")';
+                                                }
+                                            },
+                                        }
+                                    });
+                                } else if (data.transactionMessage.status == '@((byte)TransactionStatus.Failed)') {
+                                    $.confirm({
+                                        title: 'Driver Master Already Exists!',
+                                        content: data.transactionMessage.message,
+                                        icon: 'fa fa-warning',
+                                        type: 'red',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-red',
+                                            },
+                                        }
+                                    });
+                                    $("#divDriverMaster").hide();
+                                }
+                            } else {
+                                console.log(data);
+                                //clearControls();
+                                $.confirm({
+                                    title: 'Error Occoured!',
+                                    content: data.transactionMessage.message,
+                                    icon: 'fa fa-warning',
+                                    type: 'red',
+                                    buttons: {
+                                        omg: {
+                                            text: 'OK',
+                                            btnClass: 'btn-red',
+                                        },
+                                    }
+                                });
+                                $("#divDriverMaster").hide();
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+}
