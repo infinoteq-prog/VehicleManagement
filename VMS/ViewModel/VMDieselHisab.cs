@@ -119,5 +119,6 @@ namespace VMS.ViewModel
 
         public int? RunningKm { get; set; }
 
+        public List<TblDieselFilling> DieselFillingList { get; set; } // List to include
     }
 }

@@ -16,6 +16,7 @@
                     <div>
                         <form id="frmVehicleMaster" name="frmVehicleMaster" method="post" class="forms-sample" autocomplete="off">
                             @Html.AntiForgeryToken()
+                            <input id="hdnDieselHisabID" name="hdnDieselHisabID" type="hidden">
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <label id="lblMandatoryMessage" class="reqFields">@utilityHelper.reqFieldMessage</label>
@@ -100,13 +101,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row rowHeight">
-                                <div class="col-md-12">
-                                    <div class="form-group row">
-                                        <h5>New Trip Details:</h5>
-                                    </div>
+
+                        <div class="row rowHeight">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <h5>New Trip Details:</h5>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div class="card" style="padding: 15px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px;">
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
@@ -125,6 +129,7 @@
                                     </div>
                                 </div>
                             </div>
+                        
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
@@ -143,25 +148,7 @@
                                     </div>
                                 </div>
                             </div>
-                           
-                            <div class="row rowHeight">
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtRunningKm">Running Km:<span class="reqFields">*</span></label>
-                                        <div class="col-sm-8">
-                                            <input type="text" id="txtRunningKm" class="form-control numberonly" maxlength="20" readonly="readonly" onchange="setTextboxStyle(this);" placeholder="Please Enter Run Km" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtOpeningDiesel">Opening Diesel:<span class="reqFields">*</span></label>
-                                        <div class="col-sm-8">
-                                            <input type="text" id="txtOpeningDiesel" class="form-control numberonly" maxlength="20" readonly="readonly" onchange="setTextboxStyle(this);" placeholder="Please Enter Openign Km" readonly="readonly" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
@@ -180,28 +167,195 @@
                                     </div>
                                 </div>
                             </div>
+                        
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtRouteDescription">Route Desc :<span class="reqFields">*</span></label>
+                                        <label class="col-sm-4 col-form-label" for="txtRunningKm">Running Km:<span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
-                                            <input type="text" id="txtRouteDescription" class="form-control" maxlength="20"  onchange="setTextboxStyle(this);" placeholder="Please Enter Run Km" />
+                                            <input type="text" id="txtRunningKm" class="form-control numberonly" maxlength="20" readonly="readonly" onchange="setTextboxStyle(this);" placeholder="Please Enter Run Km" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtOpeningDiesel">Opening Diesel:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtOpeningDiesel" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Opening Diesel" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        
                             <div class="row rowHeight">
-                                <div class="col-md-12"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRouteDescription">Route Desc :<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtRouteDescription" class="form-control" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Route Description" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"></div>
                             </div>
+                        </div>
+
+
+                        <!-- Diesel Filling Table -->
+                       <div class="row rowHeight">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <h5>Diesel Filling:</h5>
+                            </div>
+                        </div>
+                      </div>
+
+                    <div class="card" style="padding: 15px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px;">
+                        <div class="row rowHeight">
+                             <div class="col-md-3">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txt-filling-date">Date : <span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txt-filling-date" placeholder="Select Filling Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label" for="ddlVendor">Vendor: <span class="reqFields">*</span></label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" id="ddlVendor" name="ddlVendor" onchange="setDropDownStyle(this);">
+                                            <!-- Vendor options will be populated here from VendorMaster API -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label" for="txtLitre">Litre: <span class="reqFields">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" id="txtLitre" class="form-control numberonly" maxlength="10" onchange="setTextboxStyle(this);" placeholder="Please Enter Litre" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <button type="button" class="btn btn-primary" id="btnAddFilling" onclick="addDieselFilling();">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table id="dieselFillingTable" class="table table-bordered">
+                                        <thead class="thead-light">
+                                    <tr>
+                                        <th style="width: 120px;">Date</th>
+                                        <th style="display:none;">VendorId</th>
+                                        <th style="width: 120px;">Vendor</th>
+                                        <th style="width: 120px;">Litre</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Table rows will be dynamically added here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Station Details Section -->
+                        <div class="row rowHeight">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <h5>Station Details:</h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="padding: 15px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px;">
+                            <div class="row rowHeight">
+                                <div class="col-md-3">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="ddlDistanceMaster">Station:</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" id="ddlDistanceMaster" onchange="setDropDownStyle(this);">
+                                                <!-- Station options -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDistance">Distance:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtDistance" class="form-control" disabled />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="ddlLoadType">Load Type:</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" id="ddlLoadType" onchange="setDropDownStyle(this);">
+                                               <!-- Station options -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtAverage">Average:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtAverage" class="form-control" disabled />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group row">
+                                        <label class="col-sm-6 col-form-label" for="txtEstKm">Estimated KM:</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtEstKm" class="form-control" disabled />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <button type="button" class="btn btn-primary" onclick="addStationDetails();">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <!-- Station Details Table -->
+                            <div class="table-responsive">
+                                <table id="stationDetailsTable" class="table table-bordered">
+                                        <thead class="thead-light">
+                                        <tr>
+                                            <th style="display:none;">StationId</th>
+                                            <th style="display:none;">LoadTypeId</th>
+                                            <th>Station</th>
+                                            <th>Distance</th>
+                                            <th>Load Type</th>
+                                            <th>Average</th>
+                                            <th>Estimated KM</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Table rows will be dynamically added -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>     
+
                            @*  @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleAddAccess == true)
                             { *@
                                 <div class="row rowHeight" style="text-align:center;">
                                     <div class="col-md-12">
-                                    <button type="button" class="btn btn-primary mr-2" onclick="saveDriverMaster();">Save</button>
+                                    <button type="button" id="saveButton" class="btn btn-primary mr-2" onclick="saveDieselHisab();">Save</button>
                                         <button type="button" class="btn btn-light" onclick="clearControls();">Clear</button>
                                     </div>
                                 </div>
@@ -212,7 +366,7 @@
                         <div class="col-md-12"></div>
                     </div>
                     @*  @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true){ *@
-                    <div id="divDieslHisabMaster">
+                    <div id="divDieslHisabMaster" style="visibility:hidden">
                         <div class="table-responsive pt-3">
                             <table id="tblDieselHisabMaster" class="table table-striped project-orders-table nowrap hover order-column row-border stripe display" style="width: 100%;">
                                 <thead>
@@ -244,7 +398,7 @@
         </div>
     </div>
 </div>
-so
+
 @section scripts {
     <script type="text/javascript">
     // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
@@ -264,9 +418,12 @@ so
 
     $(document).ready(function () {
         //Fill Vehicle Master DropdownList
-        setSideMenu("diesel-hisabl-master");
+       setSideMenu("diesel-hisab-master");
         getVehicleNumber();
         getDriverMaster();
+        getVendorMaster();
+        getDistanceMaster();
+         getLoadTypeMaster();
         // $("#chkIsActive").attr("checked", true);
         // $("#chkIsActive").attr("disabled", true);    
         
@@ -283,6 +440,17 @@ so
                 var selectedValue = $(this).val();
                 getCurrentTripNumber($(this).val());
                 getDieselHisabByVehicle($(this).val());
+            });
+
+            $("#ddlDistanceMaster").change(function () {
+                var selectedValue = $(this).val();
+                getDistanceByStation(selectedValue)
+            });
+
+            $("#ddlLoadType").change(function () {
+                var selectedValue=$('#ddlLoadType option:selected').text();
+                var vehicleNo=$('#ddlVehicleNo option:selected').val();
+                getDieselAverageAsPerLoadType(vehicleNo, selectedValue) 
             });
 
             $("#ddlDriver").change(function () {
@@ -312,6 +480,13 @@ so
 
             $("#txtVehicleCreationDate").val(output);
         });
+
+            //Check if Page is Opening on Edit Click
+            var tripId = GetParameterValues('tripid');
+        if (tripId && tripId.length > 0 && parseInt(tripId[0]) > 0) {
+            document.getElementById("saveButton").textContent = "Update";
+                getDieselHisabByID(tripId);
+        }
     });
 
     function setDropDownStyle(cltr){
@@ -505,6 +680,19 @@ so
             $("#txtRouteDescription").attr('class', 'form-control');
             $("#txtRouteDescription").focus();
         }
+
+         const table = document.getElementById('dieselFillingTable').getElementsByTagName('tbody')[0];
+         if(table.rows.length<=0)
+         {
+                alert('Please add diesel filling details!');
+             isValid = false;
+         }
+
+            const table1 = document.getElementById('stationDetailsTable').getElementsByTagName('tbody')[0];
+            if (table1.rows.length <= 0) {
+                alert('Please add station details!');
+                isValid = false;
+            }
         
         return isValid;
     }
@@ -542,6 +730,16 @@ so
             });
 
             $("#from-date-picker").on("input", function () {
+                if ($(this).val() == "") {
+                    $(this).attr('class', 'form-control vaidationTextBoxError');
+                    $(this).focus();
+                } else {
+                    $(this).attr('class', 'form-control');
+                    $(this).focus();
+                }
+            }); 
+
+            $("#txt-filling-date").on("input", function () {
                 if ($(this).val() == "") {
                     $(this).attr('class', 'form-control vaidationTextBoxError');
                     $(this).focus();
@@ -630,12 +828,21 @@ so
         $("#txtDriverAddress1").val("");
         $("#txtStartOdometer").val("");
         $("#from-date-picker").val("");
+        $("#txt-filling-date").val("");
         $("#to-date-picker").val("");
         $("#txtEndOdometer").val("");
         $("#txtRunningKm").val("");
         $("#txtTripNumber").val("");
         $("#txtOpeningDiesel").val("");
         $("#txtRouteDescription").val("");
+            if ($.fn.DataTable.isDataTable("#dieselFillingTable")) {
+                $('#dieselFillingTable tbody').empty();
+                $('#dieselFillingTable').DataTable().clear().destroy();
+            }
+            if ($.fn.DataTable.isDataTable("#stationDetailsTable")) {
+                $('#stationDetailsTable tbody').empty();
+                $('#stationDetailsTable').DataTable().clear().destroy();
+            }
     }
 
     function getCurrentTripNumber(vehicleNo) {
@@ -656,12 +863,57 @@ so
         });
     }
 
+    function getDistanceByStation(stationId) {
+        $.ajax({
+            cache: false,
+            url: '@(utilityHelper.SiteUrl() + "DieselHisab/getDistanceMasterById")',
+            type: "GET",
+            data: { id: stationId },
+            dataType: "json",
+            success: function (data) {
+                if (data != null && data != undefined) {
+                    console.log(data.distance);
+                    $("#txtDistance").val(data.distance);
+                } else {
+                    console.log(data);
+                }
+            }
+        });
+    }
+
+     function getDieselAverageAsPerLoadType(vehicleNo, loadType) {
+        $.ajax({
+            cache: false,
+            url: '@(utilityHelper.SiteUrl() + "DieselHisab/getDieselAverageAsPerLoadType")',
+            type: "GET",
+            data: { vehicleNo: vehicleNo,loadType:loadType },
+            dataType: "json",
+            success: function (data) {
+                if (data != null && data != undefined) {
+                    $("#txtAverage").val(data.value);
+
+                    var distance = parseFloat($("#txtDistance").val()) || 0;
+                    var average = parseFloat($("#txtAverage").val()) || 0;
+                        var Estkm = 0;
+                        if (average !== 0) {
+                            Estkm = (distance / average).toFixed(2); // returns a string with 2 decimal places
+                        } else {
+                            Estkm = "0.00";
+                        }
+                    $("#txtEstKm").val(Estkm);
+                } else {
+                    console.log(data);
+                }
+            }
+        });
+    }
+
     function getLastDieselTripHistory(vehicleNo) {
         $.ajax({
             cache: false,
             url: '@(utilityHelper.SiteUrl() + "DieselHisab/getLastDieselTripHistory")',
             type: "GET",
-            data: { vehicleNo: vehicleNo },
+            data: { vehicleId: vehicleNo },
             dataType: "json",
                 success: function (data) {  
                 if (data != null && data != undefined) {
@@ -671,6 +923,7 @@ so
                     $("#txtLastTripDriver").val(data.lastTripDriver);
                     $("#txtLastTripDriverFather").val(data.lastTripDriverFatherName);
                     $("#txtLastTripVendor").val(data.lastTripVendor);
+                    // $("#txtOpeningDiesel").val(data.openingDiesel);
                 } else {
                     $("#txtLastTripStartDate").val("N/A");
                     $("#txtLastTripEndDate").val("N/A");
@@ -738,9 +991,10 @@ so
         }
     }
 
-    function saveDriverMaster() {
+    function saveDieselHisab() {
         var isValid = checkValidation();
         if (isValid == true) {
+
                 if ($('#ddlVehicleNo option:selected').val() != "0" &&
                 $('#ddlDriver option:selected').val() != "0" &&
                 $("#txtTripNumber").val() != "" &&
@@ -757,6 +1011,11 @@ so
                 var tripEndDate = $("#to-date-picker").val().split("-").reverse().join("-");
 
                 var formData = new FormData();
+
+                    var tripId = $('#hdnDieselHisabID').val();
+                    if (tripId && tripId.length > 0 && parseInt(tripId[0]) > 0) {
+                        formData.append("tripId", tripId);
+                    }
                 formData.append("vehicleNo", $("#ddlVehicleNo option:selected").val());
                 formData.append("driverId", $("#ddlDriver option:selected").val());
                 formData.append("tripNo", $('#txtTripNumber').val());
@@ -767,11 +1026,34 @@ so
                 formData.append("startOdometer", $("#txtStartOdometer").val());
                 formData.append("endOdometer", $("#txtEndOdometer").val());
                 formData.append("openingDiesel", $("#txtOpeningDiesel").val());
+                    formData.append("runningKm", $("#txtRunningKm").val());
                 formData.append("tripRouteDescription", $("#txtRouteDescription").val());
+
+                 // Diesel Filling Entries from Table
+                   $("#dieselFillingTable tbody tr").each(function (index, row) {
+                       var date = $(row).find("td:eq(0)").text();
+                       var vendorId = $(row).find("td:eq(1)").text();
+                       var litre = $(row).find("td:eq(3)").text();
+
+                       formData.append(`_lstDieselFilling[${index}].DieselFillingDate`, date);
+                       formData.append(`_lstDieselFilling[${index}].VendorId`, vendorId);
+                       formData.append(`_lstDieselFilling[${index}].DieselQty`, litre);
+                   });
+
+                    // Diesel Line Entries from Table
+                    $("#stationDetailsTable tbody tr").each(function (index, row) {
+                        var routeId = $(row).find("td:eq(0)").text();
+                        var routeDesc = $(row).find("td:eq(2)").text();
+                        var LoadType = $(row).find("td:eq(4)").text();
+
+                        formData.append(`_lstDieselLine[${index}].RouteId`, routeId);
+                        formData.append(`_lstDieselLine[${index}].RouteDesc`, routeDesc);
+                        formData.append(`_lstDieselLine[${index}].LoadType`, LoadType);
+                    });
                
                 $.ajax({
                     cache: false,
-                    url: '@(utilityHelper.SiteUrl() + "DieselHisab/Save")',
+                        url: '@(utilityHelper.SiteUrl() + "DieselHisab/SaveUpdate")',
                     type: "POST",
                     dataType: "json",
                     processData: false,
@@ -792,7 +1074,7 @@ so
                                             action: function () {
                                                 //getUserList();
                                                 //clearControls();
-                                                window.location.href = '@(utilityHelper.SiteUrl() + "DriverMaster/Index")';
+                                                    window.location.href = '@(utilityHelper.SiteUrl() + "DieselHisab/List")';
                                             }
                                         },
                                     }
@@ -832,6 +1114,8 @@ so
                     }
                 });
             }
+        }else{
+
         }
     }
 
@@ -864,7 +1148,7 @@ so
             cache: false,
             url: '@(utilityHelper.SiteUrl() + "DieselHisab/getDieselHisablListByVehicle")',
             type: "GET",
-            data: { vehicleNo: vehicleNo },
+                data: { vehicleId: vehicleNo },
             dataType: "json",
             success: function (data) {
                 console.log(data);
@@ -893,7 +1177,7 @@ so
                             deleteButton +
                             '</div>' +
                             '</td>' +
-                            '<td>' + item.vehicleNo + '</td>' +
+                                '<td>' + item.vehicleNumber + '</td>' +
                             '<td>' + item.tripId + '</td>' +
                             '<td>' + item.driverName + '</td>' +
                             '<td>' + item.driverFatherName + '</td>' +
@@ -902,9 +1186,9 @@ so
                             '<td>' + item.endOdometer + '</td>' +
                             '<td>' + item.runningKm + '</td>' +
                             '<td>' + item.isActive + '</td>' +
-                            '<td>' + item.createDate + '</td>' +
+                                '<td>' + item.creationDate + '</td>' +
                             '<td>' + item.createdBy + '</td>' +
-                            '<td>' + item.updateDate + '</td>' +
+                                '<td>' + item.updateDate + '</td>' +
                             '<td>' + item.updateBy + '</td>' +
                             '</tr>';
                             rows = rows + row;
@@ -912,7 +1196,7 @@ so
                         rows = "";
                         $("#tblDieselHisabMaster").focus();
                     });
-                    bindDataTable();
+                    //bindDataTable();
                 } else {
                     var row = '<tr>' +
                         '<td colspan="14" style="text-align:center">No Data Found!!!</td>' +
@@ -926,4 +1210,267 @@ so
         });
     }
 </script>
+
+
+    @* Diesel Filling Section  *@
+    <script>
+           // Add Diesel Filling Record
+           function addDieselFilling() {
+               const fillingDate = document.getElementById('txt-filling-date').value;
+               const vendorId = $("#ddlVendor option:selected").val();
+               const vendorName = $("#ddlVendor option:selected").text();
+               const litre = document.getElementById('txtLitre').value;
+           
+               if (!fillingDate || !vendorId || !litre) {
+                   alert('Please fill all fields');
+                   return;
+               }
+           
+               const table = document.getElementById('dieselFillingTable').getElementsByTagName('tbody')[0];
+           
+               // Check if the vendorId already exists in the table
+               for (let i = 0; i < table.rows.length; i++) {
+                   const existingVendorId = table.rows[i].cells[1].textContent;
+                   if (existingVendorId === vendorId) {
+                       alert('This vendor already exists in the table.');
+                       return;
+                   }
+               }
+           
+               const row = table.insertRow();           
+               row.insertCell(0).textContent = fillingDate;
+               const vendorIdCell = row.insertCell(1);
+                vendorIdCell.textContent = vendorId;
+                vendorIdCell.style.display = 'none';
+               row.insertCell(2).textContent = vendorName;
+               row.insertCell(3).textContent = litre;
+           
+               const actionsCell = row.insertCell(4);
+               actionsCell.innerHTML = `
+                   <button class="btn btn-danger btn-sm" onclick="deleteFillingRecord(this)">Delete</button>
+               `;
+
+               clearFillingForm();
+           }
+
+
+            // Clear Form Fields after Adding Record
+            function clearFillingForm() {
+                document.getElementById('txt-filling-date').value = '';
+                document.getElementById('ddlVendor').selectedIndex = 0;
+                document.getElementById('txtLitre').value = '';
+            }
+
+            // Delete Diesel Filling Record
+            function deleteFillingRecord(button) {
+                const row = button.closest('tr');
+                row.remove();
+            }
+
+    </script>
+
+    @* Station Detail Section  *@
+    <script>
+        function addStationDetails() {
+            const stationId = $("#ddlDistanceMaster option:selected").val();
+            const loadTypeId = $("#ddlLoadType option:selected").val();
+            const station = $("#ddlDistanceMaster option:selected").text();
+            const distance = $("#txtDistance").val();
+            const loadType = $("#ddlLoadType option:selected").text();
+            const average = $("#txtAverage").val();
+            const estKm = $("#txtEstKm").val();
+
+            if (!station || !distance || !loadType || !average || !estKm) {
+                alert("Please fill all required fields.");
+                return;
+            }
+
+            const table = document.getElementById('stationDetailsTable').getElementsByTagName('tbody')[0];
+
+            // Check if the stationId already exists in the table
+            for (let i = 0; i < table.rows.length; i++) {
+                const existingStationId = table.rows[i].cells[0].textContent;
+                if (existingStationId === stationId) {
+                    alert('This station already exists in the table.');
+                    return;
+                }
+            }
+
+            const row = table.insertRow();
+            const stationidCell = row.insertCell(0);
+            stationidCell.textContent = stationId;
+            stationidCell.style.display = 'none';
+            const loadTypeIdCell = row.insertCell(1);
+            loadTypeIdCell.textContent = loadTypeId;
+            loadTypeIdCell.style.display = 'none';
+
+            row.insertCell(2).textContent = station;
+            row.insertCell(3).textContent = distance;
+            row.insertCell(4).textContent = loadType;
+            row.insertCell(5).textContent = average;
+            row.insertCell(6).textContent = estKm;
+
+            const actionsCell = row.insertCell(7);
+            actionsCell.innerHTML = `
+                                   <button class="btn btn-danger btn-sm" onclick="deleteStationRow(this)">Delete</button>
+                       `;
+
+
+            // Clear inputs after adding
+            $("#ddlDistanceMaster").val("");
+            $("#txtDistance").val("");
+            $("#ddlLoadType").val("");
+            $("#txtAverage").val("");
+            $("#txtEstKm").val("");
+        }
+
+        function deleteStationRow(btn) {
+            $(btn).closest("tr").remove();
+        }
+
+        function editStationRow(btn) {
+            const row = $(btn).closest("tr");
+            const tds = row.find("td");
+
+            // Set back values to fields
+            $("#ddlDistanceMaster").val(tds.eq(0).text());
+            $("#txtDistance").val(tds.eq(1).text());
+            $("#ddlLoadType").val(tds.eq(2).text());
+            $("#txtAverage").val(tds.eq(3).text());
+            $("#txtEstKm").val(tds.eq(4).text());
+
+            // Remove the row so it can be re-added after editing
+            row.remove();
+        }
+    </script>
+
+    @* DieselHisab Update Section  *@
+    <script>
+
+        function getDieselHisabByID(tripId) {
+            clearControls();
+
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DieselHisab/getDieselHisablWithId")',
+                type: "GET",
+                data: { tripId: tripId },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null && data != undefined) {
+
+                        $('#hdnDieselHisabID').val(data.tripId);
+                        //Setting Diesel Hisab Details to Page Controls
+                        // Dropdowns - Disable
+                        $("#ddlVehicleNo").prop("disabled", true);
+                        $("#ddlVehicleNo").val(data.vehicleNo);
+                        $('#txtTripNumber').val(data.tripId);
+
+                        //New Trip
+                        $("#ddlDriver").val(data.driverId);
+                        $("#txtDriverFatherName").val(data.driverFatherName);
+                        $("#from-date-picker").val(data.tripStartDate);
+                        $("#to-date-picker").val(data.tripEndDate);
+                        $("#txtStartOdometer").val(data.startOdometer);
+                        $("#txtEndOdometer").val(data.endOdometer);
+                        $("#txtRunningKm").val(data.runningKm);
+                        $("#txtOpeningDiesel").val(data.openingDiesel);
+                        $("#txtRouteDescription").val(data.lastTripRouteDescr);
+
+                        //Last Trip Detail
+                        $("#txtLastTripStartDate").val(data.lastTripHistory.lastTripStartDate);
+                        $("#txtLastTripEndDate").val(data.lastTripHistory.lastTripEndDate);
+                        $("#txtLastTripRouteDesc").val(data.lastTripHistory.lastTripRouteDescr);
+                        $("#txtLastTripDriver").val(data.lastTripHistory.lastTripDriver);
+                        $("#txtLastTripDriverFather").val(data.lastTripHistory.lastTripDriverFatherName);
+                        $("#txtLastTripVendor").val(data.lastTripHistory.lastTripVendor);
+
+                        fillDieselFillingTable(data.dieselFillingList);
+                        fillstationDetailsTable(data.stationList);
+
+                        bindDataTable();
+                    } else {
+                       
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+
+        function fillDieselFillingTable(dieselFillingList) {
+            const table = document.getElementById('dieselFillingTable').getElementsByTagName('tbody')[0];
+            dieselFillingList.forEach(entry => {
+                const row = table.insertRow();
+
+                // Format date if needed
+                const fillingDate = entry.dieselFillingDate; // dd/mm/yyyy
+
+                row.insertCell(0).textContent = fillingDate;
+
+                const vendorIdCell = row.insertCell(1);
+                vendorIdCell.textContent = entry.vendorId || ''; // If available
+                vendorIdCell.style.display = 'none';
+
+                row.insertCell(2).textContent = entry.vendorName;
+                row.insertCell(3).textContent = entry.litre;
+                const actionsCell = row.insertCell(4);
+                actionsCell.innerHTML = `
+                           <button class="btn btn-danger btn-sm" onclick="deleteFillingRecord(this)">Delete</button>
+                       `;
+            });
+        }
+
+        function fillstationDetailsTable(stationDetailsList) {
+            const table = document.getElementById('stationDetailsTable').getElementsByTagName('tbody')[0];
+            stationDetailsList.forEach(entry => {
+                const row = table.insertRow();
+
+
+                const routeId = row.insertCell(0);
+                routeId.textContent = entry.routeId; // If available
+                routeId.style.display = 'none';
+
+                const loadTypeId = row.insertCell(1);
+                loadTypeId.textContent = entry.loadTypeId; // If available
+                loadTypeId.style.display = 'none';
+
+                row.insertCell(2).textContent = entry.routeDesc;
+                row.insertCell(3).textContent = entry.distance;
+                row.insertCell(4).textContent = entry.loadType;
+
+                $.ajax({
+                    cache: false,
+                    url: '@(utilityHelper.SiteUrl() + "DieselHisab/getDieselAverageAsPerLoadType")',
+                    type: "GET",
+                    data: { vehicleNo: entry.vehicleNo, loadType: entry.loadType },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data != null && data != undefined) {
+
+                            var distance = parseFloat(entry.distance) || 0;
+                            var average = parseFloat(data.value) || 0;
+                            var Estkm = 0;
+                            if (average !== 0) {
+                                Estkm = (distance / average).toFixed(2); // returns a string with 2 decimal places
+                            } else {
+                                Estkm = "0.00";
+                            }
+
+                            row.insertCell(5).textContent = data.value;
+                            row.insertCell(6).textContent = Estkm;
+
+                            const actionsCell = row.insertCell(7);
+                            actionsCell.innerHTML = `<button class="btn btn-danger btn-sm" onclick="deleteStationRow(this)">Delete</button>`;
+                        } else {
+                            console.log(data);
+                        }
+                    }
+                });
+
+            });
+        }
+    </script>
 }

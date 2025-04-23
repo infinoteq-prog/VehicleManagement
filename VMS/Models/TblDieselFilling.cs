@@ -8,6 +8,7 @@ public partial class TblDieselFilling
     public int Id { get; set; }
 
     public int TripId { get; set; }
+    public int VendorId { get; set; }
 
     public DateTime DieselFillingDate { get; set; }
 

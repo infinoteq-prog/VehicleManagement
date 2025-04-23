@@ -400,6 +400,7 @@ public partial class VmsDbContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("Diesel_Filling_Date");
             entity.Property(e => e.DieselQty).HasColumnName("Diesel_Qty");
+            entity.Property(e => e.VendorId).HasColumnName("VendorId");
             entity.Property(e => e.UpdateDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")

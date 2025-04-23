@@ -26,7 +26,12 @@ namespace VMS.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var model = new VMLogin
+            {
+                UserName = "hemantsharma24",
+                Password = "test"
+            };
+            return View(model);
         }
 
         public IActionResult ChangePassword()
