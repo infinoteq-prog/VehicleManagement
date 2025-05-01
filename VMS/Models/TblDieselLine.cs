@@ -14,6 +14,8 @@ public partial class TblDieselLine
     public string RouteDesc { get; set; } = null!;
 
     public string LoadType { get; set; } = null!;
+    public decimal Average { get; set; } = 0!;
+    public decimal EstimatedDiesel { get; set; } = 0;
 
     public DateTime CreationDate { get; set; }
 

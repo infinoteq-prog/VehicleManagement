@@ -185,6 +185,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txtClosingDiesel">Closing Diesel:<span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="txtClosingDiesel" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Opening Diesel" />
+                                            </div>
+                                        </div>
+                                    </div>
                             </div>
                         
                             <div class="row rowHeight">
@@ -308,15 +316,15 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtAverage">Average:</label>
                                         <div class="col-sm-8">
-                                            <input type="text" id="txtAverage" class="form-control" disabled />
+                                            <input type="text" id="txtAverage" class="form-control" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group row">
-                                        <label class="col-sm-6 col-form-label" for="txtEstKm">Estimated KM:</label>
+                                        <label class="col-sm-6 col-form-label" for="txtEstKm">Estimated Diesel:</label>
                                         <div class="col-sm-6">
-                                            <input type="text" id="txtEstKm" class="form-control" disabled />
+                                            <input type="text" id="txtEstKm" class="form-control" />
                                         </div>
                                     </div>
                                 </div>
@@ -337,10 +345,10 @@
                                             <th style="display:none;">StationId</th>
                                             <th style="display:none;">LoadTypeId</th>
                                             <th>Station</th>
-                                            <th>Distance</th>
+                                            <th>Distance(KM)</th>
                                             <th>Load Type</th>
                                             <th>Average</th>
-                                            <th>Estimated KM</th>
+                                            <th>Estimated Diesel</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -672,6 +680,15 @@
             $("#txtOpeningDiesel").focus();
         }
 
+        if ($("#txtClosingDiesel").val() == "") {
+            $("#txtClosingDiesel").attr('class', 'form-control vaidationTextBoxError');
+            $("#txtClosingDiesel").focus();
+            isValid = false;
+        } else {
+            $("#txtClosingDiesel").attr('class', 'form-control');
+            $("#txtClosingDiesel").focus();
+        }
+
         if ($("#txtRouteDescription").val() == "") {
             $("#txtRouteDescription").attr('class', 'form-control vaidationTextBoxError');
             $("#txtRouteDescription").focus();
@@ -809,6 +826,16 @@
                 }
             });
 
+                $("#txtClosingDiesel").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
+
             $("#txtRouteDescription").on("input", function () {
                 if ($(this).val() == "") {
                     $(this).attr('class', 'form-control vaidationTextBoxError');
@@ -834,6 +861,7 @@
         $("#txtRunningKm").val("");
         $("#txtTripNumber").val("");
         $("#txtOpeningDiesel").val("");
+        $("#txtClosingDiesel").val("");
         $("#txtRouteDescription").val("");
             if ($.fn.DataTable.isDataTable("#dieselFillingTable")) {
                 $('#dieselFillingTable tbody').empty();
@@ -923,7 +951,8 @@
                     $("#txtLastTripDriver").val(data.lastTripDriver);
                     $("#txtLastTripDriverFather").val(data.lastTripDriverFatherName);
                     $("#txtLastTripVendor").val(data.lastTripVendor);
-                    // $("#txtOpeningDiesel").val(data.openingDiesel);
+                    $("#txtStartOdometer").val(data.endOdometer);
+                    $("#txtOpeningDiesel").val(data.closingDiesel);
                 } else {
                     $("#txtLastTripStartDate").val("N/A");
                     $("#txtLastTripEndDate").val("N/A");
@@ -1005,6 +1034,7 @@
                 $("#from-date-picker").val() != "" &&
                 $("#to-date-picker").val() != "" && 
                 $("#txtOpeningDiesel").val() != "" &&
+                $("#txtClosingDiesel").val() != "" &&
                 $("#txtRouteDescription").val() != ""){
 
                 var tripStartDate = $("#from-date-picker").val().split("-").reverse().join("-");
@@ -1026,6 +1056,7 @@
                 formData.append("startOdometer", $("#txtStartOdometer").val());
                 formData.append("endOdometer", $("#txtEndOdometer").val());
                 formData.append("openingDiesel", $("#txtOpeningDiesel").val());
+                formData.append("closingDiesel", $("#txtClosingDiesel").val());
                     formData.append("runningKm", $("#txtRunningKm").val());
                 formData.append("tripRouteDescription", $("#txtRouteDescription").val());
 
@@ -1045,10 +1076,14 @@
                         var routeId = $(row).find("td:eq(0)").text();
                         var routeDesc = $(row).find("td:eq(2)").text();
                         var LoadType = $(row).find("td:eq(4)").text();
+                        var Average = $(row).find("td:eq(5)").text();
+                        var EstimatedDiesel = $(row).find("td:eq(6)").text();
 
                         formData.append(`_lstDieselLine[${index}].RouteId`, routeId);
                         formData.append(`_lstDieselLine[${index}].RouteDesc`, routeDesc);
                         formData.append(`_lstDieselLine[${index}].LoadType`, LoadType);
+                        formData.append(`_lstDieselLine[${index}].Average`, Average);
+                        formData.append(`_lstDieselLine[${index}].EstimatedDiesel`, EstimatedDiesel);
                     });
                
                 $.ajax({
@@ -1376,15 +1411,19 @@
                         $("#txtEndOdometer").val(data.endOdometer);
                         $("#txtRunningKm").val(data.runningKm);
                         $("#txtOpeningDiesel").val(data.openingDiesel);
+                        $("#txtClosingDiesel").val(data.closingDiesel);
                         $("#txtRouteDescription").val(data.lastTripRouteDescr);
 
                         //Last Trip Detail
+                        try
+                        {
                         $("#txtLastTripStartDate").val(data.lastTripHistory.lastTripStartDate);
                         $("#txtLastTripEndDate").val(data.lastTripHistory.lastTripEndDate);
                         $("#txtLastTripRouteDesc").val(data.lastTripHistory.lastTripRouteDescr);
                         $("#txtLastTripDriver").val(data.lastTripHistory.lastTripDriver);
                         $("#txtLastTripDriverFather").val(data.lastTripHistory.lastTripDriverFatherName);
                         $("#txtLastTripVendor").val(data.lastTripHistory.lastTripVendor);
+                        }catch{}
 
                         fillDieselFillingTable(data.dieselFillingList);
                         fillstationDetailsTable(data.stationList);
@@ -1428,7 +1467,6 @@
             stationDetailsList.forEach(entry => {
                 const row = table.insertRow();
 
-
                 const routeId = row.insertCell(0);
                 routeId.textContent = entry.routeId; // If available
                 routeId.style.display = 'none';
@@ -1440,36 +1478,23 @@
                 row.insertCell(2).textContent = entry.routeDesc;
                 row.insertCell(3).textContent = entry.distance;
                 row.insertCell(4).textContent = entry.loadType;
+                row.insertCell(5).textContent = entry.average;
+                row.insertCell(6).textContent = entry.estimatedDiesel;
 
-                $.ajax({
-                    cache: false,
-                    url: '@(utilityHelper.SiteUrl() + "DieselHisab/getDieselAverageAsPerLoadType")',
-                    type: "GET",
-                    data: { vehicleNo: entry.vehicleNo, loadType: entry.loadType },
-                    dataType: "json",
-                    success: function (data) {
-                        if (data != null && data != undefined) {
+                // var distance = parseFloat(entry.distance) || 0;
+                //             var average = parseFloat(entry.average.result.value) || 0;
+                //             var Estkm = 0;
+                //             if (average !== 0) {
+                //                 Estkm = (distance / average).toFixed(2); // returns a string with 2 decimal places
+                //             } else {
+                //                 Estkm = "0.00";
+                //             }
 
-                            var distance = parseFloat(entry.distance) || 0;
-                            var average = parseFloat(data.value) || 0;
-                            var Estkm = 0;
-                            if (average !== 0) {
-                                Estkm = (distance / average).toFixed(2); // returns a string with 2 decimal places
-                            } else {
-                                Estkm = "0.00";
-                            }
-
-                            row.insertCell(5).textContent = data.value;
-                            row.insertCell(6).textContent = Estkm;
+                //             row.insertCell(5).textContent = average;
+                //             row.insertCell(6).textContent = Estkm;
 
                             const actionsCell = row.insertCell(7);
                             actionsCell.innerHTML = `<button class="btn btn-danger btn-sm" onclick="deleteStationRow(this)">Delete</button>`;
-                        } else {
-                            console.log(data);
-                        }
-                    }
-                });
-
             });
         }
     </script>

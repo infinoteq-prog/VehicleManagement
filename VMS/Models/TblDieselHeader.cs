@@ -22,6 +22,7 @@ public partial class TblDieselHeader
     public long EndOdometer { get; set; }
 
     public long OpeningDiesel { get; set; }
+    public long ClosingDiesel { get; set; }
 
     public bool IsActive { get; set; }
 
@@ -34,6 +35,8 @@ public partial class TblDieselHeader
     public int UpdatedBy { get; set; }
 
     public int? RunningKm { get; set; }
+    public int? ApprovedBy { get; set; }
+    public DateTime? ApprovedDate { get; set; }
 
     public virtual TblDriverMaster Driver { get; set; } = null!;
 

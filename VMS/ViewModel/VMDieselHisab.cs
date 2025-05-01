@@ -33,6 +33,7 @@ namespace VMS.ViewModel
         public long EndOdometer { get; set; }
 
         public long OpeningDiesel { get; set; }
+        public long ClosingDiesel { get; set; }
 
         public bool IsActive { get; set; }
 

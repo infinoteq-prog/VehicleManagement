@@ -431,7 +431,12 @@ public partial class VmsDbContext : DbContext
                 .HasMaxLength(500)
                 .HasColumnName("Last_Trip_route_descr");
             entity.Property(e => e.OpeningDiesel).HasColumnName("Opening_diesel");
+            entity.Property(e => e.ClosingDiesel).HasColumnName("Closing_diesel");
             entity.Property(e => e.StartOdometer).HasColumnName("Start_odometer");
+            entity.Property(e => e.ApprovedBy).HasColumnName("Approved_By");
+            entity.Property(e => e.ApprovedDate)
+                .HasColumnType("datetime")
+                .HasColumnName("Approved_Date");
             entity.Property(e => e.TripEndDate)
                 .HasColumnType("datetime")
                 .HasColumnName("Trip_end_date");
@@ -474,6 +479,8 @@ public partial class VmsDbContext : DbContext
                 .HasMaxLength(1000)
                 .HasColumnName("Route_Desc");
             entity.Property(e => e.RouteId).HasColumnName("Route_ID");
+            entity.Property(e => e.Average).HasColumnName("Average");
+            entity.Property(e => e.EstimatedDiesel).HasColumnName("Estimated_Diesel");
             entity.Property(e => e.UpdateDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")

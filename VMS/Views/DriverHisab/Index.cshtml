@@ -1,0 +1,572 @@
+﻿@{
+}
+@model VMS.ViewModel.VMDriverHisab
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Add Driver Hisab</h4>
+                    <div>
+                        <form id="frmDriverHisabMaster" name="frmDriverHisabMaster" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <input id="hdnDriverHisabID" name="hdnDriverHisabID" type="hidden">
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <label id="lblMandatoryMessage" class="reqFields">@utilityHelper.reqFieldMessage</label>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDriverName">Driver Name:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" id="ddlDriver" name="ddlDriver" onchange="setDropDownStyle(this);"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDriverFatherName">Driver Father Name: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtDriverFatherName" class="form-control alphanumericonlywithspace" maxlength="100" onchange="setTextboxStyle(this);" placeholder="Please Enter Driver Father Name" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtTripNumber">Settlement Number:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtSettlementNumber" placeholder="Enter a settlement number." class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <h5>Previous Trip History :</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLastTripStartDate">LastTrip Start Date:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtLastTripStartDate" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLastTripEndDate">LastTrip End Date:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtLastTripEndDate" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLastTripRouteDesc">LastTrip Route Desc:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextAreaFor(m => m.RouteDescription, new { @class = "form-control", cols = "10", rows = "5", id = "txtLastTripRouteDesc", @readonly="readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLastTripVehicle">LastTrip Vehicle:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtLastTripVehicle" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div class="row rowHeight">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <h5>New Route:</h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="padding: 15px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px;">
+                                <div class="row rowHeight">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="ddlVehicleNo">Vehicle No:<span class="reqFields">*</span> </label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" id="ddlVehicleNo" name="ddlVehicleNo" onchange="setDropDownStyle(this);"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="from-date-picker">Trip Start Date : <span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="from-date-picker" placeholder="Select From Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="to-date-picker">Trip End Date : <span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="to-date-picker" placeholder="Select To Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtWeight">Weight:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                                <input type="text" id="txtWeight" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Weight" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtOpeningDiesel">Opening Diesel:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtOpeningDiesel" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Opening Diesel" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRouteDescription">Route Desc :<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtRouteDescription" class="form-control" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Route Description" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"></div>
+                            </div>
+                        </div>
+
+
+                            <!-- Expense Lines Table -->
+                       <div class="row rowHeight">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <h5>Expense Details:</h5>
+                            </div>
+                        </div>
+                      </div>
+
+                    <div class="card" style="padding: 15px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px;">
+                        <div class="row rowHeight">
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="ddlExpenseHead">Expense Head: <span class="reqFields">*</span></label>
+                                    <div class="col-sm-8">
+                                                <select class="form-control" id="ddlExpenseHead" name="ddlExpenseHead" onchange="setDropDownStyle(this);">
+                                            <!-- Vendor options will be populated here from VendorMaster API -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="ddlExpenseType">Expense Type: <span class="reqFields">*</span></label>
+                                    <div class="col-sm-8">
+                                                <select class="form-control" id="ddlExpenseType" name="ddlExpenseType" onchange="setDropDownStyle(this);">
+                                            <!-- Vendor options will be populated here from VendorMaster API -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txtExpenseAmount">Amount: <span class="reqFields">*</span></label>
+                                    <div class="col-sm-8">
+                                                <input type="text" id="txtExpenseAmount" class="form-control numberonly" maxlength="10" onchange="setTextboxStyle(this);" placeholder="Please Enter Litre" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <button type="button" class="btn btn-primary" id="btnAddExpense" onclick="addExpense();">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table id="expenseListTable" class="table table-bordered">
+                                        <thead class="thead-light">
+                                    <tr>
+                                        <th style="width: 120px;display:none;">ExpenseHeadId/th>
+                                        <th style="width: 120px;display:none;">ExpenseTypeId</th>
+                                        <th style="width: 120px;">Expense Head</th>
+                                        <th style="width: 120px;">Amount Dr</th>
+                                        <th style="width: 120px;">Amount Cr</th>
+                                        <th style="width: 120px;">Expense Type</th>
+                                        <th style="width: 120px;">Closing Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Table rows will be dynamically added here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+   
+
+                           @*  @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleAddAccess == true)
+                            { *@
+                                <div class="row rowHeight" style="text-align:center;">
+                                    <div class="col-md-12">
+                                    <button type="button" id="saveButton" class="btn btn-primary mr-2" onclick="saveDieselHisab();">Save</button>
+                                        <button type="button" class="btn btn-light" onclick="clearControls();">Clear</button>
+                                    </div>
+                                </div>
+                            @* } *@
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+    var fullAccess = 'True';
+    var addAccess = 'True';
+    var viewAccess = 'True';
+    var updateAccess = 'True';
+    var deleteAccess = 'True';
+
+    var viewButton = "";
+    var updateButton = "";
+    var deleteButton = "";
+
+    $(document).ready(function () {
+        //Fill Vehicle Master DropdownList
+        setSideMenu("driver-hisab-master");
+        getVehicleNumber();
+        getDriverMaster();
+        
+        if (fullAccess === "True" || addAccess === "True") {
+            //checkValidationOnChange();
+            //getDieselHisabByVehicle(); 
+        }
+        if (fullAccess === "True" || viewAccess === "True") {
+            //getVehicleMasterList();
+        }
+
+        $(function () {
+            $("#ddlVehicleNo").change(function () {
+                
+            });
+
+            $("#ddlDriver").change(function () {
+                    var selectedValue = $(this).val();
+                    getCurrentSettlementNumber($(this).val());
+                    getDriverFather();
+            });
+
+        });
+
+    });
+
+    function setDropDownStyle(cltr){
+        if ($(cltr).find(":selected").val() == "0") {
+            $(cltr).attr('class', 'form-control vaidationTextBoxError');
+        } else {
+            $(cltr).attr('class', 'form-control');
+        }
+    }
+
+    function setTextboxStyle(cltr) {
+        if ($(cltr).val() == "") {
+            $(cltr).attr('class', 'form-control vaidationTextBoxError');
+        } else {
+            $(cltr).attr('class', 'form-control');
+        }
+    }
+
+    function checkValidation() {
+        var isValid = true;
+        if ($('#ddlVehicleNo option:selected').val() == "0" || $('#ddlState option:selected').val() == "") {
+            $("#ddlVehicleNo").attr('class', 'form-control vaidationTextBoxError');
+            $("#ddlVehicleNo").focus();
+            isValid = false;
+        } else {
+            $("#ddlVehicleNo").attr('class', 'form-control');
+            $("#ddlVehicleNo").focus();
+        }
+        
+        return isValid;
+    }
+
+    function checkValidationOnChange() {
+        $(function () {
+            $("#ddlVehicleNo").change(function () {
+                if ($('option:selected', this).val() == "0" || $('option:selected', this).val() == "") {
+                    $(this).attr('class', 'form-control vaidationTextBoxError');
+                    $(this).focus();
+                } else {
+                    $(this).attr('class', 'form-control');
+                    $(this).focus();
+                }
+            });
+
+            $("#ddlDriver").change(function () {
+                if ($('option:selected', this).val() == "0" || $('option:selected', this).val() == "") {
+                    $(this).attr('class', 'form-control vaidationTextBoxError');
+                    $(this).focus();
+                } else {
+                    $(this).attr('class', 'form-control');
+                    $(this).focus();
+                }
+            });
+
+            $("#txtFatherName").on("input", function () {
+                if ($(this).val() == "") {
+                    $(this).attr('class', 'form-control vaidationTextBoxError');
+                    $(this).focus();
+                } else {
+                    $(this).attr('class', 'form-control');
+                    $(this).focus();
+                }
+            });
+        });
+    }
+
+    function clearControls() {
+        $("#ddlVehicleNo").prop("selectedIndex", 0).val();
+        $("#ddlDriver").prop("selectedIndex", 0).val();
+        $("#txtFatherName").val("");
+    }
+
+    function getCurrentSettlementNumber(driverId) {
+        $.ajax({
+            cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DriverHisab/getCurrentSettlementNumber")',
+            type: "GET",
+                data: { driverId: driverId },
+            dataType: "json",
+            success: function (data) {
+                if (data != null && data != undefined) {
+                        $("#txtSettlementNumber").val(data.settlementNo);
+                        getLastDriverTripHistory(driverId);
+                } else {
+                    console.log(data);
+                }
+            }
+        });
+    }
+
+    function getLastDriverTripHistory(driverId) {
+        $.ajax({
+            cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DriverHisab/getLastDriverTripHistory")',
+            type: "GET",
+                data: { driverId: driverId },
+            dataType: "json",
+                success: function (data) {  
+                if (data != null && data != undefined) {
+                    $("#txtLastTripStartDate").val(data.lastTripStartDate);
+                    $("#txtLastTripEndDate").val(data.lastTripEndDate);
+                    $("#txtLastTripRouteDesc").val(data.lastTripRouteDescr);
+                        $("#txtLastTripVehicle").val(data.vehicleNumber);
+                    // $("#txtOpeningDiesel").val(data.openingDiesel);
+                } else {
+                    $("#txtLastTripStartDate").val("N/A");
+                    $("#txtLastTripEndDate").val("N/A");
+                    $("#txtLastTripRouteDesc").val("N/A");
+                    $("#txtLastTripVehicle").val("N/A");
+                    $("#txtOpeningDiesel").val("0")
+
+                    $.confirm({
+                        title: 'Last Trip Not Found',
+                            content: 'Driver - ' + $("#ddlDriver option:selected").text() + ' Last Trip Not Found!',
+                        icon: 'fa fa-warning',
+                        type: 'red',
+                        buttons: {
+                            omg: {
+                                text: 'OK',
+                                btnClass: 'btn-red',
+                            },
+                        }
+                    });
+                    console.log(data);
+                }
+            }
+        });
+    }
+
+    function saveDieselHisab() {
+        var isValid = checkValidation();
+        if (isValid == true) {
+
+                if ($('#ddlVehicleNo option:selected').val() != "0" &&
+                $('#ddlDriver option:selected').val() != "0" &&
+                $("#txtTripNumber").val() != "" &&
+                $("#txtFatherName").val() != "" &&
+                $("#txtStartOdometer").val() != "" &&
+                $("#txtEndOdometer").val() != "" &&
+                $("#txtRunningKm").val() != "" &&
+                $("#from-date-picker").val() != "" &&
+                $("#to-date-picker").val() != "" && 
+                $("#txtOpeningDiesel").val() != "" &&
+                $("#txtRouteDescription").val() != ""){
+
+                var tripStartDate = $("#from-date-picker").val().split("-").reverse().join("-");
+                var tripEndDate = $("#to-date-picker").val().split("-").reverse().join("-");
+
+                var formData = new FormData();
+
+                    var tripId = $('#hdnDieselHisabID').val();
+                    if (tripId && tripId.length > 0 && parseInt(tripId[0]) > 0) {
+                        formData.append("tripId", tripId);
+                    }
+                formData.append("vehicleNo", $("#ddlVehicleNo option:selected").val());
+                formData.append("driverId", $("#ddlDriver option:selected").val());
+                formData.append("tripNo", $('#txtTripNumber').val());
+                formData.append("driverName", $("#ddlDriver option:selected").text());
+                formData.append("driverFatherName", $("#txtFatherName").val());
+                formData.append("tripStartDate", tripStartDate);
+                formData.append("tripEndDate", tripEndDate);
+                formData.append("startOdometer", $("#txtStartOdometer").val());
+                formData.append("endOdometer", $("#txtEndOdometer").val());
+                formData.append("openingDiesel", $("#txtOpeningDiesel").val());
+                    formData.append("runningKm", $("#txtRunningKm").val());
+                formData.append("tripRouteDescription", $("#txtRouteDescription").val());
+
+                 // Diesel Filling Entries from Table
+                   $("#dieselFillingTable tbody tr").each(function (index, row) {
+                       var date = $(row).find("td:eq(0)").text();
+                       var vendorId = $(row).find("td:eq(1)").text();
+                       var litre = $(row).find("td:eq(3)").text();
+
+                       formData.append(`_lstDieselFilling[${index}].DieselFillingDate`, date);
+                       formData.append(`_lstDieselFilling[${index}].VendorId`, vendorId);
+                       formData.append(`_lstDieselFilling[${index}].DieselQty`, litre);
+                   });
+
+                    // Diesel Line Entries from Table
+                    $("#stationDetailsTable tbody tr").each(function (index, row) {
+                        var routeId = $(row).find("td:eq(0)").text();
+                        var routeDesc = $(row).find("td:eq(2)").text();
+                        var LoadType = $(row).find("td:eq(4)").text();
+
+                        formData.append(`_lstDieselLine[${index}].RouteId`, routeId);
+                        formData.append(`_lstDieselLine[${index}].RouteDesc`, routeDesc);
+                        formData.append(`_lstDieselLine[${index}].LoadType`, LoadType);
+                    });
+               
+                $.ajax({
+                    cache: false,
+                        url: '@(utilityHelper.SiteUrl() + "DieselHisab/SaveUpdate")',
+                    type: "POST",
+                    dataType: "json",
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function (data) {
+                        if (data != null && data != undefined) {
+                            if (data.transactionMessage.status == '@((byte)TransactionStatus.Success)') {
+                                console.log(data);
+                                $.confirm({
+                                    title: 'Save Diesel Hisab!',
+                                        content: "Diesel Hisab has been saved successfully!",
+                                    type: 'green',
+                                    buttons: {
+                                        omg: {
+                                            text: 'OK',
+                                            btnClass: 'btn-green',
+                                            action: function () {
+                                                //getUserList();
+                                                //clearControls();
+                                                    window.location.href = '@(utilityHelper.SiteUrl() + "DieselHisab/List")';
+                                            }
+                                        },
+                                    }
+                                });
+                            } else if (data.transactionMessage.status == '@((byte)TransactionStatus.Failed)') {
+                                $.confirm({
+                                    title: 'Diesel Hisab Already Exists!',
+                                    content: data.transactionMessage.message,
+                                    icon: 'fa fa-warning',
+                                    type: 'red',
+                                    buttons: {
+                                        omg: {
+                                            text: 'OK',
+                                            btnClass: 'btn-red',
+                                        },
+                                    }
+                                });
+                                $("#divDieslHisabMaster").hide();
+                            }
+                        } else {
+                            console.log(data);
+                            //clearControls();
+                            $.confirm({
+                                title: 'Error Occoured!',
+                                content: data.transactionMessage.message,
+                                icon: 'fa fa-warning',
+                                type: 'red',
+                                buttons: {
+                                    omg: {
+                                        text: 'OK',
+                                        btnClass: 'btn-red',
+                                    },
+                                }
+                            });
+                            $("#divDieslHisabMaster").hide();
+                        }
+                    }
+                });
+            }
+        }else{
+
+        }
+    }
+
+    function getDriverFather(){
+        var driverMasterId = $('#ddlDriver option:selected').val();
+        $.ajax({
+            cache: false,
+            url: '@(utilityHelper.SiteUrl() + "DriverMaster/getDriverFather")',
+            type: "GET",
+            data: { driverMasterId: driverMasterId },
+            dataType: "json",
+            success: function (data) {
+                if (data != null && data != undefined) {
+                    console.log(data);
+                        $("#txtDriverFatherName").val(data.driverFatherName);
+                } else {
+                    console.log(data);
+                }
+            }
+        });
+    }
+    </script>
+}

@@ -4041,6 +4041,63 @@
             window.open(url, '_blank');
             return false;
         }
+        function approvalDieselHisabMaster(tripId) {
+            $.confirm({
+                title: 'Approve Confirmation!',
+                content: 'Are you sure! You want to approve diesel hisab entry?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.ajax({
+                                cache: false,
+                                url: '@(utilityHelper.SiteUrl() + "DieselHisab/Approve?tripId=")' + tripId,
+                                type: "POST",
+                                dataType: "json",
+                                success: function (data) {
+                                    console.log(data);
+                                    $.confirm({
+                                        title: 'Transaction Success!',
+                                        content: data.transactionMessage.message,
+                                        type: 'green',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-green',
+                                                action: function () {
+                                                    window.location.href = '@(utilityHelper.SiteUrl() + "DieselHisab/List")';
+                                                }
+                                            },
+                                        }
+                                    });
+                                },
+                                error: function (ex) {
+                                    $.confirm({
+                                        title: 'Transaction Failed!',
+                                        content: data.transactionMessage.message,
+                                        icon: 'fa fa-warning',
+                                        type: 'red',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-red',
+                                            },
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
          //Function Diesel Hisab Delete Functions
         function deleteDieselHisabMaster(tripId) {
             $.confirm({

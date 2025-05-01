@@ -6,23 +6,17 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
-    ViewData["Title"] = "Diesel Hisab Master";
+    ViewData["Title"] = "Driver Hisab Master";
 }
 
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <h1 class="page-title">Diesel Hisab List</h1>
+            <h1 class="page-title">Driver Hisab List</h1>
             <div class="card">
                 <div class="card-body">
-                    <form id="searchDieselHisabForm">
+                    <form id="searchDriverHisabForm">
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="txtTripId">Trip Id</label>
-                                    <input type="number" class="form-control" id="txtTripId" />
-                                </div>
-                            </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="ddlVehicleNo">Vehicle No</label>
@@ -53,40 +47,24 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="txtStartOdometer">Start Odometer</label>
-                                    <input type="number" class="form-control" id="txtStartOdometer" />
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="txtEndOdometer">End Odometer</label>
-                                    <input type="number" class="form-control" id="txtEndOdometer" />
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
                                     <label for="txtOpeningDiesel">Opening Diesel</label>
                                     <input type="number" class="form-control" id="txtOpeningDiesel" />
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <button type="button" class="btn btn-primary mt-4" onclick="searchDieselHisabMaster()">Search</button>
+                                <button type="button" class="btn btn-primary mt-4" onclick="searchDriverHisabMaster()">Search</button>
                             </div>
                         </div>
                     </form>
 
-                    <table id="tblDieselHisabMasterList" class="table table-bordered table-striped">
+                    <table id="tblDriverHisabMasterList" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Action</th>
-                                <th>TripId</th>
-                                <th>Approved Status</th>
-                                <th>Vehicle No</th>
                                 <th>Driver Name</th>
+                                <th>Vehicle No</th>
                                 <th>Trip Start Date</th>
-                                <th>Trip End Date</th>
-                                <th>Start Odometer</th>
-                                <th>End Odometer</th>
+                                <th>Trip End Date</th>                               
                                 <th>Opening Diesel</th>
                                 <th>Creation Date</th>
                                 <th>Created By</th>
@@ -111,53 +89,23 @@
         var viewAccess = 'True';
         var updateAccess = 'True';
         var deleteAccess = 'True';
-        var approvalAccess = 'True';
 
         var viewButton = "";
         var updateButton = "";
         var deleteButton = "";
-        var approvalButton = "";
 
         $(document).ready(function () {
              $('[data-toggle="tooltip"]').tooltip();
-            setSideMenu("diesel-hisab-master");
+            setSideMenu("driver-hisab-master");
             if (fullAccess === "True" || viewAccess === "True") {
                 getVehicleNumber();
                 getDriverMaster();
-                setDefaultDate();
-                searchDieselHisabMaster(); // Load diesel data on page load
+                getDriverHisabMasterList(); // Load diesel data on page load
             }
         });
 
-        function setDefaultDate()
-        {
-              const tripStartDateInput = document.getElementById('txtTripStartDate');
-              const today1 = new Date();
-              const oneMonthAgo = new Date(today1); // Create a copy of today's date
-
-              // Subtract one month
-              oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-
-              // Format the date as YYYY-MM-DD (required for <input type="date">)
-              const year = oneMonthAgo.getFullYear();
-              const month = String(oneMonthAgo.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
-              const day = String(oneMonthAgo.getDate()).padStart(2, '0');
-              const formattedDate = `${year}-${month}-${day}`;  
-              tripStartDateInput.value = formattedDate;
-              
-
-              const tripEndDateInput = document.getElementById('txtTripEndDate');
-             const today = new Date();
-             // Format the date as YYYY-MM-DD (required for <input type="date">)
-             const yearEnd = today.getFullYear();
-             const monthEnd = String(today.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
-             const dayEnd = String(today.getDate()).padStart(2, '0');
-             const formattedDateEnd = `${yearEnd}-${monthEnd}-${dayEnd}`;
-               tripEndDateInput.value = formattedDateEnd;
-         }
-
         function bindDataTable() {
-            $('#tblDieselHisabMasterList').DataTable({
+            $('#tblDriverHisabMasterList').DataTable({
                 deferRender: true,
                 scroller: true,
                 scrollX: true,
@@ -176,14 +124,14 @@
                         extend: 'csvHtml5',
                         text: 'Csv',
                         title: function () {
-                            return "Diesel Hisab Master List";
+                            return "Driver Hisab Master List";
                         }
                     },
                     {
                         extend: 'excelHtml5',
                         text: 'Excel',
                         title: function () {
-                            return "Diesel Hisab Master List";
+                            return "Driver Hisab Master List";
                         }
                     },
                     {
@@ -196,7 +144,7 @@
                     {
                         extend: 'pdfHtml5',
                         title: function () {
-                            return "Diesel Hisab Master List";
+                            return "Driver Hisab Master List";
                         },
                         orientation: 'landscape',
                         pageSize: 'A4'
@@ -205,35 +153,30 @@
             });
         }
 
-        function searchDieselHisabMaster() {
-            if ($.fn.DataTable.isDataTable("#tblDieselHisabMasterList")) {
-                $('#tblDieselHisabMasterList tr').remove();
-                $('#tblDieselHisabMasterList tbody').empty();
-                $('#tblDieselHisabMasterList').DataTable().clear().destroy();
+        function searchDriverHisabMaster() {
+            if ($.fn.DataTable.isDataTable("#tblDriverHisabMasterList")) {
+                $('#tblDriverHisabMasterList tr').remove();
+                $('#tblDriverHisabMasterList tbody').empty();
+                $('#tblDriverHisabMasterList').DataTable().clear().destroy();
             }
 
-            var tripId = $("#txtTripId").val();
             var vehicleNo = $('#ddlVehicleNo option:selected').val();
             var driverId = $('#ddlDriver option:selected').val();
             var tripStartDate = $("#txtTripStartDate").val();
             var tripEndDate = $("#txtTripEndDate").val();
-            var startOdometer = $("#txtStartOdometer").val();
-            var endOdometer = $("#txtEndOdometer").val();
             var openingDiesel = $("#txtOpeningDiesel").val();
 
             $.ajax({
                 cache: false,
-                url: '@(utilityHelper.SiteUrl() + "DieselHisab/searchDieselHisabMaster")',
+                url: '@(utilityHelper.SiteUrl() + "DriverHisab/searchDriverHisabMaster")',
                 type: "POST",
                 dataType: "json",
                 data: {
-                    id: tripId, // Id can be added if needed, for now it's set to 0
+                    id: 0, // Id can be added if needed, for now it's set to 0
                     vehicleNo: vehicleNo,
                     driverId: driverId,
                     tripStartDate: tripStartDate,
                     tripEndDate: tripEndDate,
-                    startOdometer: startOdometer,
-                    endOdometer: endOdometer,
                     openingDiesel: openingDiesel
                 },
                 success: function (data) {
@@ -242,26 +185,22 @@
                         $.each(data, function (i, item) {
 
                                  if (fullAccess === "True" || viewAccess === "True") {
-                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" title="View" data-toggle="tooltip" data-placement="top" onclick="viewDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" title="View" data-toggle="tooltip" data-placement="top" onclick="viewDriverHisabMaster(\'' + item.settlementNo + '\');"> <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
                             }
 
                             if (fullAccess === "True" || updateAccess === "True") {
-                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" title="Edit" data-toggle="tooltip" data-placement="top" onclick="editDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-edit btn-icon-append"></i></button> ';
-                            }
-
-                            if (fullAccess === "True" || approvalAccess === "True") {
-                                approvalButton = '<button id="approveConfirm" type="button" class="btn btn-warning btn-sm btn-icon-text" title="Approve" data-toggle="tooltip" data-placement="top" onclick="approvalDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-thumbs-up btn-icon-append"></i></button> ';
+                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" title="Edit" data-toggle="tooltip" data-placement="top" onclick="editDriverHisabMaster(\'' + item.settlementNo + '\');"> <i class="typcn typcn-edit btn-icon-append"></i></button> ';
                             }
 
                             if (fullAccess === "True" || updateAccess === "True") {
-                                 printButton = '<button type="button" class="btn btn-primary btn-sm btn-icon-text mr-3" title="Print" data-toggle="tooltip" data-placement="top" onclick="printDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-printer btn-icon-append"></i></button>';
+                                printButton = '<button type="button" class="btn btn-primary btn-sm btn-icon-text mr-3" title="Print" data-toggle="tooltip" data-placement="top" onclick="printDriverHisabMaster(\'' + item.settlementNo + '\');"> <i class="typcn typcn-printer btn-icon-append"></i></button>';
                                                                                    }
 
 
                             if (fullAccess === "True" || deleteAccess === "True") {
-                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" title="Delete" data-toggle="tooltip" data-placement="top" onclick="deleteDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" title="Delete" data-toggle="tooltip" data-placement="top" onclick="deleteDriverHisabMaster(\'' + item.settlementNo + '\');"> <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
                             }
-                            
+
                             var row = '<tr>' +
                                 '<td>' +
                                 '<div class="d-flex align-items-center">' +
@@ -269,30 +208,25 @@
                                 updateButton +
                                 printButton +
                                 deleteButton +
-                                approvalButton +
                                 '</div>' +
                                 '</td>' +
-                                '<td>' + item.tripId + '</td>' +
-                                '<td>' + item.approvedStatus + '</td>' +
-                                '<td>' + item.vehicleNumber + '</td>' +
                                 '<td>' + item.driverName + '</td>' +
+                                '<td>' + item.vehicleNumber + '</td>' +
                                 '<td>' + item.tripStartDate + '</td>' +
                                 '<td>' + item.tripEndDate + '</td>' +
-                                '<td>' + item.startOdometer + '</td>' +
-                                '<td>' + item.endOdometer + '</td>' +
                                 '<td>' + item.openingDiesel + '</td>' +
                                 '<td>' + item.creationDate + '</td>' +
-                                '<td>' + item.dieselHeaderCreatedByName + '</td>' +
+                                '<td>' + item.driverHeaderCreatedByName + '</td>' +
                                 '<td>' + item.updateDate + '</td>' +
-                                '<td>' + item.dieselHeaderUpdatedByName + '</td>' +
+                                '<td>' + item.driverHeaderUpdatedByName + '</td>' +
                                 '</tr>';
                             rows += row;
                         });
-                        $("#tblDieselHisabMasterList tbody").html(rows);
+                        $("#tblDriverHisabMasterList tbody").html(rows);
                         bindDataTable();
                     } else {
                         var row = '<tr><td colspan="12" style="text-align:center">No Data Found!</td></tr>';
-                        $("#tblDieselHisabMasterList tbody").html(row);
+                        $("#tblDriverHisabMasterList tbody").html(row);
                     }
                 },
                 error: function (ex) {
@@ -301,37 +235,31 @@
             });
         }
 
-        function getDieselHisabMasterList() {
+        function getDriverHisabMasterList() {
             $.ajax({
                 cache: false,
-                url: '@(utilityHelper.SiteUrl() + "DieselHisab/getTopDieselHisabList")',
+                url: '@(utilityHelper.SiteUrl() + "DriverHisab/getTopDriverHisabList")',
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
                     if (data != null && data.length > 0) {
                         var rows = "";
                         $.each(data, function (i, item) {
-                           
-
-                             if (fullAccess === "True" || viewAccess === "True") {
-                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" title="View" data-toggle="tooltip" data-placement="top" onclick="viewDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                            if (fullAccess === "True" || viewAccess === "True") {
+                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" title="View" data-toggle="tooltip" data-placement="top" onclick="viewDriverHisabMaster(\'' + item.settlementNo + '\');"> <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
                             }
 
                             if (fullAccess === "True" || updateAccess === "True") {
-                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" title="Edit" data-toggle="tooltip" data-placement="top" onclick="editDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-edit btn-icon-append"></i></button> ';
-                            }
-
-                            if (fullAccess === "True" || approvalAccess === "True") {
-                                approvalButton = '<button id="approveConfirm" type="button" class="btn btn-warning btn-sm btn-icon-text" title="Approve" data-toggle="tooltip" data-placement="top" onclick="approvalDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-thumbs-up btn-icon-append"></i></button> ';
+                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" title="Edit" data-toggle="tooltip" data-placement="top" onclick="editDriverHisabMaster(\'' + item.settlementNo + '\');"> <i class="typcn typcn-edit btn-icon-append"></i></button> ';
                             }
 
                             if (fullAccess === "True" || updateAccess === "True") {
-                                 printButton = '<button type="button" class="btn btn-primary btn-sm btn-icon-text mr-3" title="Print" data-toggle="tooltip" data-placement="top" onclick="printDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-printer btn-icon-append"></i></button>';
-                                                                                   }
+                                printButton = '<button type="button" class="btn btn-primary btn-sm btn-icon-text mr-3" title="Print" data-toggle="tooltip" data-placement="top" onclick="printDriverHisabMaster(\'' + item.settlementNo + '\');"> <i class="typcn typcn-printer btn-icon-append"></i></button>';
+                            }
 
 
                             if (fullAccess === "True" || deleteAccess === "True") {
-                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" title="Delete" data-toggle="tooltip" data-placement="top" onclick="deleteDieselHisabMaster1(\'' + item.tripId + '\');"> <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" title="Delete" data-toggle="tooltip" data-placement="top" onclick="deleteDriverHisabMaster(\'' + item.settlementNo + '\');"> <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
                             }
 
                             var row = '<tr>' +
@@ -341,30 +269,25 @@
                                 updateButton +
                                 printButton +
                                 deleteButton +
-                                approvalButton +
                                 '</div>' +
                                 '</td>' +
-                                '<td>' + item.tripId + '</td>' +
-                                '<td>' + item.approvedStatus + '</td>' +
-                                '<td>' + item.vehicleNo + '</td>' +
                                 '<td>' + item.driverName + '</td>' +
+                                '<td>' + item.vehicleNo + '</td>' +
                                 '<td>' + item.tripStartDate + '</td>' +
                                 '<td>' + item.tripEndDate + '</td>' +
-                                '<td>' + item.startOdometer + '</td>' +
-                                '<td>' + item.endOdometer + '</td>' +
                                 '<td>' + item.openingDiesel + '</td>' +
                                 '<td>' + item.creationDate + '</td>' +
-                                '<td>' + item.dieselHeaderCreatedByName + '</td>' +
+                                '<td>' + item.driverHeaderCreatedByName + '</td>' +
                                 '<td>' + item.updateDate + '</td>' +
-                                '<td>' + item.dieselHeaderUpdatedByName + '</td>' +
+                                '<td>' + item.driverHeaderUpdatedByName + '</td>' +
                                 '</tr>';
                             rows += row;
                         });
-                        $("#tblDieselHisabMasterList tbody").html(rows);
+                        $("#tblDriverHisabMasterList tbody").html(rows);
                         bindDataTable();
                     } else {
                         var row = '<tr><td colspan="12" style="text-align:center">No Data Found!</td></tr>';
-                        $("#tblDieselHisabMasterList tbody").html(row);
+                        $("#tblDriverHisabMasterList tbody").html(row);
                     }
                 },
                 error: function (ex) {

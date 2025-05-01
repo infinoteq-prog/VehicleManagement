@@ -7,16 +7,22 @@ using System.Reflection.Metadata;
 using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using static iTextSharp.text.pdf.PdfDiv;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace VMS.Controllers
 {
     public class DieselHisabController : Controller
     {
         private readonly ILogger<DieselHisabController> _logger;
-        private readonly VmsDbContext _context;
-        public DieselHisabController(VmsDbContext context)
+        private readonly VmsDbContext _context; private readonly string _connectionString;
+        public DieselHisabController(VmsDbContext context, IConfiguration configuration)
         {
-            _context = context;
+            _context = context; 
+            _connectionString = configuration.GetConnectionString("VMSContext"); 
         }
 
         public ActionResult Index()
@@ -40,6 +46,61 @@ namespace VMS.Controllers
         {
             ViewBag.tripid = tripid;
             return View("Print");
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> Approve(int tripid)
+        {
+            VMDriverMaster model = new VMDriverMaster();
+
+            try
+            {
+                int userID = 0;
+                VMLogin userDetails = HttpContext.Session.GetObjectFromJson<VMLogin>("userDetails");
+                if (userDetails != null)
+                {
+                    userID = userDetails.Id;
+                    // Retrieve the existing TblDieselHeader record based on TripId
+                    var UpdateDieselHisab = _context.TblDieselHeaders.Where(d => d.TripId == tripid).FirstOrDefault();
+
+                    if (UpdateDieselHisab != null)
+                    {
+                        // Update the properties of the existing TblDieselHeader
+                        if (UpdateDieselHisab.ApprovedBy != 0)
+                        {
+                            UpdateDieselHisab.ApprovedBy = 0;
+                        }
+                        else
+                        {
+                            UpdateDieselHisab.ApprovedBy = userID;
+                        }
+                        UpdateDieselHisab.ApprovedDate = utilityHelper.CurrentDateTime;
+
+                        _context.TblDieselHeaders.Update(UpdateDieselHisab);
+                        _context.SaveChanges(); // Save changes to the header first to ensure TripId is consistent
+
+                        model.TransactionMessage.Status = TransactionStatus.Success;
+                        model.TransactionMessage.Message = "Diesel Hisab has been approved successfully.";
+                    }
+                    else
+                    {
+                        model.TransactionMessage.Status = TransactionStatus.Error;
+                        model.TransactionMessage.Message = "Diesel Hisab has not been approved. Please try again.";
+                    }
+                }
+                else
+                {
+                    model.TransactionMessage.Status = TransactionStatus.Error;
+                    model.TransactionMessage.Message = "Diesel Hisab has not been approved. Please try again.";
+                }
+            }
+            catch(Exception ex)
+            {
+
+                model.TransactionMessage.Status = TransactionStatus.Error;
+                model.TransactionMessage.Message = ex.Message.ToString();
+            }
+            return Json(model);
         }
 
         public ActionResult List()
@@ -82,169 +143,150 @@ namespace VMS.Controllers
                          })
                          .FirstOrDefault();
 
+            
             if (model != null)
             {
                 return Json(model);
             }
             else
             {
-                VMTrip trip = new VMTrip()
+                var trip = new 
                 {
-                    TripId = 0,
+                    TripId = 1,
+                    vehicleId = vehicleNo
                 };
                 return Json(trip);
             }
         }
 
         [HttpGet]
-        public JsonResult getLastDieselTripHistory(int vehicleId)
+        public async Task<JsonResult> getLastDieselTripHistory(int vehicleId)
         {
-            var model = (from diesel in _context.TblDieselHeaders
-                         join vehicle in _context.TblVehicleMasters
-                             on diesel.VehicleNo equals vehicle.Id
-                         where diesel.IsActive == true && diesel.VehicleNo == Convert.ToInt32(vehicleId)
-                         orderby diesel.TripId descending
-                         select new VMDieselHisab
-                         {
-                             TripId = diesel.TripId,
-                             LastTripStartDate = Convert.ToString(Convert.ToDateTime(diesel.TripStartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                             LastTripEndDate = Convert.ToString(Convert.ToDateTime(diesel.TripStartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                             LastTripRouteDescr = diesel.LastTripRouteDescr,
-                             OpeningDiesel = diesel.OpeningDiesel == null || diesel.OpeningDiesel == 0
-                                             ? 1
-                                             : diesel.OpeningDiesel,
-                             LastTripVendor = "Test Vendor",
-                             LastTripDriver = _context.TblDriverMasters
-                                                .Where(p => p.Id == diesel.DriverId)
-                                                .Select(p => p.DriverName)
-                                                .FirstOrDefault(),
-                             LastTripDriverFatherName = _context.TblDriverMasters
-                                                        .Where(p => p.Id == diesel.DriverId)
-                                                        .Select(p => p.FatherName)
-                                                        .FirstOrDefault(),
-                             VehicleNumber = vehicle.VehicleNo // <-- From joined VehicleMaster
-                         }).FirstOrDefault();
-
-            return Json(model);
-        }
-
-        [HttpGet]
-        public JsonResult getDieselHisablWithId(string tripId)
-        {
-            // VMDieselHisab model = new VMDieselHisab();
-            int TripId = Convert.ToInt32(tripId);
-            var model =
-                (from x in _context.TblDieselHeaders
-                 join vehicle in _context.TblVehicleMasters on x.VehicleNo equals vehicle.Id
-                 where x.IsActive == true && x.TripId.Equals(TripId)
-                 select new
-                 {
-                     TripId = x.TripId,
-                     VehicleNo = x.VehicleNo,
-                     DriverId = x.DriverId,
-                     TripStartDate = Convert.ToString(Convert.ToDateTime(x.TripStartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                     TripEndDate = Convert.ToString(Convert.ToDateTime(x.TripEndDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                     LastTripRouteDescr = x.LastTripRouteDescr,
-                     StartOdometer = x.StartOdometer,
-                     EndOdometer = x.EndOdometer,
-                     OpeningDiesel = x.OpeningDiesel,
-                     RunningKm = x.RunningKm,
-                     IsActive = x.IsActive,
-                     LastTripVendor = "Test Vendor",
-                     DieselHeaderCreationDate = x.CreationDate,
-                     DieselHeaderUpdateDate = x.UpdateDate,
-                     DieselHeaderCreatedBy = x.CreatedBy,
-                     DieselHeaderUpdatedBy = x.UpdatedBy,
-                     DriverName = _context.TblDriverMasters
-                                .Where(p => p.Id == x.DriverId)
-                                .Select(p => p.DriverName).FirstOrDefault(),
-                     DriverFatherName = _context.TblDriverMasters
-                                           .Where(p => p.Id == x.DriverId)
-                                           .Select(p => p.FatherName).FirstOrDefault(),
-                     DieselHeaderCreatedByName = _context.TblUserMasters
-                            .Where(p => p.Id == x.CreatedBy)
-                            .Select(p => p.UserName).FirstOrDefault(),
-                     DieselHeaderUpdatedByName = _context.TblUserMasters
-                            .Where(p => p.Id == x.UpdatedBy).Select(p => p.UserName).FirstOrDefault(),
-
-                     LastTripHistory = (from diesel in _context.TblDieselHeaders
-                                        join vehicle in _context.TblVehicleMasters
-                                            on diesel.VehicleNo equals vehicle.Id
-                                        where diesel.VehicleNo == Convert.ToInt32(x.VehicleNo)
-                                        orderby diesel.TripId descending
-                                        select new
-                                        {
-                                            diesel,
-                                            vehicle.VehicleNo,
-                                            DriverName = _context.TblDriverMasters
-                                                .Where(p => p.Id == diesel.DriverId)
-                                                .Select(p => p.DriverName)
-                                                .FirstOrDefault(),
-                                            FatherName = _context.TblDriverMasters
-                                                .Where(p => p.Id == diesel.DriverId)
-                                                .Select(p => p.FatherName)
-                                                .FirstOrDefault()
-                                        })
-                       .Skip(1).Take(1).Select(result => new VMDieselHisab
-                       {
-                           TripId = result.diesel.TripId,
-                           LastTripStartDate = result.diesel.TripStartDate != null
-                               ? Convert.ToDateTime(result.diesel.TripStartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)
-                               : null,
-                           LastTripEndDate = result.diesel.TripEndDate != null
-                               ? Convert.ToDateTime(result.diesel.TripEndDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)
-                               : null,
-                           LastTripRouteDescr = result.diesel.LastTripRouteDescr,
-                           OpeningDiesel = result.diesel.OpeningDiesel == 0
-                               ? 1
-                               : result.diesel.OpeningDiesel,
-                           LastTripVendor = "Test Vendor",
-                           LastTripDriver = result.DriverName,
-                           LastTripDriverFatherName = result.FatherName,
-                           VehicleNumber = result.VehicleNo
-                       })
-                       .FirstOrDefault(),
-
-
-                     // Add list DieselFillingList here
-                     DieselFillingList = (from xFilling in _context.TblDieselFillings
-                                          where xFilling.TripId == x.TripId
-                                          select new
-                                          {
-                                              DieselFillingDate = Convert.ToString(Convert.ToDateTime(xFilling.DieselFillingDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                                              xFilling.VendorId,
-                                              VendorName = _context.TblCodeMasters
-                                        .Where(v => v.Id == xFilling.VendorId)
-                                        .Select(v => v.Code)
-                                        .FirstOrDefault(),
-                                              Litre = xFilling.DieselQty
-                                          }).ToList(),
-
-                     // Add list stationList here
-                     stationList = (from xLine in _context.TblDieselLines
-                                          where xLine.TripId == x.TripId
-                                          select new
-                                          {
-                                              VehicleNo= x.VehicleNo,
-                                              xLine.RouteId,
-                                              xLine.RouteDesc,
-                                              xLine.LoadType,
-                                              LoadTypeId = _context.TblCodeMasters.Where(v => v.Code == xLine.LoadType && v.CodeType=="LOADTYPE").Select(v => v.Id).FirstOrDefault(),
-                                              Distance= _context.TblDistanceMasters.Where(v => v.Id == xLine.RouteId).Select(x => x.Distance).FirstOrDefault()
-                                          }).ToList()
-
-
-                 }).FirstOrDefault();
-
-            if (model == null)
+            try
+            {
+                var averageData = await DieselHisabContext.GetLastDieselTripHistory(_connectionString, vehicleId);
+                return Json(averageData);
+            }
+            catch(Exception ex) 
             {
                 return Json(null);
             }
-            else
+
+            //var model = (from diesel in _context.TblDieselHeaders
+            //             join vehicle in _context.TblVehicleMasters
+            //                 on diesel.VehicleNo equals vehicle.Id
+            //             where diesel.IsActive == true && diesel.VehicleNo == Convert.ToInt32(vehicleId)
+            //             orderby diesel.TripId descending
+            //             select new VMDieselHisab
+            //             {
+            //                 TripId = diesel.TripId,
+            //                 LastTripStartDate = Convert.ToString(Convert.ToDateTime(diesel.TripStartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
+            //                 LastTripEndDate = Convert.ToString(Convert.ToDateTime(diesel.TripStartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
+            //                 LastTripRouteDescr = diesel.LastTripRouteDescr,
+            //                 EndOdometer = diesel.EndOdometer == null || diesel.EndOdometer == 0
+            //                                 ? 1
+            //                                 : diesel.EndOdometer,
+            //                 OpeningDiesel = diesel.OpeningDiesel == null || diesel.OpeningDiesel == 0
+            //                                 ? 1
+            //                                 : diesel.OpeningDiesel,
+            //                 ClosingDiesel = diesel.ClosingDiesel == null || diesel.ClosingDiesel == 0
+            //                                 ? 1
+            //                                 : diesel.ClosingDiesel,
+            //                 LastTripVendor = "Test Vendor",
+            //                 LastTripDriver = _context.TblDriverMasters
+            //                                    .Where(p => p.Id == diesel.DriverId)
+            //                                    .Select(p => p.DriverName)
+            //                                    .FirstOrDefault(),
+            //                 LastTripDriverFatherName = _context.TblDriverMasters
+            //                                            .Where(p => p.Id == diesel.DriverId)
+            //                                            .Select(p => p.FatherName)
+            //                                            .FirstOrDefault(),
+            //                 VehicleNumber = vehicle.VehicleNo // <-- From joined VehicleMaster
+            //             }).FirstOrDefault();
+
+            //return Json(model);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> getDieselHisablWithId(string tripId)
+        {
+            int TripId = Convert.ToInt32(tripId);
+            object model = null;
+
+            try
             {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string sql = @"
+                SELECT
+                 dh.TripId,dh.VehicleNo,vm.Vehicle_No[VehicleNumber], dh.DriverId,
+                 CONVERT(VARCHAR, dh.Trip_Start_Date, 105) AS TripStartDate,
+                 CONVERT(VARCHAR, dh.Trip_End_Date, 105) AS TripEndDate,
+                 dh.Last_Trip_Route_Descr,dh.Start_Odometer,
+                 dh.End_Odometer, dh.Opening_Diesel,dh.Closing_Diesel,
+                 dh.RunningKm, dh.Is_Active,
+                 CONVERT(VARCHAR(10),dh.Creation_Date, 105) AS DieselHeaderCreationDate,
+                 CONVERT(VARCHAR(10),dh.Update_Date, 105) AS DieselHeaderUpdateDate,
+                 dh.Created_By AS DieselHeaderCreatedBy,
+                 dh.Updated_By AS DieselHeaderUpdatedBy,
+                 dm.Driver_Name,dm.Father_Name AS DriverFatherName,
+                 uc.User_Name AS DieselHeaderCreatedByName,
+                 uu.User_Name AS DieselHeaderUpdatedByName
+                 FROM [dbo].[tbl_Diesel_Header] dh
+                 INNER JOIN [dbo].[tbl_Vehicle_Master] vm ON dh.VehicleNo = vm.Id
+                 LEFT JOIN [dbo].[tbl_Driver_Master] dm ON dh.DriverId = dm.Id
+                 LEFT JOIN [dbo].[tbl_UserMaster] uc ON dh.Created_By = uc.Id
+                 LEFT JOIN [dbo].[tbl_UserMaster] uu ON dh.Updated_By = uu.Id
+                WHERE dh.Is_Active = 1 AND dh.TripId = @TripId;";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@TripId", TripId);
+
+                        using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                model = new
+                                {
+                                    TripId = reader.GetInt32("TripId"),
+                                    VehicleNo = reader.GetInt32("VehicleNo").ToIntFromNull(),
+                                    DriverId = reader.GetInt32("DriverId"),
+                                    TripStartDate = reader.GetString("TripStartDate"),
+                                    TripEndDate = reader.GetString("TripEndDate"),
+                                    LastTripRouteDescr = reader.GetString("Last_Trip_Route_Descr"),
+                                    StartOdometer = reader.GetInt64("Start_Odometer"),
+                                    EndOdometer = reader.GetInt64("End_Odometer"),
+                                    OpeningDiesel = reader.GetInt64("Opening_Diesel").ToIntFromNull(),
+                                    ClosingDiesel = reader.GetInt64("Closing_Diesel").ToIntFromNull(),
+                                    RunningKm = reader.GetInt32("RunningKm").ToIntFromNull(),
+                                    IsActive = reader.GetBoolean("Is_Active"),
+                                    DieselHeaderCreationDate = reader.GetString("DieselHeaderCreationDate"),
+                                    DieselHeaderUpdateDate = reader.GetString("DieselHeaderUpdateDate"),
+                                    DieselHeaderCreatedBy = reader.GetInt32("DieselHeaderCreatedBy"),
+                                    DieselHeaderUpdatedBy = reader.GetInt32("DieselHeaderUpdatedBy"),
+                                    DriverName = reader.GetString("Driver_Name"),
+                                    DriverFatherName = reader.GetString("DriverFatherName"),
+                                    DieselHeaderCreatedByName = reader.GetString("DieselHeaderCreatedByName"),
+                                    DieselHeaderUpdatedByName = reader.GetString("DieselHeaderUpdatedByName"),
+                                    LastTripHistory = await DieselHisabContext.GetLastTripHistoryAsync(_connectionString, reader.GetInt32("VehicleNo")),
+                                    DieselFillingList = await DieselHisabContext.GetDieselFillingListAsync(_connectionString, TripId),
+                                    stationList = await DieselHisabContext.GetStationListAsync(_connectionString, TripId, reader.GetInt32("VehicleNo"))
+                                };
+                            }
+                        }
+                    }
+                }
+
                 return Json(model);
             }
-        }
+            catch(Exception ex)
+            {
+                return Json(null);
+            }
+        }       
 
         [HttpGet]
         public JsonResult getDieselHisablListByDriver(int driverId)
@@ -349,80 +391,26 @@ namespace VMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult searchDieselHisabMaster(int id, int vehicleNo, int driverId, string tripStartDate,
+        public async Task<JsonResult> searchDieselHisabMaster(int id, int vehicleNo, int driverId, string tripStartDate,
             string tripEndDate, Int32 startOdometer, Int32 endOdometer, int openingDiesel)
         {
-                          var model = _context.TblDieselHeaders
-                  .Join(_context.TblVehicleMasters,
-                      diesel => diesel.VehicleNo,
-                      vehicle => vehicle.Id,
-                      (diesel, vehicle) => new { diesel, vehicle })
-                  .Where(x => x.diesel.IsActive == true &&
-                      // Check if vehicleNo is greater than 0, otherwise ignore the condition
-                      (vehicleNo > 0 ? x.diesel.VehicleNo == vehicleNo : true) &&
-
-                      // Check if driverId is greater than 0, otherwise ignore the condition
-                      (driverId > 0 ? x.diesel.DriverId == driverId : true) &&
-
-                      // Check if tripStartDate is not null or empty
-                      (!string.IsNullOrEmpty(tripStartDate) ? Convert.ToString(Convert.ToDateTime(x.diesel.TripStartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)) == tripStartDate : true) &&
-
-                      // Check if tripEndDate is not null or empty
-                      (!string.IsNullOrEmpty(tripEndDate) ? Convert.ToString(Convert.ToDateTime(x.diesel.TripEndDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)) == tripEndDate : true) &&
-
-                      // Check if startOdometer is greater than 0
-                      (startOdometer > 0 ? x.diesel.StartOdometer == startOdometer : true) &&
-
-                      // Check if endOdometer is greater than 0
-                      (endOdometer > 0 ? x.diesel.EndOdometer == endOdometer : true) &&
-
-                      // Check if openingDiesel is greater than 0
-                      (openingDiesel > 0 ? x.diesel.OpeningDiesel == openingDiesel : true)
-                  )
-                  .Select(x => new
-                  {
-                      TripId = x.diesel.TripId,
-                      VehicleNumber = x.vehicle.VehicleNo,
-                      DriverId = x.diesel.DriverId,
-                      TripStartDate = Convert.ToString(Convert.ToDateTime(x.diesel.TripStartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                      TripEndDate = Convert.ToString(Convert.ToDateTime(x.diesel.TripEndDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                      CreationDate = Convert.ToString(Convert.ToDateTime(x.diesel.CreationDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                      UpdateDate = Convert.ToString(Convert.ToDateTime(x.diesel.UpdateDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                      CreatedBy = "",
-                      UpdatedBy = "",
-                      LastTripRouteDescr = x.diesel.LastTripRouteDescr,
-                      StartOdometer = x.diesel.StartOdometer,
-                      EndOdometer = x.diesel.EndOdometer,
-                      OpeningDiesel = x.diesel.OpeningDiesel,
-                      RunningKm = x.diesel.RunningKm,
-                      IsActive = x.diesel.IsActive,
-                      LastTripVendor = "Test Vendor",
-                      DieselHeaderCreationDate = x.diesel.CreationDate,
-                      DieselHeaderUpdateDate = x.diesel.UpdateDate,
-                      DieselHeaderCreatedBy = x.diesel.CreatedBy,
-                      DieselHeaderUpdatedBy = x.diesel.UpdatedBy,
-                      DriverName = _context.TblDriverMasters
-                          .Where(p => p.Id == x.diesel.DriverId)
-                          .Select(p => p.DriverName).FirstOrDefault(),
-                      DriverFatherName = _context.TblDriverMasters
-                          .Where(p => p.Id == x.diesel.DriverId)
-                          .Select(p => p.FatherName).FirstOrDefault(),
-                      DieselHeaderCreatedByName = _context.TblUserMasters
-                          .Where(p => p.Id == x.diesel.CreatedBy)
-                          .Select(p => p.UserName).FirstOrDefault(),
-                      DieselHeaderUpdatedByName = _context.TblUserMasters
-                          .Where(p => p.Id == x.diesel.UpdatedBy)
-                          .Select(p => p.UserName).FirstOrDefault()
-                  }).ToList();
+            try
+            {
+                var model = await DieselHisabContext.searchDieselHisabMaster(_connectionString, id, vehicleNo, driverId, tripStartDate,
+                tripEndDate, startOdometer, endOdometer, openingDiesel);
 
 
-            if (model.Count() == 0)
+                if (model != null)
+                {
+                    return Json(model);
+                }
+                else
+                {
+                    return Json(null);
+                }
+            }catch(Exception ex)
             {
                 return Json(null);
-            }
-            else
-            {
-                return Json(model);
             }
         }
 
@@ -437,7 +425,7 @@ namespace VMS.Controllers
         public ActionResult SaveUpdate(int tripId, int vehicleNo, int driverId, int tripNo, string driverName, 
                                  string driverFatherName, string tripStartDate,
                                  string tripEndDate, Int32 startOdometer, Int32 endOdometer,
-                                 int openingDiesel, int runningKm, string tripRouteDescription,List<TblDieselFilling> _lstDieselFilling, List<TblDieselLine> _lstDieselLine)
+                                 int openingDiesel, int closingDiesel, int runningKm, string tripRouteDescription,List<TblDieselFilling> _lstDieselFilling, List<TblDieselLine> _lstDieselLine)
         {
             DateOnly dtTripStartDate = DateOnly.Parse(tripStartDate);
             DateOnly dtTripEndDate = DateOnly.Parse(tripEndDate);
@@ -462,6 +450,7 @@ namespace VMS.Controllers
                         StartOdometer = x.StartOdometer,
                         EndOdometer = x.EndOdometer,
                         OpeningDiesel = x.OpeningDiesel,
+                        ClosingDiesel = x.ClosingDiesel,
                         runningKm = x.RunningKm,
                         IsActive = x.IsActive,
                         LastTripVendor = "Test Vendor",
@@ -501,6 +490,7 @@ namespace VMS.Controllers
                                     StartOdometer = startOdometer,
                                     EndOdometer = endOdometer,
                                     OpeningDiesel = openingDiesel,
+                                    ClosingDiesel = closingDiesel,
                                     RunningKm = runningKm,
                                     IsActive = true,
                                     CreationDate = utilityHelper.CurrentDateTime,
@@ -545,6 +535,8 @@ namespace VMS.Controllers
                                             RouteId = item.RouteId,
                                             RouteDesc = item.RouteDesc,
                                             LoadType = item.LoadType,
+                                            Average = item.Average,
+                                            EstimatedDiesel = item.EstimatedDiesel,
                                             CreationDate = utilityHelper.CurrentDateTime,
                                             UpdateDate = utilityHelper.CurrentDateTime,
                                             CreatedBy = userID,
@@ -598,6 +590,7 @@ namespace VMS.Controllers
                                 existingDieselHisab.StartOdometer = startOdometer;
                                 existingDieselHisab.EndOdometer = endOdometer;
                                 existingDieselHisab.OpeningDiesel = openingDiesel;
+                                existingDieselHisab.ClosingDiesel = closingDiesel;
                                 existingDieselHisab.RunningKm = runningKm;
                                 existingDieselHisab.IsActive = true; // You might want to control this based on input
                                 existingDieselHisab.UpdateDate = utilityHelper.CurrentDateTime;
@@ -683,6 +676,8 @@ namespace VMS.Controllers
                                         RouteId = item.RouteId,
                                         RouteDesc = item.RouteDesc,
                                         LoadType = item.LoadType,
+                                        Average = item.Average,
+                                        EstimatedDiesel = item.EstimatedDiesel,
                                         CreationDate = utilityHelper.CurrentDateTime,
                                         UpdateDate = utilityHelper.CurrentDateTime,
                                         CreatedBy = userID,
@@ -704,6 +699,8 @@ namespace VMS.Controllers
 
                                     if (matchingItem != null)
                                     {
+                                        existingLine.Average = matchingItem.Average;
+                                        existingLine.EstimatedDiesel = matchingItem.EstimatedDiesel;
                                         existingLine.LoadType = matchingItem.LoadType;
                                         existingLine.UpdateDate = utilityHelper.CurrentDateTime;
                                         existingLine.UpdatedBy = userID;
@@ -825,52 +822,76 @@ namespace VMS.Controllers
         }
 
         [HttpGet]
-        public JsonResult getTopDieselHisabList()
+        public async Task<JsonResult> getTopDieselHisabList()
         {
-           var model = (from x in _context.TblDieselHeaders
-                        join vehicle in _context.TblVehicleMasters
-                            on x.VehicleNo equals vehicle.Id
-                        where x.IsActive == true
-                        select new
+            try
             {
-                TripId = x.TripId,
-                VehicleNo = vehicle.VehicleNo,
-                DriverId = x.DriverId,
-                TripStartDate = Convert.ToString(Convert.ToDateTime(x.TripStartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                TripEndDate = Convert.ToString(Convert.ToDateTime(x.TripEndDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                LastTripRouteDescr = x.LastTripRouteDescr,
-                            CreationDate = Convert.ToString(Convert.ToDateTime(x.CreationDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                            UpdateDate = Convert.ToString(Convert.ToDateTime(x.UpdateDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                StartOdometer = x.StartOdometer,
-                EndOdometer = x.EndOdometer,
-                OpeningDiesel = x.OpeningDiesel,
-                RunningKm = x.RunningKm,
-                IsActive = x.IsActive,
-                LastTripVendor = "Test Vendor",
-                DieselHeaderCreatedBy = x.CreatedBy,
-                DieselHeaderUpdatedBy = x.UpdatedBy,
-                DriverName = _context.TblDriverMasters
-                                .Where(p => p.Id == x.DriverId)
-                                .Select(p => p.DriverName).FirstOrDefault(),
-                DriverFatherName = _context.TblDriverMasters
-                                           .Where(p => p.Id == x.DriverId)
-                                           .Select(p => p.FatherName).FirstOrDefault(),
-                DieselHeaderCreatedByName = _context.TblUserMasters
-                            .Where(p => p.Id == x.CreatedBy)
-                            .Select(p => p.UserName).FirstOrDefault(),
-                DieselHeaderUpdatedByName = _context.TblUserMasters
-                            .Where(p => p.Id == x.UpdatedBy)
-                            .Select(p => p.UserName).FirstOrDefault()
-            }).OrderByDescending(x=> x.TripId).ToList();
+                var model = await DieselHisabContext.searchDieselHisabMaster(_connectionString, 0, 0, 0, DateTime.Now.AddDays(-30).ToString("dd-MM-yyyy"),
+                DateTime.Now.ToString("dd-MM-yyyy"), 0, 0, 0);
 
-            if (model.Count() == 0)
+                if (model != null)
+                {
+                    return Json(model);
+                }
+                else
+                {
+                    return Json(null);
+                }
+            }
+            catch (Exception ex)
             {
                 return Json(null);
             }
-            else
-            {
-                return Json(model);
-            }
+
+            //var model = (from x in _context.TblDieselHeaders
+            //            join vehicle in _context.TblVehicleMasters
+            //                on x.VehicleNo equals vehicle.Id
+            //            where x.IsActive == true
+            //            select new
+            //{
+            //    TripId = x.TripId,
+            //    VehicleNo = vehicle.VehicleNo,
+            //    DriverId = x.DriverId,
+            //    TripStartDate = Convert.ToString(Convert.ToDateTime(x.TripStartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
+            //    TripEndDate = Convert.ToString(Convert.ToDateTime(x.TripEndDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
+            //    LastTripRouteDescr = x.LastTripRouteDescr,
+            //                CreationDate = Convert.ToString(Convert.ToDateTime(x.CreationDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
+            //                UpdateDate = Convert.ToString(Convert.ToDateTime(x.UpdateDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
+            //    StartOdometer = x.StartOdometer,
+            //    EndOdometer = x.EndOdometer,
+            //    OpeningDiesel = x.OpeningDiesel,
+            //    RunningKm = x.RunningKm,
+            //    IsActive = x.IsActive,
+            //    LastTripVendor = "Test Vendor",
+            //    DieselHeaderCreatedBy = x.CreatedBy,
+            //    DieselHeaderUpdatedBy = x.UpdatedBy,
+            //    DriverName = _context.TblDriverMasters
+            //                    .Where(p => p.Id == x.DriverId)
+            //                    .Select(p => p.DriverName).FirstOrDefault(),
+            //    DriverFatherName = _context.TblDriverMasters
+            //                               .Where(p => p.Id == x.DriverId)
+            //                               .Select(p => p.FatherName).FirstOrDefault(),
+            //    DieselHeaderCreatedByName = _context.TblUserMasters
+            //                .Where(p => p.Id == x.CreatedBy)
+            //                .Select(p => p.UserName).FirstOrDefault(),
+            //    DieselHeaderUpdatedByName = _context.TblUserMasters
+            //                .Where(p => p.Id == x.UpdatedBy)
+            //                .Select(p => p.UserName).FirstOrDefault(),
+            //    ApprovedStatus = x.ApprovedBy<=0 ? "Pending Approval" : "Approved",
+            //                ApprovedBy = _context.TblUserMasters
+            //                .Where(p => p.Id == x.ApprovedBy)
+            //                .Select(p => p.UserName).FirstOrDefault(),
+            //                ApprovedDate = Convert.ToString(Convert.ToDateTime(x.ApprovedDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture))
+            //            }).OrderByDescending(x=> x.TripId).ToList();
+
+            //if (model.Count() == 0)
+            //{
+            //    return Json(null);
+            //}
+            //else
+            //{
+            //    return Json(model);
+            //}
         }
 
 
@@ -906,78 +927,12 @@ namespace VMS.Controllers
             }).ToList());
         }
 
-        [HttpGet]
-        public JsonResult getDieselAverageAsPerLoadType(int vehicleNo, string LoadType)
+        public async Task<JsonResult> getDieselAverageAsPerLoadType(int vehicleNo, string LoadType)
         {
-            if (LoadType == "UL")
-            {
-                var model = (from v in _context.TblVehicleMasters
-                             join m in _context.TblModelAverageMasters
-                                 on v.ModelId equals m.Id
-                             where v.Id == vehicleNo
-                             select new
-                             {
-                                 m.Id,
-                                 value = m.UlAvg
-                             }).FirstOrDefault();
-                return Json(model);
-            }
-            else if (LoadType == "KHALI")
-            {
-                var model = (from v in _context.TblVehicleMasters
-                             join m in _context.TblModelAverageMasters
-                                 on v.ModelId equals m.Id
-                             where v.Id == vehicleNo
-                             select new
-                             {
-                                 m.Id,
-                                 value = m.Khali 
-                             }).FirstOrDefault();
-                return Json(model);
-            }
-            else if (LoadType == "NH")
-            {
-                var model = (from v in _context.TblVehicleMasters
-                             join m in _context.TblModelAverageMasters
-                                 on v.ModelId equals m.Id
-                             where v.Id == vehicleNo
-                             select new
-                             {
-                                 m.Id,
-                                 value = m.Nh
-                             }).FirstOrDefault();
-                return Json(model);
-            }
-            else if (LoadType == "MG")
-            {
-                var model = (from v in _context.TblVehicleMasters
-                             join m in _context.TblModelAverageMasters
-                                 on v.ModelId equals m.Id
-                             where v.Id == vehicleNo
-                             select new
-                             {
-                                 m.Id,
-                                 value = m.MegaHw
-                             }).FirstOrDefault();
-                return Json(model);
-            }
-            else if (LoadType == "WAJAN")
-            {
-                var model = (from v in _context.TblVehicleMasters
-                             join m in _context.TblModelAverageMasters
-                                 on v.ModelId equals m.Id
-                             where v.Id == vehicleNo
-                             select new
-                             {
-                                 m.Id,
-                                 value = m.OverLoad
-                             }).FirstOrDefault();
-                return Json(model);
-            }
-            else
-            {
-                return Json(null);
-            }
+            var averageData = await DieselHisabContext.GetDieselAverage(_connectionString, vehicleNo, LoadType);
+            return Json(averageData);
         }
+
+      
     }
 }
