@@ -421,6 +421,7 @@ public partial class VmsDbContext : DbContext
 
             entity.Property(e => e.TripId).ValueGeneratedNever();
             entity.Property(e => e.CreatedBy).HasColumnName("Created_By");
+            entity.Property(e => e.LastTripId).HasColumnName("Last_Trip_Id");
             entity.Property(e => e.CreationDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -705,6 +706,7 @@ public partial class VmsDbContext : DbContext
 
             entity.Property(e => e.SettlementNo).HasColumnName("Settlement_No");
             entity.Property(e => e.CreatedBy).HasColumnName("Created_By");
+            entity.Property(e => e.LastSettlementId).HasColumnName("Last_Settlement_Id");
             entity.Property(e => e.CreationDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")

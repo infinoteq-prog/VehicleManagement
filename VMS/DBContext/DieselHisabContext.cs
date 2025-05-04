@@ -56,6 +56,54 @@ namespace VMS
             }
             return lastTrip;
         }
+        public static async Task<object> GetLastTripHistoryByTripIdAsync(string _connectionString, int tripId)
+        {
+            object lastTrip = null;
+            string sql = @"
+                            SELECT 
+                            dh.TripId,
+                            CONVERT(VARCHAR, dh.Trip_Start_Date, 105) AS LastTripStartDate,
+                            CONVERT(VARCHAR, dh.Trip_End_Date, 105) AS LastTripEndDate,
+                            dh.Last_Trip_Route_Descr,
+                            dh.Opening_Diesel,
+                            vm.Vehicle_No AS VehicleNumber,
+                            dm.Driver_Name AS LastTripDriver,
+                            dm.Father_Name AS LastTripDriverFatherName
+                            FROM [dbo].[tbl_Diesel_Header] dh
+                            INNER JOIN [dbo].[tbl_Vehicle_Master] vm ON dh.VehicleNo = vm.Id
+                           LEFT JOIN [dbo].[tbl_Driver_Master] dm ON dh.DriverId = dm.Id
+                           WHERE dh.tripId = @tripId
+                            ORDER BY dh.TripId DESC;"; // Skip the current trip
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                if (connection.State == ConnectionState.Closed)
+                    await connection.OpenAsync();
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@tripId", tripId);
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            lastTrip = new
+                            {
+                                TripId = reader.GetInt32("TripId").ToIntFromNull(),
+                                LastTripStartDate = reader.IsDBNull("LastTripStartDate") ? null : reader.GetString("LastTripStartDate"),
+                                LastTripEndDate = reader.IsDBNull("LastTripEndDate") ? null : reader.GetString("LastTripEndDate"),
+                                LastTripRouteDescr = reader.GetString("Last_Trip_Route_Descr"),
+                                OpeningDiesel = reader.GetInt64("Opening_Diesel") == 0 ? 1 : reader.GetInt64("Opening_Diesel"),
+                                LastTripVendor = "Test Vendor",
+                                LastTripDriver = reader.IsDBNull("LastTripDriver") ? null : reader.GetString("LastTripDriver"),
+                                LastTripDriverFatherName = reader.IsDBNull("LastTripDriverFatherName") ? null : reader.GetString("LastTripDriverFatherName"),
+                                VehicleNumber = reader.GetString("VehicleNumber")
+                            };
+                        }
+                    }
+                }
+            }
+            return lastTrip;
+        }
         public static async Task<List<object>> GetDieselFillingListAsync(string _connectionString, int tripId)
         {
             List<object> dieselFillingList = new List<object>();
@@ -289,8 +337,8 @@ namespace VMS
                                 TripEndDate = reader.GetString("TripEndDate"),
                                 CreationDate = reader.GetString("CreationDate"),
                                 UpdateDate = reader.IsDBNull("UpdateDate") ? null : reader.GetString("UpdateDate"),
-                                CreatedBy = reader.IsDBNull("DieselHeaderCreatedByName") ? "" : reader.GetString("DieselHeaderCreatedByName"),
-                                UpdatedBy = reader.IsDBNull("DieselHeaderUpdatedByName") ? "" : reader.GetString("DieselHeaderUpdatedByName"),
+                                dieselHeaderCreatedByName = reader.IsDBNull("DieselHeaderCreatedByName") ? "" : reader.GetString("DieselHeaderCreatedByName"),
+                                dieselHeaderUpdatedByName = reader.IsDBNull("DieselHeaderUpdatedByName") ? "" : reader.GetString("DieselHeaderUpdatedByName"),
                                 LastTripRouteDescr = reader.GetString("LastTripRouteDescr"),
                                 StartOdometer = reader.GetInt64("Start_Odometer"),
                                 EndOdometer = reader.GetInt64("End_Odometer"),

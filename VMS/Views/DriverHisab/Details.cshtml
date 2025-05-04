@@ -1,0 +1,386 @@
+﻿@{
+}
+@model VMS.ViewModel.VMDriverHisab
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Driver Hisab Detail";
+}
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Add Driver Hisab</h4>
+                    <div>
+                        <form id="frmDriverHisabMaster" name="frmDriverHisabMaster" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <input id="hdnDriverHisabID" name="hdnDriverHisabID" type="hidden">
+                            <input id="hdnLastSettlementId" name="hdnLastSettlementId" type="hidden">
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <label id="lblMandatoryMessage" class="reqFields">@utilityHelper.reqFieldMessage</label>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDriverName">Driver Name:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" id="ddlDriver" name="ddlDriver" onchange="setDropDownStyle(this);"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDriverFatherName">Driver Father Name: <span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtDriverFatherName" class="form-control alphanumericonlywithspace" maxlength="100" onchange="setTextboxStyle(this);" placeholder="Please Enter Driver Father Name" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtTripNumber">Settlement Number:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtSettlementNumber" placeholder="Enter a settlement number." class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <h5>Previous Trip History :</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLastTripStartDate">LastTrip Start Date:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtLastTripStartDate" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLastTripEndDate">LastTrip End Date:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtLastTripEndDate" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLastTripRouteDesc">LastTrip Route Desc:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextAreaFor(m => m.RouteDescription, new { @class = "form-control", cols = "10", rows = "5", id = "txtLastTripRouteDesc", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLastTripVehicle">LastTrip Vehicle:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtLastTripVehicle" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row rowHeight">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <h5>New Route:</h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card" style="padding: 15px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px;">
+                                <div class="row rowHeight">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="ddlVehicleNo">Vehicle No:<span class="reqFields">*</span> </label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" id="ddlVehicleNo" name="ddlVehicleNo" onchange="setDropDownStyle(this);"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row rowHeight">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="from-date-picker">Trip Start Date : <span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="from-date-picker" placeholder="Select From Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="to-date-picker">Trip End Date : <span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="to-date-picker" placeholder="Select To Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row rowHeight">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txtOpeningAmount">Opening Amount:<span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="txtOpeningAmount" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Opening Amount" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txtClosingAmount">Closing Amount:<span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="txtClosingAmount" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Closing Amount" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txtWeight">Weight:<span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="txtWeight" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Weight" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txtTripDescription">Trip Desc :<span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="txtTripDescription" class="form-control" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Trip Description" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Expense Lines Table -->
+                            <div class="row rowHeight">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <h5>Expense Details:</h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card" style="padding: 15px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px;">
+                                <div class="row rowHeight align-items-center">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="ddlExpenseHead">Narration: <span class="reqFields">*</span></label>
+                                            <select class="form-control" id="ddlExpenseHead" name="ddlExpenseHead">
+                                                <!-- Vendor options will be populated here from VendorMaster API -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="txtGroup">Group <span class="reqFields">*</span></label>
+                                            <input type="text" id="txtGroup" class="form-control" disabled onchange="setTextboxStyle(this);" placeholder="Please Enter Group" />
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="txtAmountDR">Amount Debit: <span class="reqFields">*</span></label>
+                                            <input type="text" id="txtAmountDR" class="form-control numberonly" maxlength="10" onchange="setTextboxStyle(this);" placeholder="Please Enter Amount Debit" />
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="txtAmountCR">Amount Credit: <span class="reqFields">*</span></label>
+                                            <input type="text" id="txtAmountCR" class="form-control numberonly" maxlength="10" onchange="setTextboxStyle(this);" placeholder="Please Enter Amount Credit" />
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn btn-primary" style="margin-top: 16px;" id="btnAddExpense" onclick="addExpense();">Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table id="expenseListTable" class="table table-bordered">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th style="width: 120px;display:none;">ExpenseHeadId/th>
+                                                <th style="width: 120px;">Group</th>
+                                                <th style="width: 120px;">Narration</th>
+                                                <th style="width: 120px;">Amount Dr</th>
+                                                <th style="width: 120px;">Amount Cr</th>
+                                                <th style="width: 120px;">Closing Balance</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Table rows will be dynamically added here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                            @*  @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleAddAccess == true)
+                            { *@
+                            <div class="row rowHeight" style="text-align:center;">
+                                <div class="col-md-12">
+                                    <button type="button" id="saveButton" class="btn btn-primary mr-2" onclick="saveDriverHisab();">Save</button>
+                                    <button type="button" class="btn btn-light" onclick="clearControls();">Clear</button>
+                                </div>
+                            </div>
+                            @* } *@
+                        </form>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script type="text/javascript">
+        // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
+        // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
+        var fullAccess = 'True';
+        var viewAccess = 'True';
+
+        $(document).ready(function () {
+            setSideMenu("diesel-hisab-master");
+            if (fullAccess === "True" || viewAccess === "True") {
+                 getVehicleNumber();
+                 getDriverMaster();
+                makeFieldsReadOnly();
+                var settlementId = GetParameterValues('settlementId');
+                getDriverHisabById(settlementId);
+            }
+        });
+
+        function makeFieldsReadOnly() {
+            // Select all input, select, and textarea elements within the form
+            var formElements = document.querySelectorAll("#frmDriverHisabMaster input, #frmDriverHisabMaster select, #frmDriverHisabMaster textarea");
+
+            // Iterate through the elements and set them to readonly or disabled
+            formElements.forEach(function (element) {
+                if (element.type === "select-one") {
+                    element.disabled = true; // Disable select elements
+                } else {
+                    element.readOnly = true; // Set other input types to readonly
+                }
+            });
+
+            // Disable the "Add Expense" button.
+            var addExpenseButton = document.getElementById("btnAddExpense");
+            if (addExpenseButton) {
+                addExpenseButton.disabled = true;
+            }
+
+            // Disable the save button
+            var saveButton = document.getElementById("saveButton");
+            if (saveButton) {
+                saveButton.disabled = true;
+            }
+        }
+    </script>
+
+    <script>
+        function calculateClosingBalance(tableId, initialAmount) {
+            var table = document.getElementById(tableId);
+            var rows = table.getElementsByTagName("tbody")[0].rows;
+            var previousBalance = initialAmount;
+
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                var debit = parseFloat(row.cells[3].textContent) || 0;
+                var credit = parseFloat(row.cells[4].textContent) || 0;
+                previousBalance = previousBalance + debit - credit;
+                row.cells[5].textContent = previousBalance.toFixed(2);
+            }
+            return previousBalance; // Return the final balance
+        }
+        function getDriverHisabById(settlementId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DriverHisab/getDriverHisablWithId")',
+                type: "GET",
+                data: { settlementId: settlementId },
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                        // Bind the form controls
+                        $("#hdnDriverHisabID").val(data.SettlementNo);
+                        // $("#hdnLastSettlementId").val(data.hdnLastSettlementId);
+                        $("#ddlDriver").val(data.driverId);  // Assuming data.driverId holds the driver's ID
+                        $("#txtDriverFatherName").val(data.driverFatherName);
+                        $("#txtSettlementNumber").val(data.settlementNo);
+
+                        //Last Trip Detail
+                        $("#txtLastTripStartDate").val(data.lastTripHistory.lastTripStartDate);
+                        $("#txtLastTripEndDate").val(data.lastTripHistory.lastTripEndDate);
+                        $("#txtLastTripRouteDesc").val(data.lastTripHistory.lastTripRouteDescr);
+                        $("#txtLastTripVehicle").val(data.lastTripHistory.vehicleNumber);
+
+                        $("#ddlVehicleNo").val(data.vehicleNo);
+                        $("#from-date-picker").val(data.tripStartDate);
+                        $("#to-date-picker").val(data.tripEndDate);
+                        $("#txtOpeningAmount").val(data.openingBalance);
+                        $("#txtClosingAmount").val(data.closingBalance);
+                        $("#txtWeight").val(data.weight);
+                        $("#txtTripDescription").val(data.tripRouteDescr);
+
+                        // Bind the expense list table
+                        var expenseTableBody = $("#expenseListTable tbody");
+                        expenseTableBody.empty(); // Clear any existing rows
+
+                        if (data.expenseList && data.expenseList.length > 0) {
+                            data.expenseList.forEach(function (expense) {
+                                var newRow = $("<tr>");
+                                newRow.append("<td style=\"display:none;\">" + expense.expenseCode + "</td>");
+                                newRow.append("<td>" + expense.code + "</td>");
+                                newRow.append("<td>" + expense.description + "</td>");
+                                newRow.append("<td>" + expense.drAmt + "</td>");
+                                newRow.append("<td>" + expense.crAmt + "</td>");
+                                newRow.append("<td>" + expense.closingBalance + "</td>");
+                                expenseTableBody.append(newRow);
+                            });
+                            calculateClosingBalance('expenseListTable', data.openingBalance);
+                        }
+                        else {
+                            calculateClosingBalance('expenseListTable', data.openingBalance);
+                        }
+                        makeFieldsReadOnly(); // Call the function to make fields read-only
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching data:", error);
+                }
+            });
+        }
+    </script>
+
+}

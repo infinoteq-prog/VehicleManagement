@@ -66,15 +66,17 @@ namespace VMS.Controllers
                     if (UpdateDieselHisab != null)
                     {
                         // Update the properties of the existing TblDieselHeader
+
                         if (UpdateDieselHisab.ApprovedBy != 0)
                         {
                             UpdateDieselHisab.ApprovedBy = 0;
+                            UpdateDieselHisab.ApprovedDate = null;
                         }
                         else
                         {
                             UpdateDieselHisab.ApprovedBy = userID;
+                            UpdateDieselHisab.ApprovedDate = utilityHelper.CurrentDateTime;
                         }
-                        UpdateDieselHisab.ApprovedDate = utilityHelper.CurrentDateTime;
 
                         _context.TblDieselHeaders.Update(UpdateDieselHisab);
                         _context.SaveChanges(); // Save changes to the header first to ensure TripId is consistent
@@ -105,6 +107,8 @@ namespace VMS.Controllers
 
         public ActionResult List()
         {
+            VMLogin userDetails = HttpContext.Session.GetObjectFromJson<VMLogin>("userDetails");
+            ViewBag.roleName = userDetails.RoleName.ToString();
             return View();
         }
 
@@ -221,7 +225,7 @@ namespace VMS.Controllers
 
                     string sql = @"
                 SELECT
-                 dh.TripId,dh.VehicleNo,vm.Vehicle_No[VehicleNumber], dh.DriverId,
+                 dh.TripId,dh.Last_Trip_Id[LastTripId],dh.VehicleNo,vm.Vehicle_No[VehicleNumber], dh.DriverId,
                  CONVERT(VARCHAR, dh.Trip_Start_Date, 105) AS TripStartDate,
                  CONVERT(VARCHAR, dh.Trip_End_Date, 105) AS TripEndDate,
                  dh.Last_Trip_Route_Descr,dh.Start_Odometer,
@@ -252,6 +256,7 @@ namespace VMS.Controllers
                                 model = new
                                 {
                                     TripId = reader.GetInt32("TripId"),
+                                    LastTripId = reader.GetInt32("LastTripId"),
                                     VehicleNo = reader.GetInt32("VehicleNo").ToIntFromNull(),
                                     DriverId = reader.GetInt32("DriverId"),
                                     TripStartDate = reader.GetString("TripStartDate"),
@@ -271,7 +276,7 @@ namespace VMS.Controllers
                                     DriverFatherName = reader.GetString("DriverFatherName"),
                                     DieselHeaderCreatedByName = reader.GetString("DieselHeaderCreatedByName"),
                                     DieselHeaderUpdatedByName = reader.GetString("DieselHeaderUpdatedByName"),
-                                    LastTripHistory = await DieselHisabContext.GetLastTripHistoryAsync(_connectionString, reader.GetInt32("VehicleNo")),
+                                    LastTripHistory = await DieselHisabContext.GetLastTripHistoryByTripIdAsync(_connectionString, reader.GetInt32("LastTripId")),
                                     DieselFillingList = await DieselHisabContext.GetDieselFillingListAsync(_connectionString, TripId),
                                     stationList = await DieselHisabContext.GetStationListAsync(_connectionString, TripId, reader.GetInt32("VehicleNo"))
                                 };
@@ -422,7 +427,7 @@ namespace VMS.Controllers
 
 
         [HttpPost]
-        public ActionResult SaveUpdate(int tripId, int vehicleNo, int driverId, int tripNo, string driverName, 
+        public ActionResult SaveUpdate(int tripId, int vehicleNo, int driverId, int tripNo,int lastTripId, string driverName, 
                                  string driverFatherName, string tripStartDate,
                                  string tripEndDate, Int32 startOdometer, Int32 endOdometer,
                                  int openingDiesel, int closingDiesel, int runningKm, string tripRouteDescription,List<TblDieselFilling> _lstDieselFilling, List<TblDieselLine> _lstDieselLine)
@@ -431,7 +436,7 @@ namespace VMS.Controllers
             DateOnly dtTripEndDate = DateOnly.Parse(tripEndDate);
             VMTrip model = new VMTrip();
             int userID = 0;
-            VMLogin userDetails = HttpContext.Session.GetObjectFromJson<VMLogin>("userDetails");
+            VMLogin userDetails = HttpContext.Session.GetObjectFromJson<VMLogin>("userDetails");            
             if (userDetails != null)
             {
                 userID = userDetails.Id;
@@ -482,6 +487,7 @@ namespace VMS.Controllers
                                 var dieselHisab = new TblDieselHeader
                                 {
                                     TripId = tripNo,
+                                    LastTripId = lastTripId,
                                     DriverId = driverId,
                                     VehicleNo = vehicleNo,
                                     TripStartDate = dtTripStartDate.ToDateTime(TimeOnly.Parse("12:00 AM")),

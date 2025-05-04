@@ -6,7 +6,9 @@
 @using VMS.ViewModel
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
-
+@{
+    ViewData["Title"] = "Driver Hisab Add/Update";
+}
 <div class="content-wrapper">
     <div class="row">
         <div class="col-12 grid-margin">
@@ -17,6 +19,7 @@
                         <form id="frmDriverHisabMaster" name="frmDriverHisabMaster" method="post" class="forms-sample" autocomplete="off">
                             @Html.AntiForgeryToken()
                             <input id="hdnDriverHisabID" name="hdnDriverHisabID" type="hidden">
+                            <input id="hdnLastSettlementId" name="hdnLastSettlementId" type="hidden">
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <label id="lblMandatoryMessage" class="reqFields">@utilityHelper.reqFieldMessage</label>
@@ -135,6 +138,22 @@
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtOpeningAmount">Opening Amount:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                                <input type="text" id="txtOpeningAmount" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Opening Amount" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtClosingAmount">Closing Amount:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                                <input type="text" id="txtClosingAmount" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Closing Amount" />
+                                        </div>
+                                    </div>
+                                </div>                                
+                                <div class="col-md-6">
+                                    <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtWeight">Weight:<span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
                                                 <input type="text" id="txtWeight" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Weight" />
@@ -143,27 +162,14 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtOpeningDiesel">Opening Diesel:<span class="reqFields">*</span></label>
+                                        <label class="col-sm-4 col-form-label" for="txtTripDescription">Trip Desc :<span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
-                                            <input type="text" id="txtOpeningDiesel" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Opening Diesel" />
+                                                <input type="text" id="txtTripDescription" class="form-control" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Trip Description" />
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        
-                            <div class="row rowHeight">
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtRouteDescription">Route Desc :<span class="reqFields">*</span></label>
-                                        <div class="col-sm-8">
-                                            <input type="text" id="txtRouteDescription" class="form-control" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Route Description" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6"></div>
                             </div>
                         </div>
-
 
                             <!-- Expense Lines Table -->
                        <div class="row rowHeight">
@@ -175,39 +181,40 @@
                       </div>
 
                     <div class="card" style="padding: 15px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px;">
-                        <div class="row rowHeight">
-                            <div class="col-md-3">
-                                <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label" for="ddlExpenseHead">Expense Head: <span class="reqFields">*</span></label>
-                                    <div class="col-sm-8">
-                                                <select class="form-control" id="ddlExpenseHead" name="ddlExpenseHead" onchange="setDropDownStyle(this);">
+                        <div class="row rowHeight align-items-center">
+                             <div class="col-md-3">
+                                <div class="form-group">
+                                    <label  for="ddlExpenseHead">Narration: <span class="reqFields">*</span></label>
+                                    <select class="form-control" id="ddlExpenseHead" name="ddlExpenseHead">
                                             <!-- Vendor options will be populated here from VendorMaster API -->
                                         </select>
-                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label" for="ddlExpenseType">Expense Type: <span class="reqFields">*</span></label>
-                                    <div class="col-sm-8">
-                                                <select class="form-control" id="ddlExpenseType" name="ddlExpenseType" onchange="setDropDownStyle(this);">
-                                            <!-- Vendor options will be populated here from VendorMaster API -->
-                                        </select>
-                                    </div>
+                                <div class="form-group">
+                                    <label  for="txtGroup">Group <span class="reqFields">*</span></label>
+                                    <input type="text" id="txtGroup" class="form-control" disabled onchange="setTextboxStyle(this);" placeholder="Please Enter Group" />
+                                    
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label" for="txtExpenseAmount">Amount: <span class="reqFields">*</span></label>
-                                    <div class="col-sm-8">
-                                                <input type="text" id="txtExpenseAmount" class="form-control numberonly" maxlength="10" onchange="setTextboxStyle(this);" placeholder="Please Enter Litre" />
-                                    </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="txtAmountDR">Amount Debit: <span class="reqFields">*</span></label>
+                                         <input type="text" id="txtAmountDR" class="form-control numberonly" maxlength="10" onchange="setTextboxStyle(this);" placeholder="Please Enter Amount Debit" />
+                                  
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                             <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="txtAmountCR">Amount Credit: <span class="reqFields">*</span></label>
+                                   <input type="text" id="txtAmountCR" class="form-control numberonly" maxlength="10" onchange="setTextboxStyle(this);" placeholder="Please Enter Amount Credit" />
+                                    
+                                </div>
+                            </div>
+                            <div class="col-md-2">
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                        <button type="button" class="btn btn-primary" id="btnAddExpense" onclick="addExpense();">Add</button>
+                                        <button type="button" class="btn btn-primary" style="margin-top: 16px;" id="btnAddExpense" onclick="addExpense();">Add</button>
                                     </div>
                                 </div>
                             </div>
@@ -215,15 +222,15 @@
 
                         <div class="table-responsive">
                             <table id="expenseListTable" class="table table-bordered">
-                                        <thead class="thead-light">
+                                <thead class="thead-light">
                                     <tr>
                                         <th style="width: 120px;display:none;">ExpenseHeadId/th>
-                                        <th style="width: 120px;display:none;">ExpenseTypeId</th>
-                                        <th style="width: 120px;">Expense Head</th>
+                                        <th style="width: 120px;">Group</th>
+                                        <th style="width: 120px;">Narration</th>
                                         <th style="width: 120px;">Amount Dr</th>
                                         <th style="width: 120px;">Amount Cr</th>
-                                        <th style="width: 120px;">Expense Type</th>
                                         <th style="width: 120px;">Closing Balance</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -238,7 +245,7 @@
                             { *@
                                 <div class="row rowHeight" style="text-align:center;">
                                     <div class="col-md-12">
-                                    <button type="button" id="saveButton" class="btn btn-primary mr-2" onclick="saveDieselHisab();">Save</button>
+                                    <button type="button" id="saveButton" class="btn btn-primary mr-2" onclick="saveDriverHisab();">Save</button>
                                         <button type="button" class="btn btn-light" onclick="clearControls();">Clear</button>
                                     </div>
                                 </div>
@@ -255,6 +262,7 @@
 </div>
 
 @section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript">
     var fullAccess = 'True';
     var addAccess = 'True';
@@ -267,17 +275,16 @@
     var deleteButton = "";
 
     $(document).ready(function () {
+        
+        $('#ddlExpenseHead').select2();
         //Fill Vehicle Master DropdownList
         setSideMenu("driver-hisab-master");
         getVehicleNumber();
         getDriverMaster();
-        
+        getExpenseHeadMasterdata();
         if (fullAccess === "True" || addAccess === "True") {
             //checkValidationOnChange();
             //getDieselHisabByVehicle(); 
-        }
-        if (fullAccess === "True" || viewAccess === "True") {
-            //getVehicleMasterList();
         }
 
         $(function () {
@@ -291,7 +298,20 @@
                     getDriverFather();
             });
 
+             $("#ddlExpenseHead").change(function () {
+                    var selectedOption = $(this).find('option:selected');
+                        var description = selectedOption.data('description');
+                     $("#txtGroup").val(description);
+            });
+
         });
+
+            //Check if Page is Opening on Edit Click
+            var settlementId = GetParameterValues('settlementId');
+        if (settlementId && settlementId.length > 0 && parseInt(settlementId[0]) > 0) {
+            document.getElementById("saveButton").textContent = "Update";
+                getDriverHisabById(settlementId);
+        }
 
     });
 
@@ -392,17 +412,18 @@
             dataType: "json",
                 success: function (data) {  
                 if (data != null && data != undefined) {
+                    $("#hdnLastSettlementId").val(data.settlementNo);
                     $("#txtLastTripStartDate").val(data.lastTripStartDate);
                     $("#txtLastTripEndDate").val(data.lastTripEndDate);
                     $("#txtLastTripRouteDesc").val(data.lastTripRouteDescr);
                         $("#txtLastTripVehicle").val(data.vehicleNumber);
-                    // $("#txtOpeningDiesel").val(data.openingDiesel);
+                    // $("#txtOpeningAmount").val(data.openingDiesel);
                 } else {
                     $("#txtLastTripStartDate").val("N/A");
                     $("#txtLastTripEndDate").val("N/A");
                     $("#txtLastTripRouteDesc").val("N/A");
                     $("#txtLastTripVehicle").val("N/A");
-                    $("#txtOpeningDiesel").val("0")
+                    $("#txtOpeningAmount").val("0")
 
                     $.confirm({
                         title: 'Last Trip Not Found',
@@ -422,7 +443,7 @@
         });
     }
 
-    function saveDieselHisab() {
+    function saveDriverHisab() {
         var isValid = checkValidation();
         if (isValid == true) {
 
@@ -435,56 +456,49 @@
                 $("#txtRunningKm").val() != "" &&
                 $("#from-date-picker").val() != "" &&
                 $("#to-date-picker").val() != "" && 
-                $("#txtOpeningDiesel").val() != "" &&
-                $("#txtRouteDescription").val() != ""){
+                $("#txtOpeningAmount").val() != "" &&
+                $("#txtTripDescription").val() != ""){
 
                 var tripStartDate = $("#from-date-picker").val().split("-").reverse().join("-");
                 var tripEndDate = $("#to-date-picker").val().split("-").reverse().join("-");
 
                 var formData = new FormData();
 
-                    var tripId = $('#hdnDieselHisabID').val();
-                    if (tripId && tripId.length > 0 && parseInt(tripId[0]) > 0) {
-                        formData.append("tripId", tripId);
+                    var settlementNo = $('#hdnDriverHisabID').val();
+                    if (settlementNo && settlementNo.length > 0 && parseInt(settlementNo[0]) > 0) {
+                        formData.append("settlementNo", settlementNo);
                     }
+                     formData.append("settlementNumber",  $("#txtSettlementNumber").val());
+                      formData.append("lastSettlementId", $('#hdnLastSettlementId').val());
                 formData.append("vehicleNo", $("#ddlVehicleNo option:selected").val());
                 formData.append("driverId", $("#ddlDriver option:selected").val());
-                formData.append("tripNo", $('#txtTripNumber').val());
                 formData.append("driverName", $("#ddlDriver option:selected").text());
                 formData.append("driverFatherName", $("#txtFatherName").val());
                 formData.append("tripStartDate", tripStartDate);
                 formData.append("tripEndDate", tripEndDate);
-                formData.append("startOdometer", $("#txtStartOdometer").val());
-                formData.append("endOdometer", $("#txtEndOdometer").val());
-                formData.append("openingDiesel", $("#txtOpeningDiesel").val());
-                    formData.append("runningKm", $("#txtRunningKm").val());
-                formData.append("tripRouteDescription", $("#txtRouteDescription").val());
+                formData.append("settlementDate", tripEndDate);
+                formData.append("weight", $("#txtWeight").val());
+                formData.append("openingBalance", $("#txtOpeningAmount").val());
+                formData.append("closingBalance", $("#txtClosingAmount").val());
+                formData.append("tripRouteDescription", $("#txtTripDescription").val());
 
-                 // Diesel Filling Entries from Table
-                   $("#dieselFillingTable tbody tr").each(function (index, row) {
-                       var date = $(row).find("td:eq(0)").text();
-                       var vendorId = $(row).find("td:eq(1)").text();
-                       var litre = $(row).find("td:eq(3)").text();
 
-                       formData.append(`_lstDieselFilling[${index}].DieselFillingDate`, date);
-                       formData.append(`_lstDieselFilling[${index}].VendorId`, vendorId);
-                       formData.append(`_lstDieselFilling[${index}].DieselQty`, litre);
-                   });
+                    // Expense Entries from Table
+                    $("#expenseListTable tbody tr").each(function (index, row) {
+                        var expenseCode = $(row).find("td:eq(0)").text();
+                        var expenseType = $(row).find("td:eq(1)").text();                        
+                        var drAmt = $(row).find("td:eq(3)").text();
+                        var crAmt = $(row).find("td:eq(4)").text();
 
-                    // Diesel Line Entries from Table
-                    $("#stationDetailsTable tbody tr").each(function (index, row) {
-                        var routeId = $(row).find("td:eq(0)").text();
-                        var routeDesc = $(row).find("td:eq(2)").text();
-                        var LoadType = $(row).find("td:eq(4)").text();
-
-                        formData.append(`_lstDieselLine[${index}].RouteId`, routeId);
-                        formData.append(`_lstDieselLine[${index}].RouteDesc`, routeDesc);
-                        formData.append(`_lstDieselLine[${index}].LoadType`, LoadType);
+                        formData.append(`_lstDriverLine[${index}].ExpenseCode`, expenseCode);
+                        formData.append(`_lstDriverLine[${index}].ExpenseType`, expenseType);
+                        formData.append(`_lstDriverLine[${index}].CrAmt`, crAmt);
+                        formData.append(`_lstDriverLine[${index}].DrAmt`, drAmt);
                     });
                
                 $.ajax({
                     cache: false,
-                        url: '@(utilityHelper.SiteUrl() + "DieselHisab/SaveUpdate")',
+                        url: '@(utilityHelper.SiteUrl() + "DriverHisab/SaveUpdate")',
                     type: "POST",
                     dataType: "json",
                     processData: false,
@@ -495,8 +509,8 @@
                             if (data.transactionMessage.status == '@((byte)TransactionStatus.Success)') {
                                 console.log(data);
                                 $.confirm({
-                                    title: 'Save Diesel Hisab!',
-                                        content: "Diesel Hisab has been saved successfully!",
+                                    title: 'Save Driver Hisab!',
+                                        content: "Driver Hisab has been saved successfully!",
                                     type: 'green',
                                     buttons: {
                                         omg: {
@@ -505,14 +519,14 @@
                                             action: function () {
                                                 //getUserList();
                                                 //clearControls();
-                                                    window.location.href = '@(utilityHelper.SiteUrl() + "DieselHisab/List")';
+                                                    window.location.href = '@(utilityHelper.SiteUrl() + "DriverHisab/List")';
                                             }
                                         },
                                     }
                                 });
                             } else if (data.transactionMessage.status == '@((byte)TransactionStatus.Failed)') {
                                 $.confirm({
-                                    title: 'Diesel Hisab Already Exists!',
+                                    title: 'Driver Hisab Already Exists!',
                                     content: data.transactionMessage.message,
                                     icon: 'fa fa-warning',
                                     type: 'red',
@@ -523,7 +537,7 @@
                                         },
                                     }
                                 });
-                                $("#divDieslHisabMaster").hide();
+                                $("#divDriverHisabMaster").hide();
                             }
                         } else {
                             console.log(data);
@@ -540,7 +554,7 @@
                                     },
                                 }
                             });
-                            $("#divDieslHisabMaster").hide();
+                            $("#divDriverHisabMaster").hide();
                         }
                     }
                 });
@@ -569,4 +583,182 @@
         });
     }
     </script>
+
+     @* Add Expense Section  *@
+    <script>
+
+            var expenseList = [];
+            
+            function calculateClosingBalance(tableId, initialAmount) {
+                var table = document.getElementById(tableId);
+                var rows = table.getElementsByTagName("tbody")[0].rows;
+                var previousBalance = initialAmount;
+            
+                for (var i = 0; i < rows.length; i++) {
+                    var row = rows[i];
+                    var debit = parseFloat(row.cells[3].textContent) || 0;
+                    var credit = parseFloat(row.cells[4].textContent) || 0;
+                    previousBalance = previousBalance + debit - credit;
+                    row.cells[5].textContent = previousBalance.toFixed(2);
+                }
+                return previousBalance; // Return the final balance
+            }
+
+            function addExpense() {
+
+                    var openingBalance = $("#txtOpeningAmount").val();
+                        openingBalance = openingBalance ? parseFloat(openingBalance) : 0;
+                    // Get the values from the input fields
+                    var expenseHeadId = $("#ddlExpenseHead").val();
+                    var expenseHeadText = $("#ddlExpenseHead option:selected").text();
+                    var group = $("#txtGroup").val();
+                    var amountDR = $("#txtAmountDR").val();
+                    var amountCR = $("#txtAmountCR").val();
+                
+                    // Validate the input fields
+                    if (expenseHeadId === "0") {
+                        alert("Please select a Narration.");
+                        return;
+                    }
+                    if (group === "") {
+                        alert("Please enter a Group.");
+                        return;
+                    }
+                    if (amountDR === "" && amountCR === "") {
+                                    alert("Please enter an Amount.");
+                                    return;
+                                }
+                
+                    // Create a new row object
+                    var newExpense = {
+                        expenseHeadId: expenseHeadId,
+                        group: group,
+                        expenseHeadText: expenseHeadText,
+                        amountDR: amountDR,
+                        amountCR: amountCR,
+                    };
+                
+                    expenseList.push(newExpense); //push to array
+                
+                    // Create a new row in the table
+                    var newRow = $("<tr>");
+                    newRow.append("<td style=\"display:none;\">" + expenseHeadId + "</td>");
+                    newRow.append("<td>" + group + "</td>");
+                    newRow.append("<td>" + expenseHeadText + "</td>");
+                    newRow.append("<td>" + amountDR + "</td>");
+                    newRow.append("<td>" + amountCR + "</td>");
+                    newRow.append("<td></td>"); //leave blank for now
+                    // Add a delete button to the row
+                    var deleteButton = $("<button>")
+                        .addClass("btn btn-danger btn-sm")
+                        .text("Delete")
+                        .on("click", function() {
+                            // Remove the row when the delete button is clicked
+                            var rowToDelete = $(this).closest("tr");
+                             var rowIndex = rowToDelete.index();
+                            expenseList.splice(rowIndex, 1); // Remove from the array
+                            rowToDelete.remove();
+                            calculateClosingBalance('expenseListTable', openingBalance);
+                        });
+                    var actionCell = $("<td>").append(deleteButton);
+                    newRow.append(actionCell);
+                
+                    // Add the new row to the table
+                    $("#expenseListTable tbody").append(newRow);
+                
+                    // Clear the input fields
+                    $("#ddlExpenseHead").val("0");
+                    $("#txtGroup").val("");
+                    $("#txtAmountDR").val("");
+                    $("#txtAmountCR").val("");
+                
+                    calculateClosingBalance('expenseListTable', openingBalance);
+                }
+            
+            </script>
+
+            @* Edit driver Hisab *@
+            <script>
+            function calculateClosingBalance(tableId, initialAmount) {
+            var table = document.getElementById(tableId);
+            var rows = table.getElementsByTagName("tbody")[0].rows;
+            var previousBalance = initialAmount;
+
+            for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            var debit = parseFloat(row.cells[3].textContent) || 0;
+            var credit = parseFloat(row.cells[4].textContent) || 0;
+            previousBalance = previousBalance + debit - credit;
+            row.cells[5].textContent = previousBalance.toFixed(2);
+            }
+            return previousBalance; // Return the final balance
+            }
+            function getDriverHisabById(settlementId) {
+            $.ajax({
+            cache: false,
+            url: '@(utilityHelper.SiteUrl() + "DriverHisab/getDriverHisablWithId")',
+            type: "GET",
+            data: { settlementId: settlementId },
+            dataType: "json",
+            success: function (data) {
+            if (data) {
+            // Bind the form controls
+            $("#hdnDriverHisabID").val(data.settlementNo);
+            $("#hdnLastSettlementId").val(data.lastSettlementId);
+            $("#ddlDriver").val(data.driverId);  // Assuming data.driverId holds the driver's ID
+            $("#txtDriverFatherName").val(data.driverFatherName);
+            $("#txtSettlementNumber").val(data.settlementNo);
+
+            //Last Trip Detail
+            $("#txtLastTripStartDate").val(data.lastTripHistory.lastTripStartDate);
+            $("#txtLastTripEndDate").val(data.lastTripHistory.lastTripEndDate);
+            $("#txtLastTripRouteDesc").val(data.lastTripHistory.lastTripRouteDescr);
+            $("#txtLastTripVehicle").val(data.lastTripHistory.vehicleNumber);
+
+            $("#ddlVehicleNo").val(data.vehicleNo);
+            $("#from-date-picker").val(data.tripStartDate);
+            $("#to-date-picker").val(data.tripEndDate);
+            $("#txtOpeningAmount").val(data.openingBalance);
+            $("#txtClosingAmount").val(data.closingBalance);
+            $("#txtWeight").val(data.weight);
+            $("#txtTripDescription").val(data.tripRouteDescr);
+
+            // Bind the expense list table
+            var expenseTableBody = $("#expenseListTable tbody");
+            expenseTableBody.empty(); // Clear any existing rows
+
+            if (data.expenseList && data.expenseList.length > 0) {
+            data.expenseList.forEach(function (expense) {
+                var newRow = $("<tr>");
+                newRow.append("<td style=\"display:none;\">" + expense.expenseCode + "</td>");
+                newRow.append("<td>" + expense.code + "</td>");
+                newRow.append("<td>" + expense.description + "</td>");
+                newRow.append("<td>" + expense.drAmt + "</td>");
+                newRow.append("<td>" + expense.crAmt + "</td>");
+                newRow.append("<td>" + expense.closingBalance + "</td>");
+
+                 var deleteButton = $("<button>")
+                        .addClass("btn btn-danger btn-sm")
+                        .text("Delete")
+                        .on("click", function () {
+                            $(this).closest("tr").remove();
+                            calculateClosingBalance('expenseListTable', data.openingBalance);
+                        });
+                    var actionCell = $("<td>").append(deleteButton);
+                    newRow.append(actionCell);
+                    expenseTableBody.append(newRow);
+            });
+            calculateClosingBalance('expenseListTable', data.openingBalance);
+            }
+            else {
+            calculateClosingBalance('expenseListTable', data.openingBalance);
+            }
+            }
+            },
+            error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+            }
+            });
+            }
+            </script>
 }

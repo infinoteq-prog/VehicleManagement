@@ -42,6 +42,68 @@
             border-color: #aaa;
         }
     </style>
+
+    @* For ddlDistanceMaster *@
+    <style type="text/css">
+        #ddlDistanceMaster + span.select2-container {
+            height: 34px !important; /* Adjust this value */
+            vertical-align: middle; /* Try this */
+            display: inline-block; /* Ensure it behaves like other inline elements */
+        }
+        
+        #ddlDistanceMaster + span.select2-container .select2-selection--single{
+            height: 34px !important; /* Match the container height */
+            display: flex !important;
+            align-items: center !important; /* Vertically center text */
+            padding: 0.25rem 0.5rem !important; /* Add some padding for visual consistency */
+        }
+        
+        #ddlDistanceMaster + span.select2-container .select2-selection--single .select2-selection__rendered{
+            line-height: normal !important; /* Reset line-height */
+            padding-left: 0 !important; /* Adjust text indentation if needed */
+        }
+        
+        #ddlDistanceMaster + span.select2-container .select2-selection--single .select2-selection__arrow{
+            height: 34px !important; /* Match container height */
+            top: auto !important;
+            bottom: auto !important;
+            margin-top: auto !important;
+            margin-bottom: auto !important; /* Vertically center the arrow */
+        }
+    </style>
+
+    @* For ddlExpenseHead *@
+    <style type="text/css">
+        #ddlExpenseHead + span.select2-container {
+            height: 34px !important; /* Adjust this value */
+            vertical-align: middle; /* Try this */
+            display: inline-block; /* Ensure it behaves like other inline elements */
+        }
+        
+        #ddlExpenseHead + span.select2-container .select2-selection--single{
+            height: 34px !important; /* Match the container height */
+            display: flex !important;
+            align-items: center !important; /* Vertically center text */
+            padding: 0.25rem 0.5rem !important; /* Add some padding for visual consistency */
+        }
+
+        #ddlExpenseHead + span.select2-container .select2-selection--single .select2-selection__rendered{
+            line-height: normal !important; /* Reset line-height */
+            padding-left: 0 !important; /* Adjust text indentation if needed */
+        }
+        
+       
+        #ddlExpenseHead + span.select2-container .select2-selection--single .select2-selection__arrow{
+            height: 34px !important; /* Match container height */
+            top: auto !important;
+            bottom: auto !important;
+            margin-top: auto !important;
+            margin-bottom: auto !important; /* Vertically center the arrow */
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
     <input id="hdnLRGRNO" name="hdnLRGRNO" type="hidden">
@@ -4041,10 +4103,21 @@
             window.open(url, '_blank');
             return false;
         }
-        function approvalDieselHisabMaster(tripId) {
-            $.confirm({
+        function approvalDieselHisabMaster(tripId,approvedStatus) {
+
+            var confirmationMessage='';
+            if(approvedStatus==='Approved')
+             {
+                 confirmationMessage='Are you sure! You want to Non-approval diesel hisab entry?';
+             }
+              else
+                  {  confirmationMessage='Are you sure! You want to approve diesel hisab entry?';}
+
+          
+                 // If already approved, revert it back
+                             $.confirm({
                 title: 'Approve Confirmation!',
-                content: 'Are you sure! You want to approve diesel hisab entry?',
+                content: confirmationMessage,
                 icon: 'fa fa-question-circle',
                 animation: 'scale',
                 closeAnimation: 'scale',
@@ -4177,25 +4250,29 @@
 
         // Load DistanceMaster data into dropdown
         function getDistanceMaster() {
-            const ddlDistanceMaster = document.getElementById('ddlDistanceMaster');
-                $.ajax({
-            cache: false,
-                    url: '@(utilityHelper.SiteUrl() + "DistanceMaster/getDistanceMaster")',
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                if (data != null && data != undefined) {
-                    var s = '<option value="0">Select a station</option>';
-                    for (var i = 0; i < data.length; i++) {
-                        console.log(data[i])
-                                        s += '<option value="' + data[i].distanceId + '">' + data[i].routeDescription + '</option>';
+            const ddlDistanceMaster = $('#ddlDistanceMaster'); // Use jQuery selector
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DistanceMaster/getDistanceMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        let s = '<option value="0">Select a station</option>';
+                        for (let i = 0; i < data.length; i++) {
+                            s += '<option value="' + data[i].distanceId + '">' + data[i].routeDescription + '</option>';
+                        }   
+                          
+                        ddlDistanceMaster.html(s);                        
+                        // If Select2 is initialized before data, you might need to trigger a refresh
+                         // Initialize Select2 AFTER the data is loaded and the select is populated
+                        ddlDistanceMaster.select2();
+                        ddlDistanceMaster.trigger('change');
+                    } else {
+                        console.log(data);
                     }
-                    $("#ddlDistanceMaster").html(s);
-                } else {
-                    console.log(data);
                 }
-            }
-        });
+            });
         }
 
         // Load getLoadTypeMasterdata into dropdown
@@ -4220,6 +4297,129 @@
             }
         });
         }
+
+        // Load getExpenseHeadMasterdata into dropdown
+        function getExpenseHeadMasterdata() {
+            const ddlExpenseHead = document.getElementById('ddlExpenseHead');
+                $.ajax({
+            cache: false,
+                    url: '@(utilityHelper.SiteUrl() + "DriverHisab/getExpenseHeadMaster")',
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                if (data != null && data != undefined) {
+                    var s = '<option value="0">Select a load type</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        console.log(data[i])
+                                        s += '<option value="' + data[i].expenseHeadId + '" data-description="' + data[i].description + '">' + data[i].expenseHead + '</option>';
+                    }
+                    $("#ddlExpenseHead").html(s);
+                     // Initialize Select2 AFTER the data is loaded and the select is populated
+                        ddlExpenseHead.select2();
+                        ddlExpenseHead.trigger('change');
+                } else {
+                    console.log(data);
+                }
+            }
+        });
+        }
+
+         //Function Driver Hisab List Functions
+        function viewDriverHisabMaster(settlementId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DriverHisab/Details?settlementId=")' + settlementId;
+            window.open(url, '_blank');
+            return false;
+        }
+        //Function Driver Hisab Edit Functions
+        function editDriverHisabMaster(settlementId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DriverHisab/Index?settlementId=")' + settlementId;
+            window.open(url, '_blank');
+            return false;
+        }
+        //Function Driver Hisab Print Functions
+        function printDriverHisabMaster(settlementId) {
+            var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DriverHisab/Print?settlementId=")' + settlementId;
+            window.open(url, '_blank');
+            return false;
+        }
+
+        //Function Driver Hisab Delete Functions
+        function deleteDriverHisabMaster(settlementId) {
+            $.confirm({
+                title: 'Delete Confirmation!',
+                content: 'Are you sure! You want to delete Driver hisab entry?',
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.confirm({
+                                title: 'Delete driver hisab Entry',
+                                content: 'Once you delete driver hisab entry, it will not available in future. Do you want to continue?',
+                                icon: 'fa fa-warning',
+                                animation: 'scale',
+                                closeAnimation: 'zoom',
+                                buttons: {
+                                    confirm: {
+                                        text: 'Yes, sure!',
+                                        btnClass: 'btn-orange',
+                                        action: function () {
+                                            $.ajax({
+                                                cache: false,
+                                                url: '@(utilityHelper.SiteUrl() + "DriverHisab/deleteDriverHisab?settlementId=")' + settlementId,
+                                                type: "POST",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    $.confirm({
+                                                        title: 'Transaction Success!',
+                                                        content: data.transactionMessage.message,
+                                                        type: 'green',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-green',
+                                                                action: function () {
+                                                                    window.location.href = '@(utilityHelper.SiteUrl() + "DriverHisab/List")';
+                                                                }
+                                                            },
+                                                        }
+                                                    });
+                                                },
+                                                error: function (ex) {
+                                                    $.confirm({
+                                                        title: 'Transaction Failed!',
+                                                        content: data.transactionMessage.message,
+                                                        icon: 'fa fa-warning',
+                                                        type: 'red',
+                                                        buttons: {
+                                                            omg: {
+                                                                text: 'OK',
+                                                                btnClass: 'btn-red',
+                                                            },
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+
     </script>
     @RenderSection("scripts", required: false)
 </body>

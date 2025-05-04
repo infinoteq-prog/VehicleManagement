@@ -6,6 +6,7 @@ namespace VMS.Models;
 public partial class TblDriverHisabHeader
 {
     public int SettlementNo { get; set; }
+    public int LastSettlementId { get; set; }
 
     public int DriverId { get; set; }
 

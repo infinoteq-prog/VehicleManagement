@@ -6,6 +6,9 @@
 @using VMS.ViewModel
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Diesel Hisab Add/Update";
+}
 
 <div class="content-wrapper">
     <div class="row">
@@ -17,6 +20,7 @@
                         <form id="frmVehicleMaster" name="frmVehicleMaster" method="post" class="forms-sample" autocomplete="off">
                             @Html.AntiForgeryToken()
                             <input id="hdnDieselHisabID" name="hdnDieselHisabID" type="hidden">
+                            <input id="hdnLastTripId" name="hdnLastTripId" type="hidden">
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <label id="lblMandatoryMessage" class="reqFields">@utilityHelper.reqFieldMessage</label>
@@ -282,82 +286,67 @@
                             </div>
                         </div>
                         
-                        <div class="card" style="padding: 15px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px;">
-                            <div class="row rowHeight">
-                                <div class="col-md-3">
-                                    <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="ddlDistanceMaster">Station:</label>
-                                        <div class="col-sm-8">
-                                            <select class="form-control" id="ddlDistanceMaster" onchange="setDropDownStyle(this);">
-                                                <!-- Station options -->
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtDistance">Distance:</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" id="txtDistance" class="form-control" disabled />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="ddlLoadType">Load Type:</label>
-                                        <div class="col-sm-8">
-                                            <select class="form-control" id="ddlLoadType" onchange="setDropDownStyle(this);">
-                                               <!-- Station options -->
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtAverage">Average:</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" id="txtAverage" class="form-control" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group row">
-                                        <label class="col-sm-6 col-form-label" for="txtEstKm">Estimated Diesel:</label>
-                                        <div class="col-sm-6">
-                                            <input type="text" id="txtEstKm" class="form-control" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group row">
-                                        <div class="col-md-12">
-                                            <button type="button" class="btn btn-primary" onclick="addStationDetails();">Add</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <!-- Station Details Table -->
-                            <div class="table-responsive">
-                                <table id="stationDetailsTable" class="table table-bordered">
-                                        <thead class="thead-light">
-                                        <tr>
-                                            <th style="display:none;">StationId</th>
-                                            <th style="display:none;">LoadTypeId</th>
-                                            <th>Station</th>
-                                            <th>Distance(KM)</th>
-                                            <th>Load Type</th>
-                                            <th>Average</th>
-                                            <th>Estimated Diesel</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Table rows will be dynamically added -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>     
+                       <div class="card" style="padding: 15px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px;">
+                        <div class="row rowHeight align-items-center">
+                               <div class="col-md-2">
+                                   <div class="form-group">
+                                      <label for="ddlDistanceMaster">Station:</label> 
+                                      <select class="form-control" name="ddlDistanceMaster" id="ddlDistanceMaster"></select>
+                                      @*   <select class="form-control" id="ddlDistanceMaster" onchange="setDropDownStyle(this);">
+                                           </select> *@
+                                   </div>
+                               </div>
+                               <div class="col-md-2">
+                                   <div class="form-group">
+                                       <label for="txtDistance">Distance:</label>
+                                       <input type="text" id="txtDistance" class="form-control" disabled />
+                                   </div>
+                               </div>
+                               <div class="col-md-2">
+                                   <div class="form-group">
+                                       <label for="ddlLoadType">Load Type:</label>
+                                       <select class="form-control" id="ddlLoadType" onchange="setDropDownStyle(this);">
+                                           </select>
+                                   </div>
+                               </div>
+                               <div class="col-md-2">
+                                   <div class="form-group">
+                                       <label for="txtAverage">Average:</label>
+                                       <input type="text" id="txtAverage" class="form-control" />
+                                   </div>
+                               </div>
+                               <div class="col-md-2">
+                                   <div class="form-group">
+                                       <label for="txtEstKm">Estimated Diesel:</label>
+                                       <input type="text" id="txtEstKm" class="form-control" />
+                                   </div>
+                               </div>
+                               <div class="col-md-2">
+                                   <div class="form-group">
+                                       <button type="button" class="btn btn-primary" onclick="addStationDetails();" style="margin-top: 20px;">Add</button>
+                                   </div>
+                               </div>
+                              </div>
+
+                          <div class="table-responsive mt-3">
+        <table id="stationDetailsTable" class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th style="display:none;">StationId</th>
+                    <th style="display:none;">LoadTypeId</th>
+                    <th>Station</th>
+                    <th>Distance(KM)</th>
+                    <th>Load Type</th>
+                    <th>Average</th>
+                    <th>Estimated Diesel</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </div>
+                        </div>
 
                            @*  @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleAddAccess == true)
                             { *@
@@ -407,7 +396,9 @@
     </div>
 </div>
 
-@section scripts {
+@section scripts {    
+    
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript">
     // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
     // var addAccess = '@ViewBag.AddUserRoleAddAccess';
@@ -425,6 +416,7 @@
     var deleteButton = "";
 
     $(document).ready(function () {
+        $('#ddlDistanceMaster').select2();
         //Fill Vehicle Master DropdownList
        setSideMenu("diesel-hisab-master");
         getVehicleNumber();
@@ -496,6 +488,7 @@
                 getDieselHisabByID(tripId);
         }
     });
+
 
     function setDropDownStyle(cltr){
         if ($(cltr).find(":selected").val() == "0") {
@@ -944,7 +937,8 @@
             data: { vehicleId: vehicleNo },
             dataType: "json",
                 success: function (data) {  
-                if (data != null && data != undefined) {
+                if (data != null && data != undefined) {                    
+                    $("#hdnLastTripId").val(data.tripId);
                     $("#txtLastTripStartDate").val(data.lastTripStartDate);
                     $("#txtLastTripEndDate").val(data.lastTripEndDate);
                     $("#txtLastTripRouteDesc").val(data.lastTripRouteDescr);
@@ -1046,6 +1040,8 @@
                     if (tripId && tripId.length > 0 && parseInt(tripId[0]) > 0) {
                         formData.append("tripId", tripId);
                     }
+                   
+                formData.append("lastTripId",  $("#hdnLastTripId").val());
                 formData.append("vehicleNo", $("#ddlVehicleNo option:selected").val());
                 formData.append("driverId", $("#ddlDriver option:selected").val());
                 formData.append("tripNo", $('#txtTripNumber').val());
@@ -1396,6 +1392,7 @@
                     if (data != null && data != undefined) {
 
                         $('#hdnDieselHisabID').val(data.tripId);
+                        $('#hdnLastTripId').val(data.lastTripId);
                         //Setting Diesel Hisab Details to Page Controls
                         // Dropdowns - Disable
                         $("#ddlVehicleNo").prop("disabled", true);

@@ -6,6 +6,7 @@ namespace VMS.Models;
 public partial class TblDieselHeader
 {
     public int TripId { get; set; }
+    public int LastTripId { get; set; }
 
     public int VehicleNo { get; set; }
 

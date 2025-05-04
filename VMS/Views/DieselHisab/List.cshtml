@@ -119,6 +119,7 @@
         var approvalButton = "";
 
         $(document).ready(function () {
+            getUserAccess();
              $('[data-toggle="tooltip"]').tooltip();
             setSideMenu("diesel-hisab-master");
             if (fullAccess === "True" || viewAccess === "True") {
@@ -128,6 +129,14 @@
                 searchDieselHisabMaster(); // Load diesel data on page load
             }
         });
+
+        function getUserAccess(){
+           var roleName = '@ViewBag.roleName';
+            if(roleName==='User')
+            {fullAccess = 'false';
+            approvalAccess = 'false';
+            }
+        }
 
         function setDefaultDate()
         {
@@ -250,16 +259,22 @@
                             }
 
                             if (fullAccess === "True" || approvalAccess === "True") {
-                                approvalButton = '<button id="approveConfirm" type="button" class="btn btn-warning btn-sm btn-icon-text" title="Approve" data-toggle="tooltip" data-placement="top" onclick="approvalDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-thumbs-up btn-icon-append"></i></button> ';
+                                approvalButton = '<button id="approveConfirm" type="button" class="btn btn-warning btn-sm btn-icon-text" title="Approve" data-toggle="tooltip" data-placement="top" onclick="approvalDieselHisabMaster(\'' + item.tripId + '\',\'' +item.approvedStatus+ '\');"  style="margin-left: 10px;"> <i class="typcn typcn-thumbs-up btn-icon-append"></i></button> ';
                             }
 
                             if (fullAccess === "True" || updateAccess === "True") {
-                                 printButton = '<button type="button" class="btn btn-primary btn-sm btn-icon-text mr-3" title="Print" data-toggle="tooltip" data-placement="top" onclick="printDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-printer btn-icon-append"></i></button>';
+                                 printButton = '<button type="button" class="btn btn-primary btn-sm btn-icon-text mr-3" title="Print" data-toggle="tooltip" data-placement="top" onclick="printDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-printer btn-icon-append"></i></button> ';
                                                                                    }
 
 
                             if (fullAccess === "True" || deleteAccess === "True") {
-                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" title="Delete" data-toggle="tooltip" data-placement="top" onclick="deleteDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" title="Delete" data-toggle="tooltip" data-placement="top" onclick="deleteDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-delete-outline btn-icon-append"></i></button>  ';
+                            }
+
+                            if(item.approvedStatus==='Approved')
+                            {
+                                updateButton='';
+                                deleteButton='';
                             }
                             
                             var row = '<tr>' +
@@ -326,7 +341,7 @@
                             }
 
                             if (fullAccess === "True" || updateAccess === "True") {
-                                 printButton = '<button type="button" class="btn btn-primary btn-sm btn-icon-text mr-3" title="Print" data-toggle="tooltip" data-placement="top" onclick="printDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-printer btn-icon-append"></i></button>';
+                                 printButton = '<button type="button" class="btn btn-primary btn-sm btn-icon-text mr-3" title="Print" data-toggle="tooltip" data-placement="top" onclick="printDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-printer btn-icon-append"></i></button> ';
                                                                                    }
 
 
