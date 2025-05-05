@@ -4315,8 +4315,8 @@
                     }
                     $("#ddlExpenseHead").html(s);
                      // Initialize Select2 AFTER the data is loaded and the select is populated
-                        ddlExpenseHead.select2();
-                        ddlExpenseHead.trigger('change');
+                        // ddlExpenseHead.select2();
+                        // ddlExpenseHead.trigger('change');
                 } else {
                     console.log(data);
                 }
@@ -4420,6 +4420,27 @@
         }
 
 
+        // Make master CodeType
+        function getCodeType() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "MakeMaster/getCodeType")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a CodeType</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].codeTypeId + '">' + data[i].codeType + '</option>';
+                        }
+                        $("#ddlCodeType").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
     </script>
     @RenderSection("scripts", required: false)
 </body>

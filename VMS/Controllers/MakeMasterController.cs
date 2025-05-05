@@ -459,5 +459,15 @@ namespace VMS.Controllers
                 return Json(model);
             }
         }
+
+        [HttpGet]
+        public JsonResult getCodeType()
+        {
+            return Json(_context.TblCodeMasters.Select(x => new
+            {
+                CodeTypeId = x.CodeType,
+                CodeType = x.CodeType,
+            }).Distinct().ToList());
+        }
     }
 }

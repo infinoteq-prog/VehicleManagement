@@ -28,10 +28,13 @@
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtCodeType">Code Type: <span class="reqFields">*</span> </label>
+                                        <label class="col-sm-4 col-form-label" for="ddlCodeType">Code Type: <span class="reqFields">*</span> </label>
                                         <div class="col-sm-8">
-                                            @Html.TextBoxFor(m => m.CodeType, new { @class = "form-control", id = "txtCodeType" })
+                                            <select class="form-control" id="ddlCodeType" name="ddlCodeType" onchange="setDropDownStyle(this);"></select>
                                         </div>
+                                       @*  <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.CodeType, new { @class = "form-control", id = "txtCodeType" })
+                                        </div> *@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -126,6 +129,7 @@
         var deleteButton = "";
 
         $(document).ready(function () {
+            getCodeType();
             setSideMenu("make-master");
             $("#chkIsActive").attr("checked", true);
             $("#chkIsActive").attr("disabled", true);
@@ -225,13 +229,13 @@
 
         function checkValidation() {
             var isValid = true;
-            if ($("#txtCodeType").val() == "") {
-                $("#txtCodeType").attr('class', 'form-control vaidationTextBoxError');
-                $("#txtCodeType").focus();
+            if ($("#ddlCodeType").val() == "") {
+                $("#ddlCodeType").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlCodeType").focus();
                 isValid = false;
             } else {
-                $("#txtCodeType").attr('class', 'form-control');
-                $("#txtCodeType").focus();
+                $("#ddlCodeType").attr('class', 'form-control');
+                $("#ddlCodeType").focus();
             }
 
             if ($("#txtCode").val() == "") {
@@ -256,7 +260,7 @@
 
         function checkValidationOnChange() {
             $(function () {
-                $("#txtCodeType").on("input", function () {
+                $("#ddlCodeType").on("input", function () {
                     if ($(this).val() == "") {
                         $(this).attr('class', 'form-control vaidationTextBoxError');
                         $(this).focus();
@@ -289,7 +293,7 @@
         }
 
         function clearControls() {
-            $("#txtCodeType").val("");
+            $("#ddlCodeType").val("");
             $("#txtCode").val("");
             $("#txtDescription").val("");
         }
@@ -363,10 +367,10 @@
             var isValid = checkValidation();
 
             if (isValid == true) {
-                if ($("#txtCodeType").val() != "" 
+                if ($("#ddlCodeType").val() != ""
                     && $("#txtCode").val() != "" 
                     && $("#txtDescription").val() != "") {
-                    var codeType = $("#txtCodeType").val();
+                    var codeType = $("#ddlCodeType").text();
                     var code = $("#txtCode").val();
                     var description = $("#txtDescription").val()
                     var isActive = true;

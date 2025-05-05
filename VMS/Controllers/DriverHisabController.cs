@@ -95,7 +95,7 @@ namespace VMS.Controllers
             {
                 var settlement = new
                 {
-                    SettlementNo = 0,
+                    SettlementNo = 1,
                 };
                 return Json(settlement);
             }

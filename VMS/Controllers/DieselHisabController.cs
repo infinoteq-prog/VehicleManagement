@@ -258,6 +258,7 @@ namespace VMS.Controllers
                                     TripId = reader.GetInt32("TripId"),
                                     LastTripId = reader.GetInt32("LastTripId"),
                                     VehicleNo = reader.GetInt32("VehicleNo").ToIntFromNull(),
+                                    VehicleNumber = reader.GetString("VehicleNumber"),
                                     DriverId = reader.GetInt32("DriverId"),
                                     TripStartDate = reader.GetString("TripStartDate"),
                                     TripEndDate = reader.GetString("TripEndDate"),

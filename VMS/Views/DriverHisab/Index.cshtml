@@ -156,16 +156,16 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtWeight">Weight:<span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
-                                                <input type="text" id="txtWeight" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Weight" />
-                                        </div>
+                                                <input type="number" id="txtWeight" class="form-control" maxlength="20" placeholder="Please Enter Weight" min="0" step="any">
+                                            </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtTripDescription">Trip Desc :<span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
-                                                <input type="text" id="txtTripDescription" class="form-control" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Trip Description" />
-                                        </div>
+                                             <textarea id="txtTripDescription" class="form-control" maxlength="300" onchange="setTextboxStyle(this);" placeholder="Please Enter Route Description" rows="3"></textarea>
+                                       </div>
                                     </div>
                                 </div>
                             </div>
@@ -589,20 +589,20 @@
 
             var expenseList = [];
             
-            function calculateClosingBalance(tableId, initialAmount) {
-                var table = document.getElementById(tableId);
-                var rows = table.getElementsByTagName("tbody")[0].rows;
-                var previousBalance = initialAmount;
+            // function calculateClosingBalance(tableId, initialAmount) {
+            //     var table = document.getElementById(tableId);
+            //     var rows = table.getElementsByTagName("tbody")[0].rows;
+            //     var previousBalance = initialAmount;
             
-                for (var i = 0; i < rows.length; i++) {
-                    var row = rows[i];
-                    var debit = parseFloat(row.cells[3].textContent) || 0;
-                    var credit = parseFloat(row.cells[4].textContent) || 0;
-                    previousBalance = previousBalance + debit - credit;
-                    row.cells[5].textContent = previousBalance.toFixed(2);
-                }
-                return previousBalance; // Return the final balance
-            }
+            //     for (var i = 0; i < rows.length; i++) {
+            //         var row = rows[i];
+            //         var debit = parseFloat(row.cells[3].textContent) || 0;
+            //         var credit = parseFloat(row.cells[4].textContent) || 0;
+            //         previousBalance = previousBalance + debit - credit;
+            //         row.cells[5].textContent = previousBalance.toFixed(2);
+            // }
+            // return previousBalance; // Return the final balance
+            // }
 
             function addExpense() {
 
@@ -691,6 +691,8 @@
             previousBalance = previousBalance + debit - credit;
             row.cells[5].textContent = previousBalance.toFixed(2);
             }
+
+            $("#txtClosingAmount").val(previousBalance);
             return previousBalance; // Return the final balance
             }
             function getDriverHisabById(settlementId) {
@@ -710,10 +712,12 @@
             $("#txtSettlementNumber").val(data.settlementNo);
 
             //Last Trip Detail
+            try{
             $("#txtLastTripStartDate").val(data.lastTripHistory.lastTripStartDate);
             $("#txtLastTripEndDate").val(data.lastTripHistory.lastTripEndDate);
             $("#txtLastTripRouteDesc").val(data.lastTripHistory.lastTripRouteDescr);
             $("#txtLastTripVehicle").val(data.lastTripHistory.vehicleNumber);
+            }catch{}
 
             $("#ddlVehicleNo").val(data.vehicleNo);
             $("#from-date-picker").val(data.tripStartDate);

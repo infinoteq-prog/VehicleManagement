@@ -28,10 +28,13 @@
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtCodeType">Code Type: <span class="reqFields">*</span> </label>
+                                        <label class="col-sm-4 col-form-label" for="ddlCodeType">Code Type: <span class="reqFields">*</span> </label>
                                         <div class="col-sm-8">
-                                            @Html.TextBoxFor(m => m.CodeType, new { @class = "form-control", id = "txtCodeType" })
+                                            <select class="form-control" id="ddlCodeType" name="ddlCodeType" onchange="setDropDownStyle(this);"></select>
                                         </div>
+                                       @*  <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.CodeType, new { @class = "form-control", id = "ddlCodeType" })
+                                        </div> *@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -124,6 +127,7 @@
         var updateButton = "";
         var deleteButton = "";
         $(document).ready(function () {
+            getCodeType();
             setSideMenu("make-master");
             if (fullAccess === "True" || viewAccess === "True") {
                 clearControls();
@@ -221,14 +225,14 @@
 
         function checkValidation() {
             var isValid = true;
-            if ($("#txtCodeType").val() == "") {
-                $("#txtCodeType").attr('class', 'form-control vaidationTextBoxError');
-                $("#txtCodeType").focus();
-                isValid = false;
-            } else {
-                $("#txtCodeType").attr('class', 'form-control');
-                $("#txtCodeType").focus();
-            }
+           if ($('#ddlCodeType option:selected').val() == ""){
+            $("#ddlCodeType").attr('class', 'form-control vaidationTextBoxError');
+            $("#ddlCodeType").focus();
+            isValid = false;
+                 } else {
+                        $("#ddlCodeType").attr('class', 'form-control');
+                        $("#ddlCodeType").focus();
+             }
 
             if ($("#txtCode").val() == "") {
                 $("#txtCode").attr('class', 'form-control vaidationTextBoxError');
@@ -252,15 +256,15 @@
 
         function checkValidationOnChange() {
             $(function () {
-                $("#txtCodeType").on("input", function () {
-                    if ($(this).val() == "") {
-                        $(this).attr('class', 'form-control vaidationTextBoxError');
-                        $(this).focus();
-                    } else {
-                        $(this).attr('class', 'form-control');
-                        $(this).focus();
-                    }
-                });
+               $("#ddlCodeType").change(function () {
+                if ($('option:selected', this).val() == "0" || $('option:selected', this).val() == "") {
+                    $(this).attr('class', 'form-control vaidationTextBoxError');
+                    $(this).focus();
+                } else {
+                    $(this).attr('class', 'form-control');
+                    $(this).focus();
+                }
+            });
 
                 $("#txtCode").on("input", function () {
                     if ($(this).val() == "") {
@@ -285,7 +289,7 @@
         }
 
         function clearControls() {
-            $("#txtCodeType").val("");
+            $("#ddlCodeType").val("");
             $("#txtCode").val("");
             $("#txtDescription").val("");
             $("#chkIsActive").prop("checked", false);
@@ -361,7 +365,7 @@
 
             if (isValid == true) {
                if ($("#txtMake").val() != "" && $("#txtMakeName").val() != "") {
-                    var codeType = $("#txtCodeType").val();
+                    var codeType = $("#ddlCodeType").val();
                     var code = $("#txtCode").val();
                     var description = $("#txtDescription").val()
                     var isActive = $("#chkIsActive").is(":checked");
@@ -477,7 +481,7 @@
                             '</tr>';
 
                         //Setting Code Master Details to Page Controls
-                        $('#txtCodeType').val(data.codeType);
+                        $('#ddlCodeType').val(data.codeType);
                         $('#txtCode').val(data.code);
                         $('#txtDescription').val(data.description);
                         $("#chkIsActive").prop('checked', data.isActive);
@@ -487,6 +491,12 @@
                         $("#makeMasterBody").html(rows);
                         rows = "";
                         $("#tblMakeMaster").focus();
+
+                        
+
+                              $('#ddlCodeType option').filter(function() {
+                         return $(this).text() === data.codeType; // Check if the text matches
+                       }).prop('selected', true);
 
                         bindDataTable();
                     } else {

@@ -79,7 +79,7 @@ public partial class VmsDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=GAURAV\\SQLEXPRESS;Database=VMS_DB;User ID=sa;Password=z;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=SQL1003.site4now.net;Initial Catalog=db_ab27dd_vmsdev;User Id=db_ab27dd_vmsdev_admin;Password=Changeme@123;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

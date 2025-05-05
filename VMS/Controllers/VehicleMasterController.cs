@@ -103,12 +103,13 @@ namespace VMS.Controllers
 
         [HttpGet]
         public JsonResult getVehicleMaster()
-        {
-            return Json(_context.TblVehicleMasters.Select(x => new
+         {
+            var j = _context.TblVehicleMasters.Select(x => new
             {
                 VehicleId = x.Id,
                 VehicleName = x.VehicleNo,
-            }).ToList());
+            }).ToList();
+            return Json(j);
         }
 
         [HttpGet]

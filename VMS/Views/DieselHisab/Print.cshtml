@@ -229,7 +229,7 @@
                 <th><span id="stationdetail_loadType0"></span></th>
                 <th><span id="stationdetail_Avg0"></span></th>
                 <th><span id="stationdetail_AvgDiesel0"></span></th>
-                <th colspan="6" style="text-align:left">भरी का डीजल (Total - खाली का डीजल) = <span id="bhariKaDiesel"></span></th>
+                <th colspan="6" style="text-align:left">खाली का कि.मी. = <span id="khaliKaKiloMeter"></span></th>
             </tr>
             <tr>
                 <th colspan="3" style="text-align:left"><span id="stationdetail_station1"></span></th>
@@ -239,7 +239,7 @@
                 <th><span id="stationdetail_loadType1"></span></th>
                 <th><span id="stationdetail_Avg1"></span></th>
                 <th><span id="stationdetail_AvgDiesel1"></span></th>
-                <th colspan="6" style="text-align:left">खाली का कि.मी. = <span id="khaliKaKiloMeter"></span></th>
+                <th colspan="6" style="text-align:left">भरी का डीजल (Total - खाली का डीजल) = <span id="bhariKaDiesel"></span></th>
             </tr>
             <tr>
                 <th colspan="3" style="text-align:left"><span id="stationdetail_station2"></span></th>
@@ -379,6 +379,7 @@
 @section scripts {
     <script>
         $(document).ready(function () {
+            setSideMenu("diesel-hisab-master");
             var tripid = GetParameterValues('tripid');
             getDieselHisabById(tripid);
         });
@@ -409,7 +410,7 @@
 
                          // $("#driverName").html(`Driver Name: <span>${data.driverName}</span>`);
                         $("#driverName").text(data.driverName);
-                        $("#vehicleNumber").text(data.vehicleNo);
+                        $("#vehicleNumber").text(data.vehicleNumber);
                         $("#tripStartDate").text(data.tripStartDate);
                         $("#tripEndDate").text(data.tripEndDate);
                         $("#srNo").text(` `+data.tripId);
@@ -487,14 +488,13 @@
                             $("#khaliKaKiloMeter").text(Math.round(totalKhaliKaKm));
                             $("#bhariKaDiesel").text(Math.round((totalConsumedDiesel - totalKhaliKaDiesel)));
                             $("#bhariKaKilometer").text(Math.round((totalRunKm - totalKhaliKaKm)));
-                            $("#bhariKaAverage").text(Math.round((totalRunKm - totalKhaliKaKm) / (totalConsumedDiesel - totalKhaliKaDiesel)));
+                            $("#bhariKaAverage").text(((totalRunKm - totalKhaliKaKm) / (totalConsumedDiesel - totalKhaliKaDiesel)).toFixed(2));
 
-                            totalDieselProfitLoss = Math.round((totalConsumedDiesel - totalEstimateDiesel));
+                            totalDieselProfitLoss = (parseFloat(totalConsumedDiesel) - parseFloat(totalEstimateDiesel)).toFixed(2);
                             $("#dieselProfitLoss").text(totalDieselProfitLoss);
 
-                            $("#percentageOfLoss").text(Math.round((parseFloat(totalDieselProfitLoss) / (parseFloat(totalAvgDieselValue) / parseFloat(totalDieselFillingRow)))));
-
-                            $("#khaliBhariTotalKi").text(Math.round((parseFloat(totalRunKm) / parseFloat(totalConsumedDiesel))));
+                            $("#percentageOfLoss").text(((parseFloat(totalDieselProfitLoss) / (parseFloat(totalAvgDieselValue) / parseFloat(totalDieselFillingRow)))).toFixed(2));
+                            $("#khaliBhariTotalKi").text(((parseFloat(totalRunKm) / parseFloat(totalConsumedDiesel))).toFixed(2));
                         }
                         catch{}
                         
