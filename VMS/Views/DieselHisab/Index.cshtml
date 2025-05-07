@@ -296,45 +296,20 @@
 
                     <!-- Station Details Section -->
                      <div class="row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <div style="align-self: center;">
-            <h5>Station Details:</h5>
-        </div>
-        <div style="display: flex; align-items: center;">
-            <div class="form-check form-check-inline" style="margin-right: 15px;">
-                <input class="form-check-input" type="checkbox" id="addLoadingUnloading">
-                <label class="form-check-label" for="addLoadingUnloading">Add Loading/Unloading</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="addDifference">
-                <label class="form-check-label" for="addDifference">Add Difference</label>
-            </div>
-        </div>
-    </div>
-  @*   <div class="row rowHeight">
-        <div class="col-md-12">
-            <div class="form-group row">
-                </div>
-        </div>
-    </div> *@
-                      @*   <div class="row rowHeight">
-                            <div class="col-md-12">
-                                <div class="form-group row">
-                                    <h5>Station Details:</h5>
-                                </div>
-                            </div>
-                        </div>
-                     <div class="row">
-                            <div class="col-md-12" style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="addLoadingUnloading">
-                                    <label class="form-check-label" for="addLoadingUnloading">Add Loading/Unloading</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="addDifference">
-                                    <label class="form-check-label" for="addDifference">Add Difference</label>
-                                </div>
-                            </div>
-                      </div> *@
+                         <div style="align-self: center;">
+                             <h5>Station Details:</h5>
+                         </div>
+                         <div style="display: flex; align-items: center;">
+                             <div class="form-check form-check-inline" style="margin-right: 15px;">
+                                        <input class="form-check-input" type="checkbox" id="addLoadingUnloading" onchange="handleCheckboxChange_AddLoadingUnloading(this)">
+                                 <label class="form-check-label" for="addLoadingUnloading">Add Loading/Unloading</label>
+                             </div>
+                             <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="addDifference" onchange="handleCheckboxChange_AddDifference(this)">
+                                 <label class="form-check-label" for="addDifference">Add Difference</label>
+                             </div>
+                         </div>
+                      </div>
                         
                        <div class="card" style="padding: 15px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px;">
                         <div class="row rowHeight align-items-center">
@@ -1103,6 +1078,9 @@
                         formData.append("tripId", tripId);
                     }
                    
+                    const addDifferenceChecked = document.getElementById('addDifference').checked; // Get the boolean value
+                    const addLoadingUnloadingChecked = document.getElementById('addLoadingUnloading').checked;
+
                 formData.append("lastTripId",  $("#hdnLastTripId").val());
                 formData.append("vehicleNo", $("#ddlVehicleNo option:selected").val());
                 formData.append("driverId", $("#ddlDriver option:selected").val());
@@ -1115,8 +1093,10 @@
                 formData.append("endOdometer", $("#txtEndOdometer").val());
                 formData.append("openingDiesel", $("#txtOpeningDiesel").val());
                 formData.append("closingDiesel", $("#txtClosingDiesel").val());
-                    formData.append("runningKm", $("#txtRunningKm").val());
+                formData.append("runningKm", $("#txtRunningKm").val());
                 formData.append("tripRouteDescription", $("#txtRouteDescription").val());
+                    formData.append("IsDifferenceAdded", addDifferenceChecked); // Append the checkbox value
+                    formData.append("IsLoadingAdded", addLoadingUnloadingChecked);
 
                  // Diesel Filling Entries from Table
                    $("#dieselFillingTable tbody tr").each(function (index, row) {
@@ -1131,17 +1111,21 @@
 
                     // Diesel Line Entries from Table
                     $("#stationDetailsTable tbody tr").each(function (index, row) {
+                       
                         var routeId = $(row).find("td:eq(0)").text();
-                        var routeDesc = $(row).find("td:eq(2)").text();
+                        var routeDesc = $(row).find("td:eq(2)").text();                        
+                        var Distance = $(row).find("td:eq(3)").text();
                         var LoadType = $(row).find("td:eq(4)").text();
                         var Average = $(row).find("td:eq(5)").text();
                         var EstimatedDiesel = $(row).find("td:eq(6)").text();
-
-                        formData.append(`_lstDieselLine[${index}].RouteId`, routeId);
-                        formData.append(`_lstDieselLine[${index}].RouteDesc`, routeDesc);
-                        formData.append(`_lstDieselLine[${index}].LoadType`, LoadType);
-                        formData.append(`_lstDieselLine[${index}].Average`, Average);
-                        formData.append(`_lstDieselLine[${index}].EstimatedDiesel`, EstimatedDiesel);
+                        if (routeDesc !== 'Total') {
+                            formData.append(`_lstDieselLine[${index}].RouteId`, routeId);
+                            formData.append(`_lstDieselLine[${index}].RouteDesc`, routeDesc);
+                            formData.append(`_lstDieselLine[${index}].LoadType`, LoadType);
+                            formData.append(`_lstDieselLine[${index}].Distance`, Distance);
+                            formData.append(`_lstDieselLine[${index}].Average`, Average);
+                            formData.append(`_lstDieselLine[${index}].EstimatedDiesel`, EstimatedDiesel);
+                        }
                     });
                
                 $.ajax({
@@ -1364,6 +1348,7 @@
 
     @* Station Detail Section  *@
     <script>
+
         function addStationDetails() {
             const stationId = $("#ddlDistanceMaster option:selected").val();
             const loadTypeId = $("#ddlLoadType option:selected").val();
@@ -1372,6 +1357,8 @@
             const loadType = $("#ddlLoadType option:selected").text();
             const average = $("#txtAverage").val();
             const estKm = $("#txtEstDiesel").val();
+            const addDifferenceChecked = document.getElementById('addDifference').checked; // Get the boolean value
+            const addLoadingUnloadingChecked = document.getElementById('addLoadingUnloading').checked;
 
             if (!station || !distance || !loadType || !average || !estKm) {
                 alert("Please fill all required fields.");
@@ -1380,16 +1367,37 @@
 
             const table = document.getElementById('stationDetailsTable').getElementsByTagName('tbody')[0];
 
-            // Check if the stationId already exists in the table
+            // Check if the stationId already exists in the table, excluding the difference row
             for (let i = 0; i < table.rows.length; i++) {
-                const existingStationId = table.rows[i].cells[0].textContent;
-                if (existingStationId === stationId) {
-                    alert('This station already exists in the table.');
-                    return;
+                const row = table.rows[i];
+                if (row.id !== 'differenceRow' && row.id !== 'loadingUnloadingRow' && row.id !== 'totalRow') { // Exclude the difference row from the check
+                    const existingStationId = row.cells[0].textContent;
+                    if (existingStationId === stationId) {
+                        alert('This station already exists in the table.');
+                        return;
+                    }
                 }
             }
 
-            const row = table.insertRow();
+            let row;
+            //insert row before the difference row if it exists
+            const differenceRow = document.getElementById('differenceRow');
+            const loadingUnloadingRow = document.getElementById('loadingUnloadingRow');
+            const totalRow = document.getElementById('totalRow');
+            if (differenceRow) {
+                row = table.insertRow(differenceRow.rowIndex - 1);
+            }
+            else if (loadingUnloadingRow) {
+                row = table.insertRow(loadingUnloadingRow.rowIndex - 1);
+            }
+            else if (totalRow) {
+                row = table.insertRow(totalRow.rowIndex - 1);
+            }
+            else {
+                row = table.insertRow();
+            }
+
+
             const stationidCell = row.insertCell(0);
             stationidCell.textContent = stationId;
             stationidCell.style.display = 'none';
@@ -1404,9 +1412,7 @@
             row.insertCell(6).textContent = estKm;
 
             const actionsCell = row.insertCell(7);
-            actionsCell.innerHTML = `
-                                   <button class="btn btn-danger btn-sm" onclick="deleteStationRow(this)">Delete</button>
-                       `;
+            actionsCell.innerHTML = `<button class="btn btn-danger btn-sm" onclick="deleteStationRow(this)">Delete</button>`;
 
 
             // Clear inputs after adding
@@ -1415,10 +1421,33 @@
             $("#ddlLoadType").val("");
             $("#txtAverage").val("");
             $("#txtEstDiesel").val("");
+
+            //Call addDifferenceLine and addLoadingUnloadingLine to make sure the difference row is at the last
+            if (document.getElementById('addDifference').checked) {
+                addDifferenceLine();
+            }
+            if (document.getElementById('addLoadingUnloading').checked) {
+                addLoadingUnloadingLine();
+            }
+            addTotalRow();
+
+            // Example of appending the checkbox value to formData:
+            const formData = new FormData();
+            formData.append("stationId", stationId);
+            formData.append("loadTypeId", loadTypeId);
+            formData.append("station", station);
+            formData.append("distance", distance);
+            formData.append("loadType", loadType);
+            formData.append("average", average);
+            formData.append("estKm", estKm);
+            formData.append("addDifference", addDifferenceChecked); // Append the checkbox value
+            formData.append("addLoadingUnloading", addLoadingUnloadingChecked);
+            // ... append other form data ...
         }
 
         function deleteStationRow(btn) {
             $(btn).closest("tr").remove();
+            addTotalRow();
         }
 
         function editStationRow(btn) {
@@ -1484,6 +1513,9 @@
                         $("#txtLastTripVendor").val(data.lastTripHistory.lastTripVendor);
                         }catch{}
 
+                        document.getElementById('addDifference').checked = data.IsDifferenceAdded;
+                        document.getElementById('addLoadingUnloading').checked = data.IsLoadingAdded;
+
                         fillDieselFillingTable(data.dieselFillingList);
                         fillstationDetailsTable(data.stationList);
 
@@ -1523,15 +1555,32 @@
 
         function fillstationDetailsTable(stationDetailsList) {
             const table = document.getElementById('stationDetailsTable').getElementsByTagName('tbody')[0];
+            table.innerHTML = ''; // Clear the table body
+
+            let differenceRowAdded = false;
+            let loadingUnloadingRowAdded = false;
+
             stationDetailsList.forEach(entry => {
+                if (entry.routeDesc === 'Difference') {
+                    addDifferenceLine();
+                    differenceRowAdded = true;
+                    return; // Skip adding this as a regular row
+                } 
+                
+                if (entry.routeDesc === 'Loading/Unloading') {
+                    addLoadingUnloadingLine();
+                    loadingUnloadingRowAdded = true;
+                    return; // Skip adding this as a regular row
+                }
+
                 const row = table.insertRow();
 
                 const routeId = row.insertCell(0);
-                routeId.textContent = entry.routeId; // If available
+                routeId.textContent = entry.routeId;
                 routeId.style.display = 'none';
 
                 const loadTypeId = row.insertCell(1);
-                loadTypeId.textContent = entry.loadTypeId; // If available
+                loadTypeId.textContent = entry.loadTypeId;
                 loadTypeId.style.display = 'none';
 
                 row.insertCell(2).textContent = entry.routeDesc;
@@ -1540,21 +1589,246 @@
                 row.insertCell(5).textContent = entry.average;
                 row.insertCell(6).textContent = entry.estimatedDiesel;
 
-                // var distance = parseFloat(entry.distance) || 0;
-                //             var average = parseFloat(entry.average.result.value) || 0;
-                //             var Estkm = 0;
-                //             if (average !== 0) {
-                //                 Estkm = (distance / average).toFixed(2); // returns a string with 2 decimal places
-                //             } else {
-                //                 Estkm = "0.00";
-                //             }
+                const actionsCell = row.insertCell(7);
+                actionsCell.innerHTML = `<button class="btn btn-danger btn-sm" onclick="deleteStationRow(this)">Delete</button>`;
+            });
+            //check box should be checked or unchecked based on the data
+            if (differenceRowAdded) {
+                document.getElementById('addDifference').checked = true;
+            } else {
+                document.getElementById('addDifference').checked = false;
+            }
+            if (loadingUnloadingRowAdded) {
+                document.getElementById('addLoadingUnloading').checked = true;
+            } else {
+                document.getElementById('addLoadingUnloading').checked = false;
+            }
+            addTotalRow();
+        }
 
-                //             row.insertCell(5).textContent = average;
-                //             row.insertCell(6).textContent = Estkm;
+        function addTotalRow() {
+            const table = document.getElementById('stationDetailsTable').getElementsByTagName('tbody')[0];
+            let row;
+            if (document.getElementById('totalRow')) {
+                table.removeChild(document.getElementById('totalRow'));
+            }
+            row = table.insertRow();
+            row.id = 'totalRow';
 
-                            const actionsCell = row.insertCell(7);
-                            actionsCell.innerHTML = `<button class="btn btn-danger btn-sm" onclick="deleteStationRow(this)">Delete</button>`;
+            const routeId = row.insertCell(0);
+            routeId.style.display = 'none';
+
+            const loadTypeId = row.insertCell(1);
+            loadTypeId.style.display = 'none';
+
+            row.insertCell(2).textContent = "Total";
+            let totalDistance = 0;
+            let totalEstKm = 0;
+            for (let i = 0; i < table.rows.length - 1; i++) {
+                if (table.rows[i].id !== 'differenceRow' && table.rows[i].id !== 'loadingUnloadingRow') {
+                    totalDistance += Number(table.rows[i].cells[3].textContent);
+                    totalEstKm += Number(table.rows[i].cells[6].textContent);
+                }
+            }
+            row.insertCell(3).textContent = totalDistance.toFixed(0)
+            row.insertCell(4).textContent = "";
+            row.insertCell(5).textContent = "";
+            row.insertCell(6).textContent = totalEstKm.toFixed(2)
+            row.insertCell(7).textContent = "";
+        }
+    </script>
+
+    @* Check box select unselect FOR DIFFERENCE *@
+    <script>
+
+        function handleCheckboxChange_AddDifference(checkbox) {
+            if (checkbox.checked) {
+              console.log("Checkbox is checked");
+                addDifferenceLine();
+            } else {
+              console.log("Checkbox is unchecked");
+                deleteDifferenceLine();
+            }
+        }
+
+        function addDifferenceLine() {
+            const table = document.getElementById('stationDetailsTable').getElementsByTagName('tbody')[0];
+            let row;
+
+            // Check if the difference row already exists
+            if (document.getElementById('differenceRow')) {
+                // If it exists, remove it before adding a new one
+                table.removeChild(document.getElementById('differenceRow'));
+            }
+            // Check if the total row exists
+            if (document.getElementById('totalRow')) {
+                row = table.insertRow(table.rows.length - 1); // Insert before total
+            }
+            else {
+                row = table.insertRow();
+            }
+            row.id = 'differenceRow'; // Set an ID for the row
+
+            const routeId = row.insertCell(0);
+            routeId.textContent = 0;
+            getRouteId()
+                .then(distanceId => {
+                    console.log("DistanceId:", distanceId);
+                    let myDistanceId = distanceId;
+                    routeId.textContent = myDistanceId; // If available
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+
+            routeId.style.display = 'none';
+
+            const loadTypeId = row.insertCell(1);
+            loadTypeId.textContent = 22; // 22 is for UL
+            loadTypeId.style.display = 'none';
+
+             let totalDistance = 0;
+            for (let i = 0; i < table.rows.length - 1; i++) {
+                if (table.rows[i].id !== 'differenceRow' && table.rows[i].id !== 'loadingUnloadingRow' && table.rows[i].id !== 'Total') {
+                    totalDistance += Number(table.rows[i].cells[3].textContent);
+                }
+            }
+
+            let totalKm = Math.round($("#txtRunningKm").val());
+            row.insertCell(2).textContent = "Difference";
+            row.insertCell(3).textContent = Math.round((totalKm - totalDistance));
+            row.insertCell(4).textContent = "UL";
+            row.insertCell(5).textContent = 0;
+            row.insertCell(6).textContent = 0;
+
+            const actionsCell = row.insertCell(7);
+            actionsCell.innerHTML = `<button class="btn btn-danger btn-sm" onclick="deleteStationRow(this)">Delete</button>`;
+        }
+
+        function deleteDifferenceLine() {
+            const table = document.getElementById('stationDetailsTable').getElementsByTagName('tbody')[0];
+            const rowToDelete = document.getElementById('differenceRow');
+            if (rowToDelete) {
+                table.deleteRow(rowToDelete.rowIndex - 1);
+            }
+        }
+
+        function getRouteId() {
+            return new Promise((resolve, reject) => {
+                const url = '@(utilityHelper.SiteUrl() + "DieselHisab/getDifferenceRouteMasterId")'; // Get URL
+
+                fetch(url) // Use fetch API
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json(); // Parse the JSON response
+                    })
+                    .then(data => {
+                        console.log(data);
+                        if (data && data.DistanceId) {
+                            resolve(data.DistanceId);
+                        } else {
+                            reject("DistanceId not found in response.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Fetch error:", error);
+                        reject("Fetch request failed: " + error.message);
+                    });
             });
         }
+    </script>
+
+    @* Check box select unselect FOR Loading/Unloading *@
+    <script>
+
+        function handleCheckboxChange_AddLoadingUnloading(checkbox) {
+            if (checkbox.checked) {
+                console.log("Checkbox is checked");
+                addLoadingUnloadingLine();
+            } else {
+                console.log("Checkbox is unchecked");
+                deleteLoadingUnloadingLine();
+            }
+        }
+
+        function addLoadingUnloadingLine() {
+            const table = document.getElementById('stationDetailsTable').getElementsByTagName('tbody')[0];
+            let row;
+
+            // Check if the loading/unloading row already exists
+            if (document.getElementById('loadingUnloadingRow')) {
+                // If it exists, remove it before adding a new one
+                table.removeChild(document.getElementById('loadingUnloadingRow'));
+            }
+
+            //insert row before the difference row.
+            const differenceRow = document.getElementById('differenceRow');
+            const totalRow = document.getElementById('totalRow');
+            if (differenceRow) {
+                row = table.insertRow(differenceRow.rowIndex - 1);
+            }
+            else if (totalRow) {
+                row = table.insertRow(totalRow.rowIndex - 1);
+            }
+            else {
+                row = table.insertRow();
+            }
+
+            row.id = 'loadingUnloadingRow';
+
+            const routeId = row.insertCell(0);
+            routeId.textContent = 0;
+            routeId.style.display = 'none';
+
+            const loadTypeId = row.insertCell(1);
+            loadTypeId.textContent = 21;
+            loadTypeId.style.display = 'none';
+
+            row.insertCell(2).textContent = "Loading/Unloading";
+            row.insertCell(3).textContent = 0;
+            row.insertCell(4).textContent = "L/U";
+            row.insertCell(5).textContent = 0;
+            row.insertCell(6).textContent = 0;
+
+            const actionsCell = row.insertCell(7);
+            actionsCell.innerHTML = `<button class="btn btn-danger btn-sm" onclick="deleteStationRow(this)">Delete</button>`;
+        }
+
+        function deleteLoadingUnloadingLine() {
+            const table = document.getElementById('stationDetailsTable').getElementsByTagName('tbody')[0];
+            const rowToDelete = document.getElementById('loadingUnloadingRow');
+            if (rowToDelete) {
+                table.deleteRow(rowToDelete.rowIndex - 1);
+            }
+        }
+
+        function getLoadingUnloadingRouteMasterId() {
+            return new Promise((resolve, reject) => {
+                const url = '@(utilityHelper.SiteUrl() + "DieselHisab/getLoadingUnloadingRouteMasterId")'; // Get URL
+
+                fetch(url) // Use fetch API
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json(); // Parse the JSON response
+                    })
+                    .then(data => {
+                        console.log(data);
+                        if (data && data.DistanceId) {
+                            resolve(data.DistanceId);
+                        } else {
+                            reject("LoadingUnloading not found in response.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Fetch error:", error);
+                        reject("Fetch request failed: " + error.message);
+                    });
+            });
+        }
+
     </script>
 }

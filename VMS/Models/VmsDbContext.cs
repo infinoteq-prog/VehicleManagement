@@ -428,6 +428,8 @@ public partial class VmsDbContext : DbContext
                 .HasColumnName("Creation_Date");
             entity.Property(e => e.EndOdometer).HasColumnName("End_odometer");
             entity.Property(e => e.IsActive).HasColumnName("Is_Active");
+            entity.Property(e => e.IsDifferenceAdded).HasColumnName("Is_DifferenceAdded");
+            entity.Property(e => e.IsLoadingAdded).HasColumnName("Is_LoadingAdded");
             entity.Property(e => e.LastTripRouteDescr)
                 .HasMaxLength(500)
                 .HasColumnName("Last_Trip_route_descr");
@@ -481,6 +483,7 @@ public partial class VmsDbContext : DbContext
                 .HasColumnName("Route_Desc");
             entity.Property(e => e.RouteId).HasColumnName("Route_ID");
             entity.Property(e => e.Average).HasColumnName("Average");
+            entity.Property(e => e.Distance).HasColumnName("Distance");
             entity.Property(e => e.EstimatedDiesel).HasColumnName("Estimated_Diesel");
             entity.Property(e => e.UpdateDate)
                 .HasDefaultValueSql("(getdate())")
@@ -716,6 +719,9 @@ public partial class VmsDbContext : DbContext
             entity.Property(e => e.OpeningBalance)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("Opening_Balance");
+            entity.Property(e => e.ClosingBalance)
+                .HasColumnType("decimal(10, 2)")
+                .HasColumnName("Closing_Balance");
             entity.Property(e => e.RouteDescription)
                 .HasMaxLength(500)
                 .HasColumnName("Route_Description");

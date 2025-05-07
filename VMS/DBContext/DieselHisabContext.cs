@@ -145,8 +145,9 @@ namespace VMS
             List<object> stationList = new List<object>();
             string sql = @"
                             SELECT dl.Route_Id[RouteId],
-                            dl.Route_Desc[RouteDesc],dl.Load_Type[LoadType], cm.Id AS LoadTypeId,dm.Distance,dl.Average,dl.Estimated_Diesel
+                            dl.Route_Desc[RouteDesc],dl.Load_Type[LoadType], cm.Id AS LoadTypeId,dl.Distance,dl.Average,dl.Estimated_Diesel,dh.Is_DifferenceAdded,dh.Is_LoadingAdded
                         FROM [dbo].[tbl_Diesel_Line] dl
+                        INNER JOIN [dbo].[tbl_Diesel_Header] dh on dl.TripId=dh.TripId
                         LEFT JOIN [dbo].[tbl_Code_Master] cm ON dl.Load_Type = cm.Code AND cm.Code_Type = 'LOADTYPE'
                         LEFT JOIN [dbo].[tbl_Distance_Master] dm ON dl.Route_Id = dm.Id
                         WHERE dl.TripId = @TripId;";
@@ -168,9 +169,11 @@ namespace VMS
                                 VehicleNo = vehicleNo,
                                 RouteId = reader.GetInt64("RouteId"),
                                 RouteDesc = reader.GetString("RouteDesc"),
+                                isDifference = reader.GetBoolean("Is_DifferenceAdded"),
+                                isLoadUnload = reader.GetBoolean("Is_LoadingAdded"),
                                 LoadType = reader.GetString("LoadType"),
                                 LoadTypeId = reader.IsDBNull("LoadTypeId") ? (int?)null : reader.GetInt32("LoadTypeId"),
-                                Distance = reader.IsDBNull("Distance") ? (decimal?)null : reader.GetInt32("Distance"),
+                                Distance = reader.IsDBNull("Distance") ? (decimal?)null : reader.GetDecimal("Distance"),
                                 Average = reader.IsDBNull("Average") ? (decimal?)null : reader.GetDecimal("Average"), 
                                 EstimatedDiesel = reader.IsDBNull("Estimated_Diesel") ? (decimal?)null : reader.GetDecimal("Estimated_Diesel"), 
                             });

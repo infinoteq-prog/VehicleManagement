@@ -118,7 +118,7 @@
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtPanNo">Pan No: <span class="reqFields">*</span> </label>
+                                        <label class="col-sm-4 col-form-label" for="txtPanNo">Pan No: </label>
                                         <div class="col-sm-8">
                                             @Html.TextBoxFor(m => m.PanNo, new { @class = "form-control", id = "txtPanNo", @maxlength = "10" })
                                         </div>
@@ -600,14 +600,14 @@
                 $("#txtAadharNumber").focus();
             }
 
-            if ($("#txtPanNo").val() == "") {
-                $("#txtPanNo").attr('class', 'form-control vaidationTextBoxError');
-                $("#txtPanNo").focus();
-                isValid = false;
-            } else {
-                $("#txtPanNo").attr('class', 'form-control');
-                $("#txtPanNo").focus();
-            }
+            // if ($("#txtPanNo").val() == "") {
+            //     $("#txtPanNo").attr('class', 'form-control vaidationTextBoxError');
+            //     $("#txtPanNo").focus();
+            //     isValid = false;
+            // } else {
+            //     $("#txtPanNo").attr('class', 'form-control');
+            //     $("#txtPanNo").focus();
+            // }
 
             if ($("#txtBankName").val() == "") {
                 $("#txtBankName").attr('class', 'form-control vaidationTextBoxError');

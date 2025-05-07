@@ -1,0 +1,399 @@
+﻿@model VMS.ViewModel.VMGstRateMaster
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Driver Hisab Master";
+}
+
+<style>
+    /* Existing styles */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+    }
+
+    th,
+    td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: normal;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .header-container {
+        display: flex;
+        justify-content: space-between; /* To push items to the ends */
+        align-items: center; /* To vertically align items in the center */
+        margin-bottom: 10px; /* Add some space below the header */
+    }
+
+    .print-button {
+        /* You can add specific styles for the print button here if needed */
+    }
+
+    .footer-section {
+        margin-top: 20px; /* Add some space above the footer */
+        padding: 10px;
+        border: 1px solid #ccc; /* Optional border for visual separation */
+    }
+
+    .footer-notes {
+        margin-top: 5px;
+        font-size: 0.9em;
+        align-items: left;
+    }
+
+        .footer-notes ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+
+        .footer-notes li {
+            margin-bottom: 5px;
+        }
+
+    .signature-row {
+        display: flex;
+        justify-content: flex-end; /* Push content to the right */
+        padding-right: 78px; /* Add some space above the signature */
+    }
+
+        .signature-row span {
+            margin-left: 50px; /* Add some left margin for spacing */
+            font-weight: bold; /* Make "Signature" bold */
+        }
+</style>
+
+<div class="container" id="printableArea">
+    <div class="header-container">
+        <h1 id="labelDiesalHisab">Driver Hisab</h1>
+        <button class="print-button" onclick="prepareForPrint()">Print</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan="2" style="text-align:left">आवागमन:  <span id="tripRouteDescr"></span></th>
+                <th colspan="3" style="text-align:left">ट्रक नम्बर : <span id="vehicleNumber"></span></th>
+            </tr>
+            <tr>
+                <th colspan="2" style="text-align:left">दिनांक :  <span id="date"></span></th>
+                <th colspan="2" style="text-align:left">वजन :  <span id="weight"></span></th>
+                <th>Voucher No . <span id="settlementNo"></span></th>
+            </tr>
+            <tr>
+
+                <th colspan="2" style="text-align:left">ड्राईवर का नाम :  <span id="driverName"></span></th>
+                <th colspan="3" style="text-align:left">पिता का नाम :  <span id="driverFatherName"></span></th>
+               
+            </tr>
+            <tr>
+                <th colspan="2" style="text-align:left">ऑफिस स्टॉफ नाम : <span id="createdBy"></span></th>
+                <th colspan="3" style="text-align:left">Opening Balance:  <span id="openingBalance"></span></th>
+            </tr>
+            <tr>
+                <th style="font-weight:bold">Head Type</th>
+                <th style="font-weight:bold">Narration</th>
+                <th style="font-weight:bold" class="text-right">Debit</th>
+                <th style="font-weight:bold">Credit</th>
+                <th style="font-weight:bold">Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td> <span id="headType0"></span></td>
+                <td> <span id="narration0"></span></td>
+                <td class="text-right"> <span id="debit0"></span></td>
+                <td> <span id="credit0"></span></td>
+                <td> <span id="balance0"></span></td>
+            </tr>
+            <tr>
+                <td> <span id="headType1"></span></td>
+                <td> <span id="narration1"></span></td>
+                <td class="text-right"> <span id="debit1"></span></td>
+                <td> <span id="credit1"></span></td>
+                <td> <span id="balance1"></span></td>
+            </tr>
+            <tr>
+                <td> <span id="headType2"></span></td>
+                <td> <span id="narration2"></span></td>
+                <td class="text-right"> <span id="debit2"></span></td>
+                <td> <span id="credit2"></span></td>
+                <td> <span id="balance2"></span></td>
+            </tr>
+            <tr>
+                <td> <span id="headType3"></span></td>
+                <td> <span id="narration3"></span></td>
+                <td class="text-right"> <span id="debit3"></span></td>
+                <td> <span id="credit3"></span></td>
+                <td> <span id="balance3"></span></td>
+            </tr>
+            <tr>
+                <td> <span id="headType4"></span></td>
+                <td> <span id="narration4"></span></td>
+                <td class="text-right"> <span id="debit4"></span></td>
+                <td> <span id="credit4"></span></td>
+                <td> <span id="balance4"></span></td>
+            </tr>
+            <tr>
+                <td> <span id="headType5"></span></td>
+                <td> <span id="narration5"></span></td>
+                <td class="text-right"> <span id="debit5"></span></td>
+                <td> <span id="credit5"></span></td>
+                <td> <span id="balance5"></span></td>
+            </tr>
+            <tr>
+                <td> <span id="headType6"></span></td>
+                <td> <span id="narration6"></span></td>
+                <td class="text-right"> <span id="debit6"></span></td>
+                <td> <span id="credit6"></span></td>
+                <td> <span id="balance6"></span></td>
+            </tr>
+            <tr>
+                <td> <span id="headType7"></span></td>
+                <td> <span id="narration7"></span></td>
+                <td class="text-right"> <span id="debit7"></span></td>
+                <td> <span id="credit7"></span></td>
+                <td> <span id="balance7"></span></td>
+            </tr>
+            <tr>
+                <td> <span id="headType8"></span></td>
+                <td> <span id="narration8"></span></td>
+                <td class="text-right"> <span id="debit8"></span></td>
+                <td> <span id="credit8"></span></td>
+                <td> <span id="balance8"></span></td>
+            </tr>
+            <tr>
+                <td> <span id="headType9"></span></td>
+                <td> <span id="narration9"></span></td>
+                <td class="text-right"> <span id="debit9"></span></td>
+                <td> <span id="credit9"></span></td>
+                <td> <span id="balance9"></span></td>
+            </tr>
+            <tr>
+                <td> <span id="headType10"></span></td>
+                <td> <span id="narration10"></span></td>
+                <td class="text-right"> <span id="debit10"></span></td>
+                <td> <span id="credit10"></span></td>
+                <td> <span id="balance10"></span></td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div class="footer-section">
+                        <div class="footer-notes">
+                            <p>कृपया जोड़ बाकी सही करें।</p>
+                            <p>वाउचर पत्र में ड्राईवर के हस्ताक्षर जरूर करावें।</p>
+                            <p><strong>नोट:</strong></p>
+                            <ul>
+                                <li>हर माल की बिल व बिल्टी जरूर लेवें।</li>
+                                <li>बिना पूछे व ज्यादा खर्चा करने पर पास नहीं होगा (गलत खर्चा लिखने पर पेनल्टी है)</li>
+                                <li>माल की शार्टेज का पूछ लेवें।</li>
+                                <li>ड्राईवर जोड़ बाकी करके लाया Yes / No ...........</li>
+                            </ul>
+                        </div>
+                        <div class="signature-row">
+                            <span>Signature</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            setSideMenu("driver-hisab-master");
+            var settlementId = GetParameterValues('settlementId');
+            getDriverHisabById(settlementId);
+        });
+
+        function getDriverHisabById(settlementId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DriverHisab/getDriverHisablWithId")',
+                type: "GET",
+                data: { settlementId: settlementId },
+                dataType: "json",
+                success: function (data) {
+
+                    console.log('gaurave');
+                    console.log(data);
+                    if (data != null && data != undefined) {
+
+                        $("#tripRouteDescr").text(data.tripRouteDescr);
+                        $("#vehicleNumber").text(data.vehicleNumber);
+                        $("#date").text(data.tripStartAndEndDate);
+                        $("#driverName").text(data.driverName);
+                        $("#driverFatherName").text(data.driverFatherName);
+                        $("#weight").text(data.weight);
+                        $("#settlementNo").text(data.settlementNo);
+                        $("#createdBy").text(data.dieselHeaderCreatedByName);
+                        $("#openingBalance").text(data.openingBalance);
+
+                        var openingBalance = data.openingBalance;
+                        openingBalance = openingBalance ? parseFloat(openingBalance) : 0;
+                        var previousBalance = openingBalance;
+                        //expenseList
+                        data.expenseList.forEach((entry, index) => {
+                            totalDieselFillingRow=index+1;
+                            const headType = `headType${index}`;
+                            const narration = `narration${index}`;
+                            const debit = `debit${index}`;
+                            const credit = `credit${index}`;
+                            const balance = `balance${index}`;
+                            try {
+                                $(`#${headType}`).text(entry.code);
+                                $(`#${narration}`).text(entry.description);
+
+                                var debitAmt = parseFloat(entry.drAmt) || 0;
+                                var creditAmt = parseFloat(entry.crAmt) || 0;
+                                previousBalance = previousBalance + debitAmt - creditAmt;
+
+                                $(`#${debit}`).text(debitAmt);
+                                $(`#${credit}`).text(creditAmt);
+                                $(`#${balance}`).text(previousBalance.toFixed(2));
+
+                        }catch{}
+                        });
+
+
+                    } else {
+                        $.confirm({
+                            title: 'Driver Hisab',
+                            content: 'Driver Hisab does not Exists!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+        </script>
+
+    @* Print script *@
+
+    <script>
+        // Existing JavaScript for printing
+        function prepareForPrint() {
+            let printableArea = document.getElementById('printableArea');
+            let originalBodyContent = document.body.innerHTML;
+            let printStyles = `
+                            <style type="text/css">
+                                .print-button {
+                                    display: none !important;
+                                }
+                                /* Existing print styles */
+                                table {
+                                    table-layout: fixed;
+                                    width: 100%;
+                                    margin: 0;
+                                    padding: 0;
+                                    border-collapse: collapse;
+                                    font-family: Arial, sans-serif !important;
+                                    font-size: 0.8em !important;
+                                    border: 0.5px solid #ccc !important; /* Lighter table border */
+                                }
+
+                                th, td {
+                                    font-size: 0.8em !important;
+                                    padding: 5px !important;
+                                    border: 0.5px solid #ccc !important; /* Lighter cell borders */
+                                    text-align: left !important;
+                                    word-wrap: break-word;
+                                    overflow: hidden;
+                                    box-sizing: border-box;
+                                }
+
+                                th {
+                                    background-color: #f2f2f2 !important;
+                                    font-weight: normal !important;
+                                }
+
+                                .header-container {
+                                    display: flex !important;
+                                    justify-content: space-between !important;
+                                    align-items: center !important;
+                                    margin-bottom: 5px !important;
+                                }
+
+                                h1#labelDiesalHisab {
+                                    font-size: 1.2em !important;
+                                    margin: 0 !important;
+                                }
+
+                                .footer-section {
+                                    border: 0.5px solid #ccc !important; /* Lighter footer border */
+                                    margin-top: 10px !important;
+                                    padding: 5px !important;
+                                }
+
+                                .footer-notes {
+                                    font-size: 0.7em !important;
+                                    align-items: left !important;
+                                    margin-top: 2px !important;
+                                }
+
+                                .footer-notes ul {
+                                    padding-left: 15px !important;
+                                    margin-bottom: 0 !important;
+                                }
+
+                                .footer-notes li {
+                                    margin-bottom: 2px !important;
+                                }
+
+                                .signature-row {
+                                    display: flex !important;
+                                    justify-content: flex-end !important;
+                                    padding-right: 78px; !important;
+                                }
+
+                                .signature-row span {
+                                    margin-left: 30px !important;
+                                    font-weight: bold !important;
+                                }
+                            </style>
+                        `;
+
+            if (printableArea) {
+                let printContent = printStyles + printableArea.outerHTML;
+                document.body.innerHTML = printContent;
+            }
+
+            window.print();
+
+            setTimeout(() => {
+                document.body.innerHTML = originalBodyContent;
+            }, 100);
+        }
+    </script>
+}

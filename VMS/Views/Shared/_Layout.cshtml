@@ -1571,6 +1571,7 @@
         }
 
 
+        //get ModelMaster
         function getModelMaster() {
             $.ajax({
                 cache: false,
@@ -1607,6 +1608,56 @@
                                  s += '<option selected="selected" value="' + data[i].modelId + '">' + data[i].modelName + '</option>';
                             }else{
                                  s += '<option value="' + data[i].modelId + '">' + data[i].modelName + '</option>';
+                            }
+                        }
+                        $("#ddlModelMaster").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+          }
+
+            function getModelMasterWithMakeId(makeId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "ModelMaster/getModelMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Model</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].makeId.toString() === makeId.toString()){
+                                s += '<option value="' + data[i].modelId + '">' + data[i].modelName + '</option>';
+                            }
+                        }
+                        $("#ddlModelMaster").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+           function getModelMasterWithMakeIdSelect(makeId, modelId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "ModelMaster/getModelMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Model</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if(data[i].makeId.toString() === makeId.toString()){
+                                if(data[i].modelId === modelId){
+                                 s += '<option selected="selected" value="' + data[i].modelId + '">' + data[i].modelName + '</option>';
+                            }else{
+                                 s += '<option value="' + data[i].modelId + '">' + data[i].modelName + '</option>';
+                            }
                             }
                         }
                         $("#ddlModelMaster").html(s);

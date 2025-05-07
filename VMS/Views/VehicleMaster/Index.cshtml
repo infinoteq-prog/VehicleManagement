@@ -330,7 +330,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtActualCapicity">Actual Capicity: </label>
+                                        <label class="col-sm-4 col-form-label" for="txtActualCapicity">Actual Load Capacity: </label>
                                         <div class="col-sm-8">
                                             @Html.TextBoxFor(m => m.ActualCapicity, new { @class = "form-control numberonly", id = "txtActualCapicity", @maxlength = "10", placeholder = "Enter vehicle's actual capicity" })
                                         </div>
@@ -408,8 +408,8 @@
                                         <th>Fitness Doc</th>
                                         <th>Dimension</th>
                                         <th>Branch Office</th>
-                                        <th>Rc Capicity</th>
-                                        <th>Actual Capicity</th>
+                                        <th>RC Load Capacity</th>
+                                        <th>Actual Load Capicity</th>
                                         <th>Is Active</th>
                                         <th>Creation Date</th>
                                         <th>Created By</th>
@@ -451,8 +451,7 @@
             setSideMenu("vehicle-master");
             // $("#chkIsActive").attr("checked", true);
             // $("#chkIsActive").attr("disabled", true);
-            getMakeMaster();
-            getModelMaster();
+            getMakeMaster();            
             getVehicleTypeMaster();
             getBodyTypeMaster();
             getManufacturerTypeMaster();
@@ -464,6 +463,11 @@
             }
 
             $(function () {
+                  $("#ddlMakeMaster").change(function () {
+                      var makeId = $(this).val();
+                      getModelMasterWithMakeId(makeId);
+               });
+
                 var d = new Date();
 
                 var month = d.getMonth()+1;

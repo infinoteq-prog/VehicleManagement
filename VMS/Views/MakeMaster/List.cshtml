@@ -18,9 +18,9 @@
                     <div class="row rowHeight">
                         <div class="col-md-6">
                             <div class="form-group row">
-                                <label class="col-sm-4 col-form-label" for="txtCodeType">Code Type: <span class="reqFields">*</span> </label>
+                                <label class="col-sm-4 col-form-label" for="ddlCodeType">Code Type: <span class="reqFields">*</span> </label>
                                 <div class="col-sm-8">
-                                    @Html.TextBoxFor(m => m.CodeType, new { @class = "form-control", id = "txtCodeType" })
+                                    <select class="form-control" id="ddlCodeType" name="ddlCodeType" onchange="setDropDownStyle(this);"></select>
                                 </div>
                             </div>
                         </div>
@@ -118,6 +118,7 @@
         var deleteButton = "";
 
         $(document).ready(function () {
+            getCodeType();
             setSideMenu("make-master");
             if (fullAccess === "True" || viewAccess === "True") {
                 //checkValidationOnChange();
@@ -211,13 +212,13 @@
 
         function checkValidation() {
             var isValid = true;
-            if ($("#txtCodeType").val() == "") {
-                $("#txtCodeType").attr('class', 'form-control vaidationTextBoxError');
-                $("#txtCodeType").focus();
+            if ($("#ddlCodeType").val() == "") {
+                $("#ddlCodeType").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlCodeType").focus();
                 isValid = false;
             } else {
-                $("#txtCodeType").attr('class', 'form-control');
-                $("#txtCodeType").focus();
+                $("#ddlCodeType").attr('class', 'form-control');
+                $("#ddlCodeType").focus();
             }
 
             if ($("#txtCode").val() == "") {
@@ -242,7 +243,7 @@
 
         function checkValidationOnChange() {
             $(function () {
-                $("#txtCodeType").on("input", function () {
+                $("#ddlCodeType").on("input", function () {
                     if ($(this).val() == "") {
                         $(this).attr('class', 'form-control vaidationTextBoxError');
                         $(this).focus();
@@ -275,7 +276,7 @@
         }
 
         function clearControls() {
-            $("#txtCodeType").val("");
+            $("#ddlCodeType").val("");
             $("#txtCode").val("");
             $("#txtDescription").val("");
             $("#chkIsActive").prop("checked", false);
@@ -287,7 +288,7 @@
                 $('#tblMakeMaster').DataTable().clear().destroy();
             }
 
-            var codeType = $("#txtCodeType").val();
+            var codeType = $("#ddlCodeType").val();
             var code = $("#txtCode").val();
             var description = $("#txtDescription").val()
             var isActive = $("#chkIsActive").is(":checked");
@@ -301,9 +302,12 @@
                 success: function (data) {
                     if (data != null && data != undefined) {
                         console.log(data);
+                        var sno = 0;
                         var rows = "";
                         var row = "";
+                        $("#makeMasterBody").html("");
                         $.each(data, function (i, item) {
+                            sno = sno + 1;
                             if (fullAccess === "True" || viewAccess === "True") {
                                 viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewMakeMaster(\'' + item.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
                             }
@@ -326,17 +330,17 @@
                                 '<td>' + item.codeType + '</td>' +
                                 '<td>' + item.code + '</td>' +
                                 '<td>' + item.description + '</td>' +
+                                '<td>' + item.isActive + '</td>' +
                                 '<td>' + item.creationDate + '</td>' +
                                 '<td>' + item.createdByName + '</td>' +
                                 '<td>' + item.updateDate + '</td>' +
                                 '<td>' + item.updatedByName + '</td>' +
                                 '</tr>';
                             rows = rows + row;
+                            row = "";
+                            $("#tblMakeMaster").focus();
                         });
-                        $("#divMakeMaster").show();
-                        $("#tblMakeMaster").focus();
-                        $("#makeMasterBody").html(rows);
-                        rows = "";
+                        $("#makeMasterBody").append(rows);
                         bindDataTable();
                     }
                     else {

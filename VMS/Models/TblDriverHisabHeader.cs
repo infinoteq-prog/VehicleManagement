@@ -21,6 +21,7 @@ public partial class TblDriverHisabHeader
     public DateTime TripEndDate { get; set; }
 
     public decimal OpeningBalance { get; set; }
+    public decimal ClosingBalance { get; set; }
 
     public decimal Weight { get; set; }
 

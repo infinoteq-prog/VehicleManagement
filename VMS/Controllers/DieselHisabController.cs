@@ -230,7 +230,7 @@ namespace VMS.Controllers
                  CONVERT(VARCHAR, dh.Trip_End_Date, 105) AS TripEndDate,
                  dh.Last_Trip_Route_Descr,dh.Start_Odometer,
                  dh.End_Odometer, dh.Opening_Diesel,dh.Closing_Diesel,
-                 dh.RunningKm, dh.Is_Active,
+                 dh.RunningKm, dh.Is_Active,dh.Is_DifferenceAdded,dh.Is_LoadingAdded,
                  CONVERT(VARCHAR(10),dh.Creation_Date, 105) AS DieselHeaderCreationDate,
                  CONVERT(VARCHAR(10),dh.Update_Date, 105) AS DieselHeaderUpdateDate,
                  dh.Created_By AS DieselHeaderCreatedBy,
@@ -268,6 +268,8 @@ namespace VMS.Controllers
                                     OpeningDiesel = reader.GetInt64("Opening_Diesel").ToIntFromNull(),
                                     ClosingDiesel = reader.GetInt64("Closing_Diesel").ToIntFromNull(),
                                     RunningKm = reader.GetInt32("RunningKm").ToIntFromNull(),
+                                    IsDifferenceAdded = reader.GetBoolean("Is_DifferenceAdded"),
+                                    IsLoadingAdded = reader.GetBoolean("Is_LoadingAdded"),
                                     IsActive = reader.GetBoolean("Is_Active"),
                                     DieselHeaderCreationDate = reader.GetString("DieselHeaderCreationDate"),
                                     DieselHeaderUpdateDate = reader.GetString("DieselHeaderUpdateDate"),
@@ -431,7 +433,7 @@ namespace VMS.Controllers
         public ActionResult SaveUpdate(int tripId, int vehicleNo, int driverId, int tripNo,int lastTripId, string driverName, 
                                  string driverFatherName, string tripStartDate,
                                  string tripEndDate, Int32 startOdometer, Int32 endOdometer,
-                                 int openingDiesel, int closingDiesel, int runningKm, string tripRouteDescription,List<TblDieselFilling> _lstDieselFilling, List<TblDieselLine> _lstDieselLine)
+                                 int openingDiesel, int closingDiesel, int runningKm,bool IsDifferenceAdded,bool IsLoadingAdded, string tripRouteDescription,List<TblDieselFilling> _lstDieselFilling, List<TblDieselLine> _lstDieselLine)
         {
             DateOnly dtTripStartDate = DateOnly.Parse(tripStartDate);
             DateOnly dtTripEndDate = DateOnly.Parse(tripEndDate);
@@ -499,6 +501,8 @@ namespace VMS.Controllers
                                     OpeningDiesel = openingDiesel,
                                     ClosingDiesel = closingDiesel,
                                     RunningKm = runningKm,
+                                    IsDifferenceAdded = IsDifferenceAdded,
+                                    IsLoadingAdded = IsLoadingAdded,
                                     IsActive = true,
                                     CreationDate = utilityHelper.CurrentDateTime,
                                     UpdateDate = utilityHelper.CurrentDateTime,
@@ -542,6 +546,7 @@ namespace VMS.Controllers
                                             RouteId = item.RouteId,
                                             RouteDesc = item.RouteDesc,
                                             LoadType = item.LoadType,
+                                            Distance = item.Distance,
                                             Average = item.Average,
                                             EstimatedDiesel = item.EstimatedDiesel,
                                             CreationDate = utilityHelper.CurrentDateTime,
@@ -600,6 +605,8 @@ namespace VMS.Controllers
                                 existingDieselHisab.ClosingDiesel = closingDiesel;
                                 existingDieselHisab.RunningKm = runningKm;
                                 existingDieselHisab.IsActive = true; // You might want to control this based on input
+                                existingDieselHisab.IsDifferenceAdded = IsDifferenceAdded;
+                                existingDieselHisab.IsLoadingAdded = IsLoadingAdded;
                                 existingDieselHisab.UpdateDate = utilityHelper.CurrentDateTime;
                                 existingDieselHisab.UpdatedBy = userID;
 
@@ -683,6 +690,7 @@ namespace VMS.Controllers
                                         RouteId = item.RouteId,
                                         RouteDesc = item.RouteDesc,
                                         LoadType = item.LoadType,
+                                        Distance = item.Distance,
                                         Average = item.Average,
                                         EstimatedDiesel = item.EstimatedDiesel,
                                         CreationDate = utilityHelper.CurrentDateTime,
@@ -706,6 +714,7 @@ namespace VMS.Controllers
 
                                     if (matchingItem != null)
                                     {
+                                        existingLine.Distance = matchingItem.Distance;
                                         existingLine.Average = matchingItem.Average;
                                         existingLine.EstimatedDiesel = matchingItem.EstimatedDiesel;
                                         existingLine.LoadType = matchingItem.LoadType;
@@ -940,6 +949,26 @@ namespace VMS.Controllers
             return Json(averageData);
         }
 
-      
+        [HttpGet]
+        public JsonResult getDifferenceRouteMasterId()
+        {
+            return Json(_context.TblDistanceMasters.Where(x=> x.RouteDescription.ToUpper()== "Difference".ToUpper()).Select(x => new
+            {
+                DistanceId = x.Id,
+                RouteDescription = x.RouteDescription,
+            }).ToList());
+        }
+
+
+        [HttpGet]
+        public JsonResult getLoadingUnloadingRouteMasterId()
+        {
+            return Json(_context.TblDistanceMasters.Where(x => x.RouteDescription.ToUpper() == "Loading/Unloading".ToUpper()).Select(x => new
+            {
+                DistanceId = x.Id,
+                RouteDescription = x.RouteDescription,
+            }).ToList());
+        }
+
     }
 }

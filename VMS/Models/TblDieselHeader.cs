@@ -25,6 +25,8 @@ public partial class TblDieselHeader
     public long OpeningDiesel { get; set; }
     public long ClosingDiesel { get; set; }
 
+    public bool IsDifferenceAdded { get; set; }
+    public bool IsLoadingAdded { get; set; }
     public bool IsActive { get; set; }
 
     public DateTime CreationDate { get; set; }

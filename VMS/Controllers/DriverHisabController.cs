@@ -115,9 +115,12 @@ namespace VMS.Controllers
                              LastTripStartDate = Convert.ToString(Convert.ToDateTime(driver.TripStartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
                              LastTripEndDate = Convert.ToString(Convert.ToDateTime(driver.TripEndDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
                              LastTripRouteDescr = driver.RouteDescription,
-                             OpeningDiesel = driver.OpeningBalance == null || driver.OpeningBalance == 0
+                             OpeningBalance = driver.OpeningBalance == null || driver.OpeningBalance == 0
                                              ? 1
                                              : driver.OpeningBalance,
+                             ClosingBalance = driver.ClosingBalance == null || driver.ClosingBalance == 0
+                                             ? 1
+                                             : driver.ClosingBalance,
                              LastTripVendor = "Test Vendor",
                              LastTripDriver = _context.TblDriverMasters
                                                 .Where(p => p.Id == driver.DriverId)
@@ -301,6 +304,7 @@ namespace VMS.Controllers
                                     SettlementDate = dtSettlementDate.ToDateTime(TimeOnly.Parse("12:00 AM")),
                                     RouteDescription = tripRouteDescription,
                                     OpeningBalance = openingBalance,
+                                    ClosingBalance = closingBalance,
                                     Weight = weight,
                                     IsActive = true,
                                     CreationDate = utilityHelper.CurrentDateTime,
@@ -380,6 +384,7 @@ namespace VMS.Controllers
                                 existingDriverHisab.SettlementDate = dtSettlementDate.ToDateTime(TimeOnly.Parse("12:00 AM"));
                                 existingDriverHisab.RouteDescription = tripRouteDescription;                            
                                 existingDriverHisab.OpeningBalance = openingBalance;
+                                existingDriverHisab.ClosingBalance = closingBalance;
                                 existingDriverHisab.IsActive = true; // You might want to control this based on input
                                 existingDriverHisab.UpdateDate = utilityHelper.CurrentDateTime;
                                 existingDriverHisab.UpdatedBy = userID;
@@ -542,9 +547,11 @@ namespace VMS.Controllers
                                     SettlementNo = reader.GetInt32("Settlement_No"),
                                     LastSettlementId = reader.GetInt32("Last_Settlement_Id"),
                                     VehicleNo = reader.GetInt32("Vehicle_No").ToIntFromNull(),
+                                    VehicleNumber = reader.GetString("VehicleNumber"),
                                     DriverId = reader.GetInt32("Driver_Id"),
                                     TripStartDate = reader.GetString("TripStartDate"),
                                     TripEndDate = reader.GetString("TripEndDate"),
+                                    TripStartAndEndDate= reader.GetString("TripStartDate")+" To " + reader.GetString("TripEndDate"),
                                     TripRouteDescr = reader.GetString("Route_Description"),
                                     OpeningBalance = reader.GetDecimal("Opening_Balance").ToIntFromNull(),
                                     ClosingBalance = reader.GetDecimal("Closing_Balance").ToIntFromNull(),

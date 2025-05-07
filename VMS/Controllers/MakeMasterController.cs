@@ -463,11 +463,12 @@ namespace VMS.Controllers
         [HttpGet]
         public JsonResult getCodeType()
         {
-            return Json(_context.TblCodeMasters.Select(x => new
+            var item = _context.TblCodeMasters.Select(x => new
             {
                 CodeTypeId = x.CodeType,
                 CodeType = x.CodeType,
-            }).Distinct().ToList());
+            }).Distinct().ToList();
+            return Json(item);
         }
     }
 }
