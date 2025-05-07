@@ -138,7 +138,7 @@ namespace VMS.Controllers
         public JsonResult getCurrentTripNumber(int vehicleNo)
         {
             var model = _context.TblDieselHeaders
-                         .Where(y => y.IsActive==true && y.VehicleNo.Equals(vehicleNo))
+                         .Where(y => y.IsActive==true)
                          .OrderByDescending(x => x.TripId) // Ensure highest TripId is picked
                          .Select(x => new
                          {
