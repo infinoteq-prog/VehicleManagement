@@ -92,5 +92,62 @@ namespace VMS
             }
             return stationList;
         }
+
+        public static async Task<List<object>> searchDriverHisabMaster(string _connectionString, int id, int vehicleNo, int driverId, string tripStartDate, string tripEndDate, decimal openingAmount)
+        {
+            List<object> dieselHeaders = new List<object>();
+            string sql = @"[dbo].[DriverHisab_List]";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@SettlementNo", id);
+                    command.Parameters.AddWithValue("@VehicleNo", vehicleNo);
+                    command.Parameters.AddWithValue("@DriverId", driverId);
+                    command.Parameters.AddWithValue("@TripStartDate", string.IsNullOrEmpty(tripStartDate) ? (object)DBNull.Value : tripStartDate);
+                    command.Parameters.AddWithValue("@TripEndDate", string.IsNullOrEmpty(tripEndDate) ? (object)DBNull.Value : tripEndDate);
+                    command.Parameters.AddWithValue("@OpeningAmount", openingAmount <= 0 ? "" : openingAmount);
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            dieselHeaders.Add(new
+                            {
+                                SettlementNo = reader.GetInt32("SettlementNo"),
+                                VehicleNumber = reader.GetString("VehicleNumber"),
+                                DriverId = reader.GetInt32("DriverId"),
+                                TripStartDate = reader.GetString("TripStartDate"),
+                                TripEndDate = reader.GetString("TripEndDate"),
+                                CreationDate = reader.GetString("CreationDate"),
+                                UpdateDate = reader.IsDBNull("UpdateDate") ? null : reader.GetString("UpdateDate"),
+                                driverHeaderCreatedByName = reader.IsDBNull("DriverHeaderCreatedByName") ? "" : reader.GetString("DriverHeaderCreatedByName"),
+                                driverHeaderUpdatedByName = reader.IsDBNull("driverHeaderUpdatedByName") ? "" : reader.GetString("driverHeaderUpdatedByName"),
+                                LastTripRouteDescr = reader.GetString("LastTripRouteDescr"),
+                                OpeningBalance = reader.GetDecimal("OpeningBalance"),
+                                ClosingBalance = reader.GetDecimal("ClosingBalance"),
+                                Weight = reader.IsDBNull("Weight") ? (decimal?)null : reader.GetDecimal("Weight"),
+                                IsActive = reader.GetBoolean("Is_Active"),
+                                LastTripVendor = "Test Vendor",
+                                DieselHeaderCreationDate = reader.GetDateTime("DieselHeaderCreationDate"),
+                                DieselHeaderUpdateDate = reader.IsDBNull("DieselHeaderUpdateDate") ? (DateTime?)null : reader.GetDateTime("DieselHeaderUpdateDate"),
+                                DieselHeaderCreatedBy = reader.GetInt32("DieselHeaderCreatedBy"),
+                                DieselHeaderUpdatedBy = reader.IsDBNull("DieselHeaderUpdatedBy") ? (int?)null : reader.GetInt32("DieselHeaderUpdatedBy"),
+                                DriverName = reader.IsDBNull("DriverName") ? null : reader.GetString("DriverName"),
+                                DriverFatherName = reader.IsDBNull("DriverFatherName") ? null : reader.GetString("DriverFatherName")
+                                //,ApprovedStatus = reader.IsDBNull("ApprovedStatus") ? null : reader.GetString("ApprovedStatus"),
+                                //ApprovedBy = reader.IsDBNull("ApprovedBy") ? null : reader.GetString("ApprovedBy"),
+                                //ApprovedDate = reader.IsDBNull("ApprovedDate") ? null : reader.GetDateTime("ApprovedDate").ToString()
+                            });
+                        }
+                    }
+                }
+            }
+            return dieselHeaders;
+        }
+
     }
 }

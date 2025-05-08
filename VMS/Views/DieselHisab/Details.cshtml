@@ -452,32 +452,8 @@
                 row.insertCell(2).textContent = entry.routeDesc;
                 row.insertCell(3).textContent = entry.distance;
                 row.insertCell(4).textContent = entry.loadType;
-
-                $.ajax({
-                    cache: false,
-                    url: '@(utilityHelper.SiteUrl() + "DieselHisab/getDieselAverageAsPerLoadType")',
-                    type: "GET",
-                    data: { vehicleNo: entry.vehicleNo, loadType: entry.loadType },
-                    dataType: "json",
-                    success: function (data) {
-                        if (data != null && data != undefined) {
-
-                            var distance = parseFloat(entry.distance) || 0;
-                            var average = parseFloat(data.value) || 0;
-                            var Estkm = 0;
-                            if (average !== 0) {
-                                Estkm = (distance / average).toFixed(2); // returns a string with 2 decimal places
-                            } else {
-                                Estkm = "0.00";
-                            }
-
-                            row.insertCell(5).textContent = data.value;
-                            row.insertCell(6).textContent = Estkm;
-                        } else {
-                            console.log(data);
-                        }
-                    }
-                });
+                row.insertCell(5).textContent = entry.average;
+                row.insertCell(6).textContent = entry.estimatedDiesel;              
 
                 
             });

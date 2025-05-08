@@ -66,7 +66,8 @@
                                 <th>Vehicle No</th>
                                 <th>Trip Start Date</th>
                                 <th>Trip End Date</th>                               
-                                <th>Opening Diesel</th>
+                                <th>Opening Amount</th>
+                                <th>Closing Amount</th>
                                 <th>Creation Date</th>
                                 <th>Created By</th>
                                 <th>Update Date</th>
@@ -101,7 +102,7 @@
             if (fullAccess === "True" || viewAccess === "True") {
                 getVehicleNumber();
                 getDriverMaster();
-                getDriverHisabMasterList(); // Load diesel data on page load
+                searchDriverHisabMaster(); // Load diesel data on page load
             }
         });
 
@@ -216,7 +217,8 @@
                                 '<td>' + item.vehicleNumber + '</td>' +
                                 '<td>' + item.tripStartDate + '</td>' +
                                 '<td>' + item.tripEndDate + '</td>' +
-                                '<td>' + item.openingDiesel + '</td>' +
+                                '<td>' + item.openingAmount + '</td>' +
+                                '<td>' + item.closingAmount + '</td>' +
                                 '<td>' + item.creationDate + '</td>' +
                                 '<td>' + item.driverHeaderCreatedByName + '</td>' +
                                 '<td>' + item.updateDate + '</td>' +
@@ -240,7 +242,7 @@
         function getDriverHisabMasterList() {
             $.ajax({
                 cache: false,
-                url: '@(utilityHelper.SiteUrl() + "DriverHisab/getTopDriverHisabList")',
+                url: '@(utilityHelper.SiteUrl() + "DriverHisab/searchDriverHisabMaster")',
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
@@ -279,6 +281,7 @@
                                 '<td>' + item.tripStartDate + '</td>' +
                                 '<td>' + item.tripEndDate + '</td>' +
                                 '<td>' + item.openingDiesel + '</td>' +
+                                '<td>' + item.closingDiesel + '</td>' +
                                 '<td>' + item.creationDate + '</td>' +
                                 '<td>' + item.driverHeaderCreatedByName + '</td>' +
                                 '<td>' + item.updateDate + '</td>' +

@@ -462,15 +462,16 @@
                                 $(`#${station}`).text(entry.routeDesc);
                                 $(`#${loadType}`).text(entry.loadType);
                                 $(`#${km}`).text(entry.distance);
-                                $(`#${avg}`).text(entry.average);
-                                var avgDieselValue = 0;
-                                try {
-                                    avgDieselValue = entry.distance / entry.average;
-                                    $(`#${avgDiesel}`).text(avgDieselValue.toFixed(2));
-                                } catch (error) {
-                                    console.error("Error calculating average diesel:", error);
-                                    $(`#${avgDiesel}`).text("Error"); // Display an error message to the user
-                                }
+                                $(`#${avg}`).text(entry.average); 
+                                 $(`#${avgDiesel}`).text(entry.estimatedDiesel);
+                                // var avgDieselValue = 0;
+                                // try {
+                                //     avgDieselValue = entry.distance / entry.average;
+                                //     $(`#${avgDiesel}`).text(avgDieselValue.toFixed(2));
+                                // } catch (error) {
+                                //     console.error("Error calculating average diesel:", error);
+                                //     $(`#${avgDiesel}`).text("Error"); // Display an error message to the user
+                                // }
 
                                 totalRunKm = totalRunKm + entry.distance;
                                 totalEstimateDiesel = totalEstimateDiesel+ avgDieselValue;

@@ -1568,9 +1568,9 @@
                 } 
                 
                 if (entry.routeDesc === 'Loading/Unloading') {
-                    addLoadingUnloadingLine();
-                    loadingUnloadingRowAdded = true;
-                    return; // Skip adding this as a regular row
+                    // addLoadingUnloadingLine();
+                    // loadingUnloadingRowAdded = true;
+                    // return; // Skip adding this as a regular row
                 }
 
                 const row = table.insertRow();
@@ -1698,8 +1698,8 @@
             row.insertCell(2).textContent = "Difference";
             row.insertCell(3).textContent = Math.round((totalKm - totalDistance));
             row.insertCell(4).textContent = "UL";
-            row.insertCell(5).textContent = 0;
-            row.insertCell(6).textContent = 0;
+            row.insertCell(5).textContent = 2.9;
+            row.insertCell(6).textContent =Math.round((totalKm - totalDistance)/2.9);
 
             const actionsCell = row.insertCell(7);
             actionsCell.innerHTML = `<button class="btn btn-danger btn-sm" onclick="deleteStationRow(this)">Delete</button>`;

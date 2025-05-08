@@ -416,7 +416,8 @@ namespace VMS.Controllers
                 {
                     return Json(null);
                 }
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 return Json(null);
             }

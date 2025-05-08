@@ -78,7 +78,7 @@ namespace VMS.Controllers
         public JsonResult getCurrentSettlementNumber(int driverId)
         {
             var model = _context.TblDriverHisabHeaders
-                         .Where(y => y.IsActive==true && y.DriverId.Equals(driverId))
+                         //.Where(y => y.IsActive==true && y.DriverId.Equals(driverId))
                          .OrderByDescending(x => x.SettlementNo) // Ensure highest TripId is picked
                          .Select(x => new
                          {
@@ -137,71 +137,27 @@ namespace VMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult searchDriverHisabMaster(int id, int vehicleNo, int driverId, string tripStartDate,
+        public async Task<JsonResult> searchDriverHisabMaster(int id, int vehicleNo, int driverId, string tripStartDate,
           string tripEndDate, int openingDiesel)
         {
-           var model = _context.TblDriverHisabHeaders
-               .Join(_context.TblVehicleMasters,
-                   driver => driver.DriverId,
-                   vehicle => vehicle.Id,
-                   (driver, vehicle) => new { driver, vehicle })
-               .Where(x => x.driver.IsActive == true &&
-                   // Check if vehicleNo is greater than 0, otherwise ignore the condition
-                   (vehicleNo > 0 ? x.driver.VehicleNo == vehicleNo : true) &&
-
-                   // Check if driverId is greater than 0, otherwise ignore the condition
-                   (driverId > 0 ? x.driver.DriverId == driverId : true) &&
-
-                   // Check if tripStartDate is not null or empty
-                   (!string.IsNullOrEmpty(tripStartDate) ? Convert.ToString(Convert.ToDateTime(x.driver.TripStartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)) == tripStartDate : true) &&
-
-                   // Check if tripEndDate is not null or empty
-                   (!string.IsNullOrEmpty(tripEndDate) ? Convert.ToString(Convert.ToDateTime(x.driver.TripEndDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)) == tripEndDate : true) &&
-
-                   // Check if openingDiesel is greater than 0
-                   (openingDiesel > 0 ? x.driver.OpeningBalance == openingDiesel : true)
-               )
-               .Select(x => new
-               {
-                   SettlementNo = x.driver.SettlementNo,
-                   VehicleNumber = x.vehicle.VehicleNo,
-                   DriverId = x.driver.DriverId,
-                   TripStartDate = Convert.ToString(Convert.ToDateTime(x.driver.TripStartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                   TripEndDate = Convert.ToString(Convert.ToDateTime(x.driver.TripEndDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                   CreationDate = Convert.ToString(Convert.ToDateTime(x.driver.CreationDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                   UpdateDate = Convert.ToString(Convert.ToDateTime(x.driver.UpdateDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                   CreatedBy = "",
-                   UpdatedBy = "",
-                   LastTripRouteDescr = x.driver.RouteDescription,
-                   OpeningDiesel = x.driver.OpeningBalance,
-                   IsActive = x.driver.IsActive,
-                   LastTripVendor = "Test Vendor",
-                   DieselHeaderCreationDate = x.driver.CreationDate,
-                   DieselHeaderUpdateDate = x.driver.UpdateDate,
-                   DieselHeaderCreatedBy = x.driver.CreatedBy,
-                   DieselHeaderUpdatedBy = x.driver.UpdatedBy,
-                   DriverName = _context.TblDriverMasters
-                       .Where(p => p.Id == x.driver.DriverId)
-                       .Select(p => p.DriverName).FirstOrDefault(),
-                   DriverFatherName = _context.TblDriverMasters
-                       .Where(p => p.Id == x.driver.DriverId)
-                       .Select(p => p.FatherName).FirstOrDefault(),
-                   DriverHeaderCreatedByName = _context.TblUserMasters
-                       .Where(p => p.Id == x.driver.CreatedBy)
-                       .Select(p => p.UserName).FirstOrDefault(),
-                   DriverHeaderUpdatedByName = _context.TblUserMasters
-                       .Where(p => p.Id == x.driver.UpdatedBy)
-                       .Select(p => p.UserName).FirstOrDefault()
-               }).ToList();
+            try
+            {
+                var model = await DriverHisabContext.searchDriverHisabMaster(_connectionString, id, vehicleNo, driverId, tripStartDate,
+                tripEndDate,  openingDiesel);
 
 
-            if (model.Count() == 0)
+                if (model != null)
+                {
+                    return Json(model);
+                }
+                else
+                {
+                    return Json(null);
+                }
+            }
+            catch (Exception ex)
             {
                 return Json(null);
-            }
-            else
-            {
-                return Json(model);
             }
         }
 
@@ -223,6 +179,7 @@ namespace VMS.Controllers
                              CreationDate = Convert.ToString(Convert.ToDateTime(x.CreationDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
                              UpdateDate = Convert.ToString(Convert.ToDateTime(x.UpdateDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),                           
                              OpeningDiesel = x.OpeningBalance,
+                             ClosingDiesel = x.ClosingBalance,
                              IsActive = x.IsActive,
                              LastTripVendor = "Test Vendor",
                              DriverHeaderCreatedBy = x.CreatedBy,
