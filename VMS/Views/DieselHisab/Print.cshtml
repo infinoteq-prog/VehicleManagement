@@ -496,7 +496,7 @@
                             totalDieselProfitLoss = (parseFloat(totalConsumedDiesel) - parseFloat(totalEstimateDiesel)).toFixed(2);
                             $("#dieselProfitLoss").text(totalDieselProfitLoss);
 
-                            var percentageLoss=parseFloat(parseFloat(totalDieselProfitLoss) / (parseFloat(totalAvgDieselValue) / parseFloat(totalDieselFillingRow))).toFixed(2);
+                            var percentageLoss=parseFloat((parseFloat(totalDieselProfitLoss) / (parseFloat(totalAvgDieselValue) / parseFloat(totalDieselFillingRow)))*100).toFixed(2);
                             $("#percentageOfLoss").text(percentageLoss);
                             $("#khaliBhariTotalKi").text(((parseFloat(totalRunKm) / parseFloat(totalConsumedDiesel))).toFixed(2));
                         }
