@@ -102,7 +102,7 @@
 
                 <th colspan="2" style="text-align:left">ड्राईवर का नाम :  <span id="driverName"></span></th>
                 <th colspan="3" style="text-align:left">पिता का नाम :  <span id="driverFatherName"></span></th>
-               
+
             </tr>
             <tr>
                 <th colspan="2" style="text-align:left">ऑफिस स्टॉफ नाम : <span id="createdBy"></span></th>
@@ -116,106 +116,28 @@
                 <th style="font-weight:bold">Balance</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td> <span id="headType0"></span></td>
-                <td> <span id="narration0"></span></td>
-                <td class="text-right"> <span id="debit0"></span></td>
-                <td> <span id="credit0"></span></td>
-                <td> <span id="balance0"></span></td>
-            </tr>
-            <tr>
-                <td> <span id="headType1"></span></td>
-                <td> <span id="narration1"></span></td>
-                <td class="text-right"> <span id="debit1"></span></td>
-                <td> <span id="credit1"></span></td>
-                <td> <span id="balance1"></span></td>
-            </tr>
-            <tr>
-                <td> <span id="headType2"></span></td>
-                <td> <span id="narration2"></span></td>
-                <td class="text-right"> <span id="debit2"></span></td>
-                <td> <span id="credit2"></span></td>
-                <td> <span id="balance2"></span></td>
-            </tr>
-            <tr>
-                <td> <span id="headType3"></span></td>
-                <td> <span id="narration3"></span></td>
-                <td class="text-right"> <span id="debit3"></span></td>
-                <td> <span id="credit3"></span></td>
-                <td> <span id="balance3"></span></td>
-            </tr>
-            <tr>
-                <td> <span id="headType4"></span></td>
-                <td> <span id="narration4"></span></td>
-                <td class="text-right"> <span id="debit4"></span></td>
-                <td> <span id="credit4"></span></td>
-                <td> <span id="balance4"></span></td>
-            </tr>
-            <tr>
-                <td> <span id="headType5"></span></td>
-                <td> <span id="narration5"></span></td>
-                <td class="text-right"> <span id="debit5"></span></td>
-                <td> <span id="credit5"></span></td>
-                <td> <span id="balance5"></span></td>
-            </tr>
-            <tr>
-                <td> <span id="headType6"></span></td>
-                <td> <span id="narration6"></span></td>
-                <td class="text-right"> <span id="debit6"></span></td>
-                <td> <span id="credit6"></span></td>
-                <td> <span id="balance6"></span></td>
-            </tr>
-            <tr>
-                <td> <span id="headType7"></span></td>
-                <td> <span id="narration7"></span></td>
-                <td class="text-right"> <span id="debit7"></span></td>
-                <td> <span id="credit7"></span></td>
-                <td> <span id="balance7"></span></td>
-            </tr>
-            <tr>
-                <td> <span id="headType8"></span></td>
-                <td> <span id="narration8"></span></td>
-                <td class="text-right"> <span id="debit8"></span></td>
-                <td> <span id="credit8"></span></td>
-                <td> <span id="balance8"></span></td>
-            </tr>
-            <tr>
-                <td> <span id="headType9"></span></td>
-                <td> <span id="narration9"></span></td>
-                <td class="text-right"> <span id="debit9"></span></td>
-                <td> <span id="credit9"></span></td>
-                <td> <span id="balance9"></span></td>
-            </tr>
-            <tr>
-                <td> <span id="headType10"></span></td>
-                <td> <span id="narration10"></span></td>
-                <td class="text-right"> <span id="debit10"></span></td>
-                <td> <span id="credit10"></span></td>
-                <td> <span id="balance10"></span></td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                    <div class="footer-section">
-                        <div class="footer-notes">
-                            <p>कृपया जोड़ बाकी सही करें।</p>
-                            <p>वाउचर पत्र में ड्राईवर के हस्ताक्षर जरूर करावें।</p>
-                            <p><strong>नोट:</strong></p>
-                            <ul>
-                                <li>हर माल की बिल व बिल्टी जरूर लेवें।</li>
-                                <li>बिना पूछे व ज्यादा खर्चा करने पर पास नहीं होगा (गलत खर्चा लिखने पर पेनल्टी है)</li>
-                                <li>माल की शार्टेज का पूछ लेवें।</li>
-                                <li>ड्राईवर जोड़ बाकी करके लाया Yes / No ...........</li>
-                            </ul>
-                        </div>
-                        <div class="signature-row">
-                            <span>Signature</span>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
+        <tbody id="expenseRows">
+            </tbody>
+        <tfoot id="totalRow">
+            </tfoot>
     </table>
+
+    <div class="footer-section">
+        <div class="footer-notes">
+            <p>कृपया जोड़ बाकी सही करें।</p>
+            <p>वाउचर पत्र में ड्राईवर के हस्ताक्षर जरूर करावें।</p>
+            <p><strong>नोट:</strong></p>
+            <ul>
+                <li>हर माल की बिल व बिल्टी जरूर लेवें।</li>
+                <li>बिना पूछे व ज्यादा खर्चा करने पर पास नहीं होगा (गलत खर्चा लिखने पर पेनल्टी है)</li>
+                <li>माल की शार्टेज का पूछ लेवें।</li>
+                <li>ड्राईवर जोड़ बाकी करके लाया Yes / No ...........</li>
+            </ul>
+        </div>
+        <div class="signature-row">
+            <span>Signature</span>
+        </div>
+    </div>
 </div>
 
 
@@ -235,7 +157,6 @@
                 data: { settlementId: settlementId },
                 dataType: "json",
                 success: function (data) {
-
                     console.log('gaurave');
                     console.log(data);
                     if (data != null && data != undefined) {
@@ -250,31 +171,72 @@
                         $("#createdBy").text(data.dieselHeaderCreatedByName);
                         $("#openingBalance").text(data.openingBalance);
 
-                        var openingBalance = data.openingBalance;
-                        openingBalance = openingBalance ? parseFloat(openingBalance) : 0;
+                        var openingBalance = data.openingBalance ? parseFloat(data.openingBalance) : 0;
                         var previousBalance = openingBalance;
-                        //expenseList
+                        var totalDebit = 0;
+                        var totalCredit = 0;
+
+                        var expenseRowsHtml = '';
                         data.expenseList.forEach((entry, index) => {
-                            totalDieselFillingRow=index+1;
-                            const headType = `headType${index}`;
-                            const narration = `narration${index}`;
-                            const debit = `debit${index}`;
-                            const credit = `credit${index}`;
-                            const balance = `balance${index}`;
-                            try {
-                                $(`#${headType}`).text(entry.code);
-                                $(`#${narration}`).text(entry.description);
+                            var debitAmt = parseFloat(entry.drAmt) || 0;
+                            var creditAmt = parseFloat(entry.crAmt) || 0;
+                            previousBalance = previousBalance + debitAmt - creditAmt;
+                            totalDebit += debitAmt;
+                            totalCredit += creditAmt;
 
-                                var debitAmt = parseFloat(entry.drAmt) || 0;
-                                var creditAmt = parseFloat(entry.crAmt) || 0;
-                                previousBalance = previousBalance + debitAmt - creditAmt;
-
-                                $(`#${debit}`).text(debitAmt);
-                                $(`#${credit}`).text(creditAmt);
-                                $(`#${balance}`).text(previousBalance.toFixed(2));
-
-                        }catch{}
+                            expenseRowsHtml += `
+                                <tr>
+                                    <td><span>${entry.code || ''}</span></td>
+                                    <td><span>${entry.description || ''}</span></td>
+                                    <td class="text-right"><span>${debitAmt.toFixed(2)}</span></td>
+                                    <td><span>${creditAmt.toFixed(2)}</span></td>
+                                    <td><span>${previousBalance.toFixed(2)}</span></td>
+                                </tr>
+                            `;
                         });
+
+                        $("#expenseRows").html(expenseRowsHtml);
+
+                        // Add the total row
+                        var totalRowHtml = `
+                            <tr>
+                                <td colspan="2" style="text-align:right; font-weight:bold;">Total</td>
+                                <td class="text-right" style="font-weight:bold;">${totalDebit.toFixed(2)}</td>
+                                <td style="font-weight:bold;">${totalCredit.toFixed(2)}</td>
+                                <td></td>
+                            </tr>
+                        `;
+                        $("#totalRow").html(totalRowHtml);
+
+                        // Summarize narrations
+                        var narrationSummary = {};
+                        data.expenseList.forEach(entry => {
+                            var narration = entry.description || '';
+                            var debitAmt = parseFloat(entry.drAmt) || 0;
+                            var creditAmt = parseFloat(entry.crAmt) || 0;
+
+                            if (narrationSummary[narration]) {
+                                narrationSummary[narration].debit += debitAmt;
+                                narrationSummary[narration].credit += creditAmt;
+                            } else {
+                                narrationSummary[narration] = { debit: debitAmt, credit: creditAmt };
+                            }
+                        });
+
+                        // Add narration summary rows
+                        var narrationSummaryHtml = '';
+                        for (const narration in narrationSummary) {
+                            narrationSummaryHtml += `
+                                <tr>
+                                    <td colspan="2" style="font-weight:bold;">${narration} Summary</td>
+                                    <td class="text-right" style="font-weight:bold;">${narrationSummary[narration].debit.toFixed(2)}</td>
+                                    <td style="font-weight:bold;">${narrationSummary[narration].credit.toFixed(2)}</td>
+                                    <td></td>
+                                </tr>
+                            `;
+                        }
+
+                        $("#totalRow").append(narrationSummaryHtml);
 
 
                     } else {
@@ -297,7 +259,7 @@
                 }
             });
         }
-        </script>
+    </script>
 
     @* Print script *@
 
@@ -307,82 +269,82 @@
             let printableArea = document.getElementById('printableArea');
             let originalBodyContent = document.body.innerHTML;
             let printStyles = `
-                            <style type="text/css">
-                                .print-button {
-                                    display: none !important;
-                                }
-                                /* Existing print styles */
-                                table {
-                                    table-layout: fixed;
-                                    width: 100%;
-                                    margin: 0;
-                                    padding: 0;
-                                    border-collapse: collapse;
-                                    font-family: Arial, sans-serif !important;
-                                    font-size: 0.8em !important;
-                                    border: 0.5px solid #ccc !important; /* Lighter table border */
-                                }
+                                <style type="text/css">
+                                    .print-button {
+                                        display: none !important;
+                                    }
+                                    /* Existing print styles */
+                                    table {
+                                        table-layout: fixed;
+                                        width: 100%;
+                                        margin: 0;
+                                        padding: 0;
+                                        border-collapse: collapse;
+                                        font-family: Arial, sans-serif !important;
+                                        font-size: 0.8em !important;
+                                        border: 0.5px solid #ccc !important; /* Lighter table border */
+                                    }
 
-                                th, td {
-                                    font-size: 0.8em !important;
-                                    padding: 5px !important;
-                                    border: 0.5px solid #ccc !important; /* Lighter cell borders */
-                                    text-align: left !important;
-                                    word-wrap: break-word;
-                                    overflow: hidden;
-                                    box-sizing: border-box;
-                                }
+                                    th, td {
+                                        font-size: 0.8em !important;
+                                        padding: 5px !important;
+                                        border: 0.5px solid #ccc !important; /* Lighter cell borders */
+                                        text-align: left !important;
+                                        word-wrap: break-word;
+                                        overflow: hidden;
+                                        box-sizing: border-box;
+                                    }
 
-                                th {
-                                    background-color: #f2f2f2 !important;
-                                    font-weight: normal !important;
-                                }
+                                    th {
+                                        background-color: #f2f2f2 !important;
+                                        font-weight: normal !important;
+                                    }
 
-                                .header-container {
-                                    display: flex !important;
-                                    justify-content: space-between !important;
-                                    align-items: center !important;
-                                    margin-bottom: 5px !important;
-                                }
+                                    .header-container {
+                                        display: flex !important;
+                                        justify-content: space-between !important;
+                                        align-items: center !important;
+                                        margin-bottom: 5px !important;
+                                    }
 
-                                h1#labelDiesalHisab {
-                                    font-size: 1.2em !important;
-                                    margin: 0 !important;
-                                }
+                                    h1#labelDiesalHisab {
+                                        font-size: 1.2em !important;
+                                        margin: 0 !important;
+                                    }
 
-                                .footer-section {
-                                    border: 0.5px solid #ccc !important; /* Lighter footer border */
-                                    margin-top: 10px !important;
-                                    padding: 5px !important;
-                                }
+                                    .footer-section {
+                                        border: 0.5px solid #ccc !important; /* Lighter footer border */
+                                        margin-top: 10px !important;
+                                        padding: 5px !important;
+                                    }
 
-                                .footer-notes {
-                                    font-size: 0.7em !important;
-                                    align-items: left !important;
-                                    margin-top: 2px !important;
-                                }
+                                    .footer-notes {
+                                        font-size: 0.7em !important;
+                                        align-items: left !important;
+                                        margin-top: 2px !important;
+                                    }
 
-                                .footer-notes ul {
-                                    padding-left: 15px !important;
-                                    margin-bottom: 0 !important;
-                                }
+                                    .footer-notes ul {
+                                        padding-left: 15px !important;
+                                        margin-bottom: 0 !important;
+                                    }
 
-                                .footer-notes li {
-                                    margin-bottom: 2px !important;
-                                }
+                                    .footer-notes li {
+                                        margin-bottom: 2px !important;
+                                    }
 
-                                .signature-row {
-                                    display: flex !important;
-                                    justify-content: flex-end !important;
-                                    padding-right: 78px; !important;
-                                }
+                                    .signature-row {
+                                        display: flex !important;
+                                        justify-content: flex-end !important;
+                                        padding-right: 78px; !important;
+                                    }
 
-                                .signature-row span {
-                                    margin-left: 30px !important;
-                                    font-weight: bold !important;
-                                }
-                            </style>
-                        `;
+                                    .signature-row span {
+                                        margin-left: 30px !important;
+                                        font-weight: bold !important;
+                                    }
+                                </style>
+                            `;
 
             if (printableArea) {
                 let printContent = printStyles + printableArea.outerHTML;

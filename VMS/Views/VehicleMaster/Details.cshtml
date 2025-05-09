@@ -49,7 +49,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtMfgYear">Manufacturing Year:</label>
                                         <div class="col-sm-8">
-                                            @Html.TextBoxFor(m => m.MfgYear, new { @class = "form-control numberonly", id = "txtMfgYear", @readonly = "readonly" })
+                                            @Html.TextBoxFor(m => m.MfgYear, new { @class = "form-control", id = "txtMfgYear", @readonly = "readonly" })
                                         </div>
                                     </div>
                                 </div>
@@ -129,9 +129,9 @@
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtFinencerName">Financer Name:</label>
+                                        <label class="col-sm-4 col-form-label" for="ddlFinencerName">Financer Name:</label>
                                         <div class="col-sm-8">
-                                            @Html.TextBoxFor(m => m.FinancerName, new { @class = "form-control", id = "txtFinencerName", @readonly = "readonly" })
+                                            @Html.TextBoxFor(m => m.FinancerName, new { @class = "form-control", id = "ddlFinencerName", @readonly = "readonly" })
                                         </div>
                                     </div>
                                 </div>
@@ -392,6 +392,7 @@
             setSideMenu("vehicle-master");
             if (fullAccess === "True" || viewAccess === "True") {
                 makeFieldsReadOnly();
+                getFinancierMaster();  
                 var vehicleMasterID = GetParameterValues('vehicleMasterID');
                 getVehicleMasterID(vehicleMasterID);
             }
@@ -409,7 +410,7 @@
             $("#txtVehicleType").prop("readonly", true);
             $("#txtBodyType").prop("readonly", true);
             $("#txtNoOfTyres").prop("readonly", true);
-            $("#txtFinencerName").prop("readonly", true);
+            $("#ddlFinencerName").prop("readonly", true);
             $("#txtBodyManufacturer").prop("readonly", true);
             $("#txtRunningKm").prop("readonly", true);
 
@@ -450,7 +451,7 @@
                         $("#txtVehicleType").val(data.vehicleTypeName);
                         $("#txtBodyType").val(data.bodyTypeName);
                         $("#txtNoOfTyres").val(data.noOfTyres);
-                        $("#txtFinencerName").val(data.financerName);
+                        $("#ddlFinencerName").val(data.financerName);
                         $("#txtBodyManufacturer").val(data.bodyManufacturerName);
                         $("#txtRunningKm").val(data.runningKm);
 

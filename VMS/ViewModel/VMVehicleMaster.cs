@@ -24,7 +24,7 @@ namespace VMS.ViewModel
 
         public string PurchaseDate { get; set; }
 
-        public int? MfgYear { get; set; }
+        public string? MfgYear { get; set; }
 
         public int MakeId { get; set; }
 

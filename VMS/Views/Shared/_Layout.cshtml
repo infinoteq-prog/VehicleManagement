@@ -4492,6 +4492,29 @@
                 }
             });
         }
+
+
+         // Make master Financier
+         function getFinancierMaster() {
+           $.ajax({
+               cache: false,
+                       url: '@(utilityHelper.SiteUrl() + "VehicleMaster/getFinancierMaster")',
+               type: "GET",
+               dataType: "json",
+               success: function (data) {
+                   if (data != null && data != undefined) {
+                       var s = '<option value="0">Select a Financer</option>';
+                       for (var i = 0; i < data.length; i++) {
+                           console.log(data[i])
+                                           s += '<option value="' + data[i].financer + '">' + data[i].financer + '</option>';
+                       }
+                      $("#ddlFinencerName").html(s);
+                   } else {
+                       console.log(data);
+                   }
+               }
+           });
+        }
     </script>
     @RenderSection("scripts", required: false)
 </body>

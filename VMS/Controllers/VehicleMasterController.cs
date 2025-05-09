@@ -364,7 +364,7 @@ namespace VMS.Controllers
 
             if (Convert.ToInt32(mfgYear) != 0)
             {
-                searchModel = searchModel.Where(s => s.MfgYear == Convert.ToInt32(mfgYear));
+                searchModel = searchModel.Where(s => s.MfgYear == Convert.ToString(mfgYear));
             }
 
             if (makeId != 0)
@@ -586,7 +586,7 @@ namespace VMS.Controllers
                         vehicleMaster.VehicleNo = vehicleNo;
                         vehicleMaster.VehicleOwner = vehicleOwner;
                         vehicleMaster.PurchaseDate = DateTime.Parse(purchaseDate);
-                        vehicleMaster.MfgYear = Convert.ToInt32(mfgYear);
+                        vehicleMaster.MfgYear = Convert.ToString(mfgYear);
                         vehicleMaster.MakeId = Convert.ToInt32(makeId);
                         vehicleMaster.ModelId = Convert.ToInt32(modelId);
                         vehicleMaster.NoOfTyres = Convert.ToInt32(noOfTyres);
@@ -682,7 +682,7 @@ namespace VMS.Controllers
                         vehicleMaster.VehicleNo = vehicleNo;
                         vehicleMaster.VehicleOwner = vehicleOwner;
                         vehicleMaster.PurchaseDate = DateTime.Parse(purchaseDate);
-                        vehicleMaster.MfgYear = Convert.ToInt32(mfgYear);
+                        vehicleMaster.MfgYear = Convert.ToString(mfgYear);
                         vehicleMaster.MakeId = Convert.ToInt32(makeId);
                         vehicleMaster.ModelId = Convert.ToInt32(modelId);
                         vehicleMaster.NoOfTyres = Convert.ToInt32(noOfTyres);
@@ -874,6 +874,16 @@ namespace VMS.Controllers
             {
                 return Json(model);
             }
+        }
+
+        [HttpGet]
+        public JsonResult getFinancierMaster()
+        {
+            return Json(_context.TblCodeMasters.Where(x => x.CodeType == "FINANCER").Select(x => new
+            {
+                FinancerId = x.Id,
+                Financer = x.Code,
+            }).ToList());
         }
     }
 }

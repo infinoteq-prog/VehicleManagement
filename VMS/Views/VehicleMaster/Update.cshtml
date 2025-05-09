@@ -56,7 +56,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtMfgYear">Mfg. Month/Year:<span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
-                                            @Html.TextBoxFor(m => m.MfgYear, new { @class = "form-control numberonly", id = "txtMfgYear", @maxlength = "10", placeholder = "Enter vehicle's mfg month/year" })
+                                            @Html.TextBoxFor(m => m.MfgYear, new { @class = "form-control", id = "txtMfgYear", @maxlength = "10", placeholder = "Enter vehicle's mfg month/year" })
                                         </div>
                                     </div>
                                 </div>
@@ -142,9 +142,11 @@
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtFinencerName">Financer Name:<span class="reqFields">*</span></label>
+                                        <label class="col-sm-4 col-form-label" for="ddlFinencerName">Financer Name:<span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
-                                            @Html.TextBoxFor(m => m.FinancerName, new { @class = "form-control", id = "txtFinencerName", @maxlength = "200", placeholder = "Enter vehicle's financer number" })
+                                            @* @Html.TextBoxFor(m => m.FinancerName, new { @class = "form-control", id = "ddlFinencerName", @maxlength = "200", placeholder = "Enter vehicle's financer number" }) *@
+                                          <select class="form-control" id="ddlFinencerName" name="ddlFinencerName" onchange="setDropDownStyle(this);">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -446,6 +448,7 @@
         var deleteButton = "";
         $(document).ready(function () {
              setSideMenu("vehicle-master");
+                getFinancierMaster();  
             getMakeMaster();
             getModelMaster();
             getVehicleTypeMaster();
@@ -723,13 +726,13 @@
                 $("#txtChasisNo").focus();
             }
 
-            if ($("#txtFinencerName").val() == "") {
-                $("#txtFinencerName").attr('class', 'form-control vaidationTextBoxError');
-                $("#txtFinencerName").focus();
+            if ($("#ddlFinencerName").val() == "") {
+                $("#ddlFinencerName").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlFinencerName").focus();
                 isValid = false;
             } else {
-                $("#txtFinencerName").attr('class', 'form-control');
-                $("#txtFinencerName").focus();
+                $("#ddlFinencerName").attr('class', 'form-control');
+                $("#ddlFinencerName").focus();
             }
 
             if ($("#txtRunningKm").val() == "") {
@@ -939,7 +942,7 @@
                     }
                 });
 
-                $("#txtFinencerName").on("input", function () {
+                $("#ddlFinencerName").on("input", function () {
                     if ($(this).val() == "") {
                         $(this).attr('class', 'form-control vaidationTextBoxError');
                         $(this).focus();
@@ -1065,7 +1068,7 @@
             $("#txtMfgYear").val("");
             $("#txtEngineNo").val("");
             $("#txtChasisNo").val("");
-            $("#txtFinencerName").val("");
+            $("#ddlFinencerName").val("");
             $("#txtRunningKm").val("");
 
             $("#txtPanNo").val("");
@@ -1192,7 +1195,7 @@
                     $("#txtMfgYear").val() != "" &&
                     $("#txtEngineNo").val() != "" &&
                     $("#txtChasisNo").val() != "" &&
-                    $("#txtFinencerName").val() != "" &&
+                    $("#ddlFinencerName").val() != "" &&
                     $("#txtRunningKm").val() != "" &&
                     $("#txtPanNo").val() != "" &&
                     $("#txtInsuranceDue").val() != "" &&
@@ -1226,7 +1229,7 @@
                     formData.append("chasisNo", $("#txtChasisNo").val());
                     formData.append("vehicleTypeId", $("#ddlVehicleType option:selected").val());
                     formData.append("bodyTypeId", $("#ddlBodyType option:selected").val());
-                    formData.append("financerName", $("#txtFinencerName").val());
+                    formData.append("financerName",  $("#ddlFinencerName option:selected").text());
                     formData.append("bodyManufacturerId", $("#ddlManufacturerType option:selected").val());
                     formData.append("runningKm", $("#txtRunningKm").val());
                     formData.append("panNo", $("#txtPanNo").val());
@@ -1408,7 +1411,7 @@
                         $("#txtChasisNo").val(data.chasisNo);
                         
                         $("#txtNoOfTyres").val(data.noOfTyres);
-                        $("#txtFinencerName").val(data.financerName);
+                        $("#ddlFinencerName").val(data.financerName);
                         
                         $("#txtRunningKm").val(data.runningKm);
                         $("#txtPanNo").val(data.panNo);
