@@ -18,11 +18,12 @@
     }
 
     table, th, td {
-        font-size: 0.8em;
+        font-size: 0.85em;
         border: 1px solid black;
         padding: 8px;
         text-align: center;
         word-wrap: break-word; /* Recommended for long words */
+        font-weight: bold;
     }
 
     th {
@@ -31,7 +32,7 @@
     }
 
      th span[id^="xFillingDate"] { /* Target the date spans */
-         font-size: 0.8em; /* Reduce font size (adjust as needed) */
+         font-size: 0.85em; /* Reduce font size (adjust as needed) */
          white-space: nowrap; /* Prevent text from wrapping */
      }
 
@@ -464,6 +465,7 @@
                                 $(`#${km}`).text(entry.distance);
                                 $(`#${avg}`).text(entry.average); 
                                  $(`#${avgDiesel}`).text(entry.estimatedDiesel);
+                                 avgDieselValue=entry.estimatedDiesel;
                                 // var avgDieselValue = 0;
                                 // try {
                                 //     avgDieselValue = entry.distance / entry.average;
@@ -494,7 +496,8 @@
                             totalDieselProfitLoss = (parseFloat(totalConsumedDiesel) - parseFloat(totalEstimateDiesel)).toFixed(2);
                             $("#dieselProfitLoss").text(totalDieselProfitLoss);
 
-                            $("#percentageOfLoss").text(((parseFloat(totalDieselProfitLoss) / (parseFloat(totalAvgDieselValue) / parseFloat(totalDieselFillingRow)))).toFixed(2));
+                            var percentageLoss=parseFloat(parseFloat(totalDieselProfitLoss) / (parseFloat(totalAvgDieselValue) / parseFloat(totalDieselFillingRow))).toFixed(2);
+                            $("#percentageOfLoss").text(percentageLoss);
                             $("#khaliBhariTotalKi").text(((parseFloat(totalRunKm) / parseFloat(totalConsumedDiesel))).toFixed(2));
                         }
                         catch{}
@@ -546,18 +549,19 @@
             }
 
             th, td {
-                        font-size: 0.8em;
+                        font-size: 0.85em;
                 padding: 8px;
                 border: 1px solid black;
                 text-align: center;
                 word-wrap: break-word;
                 overflow: hidden;
                 box-sizing: border-box;
+                font-weight: bold;
             }
 
             th {
                 background-color: #f2f2f2;
-                font-weight: normal;
+                font-weight: bold;
             }
                     </style>
                 `;
