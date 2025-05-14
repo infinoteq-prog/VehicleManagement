@@ -448,40 +448,15 @@ namespace VMS.Controllers
                 if (tripId <= 0)
                 {
                     #region Insert Section
-                    var dieselHeader = _context.TblDieselHeaders.Select(x => new
-                    {
-                        TripId = x.TripId,
-                        VehicleNo = x.VehicleNo,
-                        DriverId = x.DriverId,
-                        TripStartDate = Convert.ToString(Convert.ToDateTime(x.TripStartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                        TripEndDate = Convert.ToString(Convert.ToDateTime(x.TripEndDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
-                        LastTripRouteDescr = x.LastTripRouteDescr,
-                        StartOdometer = x.StartOdometer,
-                        EndOdometer = x.EndOdometer,
-                        OpeningDiesel = x.OpeningDiesel,
-                        ClosingDiesel = x.ClosingDiesel,
-                        runningKm = x.RunningKm,
-                        IsActive = x.IsActive,
-                        LastTripVendor = "Test Vendor",
-                        DieselHeaderCreationDate = x.CreationDate,
-                        DieselHeaderUpdateDate = x.UpdateDate,
-                        DieselHeaderCreatedBy = x.CreatedBy,
-                        DieselHeaderUpdatedBy = x.UpdatedBy,
-                        DriverName = _context.TblDriverMasters
-                                    .Where(p => p.Id == x.DriverId)
-                                    .Select(p => p.DriverName).FirstOrDefault(),
-                        DriverFatherName = _context.TblDriverMasters
-                                               .Where(p => p.Id == x.DriverId)
-                                               .Select(p => p.FatherName).FirstOrDefault(),
-                        DieselHeaderCreatedByName = _context.TblUserMasters
-                                .Where(p => p.Id == x.CreatedBy)
-                                .Select(p => p.UserName).FirstOrDefault(),
-                        DieselHeaderUpdatedByName = _context.TblUserMasters
-                                .Where(p => p.Id == x.UpdatedBy)
-                                .Select(p => p.UserName).FirstOrDefault()
-                    }).Where(x => x.TripId.Equals(tripNo)).ToList();
+                    var dieselHeader = _context.TblDieselHeaders.AsQueryable().Where(x => x.VehicleNo==vehicleNo &&
+                     x.TripStartDate.Year == dtTripStartDate.Year &&
+                     x.TripStartDate.Month == dtTripStartDate.Month &&
+                     x.TripStartDate.Day == dtTripStartDate.Day &&
+                     x.TripEndDate.Year == dtTripEndDate.Year &&
+                     x.TripEndDate.Month == dtTripEndDate.Month &&
+                     x.TripEndDate.Day == dtTripEndDate.Day).FirstOrDefault();
 
-                    if (dieselHeader.Count() == 0)
+                    if (dieselHeader==null)
                     {
                         using (var transaction = _context.Database.BeginTransaction())
                         {

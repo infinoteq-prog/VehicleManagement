@@ -968,22 +968,23 @@
             var isValid = checkValidation(); 
 
             if (isValid == true) {
-                if ($('#ddlState option:selected').val() != "0" &&
-                    $('#ddlDistrict option:selected').val() != "0" &&
-                    $('#ddlCity option:selected').val() != "0" &&
-                    $("#txtDriverName").val() != "" &&
-                    $("#txtFatherName").val() != "" &&
-                    $("#txtDriverAddress1").val() != "" &&
-                    $("#txtPinCode").val() != "" &&
-                    $("#txtAadharNo").val() != "" &&
-                    $("#txtPanNo").val() != "" &&
-                    $("#txtBankName").val() != "" &&
-                    $("#txtBankAccountNumber").val() != "" &&
-                    $("#txtBankIFSCCode").val() != "" &&
-                    $("#txtDrivingLicenceNo").val() != "" &&
-                    $("#txtDrivingLicenceIssueAuth").val() != "" &&
-                    $("#txtDrivingLicenceValidity").val() != "" &&
-                    $("#txtMobileNumber1").val() != "") {
+                // if ($('#ddlState option:selected').val() != "0" &&
+                //     $('#ddlDistrict option:selected').val() != "0" &&
+                //     $('#ddlCity option:selected').val() != "0" &&
+                //     $("#txtDriverName").val() != "" &&
+                //     $("#txtFatherName").val() != "" &&
+                //     $("#txtDriverAddress1").val() != "" &&
+                //     $("#txtPinCode").val() != "" &&
+                //     $("#txtAadharNo").val() != "" &&
+                //     $("#txtPanNo").val() != "" &&
+                //     $("#txtBankName").val() != "" &&
+                //     $("#txtBankAccountNumber").val() != "" &&
+                //     $("#txtBankIFSCCode").val() != "" &&
+                //     $("#txtDrivingLicenceNo").val() != "" &&
+                //     $("#txtDrivingLicenceIssueAuth").val() != "" &&
+                //     $("#txtDrivingLicenceValidity").val() != "" &&
+                //     $("#txtMobileNumber1").val() != "") 
+                    {
                     var drivingLicenceValidity = $("#txtDrivingLicenceValidity").val();
                     drivingLicenceValidity = drivingLicenceValidity.split("-").reverse().join("-");
 

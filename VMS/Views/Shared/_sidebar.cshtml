@@ -31,8 +31,8 @@
                 </a>
                 <div class="collapse" id="make-master">
                     <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "MakeMaster/Index")">Add Code Master</a></li>
-                        <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "MakeMaster/List")">View Code Master</a></li>
+                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "MakeMaster/Index")">Add Code Master</a></li>
+                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "MakeMaster/List")">View Code Master</a></li>
                     </ul>
                 </div>
             </li>
@@ -45,8 +45,8 @@
                 </a>
                 <div class="collapse" id="model-master">
                     <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ModelMaster/Index")">Add Model</a></li>                     
-                        <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ModelMaster/List")">View Model</a></li>
+                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "ModelMaster/Index")">Add Model</a></li>                     
+                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "ModelMaster/List")">View Model</a></li>
                     </ul>
                 </div>
             </li>
@@ -59,8 +59,8 @@
                 </a>
                 <div class="collapse" id="driver-master">
                     <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/Index")">Add Driver</a></li>
-                        <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/List")">View Driver</a></li>
+                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/Index")">Add Driver</a></li>
+                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/List")">View Driver</a></li>
                     </ul>
                 </div>
             </li>
@@ -73,8 +73,8 @@
                 </a>
                 <div class="collapse" id="vehicle-master">
                     <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "VehicleMaster/Index")">Add Vehicle</a></li>
-                        <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "VehicleMaster/List")">View Vehicle</a></li>
+                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "VehicleMaster/Index")">Add Vehicle</a></li>
+                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "VehicleMaster/List")">View Vehicle</a></li>
                     </ul>
                 </div>
             </li>
@@ -87,8 +87,8 @@
                 </a>
                 <div class="collapse" id="distance-master">
                     <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DistanceMaster/Index")">Add Distance Master</a></li>
-                        <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DistanceMaster/List")">View Distance Master</a></li>
+                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "DistanceMaster/Index")">Add Distance Master</a></li>
+                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "DistanceMaster/List")">View Distance Master</a></li>
                     </ul>
                 </div>
             </li>
@@ -145,8 +145,8 @@
                     </a>
                     <div class="collapse" id="company-master">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "CompanyMaster/Index")">Add Company</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "CompanyMaster/List")">View Company</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "CompanyMaster/Index")">Add Company</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "CompanyMaster/List")">View Company</a></li>
                         </ul>
                     </div>
                 </li>
@@ -159,7 +159,7 @@
                     </a>
                     <div class="collapse" id="upload-dispatch-data">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/UploadDispatchData")">Upload Dispatch Data</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/UploadDispatchData")">Upload Dispatch Data</a></li>
                         </ul>
                     </div>
                 </li>
@@ -177,8 +177,8 @@
                         <ul class="nav flex-column sub-menu">
                             @if (userLogin.RoleName.Equals(SiteConstants.Admin) || userLogin.RoleName.Equals(SiteConstants.SuperAdmin))
                             {
-                                <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterMaster/Index")">Add Transporter</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterMaster/List")">View Transporter</a></li>
+                                <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterMaster/Index")">Add Transporter</a></li>
+                                <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterMaster/List")">View Transporter</a></li>
                             }
 
                             @if (userLogin.RoleName.Equals(SiteConstants.User))
@@ -199,13 +199,13 @@
                         <ul class="nav flex-column sub-menu">
                             @if (userLogin.RoleName.Equals(SiteConstants.User))
                             {
-                                <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/Index")">Generate Bill</a></li>
+                                <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/Index")">Generate Bill</a></li>
                             }
-                            <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/ViewTransporterBill")">View Bill</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/ViewTransporterBill")">View Bill</a></li>
 
-                            <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/ViewDispatchTransactions")">View Dispatch Transactions</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/ViewDispatchTransactions")">View Dispatch Transactions</a></li>
 
-                            <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/UpdateLrGrData")">Update LR GR No</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/UpdateLrGrData")">Update LR GR No</a></li>
                         </ul>
                     </div>
                 </li>
@@ -223,11 +223,11 @@
                         <ul class="nav flex-column sub-menu">
                             @* @if (userAccess.AddUserFullAccess == true || userAccess.AddUserAddAccess == true)
                         { *@
-                            <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "User/Index")">Add User</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "User/Index")">Add User</a></li>
                             @*  }
                         @if (userAccess.AddUserFullAccess == true || userAccess.AddUserEntryViewAccess == true)
                         { *@
-                            <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "User/List")">View Users</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "User/List")">View Users</a></li>
                             @* } *@
                         </ul>
                     </div>
@@ -243,11 +243,11 @@
                         <ul class="nav flex-column sub-menu">
                             @*   @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleAddAccess == true)
                         { *@
-                            <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRole/Index")">Add User Role</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRole/Index")">Add User Role</a></li>
                             @* }
                         @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
                         { *@
-                            <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRole/List")">View User Roles</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRole/List")">View User Roles</a></li>
                             @* } *@
                         </ul>
                     </div>
@@ -261,8 +261,8 @@
                     </a>
                     <div class="collapse" id="function-master">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "FunctionMaster/Index")">Add Function Master</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "FunctionMaster/List")">View Function Master</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "FunctionMaster/Index")">Add Function Master</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "FunctionMaster/List")">View Function Master</a></li>
                         </ul>
                     </div>
                 </li>
@@ -277,11 +277,11 @@
                         <ul class="nav flex-column sub-menu">
                             @*  @if (userAccess.UserAccessFull == true || userAccess.UserAccessForAdd == true)
                         { *@
-                            <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRoleAccess/Index")">Add User Access</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRoleAccess/Index")">Add User Access</a></li>
                             @* }
                         @if (userAccess.UserAccessFull == true || userAccess.UserAccessForView == true)
                         { *@
-                            <li class="nav-item"> <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRoleAccess/List")">View User Access</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRoleAccess/List")">View User Access</a></li>
                             @*  } *@
                         </ul>
                     </div>

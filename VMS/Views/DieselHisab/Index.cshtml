@@ -48,7 +48,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="ddlVehicleNo">Vehicle No:<span class="reqFields">*</span> </label>
                                         <div class="col-sm-8">
-                                            <select class="form-control" id="ddlVehicleNo" name="ddlVehicleNo" onchange="setDropDownStyle(this);"></select>
+                                            <select class="form-control" id="ddlVehicleNo" name="ddlVehicleNo"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -137,7 +137,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtDriverName">Driver Name:<span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
-                                            <select class="form-control" id="ddlDriver" name="ddlDriver" onchange="setDropDownStyle(this);"></select>
+                                            <select class="form-control" id="ddlDriver" name="ddlDriver"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -312,46 +312,45 @@
                       </div>
                         
                        <div class="card" style="padding: 15px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px;">
-                        <div class="row rowHeight align-items-center">
-                               <div class="col-md-2">
-                                   <div class="form-group">
-                                      <label for="ddlDistanceMaster">Station:</label> 
-                                      <select class="form-control" name="ddlDistanceMaster" id="ddlDistanceMaster"></select>
-                                      @*   <select class="form-control" id="ddlDistanceMaster" onchange="setDropDownStyle(this);">
-                                           </select> *@
-                                   </div>
-                               </div>
-                               <div class="col-md-2">
-                                   <div class="form-group">
-                                       <label for="txtDistance">Distance:</label>
-                                       <input type="text" id="txtDistance" class="form-control" />
-                                   </div>
-                               </div>
-                               <div class="col-md-2">
-                                   <div class="form-group">
-                                       <label for="ddlLoadType">Load Type:</label>
-                                       <select class="form-control" id="ddlLoadType" onchange="setDropDownStyle(this);">
-                                           </select>
-                                   </div>
-                               </div>
-                               <div class="col-md-2">
-                                   <div class="form-group">
-                                       <label for="txtAverage">Average:</label>
-                                       <input type="text" id="txtAverage" class="form-control" />
-                                   </div>
-                               </div>
-                               <div class="col-md-2">
-                                   <div class="form-group">
-                                       <label for="txtEstDiesel">Estimated Diesel:</label>
-                                       <input type="text" id="txtEstDiesel" class="form-control" />
-                                   </div>
-                               </div>
-                               <div class="col-md-2">
-                                   <div class="form-group">
-                                       <button type="button" class="btn btn-primary" onclick="addStationDetails();" style="margin-top: 20px;">Add</button>
-                                   </div>
-                               </div>
-                              </div>
+                       <div class="row rowHeight">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="ddlDistanceMaster">Station:</label>
+                                <select class="form-control" name="ddlDistanceMaster" id="ddlDistanceMaster"></select>
+                                @* <select class="form-control" id="ddlDistanceMaster" onchange="setDropDownStyle(this);">
+                                    </select> *@
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label for="txtDistance">Distance:</label>
+                                <input type="text" id="txtDistance" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="ddlLoadType">Load Type:</label>
+                                <select class="form-control form-control-sm" id="ddlLoadType" onchange="setDropDownStyle(this);"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label for="txtAverage">Average:</label>
+                                <input type="text" id="txtAverage" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="txtEstDiesel">Estimated Diesel:</label>
+                                <input type="text" id="txtEstDiesel" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group" style="margin-top: 20px;">
+                                <button type="button" class="btn btn-primary" onclick="addStationDetails();">Add</button>
+                            </div>
+                        </div>
+                    </div>
 
                                                     <div class="table-responsive mt-3">
                                   <table id="stationDetailsTable" class="table table-bordered">
@@ -440,7 +439,9 @@
     var updateButton = "";
     var deleteButton = "";
 
-    $(document).ready(function () {
+    $(document).ready(function () { 
+        $('#ddlVehicleNo').select2();
+            $('#ddlDriver').select2();
         $('#ddlDistanceMaster').select2();
         //Fill Vehicle Master DropdownList
        setSideMenu("diesel-hisab-master");
@@ -476,6 +477,12 @@
                 var selectedValue=$('#ddlLoadType option:selected').text();
                 var vehicleNo=$('#ddlVehicleNo option:selected').val();
                 getDieselAverageAsPerLoadType(vehicleNo, selectedValue) 
+
+                if (selectedValue && (selectedValue.toUpperCase() === 'UL_GUJ' || selectedValue.toUpperCase() === 'UL_MG' || selectedValue.toUpperCase() === 'NH76')) {
+                       $("#txtAverage").prop("disabled", true);
+                } else {
+                       $("#txtAverage").prop("disabled", false); 
+                }
             });
 
             $("#ddlDriver").change(function () {

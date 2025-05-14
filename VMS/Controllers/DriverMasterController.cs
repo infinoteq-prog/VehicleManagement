@@ -584,7 +584,7 @@ namespace VMS.Controllers
                         driverMaster.DriverPhoto = utilityHelper.saveUploadFilesToFolder(driverPhoto, SiteConstants.driverPhotoFolder, drivingLicenceNo); 
                         driverMaster.AadharNo = aadharNo;
                         driverMaster.AadharNoImage = utilityHelper.saveUploadFilesToFolder(aadharNoImage, SiteConstants.driverAadharFolder, drivingLicenceNo);
-                        driverMaster.PanNo = panNo;
+                        driverMaster.PanNo = panNo.ToStringFromNull();
                         driverMaster.PanNoImage = utilityHelper.saveUploadFilesToFolder(panNoImage, SiteConstants.driverPanNoFolder, drivingLicenceNo);
                         driverMaster.BankName = bankName;
                         driverMaster.BankAccountNumber = bankAccountNumber;

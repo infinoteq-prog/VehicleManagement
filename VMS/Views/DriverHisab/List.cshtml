@@ -20,7 +20,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="ddlVehicleNo">Vehicle No</label>
-                                    <select class="form-control" id="ddlVehicleNo">
+                                    <select class="form-control" id="ddlVehicleNo" name="ddlVehicleNo">
                                         <!-- Options will be dynamically populated here -->
                                     </select>
                                 </div>
@@ -28,7 +28,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="ddlDriver">Driver</label>
-                                    <select class="form-control" id="ddlDriver">
+                                    <select class="form-control" id="ddlDriver" name="ddlDriver">
                                         <!-- Options will be dynamically populated here -->
                                     </select>
                                 </div>
@@ -85,6 +85,7 @@
 </div>
 
 @section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript">
         // Set permissions for accessing and interacting with records
         var fullAccess = 'True';
@@ -97,6 +98,8 @@
         var deleteButton = "";
 
         $(document).ready(function () {
+            $('#ddlVehicleNo').select2();
+            $('#ddlDriver').select2();
              $('[data-toggle="tooltip"]').tooltip();
             setSideMenu("driver-hisab-master");
             if (fullAccess === "True" || viewAccess === "True") {

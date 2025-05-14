@@ -102,6 +102,64 @@
         }
     </style>
 
+    @* For ddlVehicleNo *@
+    <style type="text/css">
+        #ddlVehicleNo + span.select2-container {
+            height: 34px !important; /* Adjust this value */
+            vertical-align: middle; /* Try this */
+            display: inline-block; /* Ensure it behaves like other inline elements */
+        }
+        
+        #ddlVehicleNo + span.select2-container .select2-selection--single{
+            height: 34px !important; /* Match the container height */
+            display: flex !important;
+            align-items: center !important; /* Vertically center text */
+            padding: 0.25rem 0.5rem !important; /* Add some padding for visual consistency */
+        }
+        
+        #ddlVehicleNo + span.select2-container .select2-selection--single .select2-selection__rendered{
+            line-height: normal !important; /* Reset line-height */
+            padding-left: 0 !important; /* Adjust text indentation if needed */
+        }
+        
+        #ddlVehicleNo + span.select2-container .select2-selection--single .select2-selection__arrow{
+            height: 34px !important; /* Match container height */
+            top: auto !important;
+            bottom: auto !important;
+            margin-top: auto !important;
+            margin-bottom: auto !important; /* Vertically center the arrow */
+        }
+    </style>
+
+    @* For ddlDriver *@
+    <style type="text/css">
+        #ddlDriver + span.select2-container {
+            height: 34px !important; /* Adjust this value */
+            vertical-align: middle; /* Try this */
+            display: inline-block; /* Ensure it behaves like other inline elements */
+        }
+        
+        #ddlDriver + span.select2-container .select2-selection--single{
+            height: 34px !important; /* Match the container height */
+            display: flex !important;
+            align-items: center !important; /* Vertically center text */
+            padding: 0.25rem 0.5rem !important; /* Add some padding for visual consistency */
+        }
+        
+        #ddlDriver + span.select2-container .select2-selection--single .select2-selection__rendered{
+            line-height: normal !important; /* Reset line-height */
+            padding-left: 0 !important; /* Adjust text indentation if needed */
+        }
+        
+        #ddlDriver + span.select2-container .select2-selection--single .select2-selection__arrow{
+            height: 34px !important; /* Match container height */
+            top: auto !important;
+            bottom: auto !important;
+            margin-top: auto !important;
+            margin-bottom: auto !important; /* Vertically center the arrow */
+        }
+    </style>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
@@ -1538,6 +1596,9 @@
                             s += '<option value="' + data[i].driverId + '">' + data[i].driverName + '</option>';
                         }
                         $("#ddlDriver").html(s);
+                        
+                        $("#ddlDriver").select2();
+                        $("#ddlDriver").trigger('change');
                     } else {
                         console.log(data);
                     }
@@ -1775,6 +1836,8 @@
                             s += '<option value="' + data[i].vehicleId + '">' + data[i].vehicleName + '</option>';
                         }
                         $("#ddlVehicleNo").html(s);
+                        $("#ddlVehicleNo").select2();
+                        $("#ddlVehicleNo").trigger('change');
                     } else {
                         console.log(data);
                     }
@@ -2779,7 +2842,7 @@
                                                 success: function (data) {
                                                     console.log(data);
                                                     $.confirm({
-                                                        title: 'Transaction Success!',
+                                                        title: 'Success!',
                                                         content: data.transactionMessage.message,
                                                         type: 'green',
                                                         buttons: {
@@ -2867,7 +2930,7 @@
                                                 success: function (data) {
                                                     console.log(data);
                                                     $.confirm({
-                                                        title: 'Transaction Success!',
+                                                        title: 'Success!',
                                                         content: data.transactionMessage.message,
                                                         type: 'green',
                                                         buttons: {
@@ -2955,7 +3018,7 @@
                                                 success: function (data) {
                                                     console.log(data);
                                                     $.confirm({
-                                                        title: 'Transaction Success!',
+                                                        title: 'Success!',
                                                         content: data.transactionMessage.message,
                                                         type: 'green',
                                                         buttons: {
@@ -3064,7 +3127,7 @@
                                                 success: function (data) {
                                                     console.log(data);
                                                     $.confirm({
-                                                        title: 'Transaction Success!',
+                                                        title: 'Success!',
                                                         content: data.transactionMessage.message,
                                                         type: 'green',
                                                         buttons: {
@@ -3152,7 +3215,7 @@
                                                 success: function (data) {
                                                     console.log(data);
                                                     $.confirm({
-                                                        title: 'Transaction Success!',
+                                                        title: 'Success!',
                                                         content: data.transactionMessage.message,
                                                         type: 'green',
                                                         buttons: {
@@ -3242,7 +3305,7 @@
                                                 success: function (data) {
                                                     console.log(data);
                                                     $.confirm({
-                                                        title: 'Transaction Success!',
+                                                        title: 'Success!',
                                                         content: data.transactionMessage.message,
                                                         type: 'green',
                                                         buttons: {
@@ -3893,7 +3956,7 @@
                                                 success: function (data) {
                                                     console.log(data);
                                                     $.confirm({
-                                                        title: 'Transaction Success!',
+                                                        title: 'Success!',
                                                         content: data.transactionMessage.message,
                                                         type: 'green',
                                                         buttons: {
@@ -3982,7 +4045,7 @@
                                                 success: function (data) {
                                                     console.log(data);
                                                     $.confirm({
-                                                        title: 'Transaction Success!',
+                                                        title: 'Success!',
                                                         content: data.transactionMessage.message,
                                                         type: 'green',
                                                         buttons: {
@@ -4070,7 +4133,7 @@
                                                 success: function (data) {
                                                     console.log(data);
                                                     $.confirm({
-                                                        title: 'Transaction Success!',
+                                                        title: 'Success!',
                                                         content: data.transactionMessage.message,
                                                         type: 'green',
                                                         buttons: {
@@ -4186,7 +4249,7 @@
                                 success: function (data) {
                                     console.log(data);
                                     $.confirm({
-                                        title: 'Transaction Success!',
+                                        title: 'Success!',
                                         content: data.transactionMessage.message,
                                         type: 'green',
                                         buttons: {
@@ -4255,7 +4318,7 @@
                                                 success: function (data) {
                                                     console.log(data);
                                                     $.confirm({
-                                                        title: 'Transaction Success!',
+                                                        title: 'Success!',
                                                         content: data.transactionMessage.message,
                                                         type: 'green',
                                                         buttons: {
@@ -4427,7 +4490,7 @@
                                                 success: function (data) {
                                                     console.log(data);
                                                     $.confirm({
-                                                        title: 'Transaction Success!',
+                                                        title: 'Success!',
                                                         content: data.transactionMessage.message,
                                                         type: 'green',
                                                         buttons: {
