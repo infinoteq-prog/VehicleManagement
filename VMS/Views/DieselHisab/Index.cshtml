@@ -464,13 +464,21 @@
         $(function () {
             $("#ddlVehicleNo").change(function () {
                 var selectedValue = $(this).val();
-                getCurrentTripNumber($(this).val());
-                getDieselHisabByVehicle($(this).val());
+                if (selectedValue) {
+                    if (selectedValue != "0") {
+                        getCurrentTripNumber($(this).val());
+                        getDieselHisabByVehicle($(this).val());
+                    }
+                }
             });
 
             $("#ddlDistanceMaster").change(function () {
                 var selectedValue = $(this).val();
-                getDistanceByStation(selectedValue)
+                if (selectedValue) {
+                    if (selectedValue != "0") {
+                        getDistanceByStation(selectedValue)
+                    }
+                }
             });
 
             $("#ddlLoadType").change(function () {
@@ -881,6 +889,10 @@
     function clearControls() {
         $("#ddlVehicleNo").prop("selectedIndex", 0).val();
         $("#ddlDriver").prop("selectedIndex", 0).val();
+            $('#ddlVehicleNo').val(null).trigger('change');
+            $('#ddlDriver').val(null).trigger('change');
+            $("#txtTripNumber").val("");
+            $("#txtDriverFatherName").val("");
         $("#txtFatherName").val("");
         $("#txtDriverAddress1").val("");
         $("#txtStartOdometer").val("");
@@ -893,14 +905,11 @@
         $("#txtOpeningDiesel").val("");
         $("#txtClosingDiesel").val("");
         $("#txtRouteDescription").val("");
-            if ($.fn.DataTable.isDataTable("#dieselFillingTable")) {
-                $('#dieselFillingTable tbody').empty();
-                $('#dieselFillingTable').DataTable().clear().destroy();
-            }
-            if ($.fn.DataTable.isDataTable("#stationDetailsTable")) {
-                $('#stationDetailsTable tbody').empty();
-                $('#stationDetailsTable').DataTable().clear().destroy();
-            }
+
+            $('#dieselFillingTable tbody').empty();
+            $('#dieselFillingTable').DataTable().clear().destroy();
+            $('#stationDetailsTable tbody').empty();
+            $('#stationDetailsTable').DataTable().clear().destroy();
     }
 
     function getCurrentTripNumber(vehicleNo) {
@@ -962,14 +971,14 @@
         var average = ($("#txtAverage").val()) || 0;
         var Estkm = 0;
 
-        if (average !== 0) {
+            if (parseFloat(average) !== 0) {
             Estkm = (distance / average).toFixed(2);
         } else {
             Estkm = "0.00";
         }
 
         // Update the Estkm display (assuming you have an element with id 'txtEstDiesel')
-        $("#txtEstDiesel").val(Estkm); //  Make sure you have an input with id txtEstDiesel
+            $("#txtEstDiesel").val(parseFloat(Estkm)); //  Make sure you have an input with id txtEstDiesel
         console.log("Calculated Estkm:", Estkm); // Good for debugging
     }
 
@@ -1494,11 +1503,11 @@
                         //Setting Diesel Hisab Details to Page Controls
                         // Dropdowns - Disable
                         $("#ddlVehicleNo").prop("disabled", true);
-                        $("#ddlVehicleNo").val(data.vehicleNo);
+                        $('#ddlVehicleNo').val(data.vehicleNo).trigger('change');                       
                         $('#txtTripNumber').val(data.tripId);
 
                         //New Trip
-                        $("#ddlDriver").val(data.driverId);
+                        $('#ddlDriver').val(data.driverId).trigger('change');
                         $("#txtDriverFatherName").val(data.driverFatherName);
                         $("#from-date-picker").val(data.tripStartDate);
                         $("#to-date-picker").val(data.tripEndDate);

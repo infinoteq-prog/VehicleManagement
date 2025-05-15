@@ -336,10 +336,12 @@ namespace VMS.Controllers
                     UpdatedByName = _context.TblUserMasters
                             .Where(p => p.Id == x.UpdatedBy)
                             .Select(p => p.UserName).FirstOrDefault()
-                }).Where(x => x.ModelNo == modelNo).ToList();
+                }).Where(x => x.ModelNo == modelNo && x.MakeId==makeId).ToList();
 
                 if (user.Count() == 0)
                 {
+
+
                     try
                     {
                         //Insert Into Model Master
@@ -376,7 +378,7 @@ namespace VMS.Controllers
                 else
                 {
                     model.TransactionMessage.Status = TransactionStatus.Failed;
-                    model.TransactionMessage.Message = "Model Master Already Exist! Please try again with diffrent username.";
+                    model.TransactionMessage.Message = "Make & Model Master Already Exist! Please try again with diffrent name.";
                 }
             }
             else
@@ -459,8 +461,17 @@ namespace VMS.Controllers
             }
             catch (Exception ex)
             {
-                model.TransactionMessage.Status = TransactionStatus.Error;
-                model.TransactionMessage.Message = "Model Master has not been deleted. Please try again.";
+                if(ex.InnerException.Message.ToString().Contains("The DELETE statement conflicted with the REFERENCE"))
+                {
+                    model.TransactionMessage.Status = TransactionStatus.Error;
+                    model.TransactionMessage.Message = "Error Occured, Model master has been used in the Vehicle Master!";
+                }
+                else
+                {
+                    model.TransactionMessage.Status = TransactionStatus.Error;
+                    model.TransactionMessage.Message = "Model Master has not been deleted. Please try again.";
+                }
+                
             }
             return Json(model);
         }

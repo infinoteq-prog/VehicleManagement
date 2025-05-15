@@ -190,16 +190,16 @@ namespace VMS
 
             switch (loadType?.ToUpperInvariant())
             {
-                case "UL":
+                case "UL_GUJ":
                     columnName = "Ul_Avg";
                     break;
                 case "KHALI":
                     columnName = "Khali";
                     break;
-                case "NH":
+                case "NH76":
                     columnName = "Nh";
                     break;
-                case "MG":
+                case "UL_MG":
                     columnName = "Mega_Hw";
                     break;
                 case "WAJAN":

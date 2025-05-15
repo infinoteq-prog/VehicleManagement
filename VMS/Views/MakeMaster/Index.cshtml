@@ -30,7 +30,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="ddlCodeType">Code Type: <span class="reqFields">*</span> </label>
                                         <div class="col-sm-8">
-                                            <select class="form-control" id="ddlCodeType" name="ddlCodeType" onchange="setDropDownStyle(this);"></select>
+                                            <select class="form-control" id="ddlCodeType" name="ddlCodeType"></select>
                                         </div>
                                        @*  <div class="col-sm-8">
                                             @Html.TextBoxFor(m => m.CodeType, new { @class = "form-control", id = "txtCodeType" })
@@ -370,7 +370,7 @@
                 if ($("#ddlCodeType").val() != ""
                     && $("#txtCode").val() != "" 
                     && $("#txtDescription").val() != "") {
-                    var codeType = $("#ddlCodeType").text();
+                    var codeType = $("#ddlCodeType  option:selected").text();
                     var code = $("#txtCode").val();
                     var description = $("#txtDescription").val()
                     var isActive = true;
