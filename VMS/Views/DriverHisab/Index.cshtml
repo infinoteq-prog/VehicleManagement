@@ -304,6 +304,11 @@
 
             $("#ddlDriver").change(function () {
                     var selectedValue = $(this).val();
+                    //Check if Page is Opening on Edit Click
+                    var settlementId = GetParameterValues('settlementId');
+                    if (settlementId && settlementId.length > 0 && parseInt(settlementId[0]) > 0) {
+                        return;
+                    }
                     getCurrentSettlementNumber($(this).val());
                     getDriverFather();
             });
@@ -723,7 +728,7 @@
             // Bind the form controls
             $("#hdnDriverHisabID").val(data.settlementNo);
             $("#hdnLastSettlementId").val(data.lastSettlementId);
-            $("#ddlDriver").val(data.driverId);  // Assuming data.driverId holds the driver's ID
+                        $('#ddlDriver').val(data.driverId).trigger('change');
             $("#txtDriverFatherName").val(data.driverFatherName);
             $("#txtSettlementNumber").val(data.settlementNo);
 
@@ -735,7 +740,7 @@
             $("#txtLastTripVehicle").val(data.lastTripHistory.vehicleNumber);
             }catch{}
 
-            $("#ddlVehicleNo").val(data.vehicleNo);
+                        $("#ddlVehicleNo").val(data.vehicleNo).trigger('change');
             $("#from-date-picker").val(data.tripStartDate);
             $("#to-date-picker").val(data.tripEndDate);
             $("#txtOpeningAmount").val(data.openingBalance);

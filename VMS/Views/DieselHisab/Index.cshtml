@@ -466,6 +466,11 @@
                 var selectedValue = $(this).val();
                 if (selectedValue) {
                     if (selectedValue != "0") {
+                            //Check if Page is Opening on Edit Click
+                            var tripId = GetParameterValues('tripid');
+                            if (tripId && tripId.length > 0 && parseInt(tripId[0]) > 0) {
+                                return;
+                            }
                         getCurrentTripNumber($(this).val());
                         getDieselHisabByVehicle($(this).val());
                     }
@@ -999,7 +1004,7 @@
                     $("#txtLastTripDriverFather").val(data.lastTripDriverFatherName);
                     $("#txtLastTripVendor").val(data.lastTripVendor);
                     $("#txtStartOdometer").val(data.startOdometer);
-                    $("#txtOpeningDiesel").val(data.closingDiesel);
+                    // $("#txtOpeningDiesel").val(data.closingDiesel);
                 } else {
                     $("#txtLastTripStartDate").val("N/A");
                     $("#txtLastTripEndDate").val("N/A");
