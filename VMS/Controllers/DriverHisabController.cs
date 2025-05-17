@@ -11,6 +11,8 @@ using static iTextSharp.text.pdf.PdfDiv;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using DocumentFormat.OpenXml.Bibliography;
+using OfficeOpenXml;
+using DocumentFormat.OpenXml.Office.Word;
 
 namespace VMS.Controllers
 {
@@ -227,7 +229,7 @@ namespace VMS.Controllers
         [HttpPost]
         public ActionResult SaveUpdate(int settlementNo, int lastSettlementId,int settlementNumber, int vehicleNo, int driverId, string driverName,
                                  string driverFatherName, string tripStartDate,
-                                 string tripEndDate,string settlementDate,int weight,
+                                 string tripEndDate,string settlementDate,int weight,string remarks,
                                  int openingBalance, int closingBalance, string tripRouteDescription,  List<TblDriverHisabLine> _lstDriverLine)
         {
             DateOnly dtTripStartDate = DateOnly.Parse(tripStartDate);
@@ -268,6 +270,7 @@ namespace VMS.Controllers
                                     OpeningBalance = openingBalance,
                                     ClosingBalance = closingBalance,
                                     Weight = weight,
+                                    Remarks = remarks,
                                     IsActive = true,
                                     CreationDate = utilityHelper.CurrentDateTime,
                                     UpdateDate = utilityHelper.CurrentDateTime,
@@ -347,6 +350,8 @@ namespace VMS.Controllers
                                 existingDriverHisab.RouteDescription = tripRouteDescription;                            
                                 existingDriverHisab.OpeningBalance = openingBalance;
                                 existingDriverHisab.ClosingBalance = closingBalance;
+                                existingDriverHisab.Weight = weight;
+                                existingDriverHisab.Remarks = remarks;
                                 existingDriverHisab.IsActive = true; // You might want to control this based on input
                                 existingDriverHisab.UpdateDate = utilityHelper.CurrentDateTime;
                                 existingDriverHisab.UpdatedBy = userID;
@@ -481,7 +486,7 @@ namespace VMS.Controllers
                                    CONVERT(VARCHAR, dh.Trip_Start_Date, 105) AS TripStartDate,
                                    CONVERT(VARCHAR, dh.Trip_End_Date, 105) AS TripEndDate,
                                    dh.Route_Description,dh.Opening_Balance,dh.Closing_Balance,
-                                   dh.Weight, dh.Is_Active,
+                                   dh.Weight, dh.Is_Active,dh.Remarks,
                                    CONVERT(VARCHAR(10),dh.Creation_Date, 105) AS DieselHeaderCreationDate,
                                    CONVERT(VARCHAR(10),dh.Update_Date, 105) AS DieselHeaderUpdateDate,
                                    dh.Created_By AS DieselHeaderCreatedBy,
@@ -519,6 +524,7 @@ namespace VMS.Controllers
                                     ClosingBalance = reader.GetDecimal("Closing_Balance").ToIntFromNull(),
                                     Weight = reader.GetDecimal("Weight").ToIntFromNull(),
                                     IsActive = reader.GetBoolean("Is_Active"),
+                                    Remarks = reader.GetString("Remarks"),
                                     DieselHeaderCreationDate = reader.GetString("DieselHeaderCreationDate"),
                                     DieselHeaderUpdateDate = reader.GetString("DieselHeaderUpdateDate"),
                                     DieselHeaderCreatedBy = reader.GetInt32("DieselHeaderCreatedBy"),
@@ -542,6 +548,87 @@ namespace VMS.Controllers
                 return Json(null);
             }
         }
+        [HttpGet]
+        public IActionResult DownloadDetailedExcelBySettlementId(int settlementId)
+        {
+            //if (hisabData == null)
+            //{
+            //    return NotFound(); // Or handle the case where data is not found
+            //}
+            ExcelPackage.License.SetNonCommercialOrganization("Your Non-Commercial Organization Name");
+            using (var package = new ExcelPackage())
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand("[dbo].[DriverHisab_List_DownloadExcel]", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@SettlementNo", settlementId);
+                        // create data adapter
+                        SqlDataAdapter da = new SqlDataAdapter(command);
+                        // this will query your database and return the result to your datatable
+                        da.Fill(ds);
+                        da.Dispose();
+                    }
+                }
 
+                #region Add Master
+                ExcelWorksheet worksheetMaster = package.Workbook.Worksheets.Add("Driver Hisab Details");
+                if (ds.Tables[0].Rows.Count >= 0)
+                {
+                    // Add Column Headers (from DataTable columns)
+                    for (int i = 0; i < ds.Tables[0].Columns.Count; i++)
+                    {
+                        worksheetMaster.Cells[1, i + 1].Value = ds.Tables[0].Columns[i].ColumnName;
+                    }
+
+                    // Add Data Rows (from DataTable rows)
+                    for (int row = 0; row < ds.Tables[0].Rows.Count; row++)
+                    {
+                        for (int col = 0; col < ds.Tables[0].Columns.Count; col++)
+                        {
+                            worksheetMaster.Cells[row + 2, col + 1].Value = ds.Tables[0].Rows[row][col];
+                        }
+                    }
+
+                    // Auto-fit columns for better readability
+                    worksheetMaster.Cells.AutoFitColumns();
+                }
+                #endregion
+
+                #region Add Expense Detail
+                ExcelWorksheet worksheetExpenseList = package.Workbook.Worksheets.Add("Expense Details");
+                if (ds.Tables[1].Rows.Count >= 0)
+                {
+                    // Add Column Headers (from DataTable columns)
+                    for (int i = 0; i < ds.Tables[1].Columns.Count; i++)
+                    {
+                        worksheetExpenseList.Cells[1, i + 1].Value = ds.Tables[1].Columns[i].ColumnName;
+                    }
+
+                    // Add Data Rows (from DataTable rows)
+                    for (int row = 0; row < ds.Tables[1].Rows.Count; row++)
+                    {
+                        for (int col = 0; col < ds.Tables[1].Columns.Count; col++)
+                        {
+                            worksheetExpenseList.Cells[row + 2, col + 1].Value = ds.Tables[1].Rows[row][col];
+                        }
+                    }
+
+                    // Auto-fit columns for better readability
+                    worksheetExpenseList.Cells.AutoFitColumns();
+                }
+                #endregion
+
+                // 4. Convert the Excel package to a byte array
+                byte[] excelBytes = package.GetAsByteArray();
+
+                // 5. Return the byte array as a FileResult for download
+                string fileName = $"DriverHisab_{settlementId.ToString()}.xlsx";
+                return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+        }
     }
 }

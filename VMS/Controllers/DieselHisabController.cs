@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using DocumentFormat.OpenXml.Spreadsheet;
+using OfficeOpenXml;
 
 namespace VMS.Controllers
 {
@@ -223,27 +224,26 @@ namespace VMS.Controllers
                 {
                     await connection.OpenAsync();
 
-                    string sql = @"
-                SELECT
-                 dh.TripId,dh.Last_Trip_Id[LastTripId],dh.VehicleNo,vm.Vehicle_No[VehicleNumber], dh.DriverId,
-                 CONVERT(VARCHAR, dh.Trip_Start_Date, 105) AS TripStartDate,
-                 CONVERT(VARCHAR, dh.Trip_End_Date, 105) AS TripEndDate,
-                 dh.Last_Trip_Route_Descr,dh.Start_Odometer,
-                 dh.End_Odometer, dh.Opening_Diesel,dh.Closing_Diesel,
-                 dh.RunningKm, dh.Is_Active,dh.Is_DifferenceAdded,dh.Is_LoadingAdded,
-                 CONVERT(VARCHAR(10),dh.Creation_Date, 105) AS DieselHeaderCreationDate,
-                 CONVERT(VARCHAR(10),dh.Update_Date, 105) AS DieselHeaderUpdateDate,
-                 dh.Created_By AS DieselHeaderCreatedBy,
-                 dh.Updated_By AS DieselHeaderUpdatedBy,
-                 dm.Driver_Name,dm.Father_Name AS DriverFatherName,
-                 uc.User_Name AS DieselHeaderCreatedByName,
-                 uu.User_Name AS DieselHeaderUpdatedByName
-                 FROM [dbo].[tbl_Diesel_Header] dh
-                 INNER JOIN [dbo].[tbl_Vehicle_Master] vm ON dh.VehicleNo = vm.Id
-                 LEFT JOIN [dbo].[tbl_Driver_Master] dm ON dh.DriverId = dm.Id
-                 LEFT JOIN [dbo].[tbl_UserMaster] uc ON dh.Created_By = uc.Id
-                 LEFT JOIN [dbo].[tbl_UserMaster] uu ON dh.Updated_By = uu.Id
-                WHERE dh.Is_Active = 1 AND dh.TripId = @TripId;";
+                    string sql = @"  SELECT
+                         dh.TripId,dh.Last_Trip_Id[LastTripId],dh.VehicleNo,vm.Vehicle_No[VehicleNumber], dh.DriverId,
+                         CONVERT(VARCHAR, dh.Trip_Start_Date, 105) AS TripStartDate,
+                         CONVERT(VARCHAR, dh.Trip_End_Date, 105) AS TripEndDate,
+                         dh.Last_Trip_Route_Descr,dh.Start_Odometer,
+                         dh.End_Odometer, dh.Opening_Diesel,dh.Closing_Diesel,
+                         dh.RunningKm, dh.Is_Active,dh.Is_DifferenceAdded,dh.Is_LoadingAdded,
+                         CONVERT(VARCHAR(10),dh.Creation_Date, 105) AS DieselHeaderCreationDate,
+                         CONVERT(VARCHAR(10),dh.Update_Date, 105) AS DieselHeaderUpdateDate,
+                         dh.Created_By AS DieselHeaderCreatedBy,
+                         dh.Updated_By AS DieselHeaderUpdatedBy,
+                         dm.Driver_Name,dm.Father_Name AS DriverFatherName,
+                         uc.User_Name AS DieselHeaderCreatedByName,
+                         uu.User_Name AS DieselHeaderUpdatedByName
+                         FROM [dbo].[tbl_Diesel_Header] dh
+                         INNER JOIN [dbo].[tbl_Vehicle_Master] vm ON dh.VehicleNo = vm.Id
+                         LEFT JOIN [dbo].[tbl_Driver_Master] dm ON dh.DriverId = dm.Id
+                         LEFT JOIN [dbo].[tbl_UserMaster] uc ON dh.Created_By = uc.Id
+                         LEFT JOIN [dbo].[tbl_UserMaster] uu ON dh.Updated_By = uu.Id
+                        WHERE dh.Is_Active = 1 AND dh.TripId = @TripId;";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
@@ -950,6 +950,113 @@ namespace VMS.Controllers
                 DistanceId = x.Id,
                 RouteDescription = x.RouteDescription,
             }).ToList());
+        }
+
+        [HttpGet]
+        public IActionResult DownloadDetailedExcelByTripId(int tripId)
+        {
+            //if (hisabData == null)
+            //{
+            //    return NotFound(); // Or handle the case where data is not found
+            //}
+            ExcelPackage.License.SetNonCommercialOrganization("Your Non-Commercial Organization Name");
+            using (var package = new ExcelPackage())
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand("[dbo].[DieselHisab_List_DownloadExcel]", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@tripId", tripId);
+                        // create data adapter
+                        SqlDataAdapter da = new SqlDataAdapter(command);
+                        // this will query your database and return the result to your datatable
+                        da.Fill(ds);
+                        da.Dispose();
+                    }
+                }
+
+                #region Add Master
+                ExcelWorksheet worksheetMaster = package.Workbook.Worksheets.Add("Driver Hisab Details");
+                if (ds.Tables[0].Rows.Count >= 0)
+                {
+                    // Add Column Headers (from DataTable columns)
+                    for (int i = 0; i < ds.Tables[0].Columns.Count; i++)
+                    {
+                        worksheetMaster.Cells[1, i + 1].Value = ds.Tables[0].Columns[i].ColumnName;
+                    }
+
+                    // Add Data Rows (from DataTable rows)
+                    for (int row = 0; row < ds.Tables[0].Rows.Count; row++)
+                    {
+                        for (int col = 0; col < ds.Tables[0].Columns.Count; col++)
+                        {
+                            worksheetMaster.Cells[row + 2, col + 1].Value = ds.Tables[0].Rows[row][col];
+                        }
+                    }
+
+                    // Auto-fit columns for better readability
+                    worksheetMaster.Cells.AutoFitColumns();
+                }
+                #endregion
+
+                #region Add DieselFillingList Detail
+                ExcelWorksheet worksheetExpenseList = package.Workbook.Worksheets.Add("Diesel Filling Details");
+                if (ds.Tables[1].Rows.Count >= 0)
+                {
+                    // Add Column Headers (from DataTable columns)
+                    for (int i = 0; i < ds.Tables[1].Columns.Count; i++)
+                    {
+                        worksheetExpenseList.Cells[1, i + 1].Value = ds.Tables[1].Columns[i].ColumnName;
+                    }
+
+                    // Add Data Rows (from DataTable rows)
+                    for (int row = 0; row < ds.Tables[1].Rows.Count; row++)
+                    {
+                        for (int col = 0; col < ds.Tables[1].Columns.Count; col++)
+                        {
+                            worksheetExpenseList.Cells[row + 2, col + 1].Value = ds.Tables[1].Rows[row][col];
+                        }
+                    }
+
+                    // Auto-fit columns for better readability
+                    worksheetExpenseList.Cells.AutoFitColumns();
+                }
+                #endregion
+
+                #region Add stationList Detail
+                ExcelWorksheet worksheetstationList = package.Workbook.Worksheets.Add("Station Details");
+                if (ds.Tables[2].Rows.Count >= 0)
+                {
+                    // Add Column Headers (from DataTable columns)
+                    for (int i = 0; i < ds.Tables[2].Columns.Count; i++)
+                    {
+                        worksheetstationList.Cells[1, i + 1].Value = ds.Tables[2].Columns[i].ColumnName;
+                    }
+
+                    // Add Data Rows (from DataTable rows)
+                    for (int row = 0; row < ds.Tables[2].Rows.Count; row++)
+                    {
+                        for (int col = 0; col < ds.Tables[2].Columns.Count; col++)
+                        {
+                            worksheetstationList.Cells[row + 2, col + 1].Value = ds.Tables[2].Rows[row][col];
+                        }
+                    }
+
+                    // Auto-fit columns for better readability
+                    worksheetstationList.Cells.AutoFitColumns();
+                }
+                #endregion
+
+                // 4. Convert the Excel package to a byte array
+                byte[] excelBytes = package.GetAsByteArray();
+
+                // 5. Return the byte array as a FileResult for download
+                string fileName = $"DieselHisab_{tripId.ToString()}.xlsx";
+                return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
         }
 
     }

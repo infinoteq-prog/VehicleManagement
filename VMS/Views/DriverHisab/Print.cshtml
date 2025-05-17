@@ -71,7 +71,7 @@
     }
 
     .footer-section {
-        margin-top: 20px; /* Add some space above the footer */
+        margin-top: 0px; /* Add some space above the footer */
         padding: 10px;
         border: 1px solid #ccc; /* Optional border for visual separation */
     }
@@ -275,6 +275,8 @@
                     console.log(data);
                     if (data != null && data != undefined) {
 
+                        var totalBlankRowsCount = 28;
+                        var currentRowsCount = 0;
                         $("#tripRouteDescr").text(data.tripRouteDescr);
                         $("#vehicleNumber").text(data.vehicleNumber);
                         $("#date").text(data.tripStartAndEndDate);
@@ -284,6 +286,7 @@
                         $("#settlementNo").text(data.settlementNo);
                         $("#createdBy").text(data.dieselHeaderCreatedByName);
                         $("#openingBalance").text(data.openingBalance);
+                        var remarks=data.remarks;
 
                         var openingBalance = data.openingBalance ? parseFloat(data.openingBalance) : 0;
                         var previousBalance = openingBalance;
@@ -292,6 +295,7 @@
 
                         var expenseRowsHtml = '';
                         data.expenseList.forEach((entry, index) => {
+                            currentRowsCount++;
                             var debitAmt = parseFloat(entry.drAmt) || 0;
                             var creditAmt = parseFloat(entry.crAmt) || 0;
                             previousBalance = previousBalance + debitAmt - creditAmt;
@@ -321,6 +325,16 @@
                             </tr>
                         `;
                         $("#totalRow").html(totalRowHtml);
+                        currentRowsCount++;
+
+                        // Add Remarks
+                        var remarksRowHtml = `
+                                    <tr>
+                                        <td colspan="5">Remarks: ${remarks}</td>
+                                    </tr>
+                                `;
+                        $("#totalRow").append(remarksRowHtml);
+                        currentRowsCount++;
 
                         // Summarize narrations
                         var narrationSummary = {};
@@ -340,6 +354,7 @@
                         // Add narration summary rows
                         var narrationSummaryHtml = '';
                         for (const narration in narrationSummary) {
+                            currentRowsCount++;
                             narrationSummaryHtml += `
                                 <tr>
                                     <td colspan="2" style="font-weight:bold;">${narration} Summary</td>
@@ -349,10 +364,19 @@
                                 </tr>
                             `;
                         }
-
                         $("#totalRow").append(narrationSummaryHtml);
 
-
+                        // Add blank rows
+                        var blankRowsHtml = '';
+                        var blankRowsCount = totalBlankRowsCount - currentRowsCount;
+                        for (let i = 0; i < blankRowsCount; i++) {
+                            blankRowsHtml += `
+                                     <tr>
+                                          <td colspan="5" style="padding:18px 22px !important;"></td>
+                                     </tr>
+                                 `;
+                        }
+                        $("#totalRow").append(blankRowsHtml);
                     } else {
                         $.confirm({
                             title: 'Driver Hisab',
@@ -430,7 +454,7 @@
                                          word-wrap: break-word !important;
                                          overflow: hidden !important;
                                          box-sizing: border-box !important;
-                                         font-size: 0.8em !important;
+                                         font-size: 1em !important;
                                      }
 
                                      th {
@@ -443,7 +467,7 @@
                                      }
 
                                      .footer-section {
-                                         margin-top: 15px !important;
+                                         margin-top: 0px !important;
                                          padding: 8px !important;
                                          border: 1px solid #ccc !important;
                                      }

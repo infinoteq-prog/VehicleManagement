@@ -15,6 +15,9 @@
         <div class="col-12 grid-margin">
             <div class="card">
                 <div class="card-body">
+                    <div style="text-align: right; margin-bottom: 10px;">
+                        <button type="button" class="btn btn-success" onclick="downloadExcel()">Download Excel</button>
+                    </div>
                     <h4 class="card-title">Add Driver Hisab</h4>
                     <div>
                         <form id="frmDriverHisabMaster" name="frmDriverHisabMaster" method="post" class="forms-sample" autocomplete="off">
@@ -31,7 +34,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtDriverName">Driver Name:<span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
-                                            <select class="form-control" id="ddlDriver" name="ddlDriver" onchange="setDropDownStyle(this);"></select>
+                                            <select class="form-control" id="ddlDriver" name="ddlDriver"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -112,10 +115,19 @@
                                         <div class="form-group row">
                                             <label class="col-sm-4 col-form-label" for="ddlVehicleNo">Vehicle No:<span class="reqFields">*</span> </label>
                                             <div class="col-sm-8">
-                                                <select class="form-control" id="ddlVehicleNo" name="ddlVehicleNo" onchange="setDropDownStyle(this);"></select>
+                                                <select class="form-control" id="ddlVehicleNo" name="ddlVehicleNo"></select>
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                     <div class="col-md-6">
+                                         <div class="form-group row">
+                                             <label class="col-sm-4 col-form-label" for="txtRemarks">Remarks :</label>
+                                             <div class="col-sm-8">
+                                                  <textarea id="txtRemarks" class="form-control" maxlength="300" onchange="setTextboxStyle(this);" placeholder="Please Enter Remarks" rows="3"></textarea>
+                                            </div>
+                                         </div>
+                                     </div>
                                 </div>
                                 <div class="row rowHeight">
                                     <div class="col-md-6">
@@ -172,7 +184,6 @@
                                 </div>
                             </div>
 
-                            <!-- Expense Lines Table -->
                             <div class="row rowHeight">
                                 <div class="col-md-12">
                                     <div class="form-group row">
@@ -187,8 +198,7 @@
                                         <div class="form-group">
                                             <label for="ddlExpenseHead">Narration: <span class="reqFields">*</span></label>
                                             <select class="form-control" id="ddlExpenseHead" name="ddlExpenseHead">
-                                                <!-- Vendor options will be populated here from VendorMaster API -->
-                                            </select>
+                                                </select>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -225,7 +235,7 @@
                                     <table id="expenseListTable" class="table table-bordered">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th style="width: 120px;display:none;">ExpenseHeadId/th>
+                                                <th style="width: 120px;display:none;">ExpenseHeadId</th>
                                                 <th style="width: 120px;">Expense Name</th>
                                                 <th style="width: 120px;">Head</th>
                                                 <th style="width: 120px;">Amount Dr</th>
@@ -235,14 +245,13 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <!-- Table rows will be dynamically added here -->
-                                        </tbody>
+                                            </tbody>
                                     </table>
                                 </div>
                             </div>
 
 
-                            @*  @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleAddAccess == true)
+                            @* @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleAddAccess == true)
                             { *@
                             <div class="row rowHeight" style="text-align:center;">
                                 <div class="col-md-12">
@@ -264,6 +273,7 @@
 
 
 @section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript">
         // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
         // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
@@ -271,10 +281,12 @@
         var viewAccess = 'True';
 
         $(document).ready(function () {
+            $('#ddlVehicleNo').select2();
+            $('#ddlDriver').select2();
             setSideMenu("diesel-hisab-master");
             if (fullAccess === "True" || viewAccess === "True") {
-                 getVehicleNumber();
-                 getDriverMaster();
+                getVehicleNumber();
+                getDriverMaster();
                 makeFieldsReadOnly();
                 var settlementId = GetParameterValues('settlementId');
                 getDriverHisabById(settlementId);
@@ -352,6 +364,7 @@
                         $("#txtClosingAmount").val(data.closingBalance);
                         $("#txtWeight").val(data.weight);
                         $("#txtTripDescription").val(data.tripRouteDescr);
+                        $("#txtRemarks").val(data.remarks);
 
                         // Bind the expense list table
                         var expenseTableBody = $("#expenseListTable tbody");
@@ -381,6 +394,14 @@
                 }
             });
         }
-    </script>
 
+        function downloadExcel() {
+            var settlementId = GetParameterValues('settlementId');
+            if (settlementId) {
+                window.location.href = '@Url.Action("DownloadDetailedExcelBySettlementId", "DriverHisab")?settlementId=' + settlementId;
+            } else {
+                alert("No Settlement ID found to download Excel.");
+            }
+        }
+    </script>
 }

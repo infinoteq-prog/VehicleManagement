@@ -24,6 +24,7 @@ public partial class TblDriverHisabHeader
     public decimal ClosingBalance { get; set; }
 
     public decimal Weight { get; set; }
+    public string Remarks { get; set; }
 
     public bool IsActive { get; set; }
 

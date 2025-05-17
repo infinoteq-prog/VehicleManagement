@@ -30,7 +30,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtDriverName">Driver Name:<span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
-                                            <select class="form-control" id="ddlDriver" name="ddlDriver" onchange="setDropDownStyle(this);"></select>
+                                            <select class="form-control" id="ddlDriver" name="ddlDriver"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -111,10 +111,19 @@
                                         <div class="form-group row">
                                             <label class="col-sm-4 col-form-label" for="ddlVehicleNo">Vehicle No:<span class="reqFields">*</span> </label>
                                             <div class="col-sm-8">
-                                                <select class="form-control" id="ddlVehicleNo" name="ddlVehicleNo" onchange="setDropDownStyle(this);"></select>
+                                                <select class="form-control" id="ddlVehicleNo" name="ddlVehicleNo"></select>
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRemarks">Remarks :</label>
+                                        <div class="col-sm-8">
+                                             <textarea id="txtRemarks" class="form-control" maxlength="300" onchange="setTextboxStyle(this);" placeholder="Please Enter Remarks" rows="3"></textarea>
+                                       </div>
+                                    </div>
+                                </div>
                                 </div>
                             <div class="row rowHeight">
                                 <div class="col-md-6">
@@ -482,6 +491,7 @@
                 formData.append("openingBalance", $("#txtOpeningAmount").val());
                 formData.append("closingBalance", $("#txtClosingAmount").val());
                 formData.append("tripRouteDescription", $("#txtTripDescription").val());
+                formData.append("remarks", $("#txtRemarks").val());
 
 
                     // Expense Entries from Table
@@ -732,6 +742,7 @@
             $("#txtClosingAmount").val(data.closingBalance);
             $("#txtWeight").val(data.weight);
             $("#txtTripDescription").val(data.tripRouteDescr);
+            $("#txtRemarks").val(data.remarks);
 
             // Bind the expense list table
             var expenseTableBody = $("#expenseListTable tbody");

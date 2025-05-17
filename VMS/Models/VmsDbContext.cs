@@ -716,6 +716,7 @@ public partial class VmsDbContext : DbContext
                 .HasColumnName("Creation_Date");
             entity.Property(e => e.DriverId).HasColumnName("Driver_ID");
             entity.Property(e => e.IsActive).HasColumnName("Is_Active");
+            entity.Property(e => e.Remarks).HasColumnName("Remarks");
             entity.Property(e => e.OpeningBalance)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("Opening_Balance");
