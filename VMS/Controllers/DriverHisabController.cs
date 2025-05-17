@@ -270,7 +270,7 @@ namespace VMS.Controllers
                                     OpeningBalance = openingBalance,
                                     ClosingBalance = closingBalance,
                                     Weight = weight,
-                                    Remarks = remarks,
+                                    Remarks = remarks.ToStringFromNull(),
                                     IsActive = true,
                                     CreationDate = utilityHelper.CurrentDateTime,
                                     UpdateDate = utilityHelper.CurrentDateTime,
@@ -351,7 +351,7 @@ namespace VMS.Controllers
                                 existingDriverHisab.OpeningBalance = openingBalance;
                                 existingDriverHisab.ClosingBalance = closingBalance;
                                 existingDriverHisab.Weight = weight;
-                                existingDriverHisab.Remarks = remarks;
+                                existingDriverHisab.Remarks = remarks.ToStringFromNull();
                                 existingDriverHisab.IsActive = true; // You might want to control this based on input
                                 existingDriverHisab.UpdateDate = utilityHelper.CurrentDateTime;
                                 existingDriverHisab.UpdatedBy = userID;
