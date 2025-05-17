@@ -229,7 +229,7 @@ namespace VMS.Controllers
         [HttpPost]
         public ActionResult SaveUpdate(int settlementNo, int lastSettlementId,int settlementNumber, int vehicleNo, int driverId, string driverName,
                                  string driverFatherName, string tripStartDate,
-                                 string tripEndDate,string settlementDate,int weight,string remarks,
+                                 string tripEndDate,string settlementDate,decimal weight,string remarks,
                                  int openingBalance, int closingBalance, string tripRouteDescription,  List<TblDriverHisabLine> _lstDriverLine)
         {
             DateOnly dtTripStartDate = DateOnly.Parse(tripStartDate);
@@ -522,7 +522,7 @@ namespace VMS.Controllers
                                     TripRouteDescr = reader.GetString("Route_Description"),
                                     OpeningBalance = reader.GetDecimal("Opening_Balance").ToIntFromNull(),
                                     ClosingBalance = reader.GetDecimal("Closing_Balance").ToIntFromNull(),
-                                    Weight = reader.GetDecimal("Weight").ToIntFromNull(),
+                                    Weight = reader.GetDecimal("Weight").To2Decimal(),
                                     IsActive = reader.GetBoolean("Is_Active"),
                                     Remarks = reader.GetString("Remarks"),
                                     DieselHeaderCreationDate = reader.GetString("DieselHeaderCreationDate"),
