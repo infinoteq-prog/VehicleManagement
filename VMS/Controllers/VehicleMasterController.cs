@@ -789,8 +789,16 @@ namespace VMS.Controllers
             }
             catch (Exception ex)
             {
-                model.TransactionMessage.Status = TransactionStatus.Error;
-                model.TransactionMessage.Message = "Vehicle Master has not been deleted. Please try again.";
+                if (ex.InnerException.Message.ToString().Contains("The DELETE statement conflicted with the REFERENCE"))
+                {
+                    model.TransactionMessage.Status = TransactionStatus.Error;
+                    model.TransactionMessage.Message = "Error Occured, Vehicle id has been used!";
+                }
+                else
+                {
+                    model.TransactionMessage.Status = TransactionStatus.Error;
+                    model.TransactionMessage.Message = "Model Master has not been deleted. Please try again.";
+                }
             }
             return Json(model);
         }

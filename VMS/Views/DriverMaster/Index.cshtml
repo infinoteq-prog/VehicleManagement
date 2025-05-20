@@ -154,7 +154,7 @@
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtBankName">Bank Name :<span class="reqFields">*</span></label>
+                                        <label class="col-sm-4 col-form-label" for="txtBankName">Bank Name :</label>
                                         <div class="col-sm-8">
                                             @Html.TextBoxFor(m => m.BankName, new { @class = "form-control", id = "txtBankName", @maxlength = "100" })
                                         </div>
@@ -162,7 +162,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtBankAccountNumber">Bank Account No:<span class="reqFields">*</span></label>
+                                        <label class="col-sm-4 col-form-label" for="txtBankAccountNumber">Bank Account No:</label>
                                         <div class="col-sm-8">
                                             @Html.TextBoxFor(m => m.BankAccountNumber, new { @class = "form-control numberonly", id = "txtBankAccountNumber", @maxlength = "25" })
                                         </div>
@@ -172,7 +172,7 @@
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtBankIFSCCode">Bank IFSC Code:<span class="reqFields">*</span></label>
+                                        <label class="col-sm-4 col-form-label" for="txtBankIFSCCode">Bank IFSC Code:</label>
                                         <div class="col-sm-8">
                                             @Html.TextBoxFor(m => m.BankIFSCCode, new { @class = "form-control", id = "txtBankIFSCCode", @maxlength = "30" })
                                         </div>
@@ -618,32 +618,32 @@
             //     $("#txtPanNo").focus();
             // }
 
-            if ($("#txtBankName").val() == "") {
-                $("#txtBankName").attr('class', 'form-control vaidationTextBoxError');
-                $("#txtBankName").focus();
-                isValid = false;
-            } else {
-                $("#txtBankName").attr('class', 'form-control');
-                $("#txtBankName").focus();
-            }
+            // if ($("#txtBankName").val() == "") {
+            //     $("#txtBankName").attr('class', 'form-control vaidationTextBoxError');
+            //     $("#txtBankName").focus();
+            //     isValid = false;
+            // } else {
+            //     $("#txtBankName").attr('class', 'form-control');
+            //     $("#txtBankName").focus();
+            // }
 
-            if ($("#txtBankAccountNumber").val() == "") {
-                $("#txtBankAccountNumber").attr('class', 'form-control vaidationTextBoxError');
-                $("#txtBankAccountNumber").focus();
-                isValid = false;
-            } else {
-                $("#txtBankAccountNumber").attr('class', 'form-control');
-                $("#txtBankAccountNumber").focus();
-            }
+            // if ($("#txtBankAccountNumber").val() == "") {
+            //     $("#txtBankAccountNumber").attr('class', 'form-control vaidationTextBoxError');
+            //     $("#txtBankAccountNumber").focus();
+            //     isValid = false;
+            // } else {
+            //     $("#txtBankAccountNumber").attr('class', 'form-control');
+            //     $("#txtBankAccountNumber").focus();
+            // }
 
-            if ($("#txtBankIFSCCode").val() == "") {
-                $("#txtBankIFSCCode").attr('class', 'form-control vaidationTextBoxError');
-                $("#txtBankIFSCCode").focus();
-                isValid = false;
-            } else {
-                $("#txtBankIFSCCode").attr('class', 'form-control');
-                $("#txtBankIFSCCode").focus();
-            }
+            // if ($("#txtBankIFSCCode").val() == "") {
+            //     $("#txtBankIFSCCode").attr('class', 'form-control vaidationTextBoxError');
+            //     $("#txtBankIFSCCode").focus();
+            //     isValid = false;
+            // } else {
+            //     $("#txtBankIFSCCode").attr('class', 'form-control');
+            //     $("#txtBankIFSCCode").focus();
+            // }
 
             if ($("#txtDrivingLicenceNo").val() == "") {
                 $("#txtDrivingLicenceNo").attr('class', 'form-control vaidationTextBoxError');

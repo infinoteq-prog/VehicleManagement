@@ -609,32 +609,32 @@
             //     $("#txtPanNo").focus();
             // }
 
-            if ($("#txtBankName").val() == "") {
-                $("#txtBankName").attr('class', 'form-control vaidationTextBoxError');
-                $("#txtBankName").focus();
-                isValid = false;
-            } else {
-                $("#txtBankName").attr('class', 'form-control');
-                $("#txtBankName").focus();
-            }
+            // if ($("#txtBankName").val() == "") {
+            //     $("#txtBankName").attr('class', 'form-control vaidationTextBoxError');
+            //     $("#txtBankName").focus();
+            //     isValid = false;
+            // } else {
+            //     $("#txtBankName").attr('class', 'form-control');
+            //     $("#txtBankName").focus();
+            // }
 
-            if ($("#txtBankAccountNumber").val() == "") {
-                $("#txtBankAccountNumber").attr('class', 'form-control vaidationTextBoxError');
-                $("#txtBankAccountNumber").focus();
-                isValid = false;
-            } else {
-                $("#txtBankAccountNumber").attr('class', 'form-control');
-                $("#txtBankAccountNumber").focus();
-            }
+            // if ($("#txtBankAccountNumber").val() == "") {
+            //     $("#txtBankAccountNumber").attr('class', 'form-control vaidationTextBoxError');
+            //     $("#txtBankAccountNumber").focus();
+            //     isValid = false;
+            // } else {
+            //     $("#txtBankAccountNumber").attr('class', 'form-control');
+            //     $("#txtBankAccountNumber").focus();
+            // }
 
-            if ($("#txtBankIFSCCode").val() == "") {
-                $("#txtBankIFSCCode").attr('class', 'form-control vaidationTextBoxError');
-                $("#txtBankIFSCCode").focus();
-                isValid = false;
-            } else {
-                $("#txtBankIFSCCode").attr('class', 'form-control');
-                $("#txtBankIFSCCode").focus();
-            }
+            // if ($("#txtBankIFSCCode").val() == "") {
+            //     $("#txtBankIFSCCode").attr('class', 'form-control vaidationTextBoxError');
+            //     $("#txtBankIFSCCode").focus();
+            //     isValid = false;
+            // } else {
+            //     $("#txtBankIFSCCode").attr('class', 'form-control');
+            //     $("#txtBankIFSCCode").focus();
+            // }
 
             if ($("#txtDrivingLicenceNo").val() == "") {
                 $("#txtDrivingLicenceNo").attr('class', 'form-control vaidationTextBoxError');
@@ -959,22 +959,22 @@
             var isValid = checkValidation();
 
             if (isValid == true) {
-                 if ($('#ddlState option:selected').val() != "0" &&
-                     $('#ddlDistrict option:selected').val() != "0" &&
-                     $('#ddlCity option:selected').val() != "0" &&
-                     $("#txtDriverName").val() != "" &&
-                     $("#txtFatherName").val() != "" &&
-                     $("#txtDriverAddress1").val() != "" &&
-                     $("#txtPinCode").val() != "" &&
-                     $("#txtAadharNumber").val() != "" &&
-                     $("#txtPanNo").val() != "" &&
-                     $("#txtBankName").val() != "" &&
-                     $("#txtBankAccountNumber").val() != "" &&
-                     $("#txtBankIFSCCode").val() != "" &&
-                     $("#txtDrivingLicenceNo").val() != "" &&
-                     $("#txtDrivingLicenceIssueAuth").val() != "" &&
-                     $("#txtDrivingLicenceValidity").val() != "" &&
-                     $("#txtMobileNumber1").val() != "") {
+                 // if ($('#ddlState option:selected').val() != "0" &&
+                 //     $('#ddlDistrict option:selected').val() != "0" &&
+                 //     $('#ddlCity option:selected').val() != "0" &&
+                 //     $("#txtDriverName").val() != "" &&
+                 //     $("#txtFatherName").val() != "" &&
+                 //     $("#txtDriverAddress1").val() != "" &&
+                 //     $("#txtPinCode").val() != "" &&
+                 //     $("#txtAadharNumber").val() != "" &&
+                 //     $("#txtPanNo").val() != "" &&
+                 //     $("#txtBankName").val() != "" &&
+                 //     $("#txtBankAccountNumber").val() != "" &&
+                 //     $("#txtBankIFSCCode").val() != "" &&
+                 //     $("#txtDrivingLicenceNo").val() != "" &&
+                 //     $("#txtDrivingLicenceIssueAuth").val() != "" &&
+                 //     $("#txtDrivingLicenceValidity").val() != "" &&
+                 //     $("#txtMobileNumber1").val() != "") {
                      var drivingLicenceValidity = $("#txtDrivingLicenceValidity").val();
                      drivingLicenceValidity = drivingLicenceValidity.split("-").reverse().join("-");
 
@@ -1074,7 +1074,7 @@
                             }
                         }
                     });
-                }
+                // }
             }
         }
 
