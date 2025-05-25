@@ -1940,7 +1940,7 @@
         function getBodyTypeMasterWithSelect(bodyTypeId) {
             $.ajax({
                 cache: false,
-                url: '@(utilityHelper.SiteUrl() + "MakeMaster/getVehicleTypeMaster")',
+                url: '@(utilityHelper.SiteUrl() + "MakeMaster/getBodyTypeMaster")',
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
@@ -1948,7 +1948,7 @@
                         var s = '<option value="0">Select a Body Type</option>';
                         for (var i = 0; i < data.length; i++) {
                             console.log(data[i])
-                            if(data[i].id === bodyTypeId){
+                            if (data[i].id.toString() ===  bodyTypeId.toString()){
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
                             }else{
                                  s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
@@ -1983,7 +1983,7 @@
             });
         }
 
-        function getManufacturerTypeMaster(manufacturerId) {
+        function getManufacturerTypeMasterById(manufacturerId) {
             $.ajax({
                 cache: false,
                 url: '@(utilityHelper.SiteUrl() + "MakeMaster/getManufacturerTypeMaster")',
@@ -1991,10 +1991,10 @@
                 dataType: "json",
                 success: function (data) {
                     if (data != null && data != undefined) {
-                        var s = '<option value="0">Select a Body Type</option>';
+                        var s = '<option value="0">Select a Manufacturer</option>';
                         for (var i = 0; i < data.length; i++) {
                             console.log(data[i])
-                            if(data[i].id === manufacturerId){
+                            if     (data[i].id.toString() ===  manufacturerId.toString()) {
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
                             }else{
                                  s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';

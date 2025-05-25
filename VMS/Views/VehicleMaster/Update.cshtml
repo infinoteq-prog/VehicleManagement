@@ -64,7 +64,7 @@
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="ddlMakeMaster">Make Master:<span class="reqFields">*</span> </label>
+                                        <label class="col-sm-4 col-form-label" for="ddlMakeMaster">Make:<span class="reqFields">*</span> </label>
                                         <div class="col-sm-8">
                                             <select class="form-control" id="ddlMakeMaster" name="ddlMakeMaster" onchange="setDropDownStyle(this);"></select>
                                         </div>
@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="ddlModelMaster">Model Master:<span class="reqFields">*</span></label>
+                                        <label class="col-sm-4 col-form-label" for="ddlModelMaster">Model Number:<span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
                                             <select class="form-control" id="ddlModelMaster" name="ddlModelMaster" onchange="setDropDownStyle(this);"></select>
                                         </div>
@@ -133,7 +133,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="ddlManufacturerType">Body Manufacturer: <span class="reqFields">*</span> </label>
                                         <div class="col-sm-8">
-                                            <select class="form-control" id="ddlManufacturerType" name="ddlBodyType" onchange="setDropDownStyle(this);">
+                                            <select class="form-control" id="ddlManufacturerType" name="ddlManufacturerType" onchange="setDropDownStyle(this);">
                                             </select>
                                         </div>
                                     </div>
@@ -462,6 +462,11 @@
                 getVehicleMasterByID(vehicleMasterID);
 
                 $(function () {
+                  $("#ddlMakeMaster").change(function () {
+                      var makeId = $(this).val();
+                      getModelMasterWithMakeId(makeId);
+                   });
+
                     $("#txtVehicleCreationDate").datepicker({
                         dateFormat: 'dd-mm-yy',
                         changeYear: true,
@@ -1401,7 +1406,7 @@
                         getModelMasterWithMakeIdSelect(data.makeId,data.modelId);
                         getVehicleTypeMasterWithSelect(data.vehicleTypeId);
                         getBodyTypeMasterWithSelect(data.bodyTypeId);
-                        getManufacturerTypeMaster(data.bodyManufacturerId);
+                        getManufacturerTypeMasterById(data.bodyManufacturerId);
                         
                         $("#txtVehicleNo").val(data.vehicleNo);
                         $("#txtVehicleCreationDate").val(data.purchaseDate);
