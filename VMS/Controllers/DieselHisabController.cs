@@ -83,7 +83,7 @@ namespace VMS.Controllers
                         _context.SaveChanges(); // Save changes to the header first to ensure TripId is consistent
 
                         model.TransactionMessage.Status = TransactionStatus.Success;
-                        model.TransactionMessage.Message = "Diesel Hisab has been approved successfully.";
+                        model.TransactionMessage.Message = "Diesel Hisab approved status has been changed successfully.";
                     }
                     else
                     {

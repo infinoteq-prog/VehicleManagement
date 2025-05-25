@@ -326,7 +326,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtRcCapicity">RC Capicity: </label>
                                         <div class="col-sm-8">
-                                            @Html.TextBoxFor(m => m.RcCapicity, new { @class = "form-control numberonly", id = "txtRcCapicity", @maxlength = "10", placeholder = "Enter vehicle's rc capicity" })
+                                            @Html.TextBoxFor(m => m.RcCapicity, new { @class = "form-control", id = "txtRcCapicity", @maxlength = "10", placeholder = "Enter vehicle's rc capicity", type = "number", step = "any" })
                                         </div>
                                     </div>
                                 </div>
@@ -334,7 +334,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtActualCapicity">Actual Load Capacity: </label>
                                         <div class="col-sm-8">
-                                            @Html.TextBoxFor(m => m.ActualCapicity, new { @class = "form-control numberonly", id = "txtActualCapicity", @maxlength = "10", placeholder = "Enter vehicle's actual capicity" })
+                                            @Html.TextBoxFor(m => m.ActualCapicity, new { @class = "form-control", id = "txtActualCapicity", @maxlength = "10", placeholder = "Enter vehicle's actual capicity", type = "number", step = "any" })
                                         </div>
                                     </div>
                                 </div>
@@ -431,7 +431,8 @@
     </div>
 </div>
 @* } *@
-@section scripts {  
+@section scripts {
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script type="text/javascript">
         // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
         // var addAccess = '@ViewBag.AddUserRoleAddAccess';

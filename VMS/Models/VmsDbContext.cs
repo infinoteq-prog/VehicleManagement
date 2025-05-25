@@ -742,7 +742,7 @@ public partial class VmsDbContext : DbContext
                 .HasColumnName("Creation_Date");
             entity.Property(e => e.DriverId).HasColumnName("Driver_ID");
             entity.Property(e => e.IsActive).HasColumnName("Is_Active");
-            entity.Property(e => e.Remarks).HasColumnName("Remarks");
+            entity.Property(e => e.Remarks).HasColumnName("Remarks"); 
             entity.Property(e => e.OpeningBalance)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("Opening_Balance");
@@ -765,6 +765,10 @@ public partial class VmsDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("Update_Date");
+            entity.Property(e => e.ApprovedBy).HasColumnName("Approved_By"); 
+            entity.Property(e => e.ApprovedDate)
+               .HasColumnType("datetime")
+               .HasColumnName("Approved_Date");
             entity.Property(e => e.UpdatedBy).HasColumnName("Updated_By");
             entity.Property(e => e.VehicleNo).HasColumnName("Vehicle_No");
             entity.Property(e => e.Weight).HasColumnType("decimal(10, 2)");

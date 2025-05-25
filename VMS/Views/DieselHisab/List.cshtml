@@ -340,7 +340,7 @@
                             }
 
                             if (fullAccess === "True" || approvalAccess === "True") {
-                                approvalButton = '<button id="approveConfirm" type="button" class="btn btn-warning btn-sm btn-icon-text" title="Approve" data-toggle="tooltip" data-placement="top" onclick="approvalDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-thumbs-up btn-icon-append"></i></button> ';
+                                approvalButton = '<button id="approveConfirm" type="button" class="btn btn-warning btn-sm btn-icon-text" title="Approve" data-toggle="tooltip" data-placement="top" onclick="approvalDieselHisabMaster(\'' + item.tripId + '\',\'' + item.approvedStatus + '\');"> <i class="typcn typcn-thumbs-up btn-icon-append"></i></button> ';
                             }
 
                             if (fullAccess === "True" || updateAccess === "True") {

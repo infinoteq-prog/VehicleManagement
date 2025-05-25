@@ -28,8 +28,10 @@ namespace VMS.Controllers
         {
             var model = new VMLogin
             {
-                UserName = "hemantsharma24",
-                Password = "test"
+                //UserName = "hemantsharma24",
+                //Password = "test"
+                UserName = "",
+                Password = ""
             };
             return View(model);
         }

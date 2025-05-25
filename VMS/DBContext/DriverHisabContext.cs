@@ -137,10 +137,10 @@ namespace VMS
                                 DieselHeaderCreatedBy = reader.GetInt32("DieselHeaderCreatedBy"),
                                 DieselHeaderUpdatedBy = reader.IsDBNull("DieselHeaderUpdatedBy") ? (int?)null : reader.GetInt32("DieselHeaderUpdatedBy"),
                                 DriverName = reader.IsDBNull("DriverName") ? null : reader.GetString("DriverName"),
-                                DriverFatherName = reader.IsDBNull("DriverFatherName") ? null : reader.GetString("DriverFatherName")
-                                //,ApprovedStatus = reader.IsDBNull("ApprovedStatus") ? null : reader.GetString("ApprovedStatus"),
-                                //ApprovedBy = reader.IsDBNull("ApprovedBy") ? null : reader.GetString("ApprovedBy"),
-                                //ApprovedDate = reader.IsDBNull("ApprovedDate") ? null : reader.GetDateTime("ApprovedDate").ToString()
+                                DriverFatherName = reader.IsDBNull("DriverFatherName") ? null : reader.GetString("DriverFatherName"),
+                                ApprovedStatus = reader.IsDBNull("ApprovedStatus") ? null : reader.GetString("ApprovedStatus"),
+                                ApprovedBy = reader.IsDBNull("ApprovedBy") ? null : reader.GetString("ApprovedBy"),
+                                ApprovedDate = reader.IsDBNull("ApprovedDate") ? null : reader.GetDateTime("ApprovedDate").ToString()
                             });
                         }
                     }

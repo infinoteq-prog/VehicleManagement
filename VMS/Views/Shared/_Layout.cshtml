@@ -1714,7 +1714,7 @@
                         for (var i = 0; i < data.length; i++) {
                             console.log(data[i])
                             if(data[i].makeId.toString() === makeId.toString()){
-                                if(data[i].modelId === modelId){
+                                if  (data[i].modelId.toString()  === modelId.toString()){
                                  s += '<option selected="selected" value="' + data[i].modelId + '">' + data[i].modelName + '</option>';
                             }else{
                                  s += '<option value="' + data[i].modelId + '">' + data[i].modelName + '</option>';
@@ -4577,6 +4577,74 @@
                    }
                }
            });
+        }
+
+        //Function Driver Hisab Approve Functions
+        function approvalDriverHisabMaster(settlementNo, approvedStatus) {
+
+            var confirmationMessage = '';
+            if (approvedStatus === 'Approved') {
+                confirmationMessage = 'Are you sure! You want to Non-approval Driver hisab entry?';
+            }
+            else { confirmationMessage = 'Are you sure! You want to approve Driver hisab entry?'; }
+
+
+            // If already approved, revert it back
+            $.confirm({
+                title: 'Approve Confirmation!',
+                content: confirmationMessage,
+                icon: 'fa fa-question-circle',
+                animation: 'scale',
+                closeAnimation: 'scale',
+                opacity: 0.5,
+                buttons: {
+                    'confirm': {
+                        text: 'Proceed',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            $.ajax({
+                                cache: false,
+                                url: '@(utilityHelper.SiteUrl() + "DriverHisab/Approve?settlementId=")' + settlementNo,
+                                type: "POST",
+                                dataType: "json",
+                                success: function (data) {
+                                    console.log(data);
+                                    $.confirm({
+                                        title: 'Success!',
+                                        content: data.transactionMessage.message,
+                                        type: 'green',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-green',
+                                                action: function () {
+                                                    window.location.href = '@(utilityHelper.SiteUrl() + "DriverHisab/List")';
+                                                }
+                                            },
+                                        }
+                                    });
+                                },
+                                error: function (ex) {
+                                    $.confirm({
+                                        title: 'Transaction Failed!',
+                                        content: data.transactionMessage.message,
+                                        icon: 'fa fa-warning',
+                                        type: 'red',
+                                        buttons: {
+                                            omg: {
+                                                text: 'OK',
+                                                btnClass: 'btn-red',
+                                            },
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
         }
     </script>
     @RenderSection("scripts", required: false)

@@ -27,6 +27,8 @@ public partial class TblDriverHisabHeader
     public string Remarks { get; set; }
 
     public bool IsActive { get; set; }
+    public int ApprovedBy { get; set; }
+    public DateTime? ApprovedDate { get; set; }
 
     public DateTime CreationDate { get; set; }
 

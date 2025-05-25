@@ -9,7 +9,7 @@ public partial class TblModelAverageMaster
 
     public int MakeId { get; set; }
 
-    public int ModelNo { get; set; }
+    public string ModelNo { get; set; }
 
     public decimal UlAvg { get; set; }
 

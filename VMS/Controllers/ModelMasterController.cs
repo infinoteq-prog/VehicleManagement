@@ -204,7 +204,7 @@ namespace VMS.Controllers
         }
 
         [HttpGet]
-        public JsonResult searchModelMaster(int makeId, int modelNo, decimal ulAvg, decimal megaHW, decimal khali,
+        public JsonResult searchModelMaster(int makeId, string modelNo, decimal ulAvg, decimal megaHW, decimal khali,
                                             decimal nh, decimal offRoad, decimal overLoad, decimal other, Boolean isActive)
         {
             List<VMModelAverageMaster> model = new List<VMModelAverageMaster>();
@@ -244,7 +244,7 @@ namespace VMS.Controllers
                 searchModel = searchModel.Where(s => s.MakeId == makeId);
             }
 
-            if (modelNo != 0)
+            if (modelNo != "")
             {
                 searchModel = searchModel.Where(s => s.ModelNo == modelNo);
             }
@@ -299,7 +299,7 @@ namespace VMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult Save(int makeId, int modelNo, decimal ulAvg, decimal megaHW, decimal khali,
+        public ActionResult Save(int makeId, string modelNo, decimal ulAvg, decimal megaHW, decimal khali,
                                  decimal nh, decimal offRoad, decimal overLoad, decimal other, Boolean isActive)
         {
             VMModelAverageMaster model = new VMModelAverageMaster();
@@ -390,7 +390,7 @@ namespace VMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult Update(int id, int makeId, int modelNo, decimal ulAvg, decimal megaHW, decimal khali,
+        public ActionResult Update(int id, int makeId, string modelNo, decimal ulAvg, decimal megaHW, decimal khali,
                                    decimal nh, decimal offRoad, decimal overLoad, decimal other, Boolean isActive)
         {
             VMModelAverageMaster model = new VMModelAverageMaster();

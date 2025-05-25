@@ -30,7 +30,7 @@ builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(60);
+    options.IdleTimeout = TimeSpan.FromMinutes(120);
 });
 //services.AddSingleton<IConfiguration>(configRoot);
 

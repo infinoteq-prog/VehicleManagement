@@ -630,5 +630,62 @@ namespace VMS.Controllers
                 return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
             }
         }
+
+        [HttpPost]
+        public async Task<JsonResult> Approve(int settlementId)
+        {
+            VMDriverMaster model = new VMDriverMaster();
+
+            try
+            {
+                int userID = 0;
+                VMLogin userDetails = HttpContext.Session.GetObjectFromJson<VMLogin>("userDetails");
+                if (userDetails != null)
+                {
+                    userID = userDetails.Id;
+                    // Retrieve the existing TblDriverHisabHeaders record based on settlementId
+                    var UpdateDriverHisab = _context.TblDriverHisabHeaders.Where(d => d.SettlementNo == settlementId).FirstOrDefault();
+
+                    if (UpdateDriverHisab != null)
+                    {
+                        // Update the properties of the existing TblDriverHisabHeaders
+
+                        if (UpdateDriverHisab.ApprovedBy != 0)
+                        {
+                            UpdateDriverHisab.ApprovedBy = 0;
+                            UpdateDriverHisab.ApprovedDate = null;
+                        }
+                        else
+                        {
+                            UpdateDriverHisab.ApprovedBy = userID;
+                            UpdateDriverHisab.ApprovedDate = utilityHelper.CurrentDateTime;
+                        }
+
+                        _context.TblDriverHisabHeaders.Update(UpdateDriverHisab);
+                        _context.SaveChanges(); // Save changes to the header first to ensure TripId is consistent
+
+                        model.TransactionMessage.Status = TransactionStatus.Success;
+                        model.TransactionMessage.Message = "Driver Hisab approved status has been changed successfully.";
+                    }
+                    else
+                    {
+                        model.TransactionMessage.Status = TransactionStatus.Error;
+                        model.TransactionMessage.Message = "Driver Hisab has not been approved. Please try again.";
+                    }
+                }
+                else
+                {
+                    model.TransactionMessage.Status = TransactionStatus.Error;
+                    model.TransactionMessage.Message = "Driver Hisab has not been approved. Please try again.";
+                }
+            }
+            catch (Exception ex)
+            {
+
+                model.TransactionMessage.Status = TransactionStatus.Error;
+                model.TransactionMessage.Message = ex.Message.ToString();
+            }
+            return Json(model);
+        }
     }
 }

@@ -9,7 +9,7 @@ public partial class TblModelMaster
 
     public int MakeId { get; set; }
 
-    public int ModelNo { get; set; }
+    public string ModelNo { get; set; }
 
     public int NoOfTyres { get; set; }
 
