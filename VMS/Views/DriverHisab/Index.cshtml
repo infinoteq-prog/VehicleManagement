@@ -309,6 +309,9 @@
                     if (settlementId && settlementId.length > 0 && parseInt(settlementId[0]) > 0) {
                         return;
                     }
+                    if (selectedValue ==="0") {
+                        return;
+                    }
                     getCurrentSettlementNumber($(this).val());
                     getDriverFather();
             });

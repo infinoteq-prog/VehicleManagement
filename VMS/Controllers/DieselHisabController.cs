@@ -13,6 +13,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using DocumentFormat.OpenXml.Spreadsheet;
 using OfficeOpenXml;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace VMS.Controllers
 {
@@ -20,6 +21,7 @@ namespace VMS.Controllers
     {
         private readonly ILogger<DieselHisabController> _logger;
         private readonly VmsDbContext _context; private readonly string _connectionString;
+        private string _controllerName = "DieselHisab";
         public DieselHisabController(VmsDbContext context, IConfiguration configuration)
         {
             _context = context; 
@@ -442,17 +444,35 @@ namespace VMS.Controllers
                                  string tripEndDate, Int32 startOdometer, Int32 endOdometer,
                                  int openingDiesel, int closingDiesel, int runningKm,bool IsDifferenceAdded,bool IsLoadingAdded, string tripRouteDescription,List<TblDieselFilling> _lstDieselFilling, List<TblDieselLine> _lstDieselLine)
         {
-            DateOnly dtTripStartDate = DateOnly.Parse(tripStartDate);
-            DateOnly dtTripEndDate = DateOnly.Parse(tripEndDate);
             VMTrip model = new VMTrip();
+            DateTime dtTripStartDate = DateTime.Now;
+            DateTime dtTripEndDate = DateTime.Now;
+            try
+            {
+                Globalsettings.Log(_controllerName, string.Format("Before conversion StartDate {0}, EndDate {1}", tripStartDate, tripEndDate));
+
+                dtTripStartDate = Convert.ToDateTime(tripStartDate);
+                dtTripEndDate = Convert.ToDateTime(tripEndDate);
+                Globalsettings.Log(_controllerName, string.Format("After conversion StartDate {0}, EndDate {1}", Convert.ToDateTime(dtTripStartDate), Convert.ToDateTime(dtTripEndDate)));
+
+            }
+            catch(Exception ex)
+            {
+                Globalsettings.Log(_controllerName, string.Format("Error occured while converting date {0}", ex.Message));
+                model.TransactionMessage.Status = TransactionStatus.Failed;
+                model.TransactionMessage.Message = "Diesel Hisab Date Conversion Issue!";
+            }
             int userID = 0;
-            VMLogin userDetails = HttpContext.Session.GetObjectFromJson<VMLogin>("userDetails");            
+            VMLogin userDetails = HttpContext.Session.GetObjectFromJson<VMLogin>("userDetails");
+
+            Globalsettings.Log(_controllerName, string.Format("Save update started"));
             if (userDetails != null)
             {
                 userID = userDetails.Id;
 
                 if (tripId <= 0)
                 {
+                    Globalsettings.Log(_controllerName, string.Format("Save started"));
                     #region Insert Section
                     var dieselHeader = _context.TblDieselHeaders.AsQueryable().Where(x => x.VehicleNo==vehicleNo &&
                      x.TripStartDate.Year == dtTripStartDate.Year &&
@@ -461,7 +481,6 @@ namespace VMS.Controllers
                      x.TripEndDate.Year == dtTripEndDate.Year &&
                      x.TripEndDate.Month == dtTripEndDate.Month &&
                      x.TripEndDate.Day == dtTripEndDate.Day).FirstOrDefault();
-
                     if (dieselHeader==null)
                     {
                         using (var transaction = _context.Database.BeginTransaction())
@@ -471,25 +490,25 @@ namespace VMS.Controllers
                                 // Insert Vehicle Release Info
                                 var dieselHisab = new TblDieselHeader
                                 {
-                                    TripId = tripNo,
-                                    LastTripId = lastTripId,
-                                    DriverId = driverId,
-                                    VehicleNo = vehicleNo,
-                                    TripStartDate = dtTripStartDate.ToDateTime(TimeOnly.Parse("12:00 AM")),
-                                    TripEndDate = dtTripEndDate.ToDateTime(TimeOnly.Parse("12:00 AM")),
+                                    TripId = tripNo.ToIntFromNull(),
+                                    LastTripId = lastTripId.ToIntFromNull(),
+                                    DriverId = driverId.ToIntFromNull(),
+                                    VehicleNo = vehicleNo.ToIntFromNull(),
+                                    TripStartDate =Convert.ToDateTime(dtTripStartDate.ToString("yyyy-MM-dd")),
+                                    TripEndDate = Convert.ToDateTime(dtTripEndDate.ToString("yyyy-MM-dd")),
                                     LastTripRouteDescr = tripRouteDescription,
                                     StartOdometer = startOdometer,
-                                    EndOdometer = endOdometer,
-                                    OpeningDiesel = openingDiesel,
-                                    ClosingDiesel = closingDiesel,
-                                    RunningKm = runningKm,
+                                    EndOdometer = endOdometer.ToIntFromNull(),
+                                    OpeningDiesel = openingDiesel.ToIntFromNull(),
+                                    ClosingDiesel = closingDiesel.ToIntFromNull(),
+                                    RunningKm = runningKm.ToIntFromNull(),
                                     IsDifferenceAdded = IsDifferenceAdded,
                                     IsLoadingAdded = IsLoadingAdded,
                                     IsActive = true,
                                     CreationDate = utilityHelper.CurrentDateTime,
                                     UpdateDate = utilityHelper.CurrentDateTime,
-                                    CreatedBy = userID,
-                                    UpdatedBy = userID
+                                    CreatedBy = userID.ToIntFromNull(),
+                                    UpdatedBy = userID.ToIntFromNull()
                                 };
 
                                 _context.TblDieselHeaders.Add(dieselHisab);
@@ -500,11 +519,12 @@ namespace VMS.Controllers
                                 {
                                     foreach (var item in _lstDieselFilling)
                                     {
+                                        Globalsettings.Log(_controllerName, string.Format("Diesel Filling Date {0}",item.StrDieselFillingDate));
                                         var filling = new TblDieselFilling
                                         {
                                             TripId = dieselHisab.TripId,
                                             VendorId = item.VendorId,
-                                            DieselFillingDate = Convert.ToDateTime(item.DieselFillingDate),
+                                            DieselFillingDate = Convert.ToDateTime(item.StrDieselFillingDate),
                                             DieselQty = item.DieselQty,
                                             CreationDate = utilityHelper.CurrentDateTime,
                                             UpdateDate = utilityHelper.CurrentDateTime,
@@ -550,6 +570,8 @@ namespace VMS.Controllers
                             }
                             catch (Exception ex)
                             {
+                                Globalsettings.Log(_controllerName, string.Format("Error: {0}", ex.Message));
+                                Globalsettings.Log(_controllerName, string.Format("Error: {0}", ex.InnerException));
                                 transaction.Rollback();
                                 model.TransactionMessage.Status = TransactionStatus.Error;
                                 model.TransactionMessage.Message = "Diesel Hisab has not been saved due to some technical issue. Please try again.";
@@ -558,6 +580,7 @@ namespace VMS.Controllers
                     }
                     else
                     {
+                        Globalsettings.Log(_controllerName, string.Format("dieselHeader already exist at"));
                         model.TransactionMessage.Status = TransactionStatus.Failed;
                         model.TransactionMessage.Message = "Diesel Hisab Already Exist! Please try again with diffrent username.";
                     }
@@ -565,6 +588,8 @@ namespace VMS.Controllers
                 }
                 else
                 {
+                    Globalsettings.Log(_controllerName, string.Format("Update started"));
+
                     #region Update Section
                     using (var transaction = _context.Database.BeginTransaction())
                     {
@@ -578,8 +603,8 @@ namespace VMS.Controllers
                                 // Update the properties of the existing TblDieselHeader
                                 existingDieselHisab.DriverId = driverId;
                                 existingDieselHisab.VehicleNo = vehicleNo;
-                                existingDieselHisab.TripStartDate = dtTripStartDate.ToDateTime(TimeOnly.Parse("12:00 AM"));
-                                existingDieselHisab.TripEndDate = dtTripEndDate.ToDateTime(TimeOnly.Parse("12:00 AM"));
+                                existingDieselHisab.TripStartDate = dtTripStartDate;
+                                existingDieselHisab.TripEndDate = dtTripEndDate;
                                 existingDieselHisab.LastTripRouteDescr = tripRouteDescription;
                                 existingDieselHisab.StartOdometer = startOdometer;
                                 existingDieselHisab.EndOdometer = endOdometer;
@@ -606,6 +631,10 @@ namespace VMS.Controllers
                             // Update TblDieselFillings
                             if (_lstDieselFilling != null)
                             {
+                                foreach (var j in _lstDieselFilling)
+                                {
+                                    Globalsettings.Log(_controllerName, string.Format("Diesel Filling Date {0}", j.StrDieselFillingDate));
+                                }
                                 // Get existing fillings for the current TripId
                                 var existingFillings = _context.TblDieselFillings.Where(f => f.TripId == tripNo).ToList();
 
@@ -615,7 +644,7 @@ namespace VMS.Controllers
                                     {
                                         TripId = existingDieselHisab.TripId,
                                         VendorId = item.VendorId,
-                                        DieselFillingDate = Convert.ToDateTime(item.DieselFillingDate),
+                                        DieselFillingDate = Convert.ToDateTime(item.StrDieselFillingDate),
                                         DieselQty = item.DieselQty,
                                         CreationDate = utilityHelper.CurrentDateTime,
                                         UpdateDate = utilityHelper.CurrentDateTime,
@@ -627,7 +656,7 @@ namespace VMS.Controllers
                                 // Identify fillings to remove
                                 var fillingsToRemove = existingFillings.Where(existing => !_lstDieselFilling.Any(item =>
                                     existing.VendorId == item.VendorId &&
-                                    existing.DieselFillingDate == Convert.ToDateTime(item.DieselFillingDate) &&
+                                    existing.DieselFillingDate == Convert.ToDateTime(item.StrDieselFillingDate) &&
                                     existing.DieselQty == item.DieselQty)).ToList();
                                 _context.TblDieselFillings.RemoveRange(fillingsToRemove);
 
@@ -640,7 +669,7 @@ namespace VMS.Controllers
 
                                     if (matchingItem != null)
                                     {
-                                        existingFilling.DieselFillingDate = matchingItem.DieselFillingDate;
+                                        existingFilling.DieselFillingDate =Convert.ToDateTime(matchingItem.StrDieselFillingDate);
                                         existingFilling.DieselQty = matchingItem.DieselQty;
                                         existingFilling.UpdateDate = utilityHelper.CurrentDateTime;
                                         existingFilling.UpdatedBy = userID;
@@ -723,6 +752,8 @@ namespace VMS.Controllers
                         }
                         catch (Exception ex)
                         {
+                            Globalsettings.Log(_controllerName, string.Format("Error: {0}", ex.Message));
+                            Globalsettings.Log(_controllerName, string.Format("Error: {0}", ex.InnerException));
                             transaction.Rollback();
                             model.TransactionMessage.Status = TransactionStatus.Error;
                             model.TransactionMessage.Message = "Diesel Hisab has not been updated due to some technical issue. Please try again.";
@@ -734,6 +765,7 @@ namespace VMS.Controllers
             }
             else
             {
+                Globalsettings.Log(_controllerName, string.Format("user details found null"));
                 return RedirectToAction("Logout", "Login");
             }
 

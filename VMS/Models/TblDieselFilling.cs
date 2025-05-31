@@ -11,6 +11,7 @@ public partial class TblDieselFilling
     public int VendorId { get; set; }
 
     public DateTime DieselFillingDate { get; set; }
+    public string? StrDieselFillingDate { get; set; }
 
     public long DieselQty { get; set; }
 

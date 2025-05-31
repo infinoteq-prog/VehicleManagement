@@ -1122,10 +1122,11 @@
                  // Diesel Filling Entries from Table
                    $("#dieselFillingTable tbody tr").each(function (index, row) {
                        var date = $(row).find("td:eq(0)").text();
+                        var fillingDate = date.split("-").reverse().join("-");
                        var vendorId = $(row).find("td:eq(1)").text();
                        var litre = $(row).find("td:eq(3)").text();
 
-                       formData.append(`_lstDieselFilling[${index}].DieselFillingDate`, date);
+                       formData.append(`_lstDieselFilling[${index}].StrDieselFillingDate`, fillingDate);
                        formData.append(`_lstDieselFilling[${index}].VendorId`, vendorId);
                        formData.append(`_lstDieselFilling[${index}].DieselQty`, litre);
                    });
@@ -1180,6 +1181,21 @@
                             } else if (data.transactionMessage.status == '@((byte)TransactionStatus.Failed)') {
                                 $.confirm({
                                     title: 'Diesel Hisab Already Exists!',
+                                    content: data.transactionMessage.message,
+                                    icon: 'fa fa-warning',
+                                    type: 'red',
+                                    buttons: {
+                                        omg: {
+                                            text: 'OK',
+                                            btnClass: 'btn-red',
+                                        },
+                                    }
+                                });
+                                $("#divDieslHisabMaster").hide();
+                            }
+                             else if (data.transactionMessage.status == '@((byte)TransactionStatus.Error)') {
+                                $.confirm({
+                                    title: 'Error while saving!',
                                     content: data.transactionMessage.message,
                                     icon: 'fa fa-warning',
                                     type: 'red',
@@ -1557,7 +1573,7 @@
                 const row = table.insertRow();
 
                 // Format date if needed
-                const fillingDate = entry.dieselFillingDate; // dd/mm/yyyy
+                const fillingDate = entry.strDieselFillingDate; // dd-mm-yyyy
 
                 row.insertCell(0).textContent = fillingDate;
 

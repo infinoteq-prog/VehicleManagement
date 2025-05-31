@@ -14,6 +14,7 @@ namespace VMS.Controllers
     {
         private readonly ILogger<VehicleMasterController> _logger;
         private readonly VmsDbContext _context;
+        private string _controllerName = "VehicleMaster";
         public VehicleMasterController(VmsDbContext context)
         {
             _context = context;
@@ -505,6 +506,8 @@ namespace VMS.Controllers
             IFormFile rtoDoc, string pollutionDue, IFormFile pollutionDoc, string fitnessDue, IFormFile fitnessDoc,
             string dimension, string branchOffice, string rcCapicity, string actualCapicity, Boolean isActive)
         {
+            Globalsettings.Log(_controllerName, string.Format("Saving Started"));
+
             VMUser model = new VMUser();
             int userID = 0;
             VMLogin userDetails = HttpContext.Session.GetObjectFromJson<VMLogin>("userDetails");
@@ -578,45 +581,38 @@ namespace VMS.Controllers
 
                 if (user.Count() == 0)
                 {
+                    Globalsettings.Log(_controllerName, string.Format("Saving started after user count check"));
                     try
                     {
                         //Insert Vehicle Master Info
                         var vehicleMaster = new TblVehicleMaster();
                         //vehicleMaster.Id = id;
-                        vehicleMaster.VehicleNo = vehicleNo;
-                        vehicleMaster.VehicleOwner = vehicleOwner;
-                        vehicleMaster.PurchaseDate = DateTime.Parse(purchaseDate);
-                        vehicleMaster.MfgYear = Convert.ToString(mfgYear);
-                        vehicleMaster.MakeId = Convert.ToInt32(makeId);
-                        vehicleMaster.ModelId = Convert.ToInt32(modelId);
-                        vehicleMaster.NoOfTyres = Convert.ToInt32(noOfTyres);
-                        vehicleMaster.EngineNo = engineNo;
-                        vehicleMaster.ChasisNo = chasisNo;
-                        vehicleMaster.VehicleTypeId = vehicleTypeId;
-                        vehicleMaster.BodyTypeId = bodyTypeId;
-                        vehicleMaster.FinancerName = financerName;
-                        vehicleMaster.BodyManufacturerId = bodyManufacturerId;
-                        vehicleMaster.RunningKm = Convert.ToInt32(runningKm);
-                        vehicleMaster.PanNo = panNo;
-                        vehicleMaster.PanNoImage = utilityHelper.saveUploadFilesToFolder(panNoImage, SiteConstants.companyPanNoFolder, panNo);
-                        vehicleMaster.InsuranceDue = DateTime.Parse(insuranceDue);
-                        vehicleMaster.InsuranceDoc = utilityHelper.saveUploadFilesToFolder(insuranceDoc, SiteConstants.insurancePhotoFolder, panNo);
-                        vehicleMaster.NationalPermitDue = DateTime.Parse(nationalPermitDue);
-                        vehicleMaster.NationalPermitDoc= utilityHelper.saveUploadFilesToFolder(nationalPermitDoc, SiteConstants.nationalPermitPhotoFolder, panNo);
-                        vehicleMaster.LocalPermitDue = DateTime.Parse(localPermitDue);
-                        vehicleMaster.LocalPermitDoc = utilityHelper.saveUploadFilesToFolder(localPermitDoc, SiteConstants.localPermitPhotoFolder, panNo);
-                        vehicleMaster.RcValidityDue = DateTime.Parse(rcValidityDue);
-                        vehicleMaster.RcDoc = utilityHelper.saveUploadFilesToFolder(rcDoc, SiteConstants.rcDocPhotoFolder, panNo);
-                        vehicleMaster.RtoDue = DateTime.Parse(rtoDue);
-                        vehicleMaster.RtoDoc = utilityHelper.saveUploadFilesToFolder(rtoDoc, SiteConstants.rtoDocPhotoFolder, panNo);
-                        vehicleMaster.PollutionDue = DateTime.Parse(pollutionDue);
-                        vehicleMaster.PollutionDoc = utilityHelper.saveUploadFilesToFolder(pollutionDoc, SiteConstants.pollutionDocPhotoFolder, panNo);
-                        vehicleMaster.FitnessDue = DateTime.Parse(fitnessDue);
+                        vehicleMaster.VehicleNo = vehicleNo.ToStringFromNull();
+                        vehicleMaster.VehicleOwner = vehicleOwner.ToStringFromNull();
+                        vehicleMaster.MfgYear = Convert.ToString(mfgYear.ToStringFromNull());
+                        vehicleMaster.MakeId = Convert.ToInt32(makeId.ToIntFromNull());
+                        vehicleMaster.ModelId = Convert.ToInt32(modelId.ToIntFromNull());
+                        vehicleMaster.NoOfTyres = Convert.ToInt32(noOfTyres.ToIntFromNull());
+                        vehicleMaster.EngineNo = engineNo.ToStringFromNull();
+                        vehicleMaster.ChasisNo = chasisNo.ToStringFromNull();
+                        vehicleMaster.VehicleTypeId = vehicleTypeId.ToIntFromNull();
+                        vehicleMaster.BodyTypeId = bodyTypeId.ToIntFromNull();
+                        vehicleMaster.FinancerName = financerName.ToStringFromNull();
+                        vehicleMaster.BodyManufacturerId = bodyManufacturerId.ToIntFromNull();
+                        vehicleMaster.RunningKm = Convert.ToInt32(runningKm.ToStringFromNull());
+                        vehicleMaster.PanNo = panNo.ToStringFromNull();
+                        vehicleMaster.PanNoImage = utilityHelper.saveUploadFilesToFolder(panNoImage, SiteConstants.companyPanNoFolder, panNo);                      
+                        vehicleMaster.InsuranceDoc = utilityHelper.saveUploadFilesToFolder(insuranceDoc, SiteConstants.insurancePhotoFolder, panNo);                      
+                        vehicleMaster.NationalPermitDoc= utilityHelper.saveUploadFilesToFolder(nationalPermitDoc, SiteConstants.nationalPermitPhotoFolder, panNo);                       
+                        vehicleMaster.LocalPermitDoc = utilityHelper.saveUploadFilesToFolder(localPermitDoc, SiteConstants.localPermitPhotoFolder, panNo);                        
+                        vehicleMaster.RcDoc = utilityHelper.saveUploadFilesToFolder(rcDoc, SiteConstants.rcDocPhotoFolder, panNo);                      
+                        vehicleMaster.RtoDoc = utilityHelper.saveUploadFilesToFolder(rtoDoc, SiteConstants.rtoDocPhotoFolder, panNo);                       
+                        vehicleMaster.PollutionDoc = utilityHelper.saveUploadFilesToFolder(pollutionDoc, SiteConstants.pollutionDocPhotoFolder, panNo);                       
                         vehicleMaster.FitnessDoc =  utilityHelper.saveUploadFilesToFolder(fitnessDoc, SiteConstants.fitnessPhotoFolder, panNo);
-                        vehicleMaster.Dimension = dimension;
-                        vehicleMaster.BranchOffice = branchOffice;
-                        vehicleMaster.RcCapicity = rcCapicity;
-                        vehicleMaster.ActualCapicity = actualCapicity;
+                        vehicleMaster.Dimension = dimension.ToStringFromNull();
+                        vehicleMaster.BranchOffice = branchOffice.ToStringFromNull();
+                        vehicleMaster.RcCapicity = rcCapicity.ToStringFromNull();
+                        vehicleMaster.ActualCapicity = actualCapicity.ToStringFromNull();
                         vehicleMaster.IsActive = isActive;
                         //vehicleMaster.StartDate = DateTime.Parse(startDate);
                         //vehicleMaster.EndDate = DateTime.Parse(endDate);
@@ -624,6 +620,16 @@ namespace VMS.Controllers
                         vehicleMaster.UpdateDate = utilityHelper.CurrentDateTime;
                         vehicleMaster.CreatedBy = userID;
                         vehicleMaster.UpdatedBy = userID;
+
+                        vehicleMaster.FitnessDue = Convert.ToDateTime(fitnessDue);
+                        vehicleMaster.PollutionDue = Convert.ToDateTime(pollutionDue);
+                        vehicleMaster.InsuranceDue = Convert.ToDateTime(insuranceDue);
+                        vehicleMaster.NationalPermitDue = Convert.ToDateTime(nationalPermitDue);
+                        vehicleMaster.LocalPermitDue = Convert.ToDateTime(localPermitDue);
+                        vehicleMaster.RcValidityDue = Convert.ToDateTime(rcValidityDue);
+                        vehicleMaster.RtoDue = Convert.ToDateTime(rtoDue);
+                        vehicleMaster.PurchaseDate = Convert.ToDateTime(purchaseDate);
+
 
                         _context.TblVehicleMasters.Add(vehicleMaster);
                         _context.SaveChanges();
@@ -634,18 +640,22 @@ namespace VMS.Controllers
                     }
                     catch (Exception ex)
                     {
+                        Globalsettings.Log(_controllerName, string.Format("Error: {0}", ex.Message.ToString()));
+                        Globalsettings.Log(_controllerName, string.Format("Error: {0}", ex.InnerException.ToString()));
                         model.TransactionMessage.Status = TransactionStatus.Error;
                         model.TransactionMessage.Message = "Vehicle Master not saved due to some technical Issue. Please try again.";
                     }
                 }
                 else
                 {
+                    Globalsettings.Log(_controllerName, string.Format("Error: user count is 0"));
                     model.TransactionMessage.Status = TransactionStatus.Failed;
                     model.TransactionMessage.Message = "Vehicle Master Already Exist! Please try again with diffrent username.";
                 }
             }
             else
             {
+                Globalsettings.Log(_controllerName, string.Format("user details is null"));
                 return RedirectToAction("Logout", "Login");
             }
 

@@ -20,6 +20,7 @@ namespace VMS.Controllers
     {
         private readonly ILogger<DriverHisabController> _logger;
         private readonly VmsDbContext _context; private readonly string _connectionString;
+        private string _controllerName = "DriverHisab";
         public DriverHisabController(VmsDbContext context, IConfiguration configuration)
         {
             _context = context; 
@@ -232,10 +233,27 @@ namespace VMS.Controllers
                                  string tripEndDate,string settlementDate,decimal weight,string remarks,
                                  int openingBalance, int closingBalance, string tripRouteDescription,  List<TblDriverHisabLine> _lstDriverLine)
         {
-            DateOnly dtTripStartDate = DateOnly.Parse(tripStartDate);
-            DateOnly dtTripEndDate = DateOnly.Parse(tripEndDate);
-            DateOnly dtSettlementDate = DateOnly.Parse(settlementDate);
             VMTrip model = new VMTrip();
+            DateTime dtTripStartDate = DateTime.Now;
+            DateTime dtTripEndDate = DateTime.Now;
+            DateTime dtSettlementDate = DateTime.Now;
+            try
+            {
+                Globalsettings.Log(_controllerName, string.Format("Before conversion StartDate {0}, EndDate {1}", tripStartDate, tripEndDate));
+
+                dtTripStartDate = Convert.ToDateTime(tripStartDate);
+                dtTripEndDate = Convert.ToDateTime(tripEndDate);
+                dtSettlementDate = Convert.ToDateTime(settlementDate);
+                Globalsettings.Log(_controllerName, string.Format("After conversion StartDate {0}, EndDate {1}", Convert.ToDateTime(dtTripStartDate), Convert.ToDateTime(dtTripEndDate)));
+
+            }
+            catch (Exception ex)
+            {
+                Globalsettings.Log(_controllerName, string.Format("Error occured while converting date {0}", ex.Message));
+                model.TransactionMessage.Status = TransactionStatus.Failed;
+                model.TransactionMessage.Message = "Driver Hisab Date Conversion Issue!";
+            }
+
             int userID = 0;
             VMLogin userDetails = HttpContext.Session.GetObjectFromJson<VMLogin>("userDetails");
             if (userDetails != null)
@@ -263,9 +281,9 @@ namespace VMS.Controllers
                                     LastSettlementId = lastSettlementId,
                                     DriverId = driverId,
                                     VehicleNo = vehicleNo,
-                                    TripStartDate = dtTripStartDate.ToDateTime(TimeOnly.Parse("12:00 AM")),
-                                    TripEndDate = dtTripEndDate.ToDateTime(TimeOnly.Parse("12:00 AM")),
-                                    SettlementDate = dtSettlementDate.ToDateTime(TimeOnly.Parse("12:00 AM")),
+                                    TripStartDate = Convert.ToDateTime(dtTripStartDate.ToString("yyyy-MM-dd")),
+                                    TripEndDate = Convert.ToDateTime(dtTripEndDate.ToString("yyyy-MM-dd")),
+                                    SettlementDate = Convert.ToDateTime(dtSettlementDate.ToString("yyyy-MM-dd")),
                                     RouteDescription = tripRouteDescription,
                                     OpeningBalance = openingBalance,
                                     ClosingBalance = closingBalance,
@@ -344,9 +362,9 @@ namespace VMS.Controllers
                                 // Update the properties of the existing TblDieselHeader
                                 existingDriverHisab.DriverId = driverId;
                                 existingDriverHisab.VehicleNo = vehicleNo;
-                                existingDriverHisab.TripStartDate = dtTripStartDate.ToDateTime(TimeOnly.Parse("12:00 AM"));
-                                existingDriverHisab.TripEndDate = dtTripEndDate.ToDateTime(TimeOnly.Parse("12:00 AM"));
-                                existingDriverHisab.SettlementDate = dtSettlementDate.ToDateTime(TimeOnly.Parse("12:00 AM"));
+                                existingDriverHisab.TripStartDate = Convert.ToDateTime(dtTripStartDate.ToString("yyyy-MM-dd"));
+                                existingDriverHisab.TripEndDate = Convert.ToDateTime(dtTripEndDate.ToString("yyyy-MM-dd"));
+                                existingDriverHisab.SettlementDate = Convert.ToDateTime(dtSettlementDate.ToString("yyyy-MM-dd"));
                                 existingDriverHisab.RouteDescription = tripRouteDescription;                            
                                 existingDriverHisab.OpeningBalance = openingBalance;
                                 existingDriverHisab.ClosingBalance = closingBalance;

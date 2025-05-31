@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Office2010.PowerPoint;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Reflection;
 using VMS.Models;
 
 namespace VMS
@@ -214,5 +215,42 @@ namespace VMS
     }
     public static class Globalsettings
     {
+        public static void Log(string controllerName, string message)
+        {
+            try
+            {
+                // Determine the base directory of the application.
+                // This is a robust way to get the path where the application assembly is located.
+                string basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+                // Define the path for the 'Logs' folder.
+                string logFolderPath = Path.Combine(basePath, "Logs");
+
+                // Create the 'Logs' directory if it doesn't already exist.
+                // Directory.CreateDirectory handles cases where the directory already exists.
+                Directory.CreateDirectory(logFolderPath);
+
+                // Generate the log file name: ControllerName_YYYYMMDD.txt
+                // This ensures a new file is created daily for each controller.
+                string fileName = $"{controllerName}_{DateTime.Now:yyyyMMdd}.txt";
+
+                // Combine the log folder path with the file name to get the full file path.
+                string filePath = Path.Combine(logFolderPath, fileName);
+
+                // Format the log entry with a timestamp (HH:mm:ss.fff for hours, minutes, seconds, milliseconds).
+                string logEntry = $"{DateTime.Now:HH:mm:ss.fff} - {message}";
+
+                // Append the formatted log entry to the file.
+                // File.AppendAllText creates the file if it doesn't exist, otherwise it appends to it.
+                File.AppendAllText(filePath, logEntry + Environment.NewLine);
+            }
+            catch (Exception ex)
+            {
+                // In a real application, you would log this exception to a console,
+                // an error monitoring system, or a separate critical error log.
+                // For simplicity, we are just printing to console here.
+                Console.WriteLine($"ERROR: Failed to write log for {controllerName}. Exception: {ex.Message}");
+            }
+        }
     }
 }

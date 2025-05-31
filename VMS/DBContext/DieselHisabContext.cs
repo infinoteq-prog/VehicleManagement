@@ -108,7 +108,7 @@ namespace VMS
         {
             List<object> dieselFillingList = new List<object>();
             string sql = @"
-            SELECT CONVERT(VARCHAR, df.Diesel_Filling_Date, 105) AS DieselFillingDate,
+            SELECT df.Diesel_Filling_Date AS DieselFillingDate,
                 df.VendorId,
                 df.Diesel_Qty AS Litre,
                 cm.Code AS VendorName
@@ -129,7 +129,8 @@ namespace VMS
                         {
                             dieselFillingList.Add(new
                             {
-                                DieselFillingDate = reader.GetString("DieselFillingDate"),
+                                DieselFillingDate =Convert.ToDateTime(reader.GetDateTime("DieselFillingDate")).ToString("dd-MM-yyyy"),
+                                StrDieselFillingDate =reader.GetDateTime("DieselFillingDate").ToString("dd-MM-yyyy"),
                                 VendorId = reader.GetInt32("VendorId"),
                                 Litre = reader.GetInt64("Litre"),
                                 VendorName = reader.IsDBNull("VendorName") ? null : reader.GetString("VendorName")
