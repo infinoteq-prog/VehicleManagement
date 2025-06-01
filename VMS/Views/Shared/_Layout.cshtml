@@ -406,6 +406,18 @@
                     changeMonth: true,
                 });
 
+                 $("#txtLastTripStartDate").datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    changeYear: true,
+                    changeMonth: true,
+                });
+
+                $("#txtLastTripEndDate").datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    changeYear: true,
+                    changeMonth: true,
+                });
+
                 $("#txtBillDate").datepicker({
                     dateFormat: 'dd-mm-yy',
                     changeYear: true,
@@ -1413,7 +1425,7 @@
                 dataType: "json",
                 async: true,
                 success: function (data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data != null) {
                         $("#lblUsername").html("Name: " + data.userName);
                         if(data.transporterName != null && data.transporterName != undefined){
@@ -1592,7 +1604,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Driver</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            // console.log(data[i])
                             s += '<option value="' + data[i].driverId + '">' + data[i].driverName + '</option>';
                         }
                         $("#ddlDriver").html(s);
@@ -1616,7 +1628,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Driver</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].driverId === driverId){
                                  s += '<option selected="selected" value="' + data[i].driverId + '">' + data[i].driverName + '</option>';
                             }else{
@@ -1643,7 +1655,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Model</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].modelId + '">' + data[i].modelName + '</option>';
                         }
                         $("#ddlModelMaster").html(s);
@@ -1664,7 +1676,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Model</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].modelId === modelId){
                                  s += '<option selected="selected" value="' + data[i].modelId + '">' + data[i].modelName + '</option>';
                             }else{
@@ -1689,7 +1701,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Model</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].makeId.toString() === makeId.toString()){
                                 s += '<option value="' + data[i].modelId + '">' + data[i].modelName + '</option>';
                             }
@@ -1712,7 +1724,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Model</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].makeId.toString() === makeId.toString()){
                                 if  (data[i].modelId.toString()  === modelId.toString()){
                                  s += '<option selected="selected" value="' + data[i].modelId + '">' + data[i].modelName + '</option>';
@@ -1739,7 +1751,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Make</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
                         }
                         $("#ddlMakeMaster").html(s);
@@ -1760,7 +1772,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Make</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].id === makeId){
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
                             }else{
@@ -1786,7 +1798,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Expense</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
                         }
                         $("#ddlExpenseMaster").html(s);
@@ -1807,7 +1819,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Expense</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].id === expenseId){
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
                             }else{
@@ -1832,7 +1844,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Vehicle</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].vehicleId + '">' + data[i].vehicleName + '</option>';
                         }
                         $("#ddlVehicleNo").html(s);
@@ -1855,7 +1867,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Vechile</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].id === vehicleNo){
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
                             }else{
@@ -1880,7 +1892,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Vehicle Type</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
                         }
                         $("#ddlVehicleType").html(s);
@@ -1901,7 +1913,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Vechile Type</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].id === vehicleTypeId){
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
                             }else{
@@ -1926,7 +1938,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Body Type</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
                         }
                         $("#ddlBodyType").html(s);
@@ -1947,7 +1959,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Body Type</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if (data[i].id.toString() ===  bodyTypeId.toString()){
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
                             }else{
@@ -1972,7 +1984,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Manufacturer Type</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
                         }
                         $("#ddlManufacturerType").html(s);
@@ -1993,7 +2005,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Manufacturer</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if     (data[i].id.toString() ===  manufacturerId.toString()) {
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
                             }else{
@@ -2018,7 +2030,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a User</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].roleID + '">' + data[i].roleName + '</option>';
                         }
                         $("#ddlRole").html(s);
@@ -2055,7 +2067,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Role</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].roleID + '">' + data[i].roleName + '</option>';
                         }
                         $("#ddlRole").html(s);
@@ -2093,7 +2105,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a User</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                         }
                         $("#ddlUser").html(s);
@@ -2114,7 +2126,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a User</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].userName + '</option>';
                         }
                         $("#ddlUser").html(s);
@@ -2135,7 +2147,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Role</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                         }
                         $("#ddlRole").html(s);
@@ -2156,7 +2168,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Function</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                         }
                         $("#ddlFunction").html(s);
@@ -2177,7 +2189,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select Bill To</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].companyName + '</option>';
                         }
                         $("#ddlCompanyMaster").html(s);
@@ -2198,7 +2210,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select Bill To</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].companyName + '</option>';
                         }
                         $("#ddlCompanyMaster").html(s);
@@ -2219,7 +2231,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Country</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                         }
                         $("#dllCountry").html(s);
@@ -2241,7 +2253,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a transporter</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                           // console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].transporterName + '</option>';
                         }
                         $("#ddlTransporter").html(s);
@@ -2262,7 +2274,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a transporter</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].id === transporterId){
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].transporterName + '</option>';
                             }else{
@@ -2287,7 +2299,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a State</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                         }
                         $("#ddlState").html(s);
@@ -2308,7 +2320,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a District</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                         }
                         $("#ddlDistrict").html(s);
@@ -2329,7 +2341,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a City</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                           // console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                         }
                         $("#ddlCity").html(s);
@@ -2350,7 +2362,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a User</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].id === userId){
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
                             }else{
@@ -2376,7 +2388,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a State</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                         }
                         $("#ddlState").html(s);
@@ -2399,7 +2411,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a User</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].id === userId){
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
                             }else{
@@ -2453,7 +2465,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Role</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].roleName === roleName){
                                  s += '<option selected="selected" value="' + data[i].roleID + '">' + data[i].roleName + '</option>';
                             }else{
@@ -2480,7 +2492,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Role</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].id === roleId){
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
                             }else{
@@ -2507,7 +2519,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Function</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].id === functionId){
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
                             }else{
@@ -2535,7 +2547,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a State</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                           // console.log(data[i])
                             if(data[i].id === stateId){
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
                             }else{
@@ -2563,7 +2575,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a District</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                         }
                         $("#ddlDistrict").html(s);
@@ -2587,7 +2599,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a District</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].id === districtId){
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
                             }else{
@@ -2615,7 +2627,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a City</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                         }
                         $("#ddlCity").html(s);
@@ -2638,7 +2650,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a Expense</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             if(data[i].id === expType){
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].description + '</option>';
                             }else{
@@ -2664,7 +2676,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a City</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                          //  console.log(data[i])
                             if(data[i].id === cityId){
                                  s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
                             }else{
@@ -2700,7 +2712,7 @@
                         }
                         
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                           // console.log(data[i])
                             if(codeType == "CATEGORY"){
                                 if(data[i].code == "TR"){
                                     s += '<option selected="selected" value="' + data[i].id + '">' + data[i].code + '</option>';
@@ -2760,7 +2772,7 @@
                     if (data != null && data != undefined) {
                         var s = '';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                          //  console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                         }
                         //alert(data.length);
@@ -2785,7 +2797,7 @@
                         var s = '';
 
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                            //console.log(data[i])
                             s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                         }
 
@@ -4188,7 +4200,7 @@
                 if (data != null && data != undefined) {
                     var s = '<option value="0">Select a Vendor</option>';
                     for (var i = 0; i < data.length; i++) {
-                        console.log(data[i])
+                        //console.log(data[i])
                                         s += '<option value="' + data[i].vendorId + '">' + data[i].vendorName + '</option>';
                     }
                     $("#ddlVendor").html(s);
@@ -4202,19 +4214,19 @@
          //Function Diesel Hisab List Functions
         function viewDieselHisabMaster(tripId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DieselHisab/Details?tripid=")' + tripId;
-            window.open(url, '_blank');
+            window.location.href = url;
             return false;
         }
         //Function Diesel Hisab Edit Functions
         function editDieselHisabMaster(tripId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DieselHisab/Index?tripid=")' + tripId;
-            window.open(url, '_blank');
+            window.location.href = url;
             return false;
         }
         //Function Diesel Hisab Print Functions
         function printDieselHisabMaster(tripId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DieselHisab/Print?tripid=")' + tripId;
-            window.open(url, '_blank');
+            window.location.href = url;
             return false;
         }
         function approvalDieselHisabMaster(tripId,approvedStatus) {
@@ -4401,7 +4413,7 @@
                 if (data != null && data != undefined) {
                     var s = '<option value="0">Select a load type</option>';
                     for (var i = 0; i < data.length; i++) {
-                        console.log(data[i])
+                        //console.log(data[i])
                                         s += '<option value="' + data[i].loadTypeId + '">' + data[i].loadType + '</option>';
                     }
                     $("#ddlLoadType").html(s);
@@ -4424,7 +4436,7 @@
                 if (data != null && data != undefined) {
                     var s = '<option value="0">Select a load type</option>';
                     for (var i = 0; i < data.length; i++) {
-                        console.log(data[i])
+                       // console.log(data[i])
                                         s += '<option value="' + data[i].expenseHeadId + '" data-description="' + data[i].description + '">' + data[i].expenseHead + '</option>';
                     }
                     $("#ddlExpenseHead").html(s);
@@ -4441,19 +4453,19 @@
          //Function Driver Hisab List Functions
         function viewDriverHisabMaster(settlementId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DriverHisab/Details?settlementId=")' + settlementId;
-            window.open(url, '_blank');
+            window.location.href = url;
             return false;
         }
         //Function Driver Hisab Edit Functions
         function editDriverHisabMaster(settlementId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DriverHisab/Index?settlementId=")' + settlementId;
-            window.open(url, '_blank');
+            window.location.href = url;
             return false;
         }
         //Function Driver Hisab Print Functions
         function printDriverHisabMaster(settlementId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DriverHisab/Print?settlementId=")' + settlementId;
-            window.open(url, '_blank');
+            window.location.href = url;
             return false;
         }
 
@@ -4545,7 +4557,7 @@
                     if (data != null && data != undefined) {
                         var s = '<option value="0">Select a CodeType</option>';
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i])
+                           // console.log(data[i])
                             s += '<option value="' + data[i].codeTypeId + '">' + data[i].codeType + '</option>';
                         }
                         $("#ddlCodeType").html(s);
@@ -4568,7 +4580,7 @@
                    if (data != null && data != undefined) {
                        var s = '<option value="0">Select a Financer</option>';
                        for (var i = 0; i < data.length; i++) {
-                           console.log(data[i])
+                           //console.log(data[i])
                                            s += '<option value="' + data[i].financer + '">' + data[i].financer + '</option>';
                        }
                       $("#ddlFinencerName").html(s);
@@ -4645,6 +4657,16 @@
                     },
                 }
             });
+        }
+
+        
+        // Function to convert DD-MM-YYYY to YYYY-MM-DD
+        function convertDdMmYyyyToYyyyMmDd(dateString) {
+            const parts = dateString.split('-'); // ["17", "05", "2025"]
+            if (parts.length === 3) {
+                return `${parts[2]}-${parts[1]}-${parts[0]}`; // "2025-05-17"
+            }
+            return null; // Or throw an error
         }
     </script>
     @RenderSection("scripts", required: false)

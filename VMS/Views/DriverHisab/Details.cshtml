@@ -347,17 +347,19 @@
                         // Bind the form controls
                         $("#hdnDriverHisabID").val(data.SettlementNo);
                         // $("#hdnLastSettlementId").val(data.hdnLastSettlementId);
-                        $("#ddlDriver").val(data.driverId);  // Assuming data.driverId holds the driver's ID
+                        $("#ddlDriver").val(data.driverId).trigger('change');  // Assuming data.driverId holds the driver's ID
                         $("#txtDriverFatherName").val(data.driverFatherName);
                         $("#txtSettlementNumber").val(data.settlementNo);
 
                         //Last Trip Detail
-                        $("#txtLastTripStartDate").val(data.lastTripHistory.lastTripStartDate);
-                        $("#txtLastTripEndDate").val(data.lastTripHistory.lastTripEndDate);
-                        $("#txtLastTripRouteDesc").val(data.lastTripHistory.lastTripRouteDescr);
-                        $("#txtLastTripVehicle").val(data.lastTripHistory.vehicleNumber);
+                        if (data.lastTripHistory != null){
+                            $("#txtLastTripStartDate").val(data.lastTripHistory.lastTripStartDate);
+                            $("#txtLastTripEndDate").val(data.lastTripHistory.lastTripEndDate);
+                            $("#txtLastTripRouteDesc").val(data.lastTripHistory.lastTripRouteDescr);
+                            $("#txtLastTripVehicle").val(data.lastTripHistory.vehicleNumber);
+                        }
 
-                        $("#ddlVehicleNo").val(data.vehicleNo);
+                        $("#ddlVehicleNo").val(data.vehicleNo).trigger('change');
                         $("#from-date-picker").val(data.tripStartDate);
                         $("#to-date-picker").val(data.tripEndDate);
                         $("#txtOpeningAmount").val(data.openingBalance);

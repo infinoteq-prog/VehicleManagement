@@ -31,7 +31,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="ddlVehicleNo">Vehicle No:<span class="reqFields">*</span> </label>
                                         <div class="col-sm-8">
-                                            <select class="form-control" id="ddlVehicleNo" name="ddlVehicleNo" onchange="setDropDownStyle(this);"></select>
+                                            <select class="form-control" id="ddlVehicleNo" name="ddlVehicleNo"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +120,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-4 col-form-label" for="txtDriverName">Driver Name:<span class="reqFields">*</span></label>
                                             <div class="col-sm-8">
-                                                <select class="form-control" id="ddlDriver" name="ddlDriver" onchange="setDropDownStyle(this);"></select>
+                                                <select class="form-control" id="ddlDriver" name="ddlDriver"></select>
                                             </div>
                                         </div>
                                     </div>
@@ -308,6 +308,7 @@
 
 
 @section scripts {
+      <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript">
         // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
         // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
@@ -315,6 +316,7 @@
         var viewAccess = 'True';
 
         $(document).ready(function () {
+            
             setSideMenu("diesel-hisab-master");
             if (fullAccess === "True" || viewAccess === "True") {
                  getVehicleNumber();
@@ -371,11 +373,11 @@
                   console.log(data);
                     if (data != null && data != undefined) {
 
-                 $("#ddlVehicleNo").val(data.vehicleNo);
+                        $("#ddlVehicleNo").val(data.vehicleNo).trigger('change');
                  $('#txtTripNumber').val(data.tripId);
 
                  //New Trip
-                 $("#ddlDriver").val(data.driverId);
+                        $("#ddlDriver").val(data.driverId).trigger('change');
                  $("#txtDriverFatherName").val(data.driverFatherName);
                  $("#from-date-picker").val(data.tripStartDate);
                  $("#to-date-picker").val(data.tripEndDate);
@@ -386,12 +388,18 @@
                  $("#txtRouteDescription").val(data.lastTripRouteDescr);
 
                  //Last Trip Detail
+                        if (data.lastTripHistory != null && data.lastTripHistory != undefined) { 
+                        if (data.lastTripHistory.lastTripStartDate) { 
                    $("#txtLastTripStartDate").val(data.lastTripHistory.lastTripStartDate);
+                        }
+                        if (data.lastTripHistory.lastTripEndDate) { 
                     $("#txtLastTripEndDate").val(data.lastTripHistory.lastTripEndDate);
+                        }
                     $("#txtLastTripRouteDesc").val(data.lastTripHistory.lastTripRouteDescr);
                     $("#txtLastTripDriver").val(data.lastTripHistory.lastTripDriver);
                     $("#txtLastTripDriverFather").val(data.lastTripHistory.lastTripDriverFatherName);
                     $("#txtLastTripVendor").val(data.lastTripHistory.lastTripVendor);
+                        }
 
                  fillDieselFillingTable(data.dieselFillingList);
                         fillstationDetailsTable(data.stationList);

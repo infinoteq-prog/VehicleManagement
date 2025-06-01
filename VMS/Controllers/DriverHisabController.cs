@@ -252,6 +252,7 @@ namespace VMS.Controllers
                 Globalsettings.Log(_controllerName, string.Format("Error occured while converting date {0}", ex.Message));
                 model.TransactionMessage.Status = TransactionStatus.Failed;
                 model.TransactionMessage.Message = "Driver Hisab Date Conversion Issue!";
+                return Json(model);
             }
 
             int userID = 0;

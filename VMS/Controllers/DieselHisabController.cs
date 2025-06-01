@@ -461,6 +461,7 @@ namespace VMS.Controllers
                 Globalsettings.Log(_controllerName, string.Format("Error occured while converting date {0}", ex.Message));
                 model.TransactionMessage.Status = TransactionStatus.Failed;
                 model.TransactionMessage.Message = "Diesel Hisab Date Conversion Issue!";
+                return Json(model);
             }
             int userID = 0;
             VMLogin userDetails = HttpContext.Session.GetObjectFromJson<VMLogin>("userDetails");
@@ -520,11 +521,23 @@ namespace VMS.Controllers
                                     foreach (var item in _lstDieselFilling)
                                     {
                                         Globalsettings.Log(_controllerName, string.Format("Diesel Filling Date {0}",item.StrDieselFillingDate));
+                                        DateTime dtFillingDate = DateTime.Now;
+                                        try
+                                        {
+                                            dtFillingDate = Convert.ToDateTime(item.StrDieselFillingDate);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Globalsettings.Log(_controllerName, string.Format("Error occured while converting diesel filling date {0}", ex.Message));
+                                            model.TransactionMessage.Status = TransactionStatus.Failed;
+                                            model.TransactionMessage.Message = "Diesel Hisab DieselFillingDate Conversion Issue "+ item.StrDieselFillingDate;
+                                            return Json(model);
+                                        }
                                         var filling = new TblDieselFilling
                                         {
                                             TripId = dieselHisab.TripId,
                                             VendorId = item.VendorId,
-                                            DieselFillingDate = Convert.ToDateTime(item.StrDieselFillingDate),
+                                            DieselFillingDate = Convert.ToDateTime(dtFillingDate.ToString("yyyy-MM-dd")),
                                             DieselQty = item.DieselQty,
                                             CreationDate = utilityHelper.CurrentDateTime,
                                             UpdateDate = utilityHelper.CurrentDateTime,
@@ -634,6 +647,18 @@ namespace VMS.Controllers
                                 foreach (var j in _lstDieselFilling)
                                 {
                                     Globalsettings.Log(_controllerName, string.Format("Diesel Filling Date {0}", j.StrDieselFillingDate));
+                                    DateTime dtFillingDate = DateTime.Now;
+                                    try
+                                    {
+                                        dtFillingDate = Convert.ToDateTime(j.StrDieselFillingDate);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Globalsettings.Log(_controllerName, string.Format("Error occured while converting diesel filling date {0}", ex.Message));
+                                        model.TransactionMessage.Status = TransactionStatus.Failed;
+                                        model.TransactionMessage.Message = "Diesel Hisab DieselFillingDate Conversion Issue " + j.StrDieselFillingDate;
+                                        return Json(model);
+                                    }
                                 }
                                 // Get existing fillings for the current TripId
                                 var existingFillings = _context.TblDieselFillings.Where(f => f.TripId == tripNo).ToList();

@@ -130,7 +130,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="from-date-picker">Trip Start Date : <span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
-                                            <input type="text" id="from-date-picker" placeholder="Select From Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                            <input type="text" id="from-date-picker" placeholder="Select From Date" class="form-control" onchange="setTextboxStyle(this);">
                                         </div>
                                     </div>
                                 </div>
@@ -138,7 +138,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="to-date-picker">Trip End Date : <span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
-                                            <input type="text" id="to-date-picker" placeholder="Select To Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                            <input type="text" id="to-date-picker" placeholder="Select To Date" class="form-control" onchange="setTextboxStyle(this);">
                                         </div>
                                     </div>
                                 </div>
@@ -330,7 +330,6 @@
             document.getElementById("saveButton").textContent = "Update";
                 getDriverHisabById(settlementId);
         }
-
     });
 
     function setDropDownStyle(cltr){
@@ -701,8 +700,8 @@
             
             </script>
 
-            @* Edit driver Hisab *@
-            <script>
+    @* Edit driver Hisab *@
+    <script>
             function calculateClosingBalance(tableId, initialAmount) {
             var table = document.getElementById(tableId);
             var rows = table.getElementsByTagName("tbody")[0].rows;

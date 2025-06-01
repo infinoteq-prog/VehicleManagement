@@ -156,7 +156,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="from-date-picker">Trip Start Date : <span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
-                                            <input type="text" id="from-date-picker" placeholder="Select From Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                            <input type="text" id="from-date-picker" placeholder="Select From Date" class="form-control" onchange="setTextboxStyle(this);">
                                         </div>
                                     </div>
                                 </div>
@@ -164,7 +164,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="to-date-picker">Trip End Date : <span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
-                                            <input type="text" id="to-date-picker" placeholder="Select To Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                            <input type="text" id="to-date-picker" placeholder="Select To Date" class="form-control" onchange="setTextboxStyle(this);">
                                         </div>
                                     </div>
                                 </div>
@@ -245,7 +245,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txt-filling-date">Date : <span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
-                                            <input type="text" id="txt-filling-date" placeholder="Select Filling Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                            <input type="text" id="txt-filling-date" placeholder="Select Filling Date" class="form-control" onchange="setTextboxStyle(this);">
                                         </div>
                                     </div>
                                 </div>
@@ -537,6 +537,15 @@
             document.getElementById("saveButton").textContent = "Update";
                 getDieselHisabByID(tripId);
         }
+        // $(function () {
+        //     $("#from-date-picker").on('input change', function () {
+        //         isValid = validateDateInput($(this));
+        //     });
+
+        //         $("#to-date-picker").on('input change', function () {
+        //             isValid = validateDateInput($(this));
+        //         });
+        //  });
     });
 
 
@@ -667,7 +676,7 @@
         } else {
             $("#from-date-picker").attr('class', 'form-control');
             $("#from-date-picker").focus();
-        }
+        }            
 
         if ($("#to-date-picker").val() == "") {
             $("#to-date-picker").attr('class', 'form-control vaidationTextBoxError');
@@ -755,6 +764,54 @@
             }
         
         return isValid;
+    }
+
+    function validateDateInput($inputElement) {
+        const inputValue = $inputElement.val();
+        let isValidFormat = false;
+        let isValidDate = false;
+
+        // Regex for DD-MM-YYYY format
+        // ^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-[0-9]{4}$
+        const dateRegex = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/;
+
+        if (inputValue === "") {
+            // Allow empty input if it's not a required field
+                alert('Please add correct date!');
+            return true;
+        }
+
+        // 1. Check format using regex
+        if (dateRegex.test(inputValue)) {
+            isValidFormat = true;
+            // 2. Further validate for actual date validity (e.g., Feb 30th)
+            const parts = inputValue.split('-');
+            const day = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+            const year = parseInt(parts[2], 10);
+
+            const testDate = new Date(year, month, day);
+
+            // Check if the Date object correctly parsed the input components
+            // AND if the month/day match after parsing (handles overflow like Feb 30 -> Mar 2)
+            if (testDate.getFullYear() === year &&
+                testDate.getMonth() === month &&
+                testDate.getDate() === day) {
+                isValidDate = true;
+            }
+        }
+
+        if (isValidFormat && isValidDate) {
+            clearErrorMessage($inputElement);
+            // Optionally, re-set the datepicker value to normalize it
+            // This is especially useful if the user types something like '1-1-2025'
+            // and you want it to become '01-01-2025'
+                alert('Please add correct date!');
+            return true;
+        } else {
+                alert('Please add correct date!');
+            return false;
+        }
     }
 
     function checkValidationOnChange() {
@@ -1530,8 +1587,14 @@
                         //New Trip
                         $('#ddlDriver').val(data.driverId).trigger('change');
                         $("#txtDriverFatherName").val(data.driverFatherName);
-                        $("#from-date-picker").val(data.tripStartDate);
-                        $("#to-date-picker").val(data.tripEndDate);
+                        if (data.tripStartDate) {
+                            $("#from-date-picker").datepicker("setDate", data.tripStartDate);
+                        }
+                        if (data.tripEndDate) {
+                            // const formattedDate_tripEndDate = convertDdMmYyyyToYyyyMmDd(data.tripEndDate);
+                            $("#to-date-picker").datepicker("setDate", data.tripEndDate);
+                        }
+
                         $("#txtStartOdometer").val(data.startOdometer);
                         $("#txtEndOdometer").val(data.endOdometer);
                         $("#txtRunningKm").val(data.runningKm);
