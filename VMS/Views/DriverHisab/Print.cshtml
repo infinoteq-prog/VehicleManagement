@@ -315,13 +315,14 @@
 
                         $("#expenseRows").html(expenseRowsHtml);
 
+                        totalDebit = totalDebit + openingBalance;
                         // Add the total row
                         var totalRowHtml = `
                             <tr>
                                 <td colspan="2" style="text-align:right; font-weight:bold;">Total</td>
                                 <td class="text-right" style="font-weight:bold;">${totalDebit.toFixed(2)}</td>
                                 <td style="font-weight:bold;">${totalCredit.toFixed(2)}</td>
-                                <td></td>
+                                <td style="font-weight:bold;">${(totalDebit-totalCredit).toFixed(2)}</td>
                             </tr>
                         `;
                         $("#totalRow").html(totalRowHtml);

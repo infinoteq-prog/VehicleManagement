@@ -458,6 +458,7 @@
                                 if(entry.loadType=="KHALI")
                                 {
                                     totalKhaliKaKm=totalKhaliKaKm+entry.distance;
+                                    if (parseFloat(entry.average)>0)
                                     totalKhaliKaDiesel=totalKhaliKaDiesel+(entry.distance / entry.average);
                                 }
                                 $(`#${station}`).text(entry.routeDesc);
@@ -487,16 +488,19 @@
                         try
                         {
                             //Khali ka Diesel
-                            $("#khaliKaDisel").text(Math.round(totalKhaliKaDiesel));
-                            $("#khaliKaKiloMeter").text(Math.round(totalKhaliKaKm));
-                            $("#bhariKaDiesel").text(Math.round((totalConsumedDiesel - totalKhaliKaDiesel)));
-                            $("#bhariKaKilometer").text(Math.round((totalRunKm - totalKhaliKaKm)));
-                            $("#bhariKaAverage").text(((totalRunKm - totalKhaliKaKm) / (totalConsumedDiesel - totalKhaliKaDiesel)).toFixed(2));
-
+                            $("#khaliKaDisel").text(Math.round(parseFloat(totalKhaliKaDiesel)));
+                            $("#khaliKaKiloMeter").text(Math.round(parseFloat(totalKhaliKaKm)));
+                            $("#bhariKaDiesel").text(Math.round((parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel))));
+                            $("#bhariKaKilometer").text(Math.round((parseFloat(totalRunKm) - parseFloat(totalKhaliKaKm))));
+                            if ((parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel)) > 0) {
+                                $("#bhariKaAverage").text(((parseFloat(totalRunKm) - parseFloat(totalKhaliKaKm)) / (parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel))).toFixed(2));
+                            }else{
+                                $("#bhariKaAverage").text("0");
+                            }
                             totalDieselProfitLoss = (parseFloat(totalConsumedDiesel) - parseFloat(totalEstimateDiesel)).toFixed(2);
                             $("#dieselProfitLoss").text(totalDieselProfitLoss);
 
-                            var percentageLoss=parseFloat((parseFloat(totalDieselProfitLoss) / (parseFloat(totalAvgDieselValue) / parseFloat(totalDieselFillingRow)))*100).toFixed(2);
+                            var percentageLoss=parseFloat((parseFloat(totalDieselProfitLoss)*100) / parseFloat(totalAvgDieselValue) ).toFixed(2);
                             $("#percentageOfLoss").text(percentageLoss);
                             $("#khaliBhariTotalKi").text(((parseFloat(totalRunKm) / parseFloat(totalConsumedDiesel))).toFixed(2));
                         }
@@ -549,7 +553,7 @@
             }
 
             th, td {
-                        font-size: 0.85em;
+                        font-size: 0.80em;
                 padding: 8px;
                 border: 1px solid black;
                 text-align: center;
