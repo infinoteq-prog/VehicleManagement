@@ -4434,7 +4434,7 @@
             dataType: "json",
             success: function (data) {
                 if (data != null && data != undefined) {
-                    var s = '<option value="0">Select a load type</option>';
+                    var s = '<option value="0">Select a expense type</option>';
                     for (var i = 0; i < data.length; i++) {
                        // console.log(data[i])
                                         s += '<option value="' + data[i].expenseHeadId + '" data-description="' + data[i].description + '">' + data[i].expenseHead + '</option>';

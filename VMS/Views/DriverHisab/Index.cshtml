@@ -690,7 +690,7 @@
                     $("#expenseListTable tbody").append(newRow);
                 
                     // Clear the input fields
-                    $("#ddlExpenseHead").val("0");
+                    $("#ddlExpenseHead").prop("selectedIndex", 0).val();
                     $("#txtGroup").val("");
                     $("#txtAmountDR").val("");
                     $("#txtAmountCR").val("");
@@ -703,21 +703,24 @@
     @* Edit driver Hisab *@
     <script>
             function calculateClosingBalance(tableId, initialAmount) {
-            var table = document.getElementById(tableId);
-            var rows = table.getElementsByTagName("tbody")[0].rows;
-            var previousBalance = initialAmount;
+                 var table = document.getElementById(tableId);
+                 var rows = table.getElementsByTagName("tbody")[0].rows;
+                 var previousBalance = initialAmount;
 
-            for (var i = 0; i < rows.length; i++) {
-            var row = rows[i];
-            var debit = parseFloat(row.cells[3].textContent) || 0;
-            var credit = parseFloat(row.cells[4].textContent) || 0;
-            previousBalance = previousBalance + debit - credit;
-            row.cells[5].textContent = previousBalance.toFixed(2);
+                 for (var i = 0; i < rows.length; i++) {
+                 var row = rows[i];
+                 var debit = parseFloat(row.cells[3].textContent) || 0;
+                 var credit = parseFloat(row.cells[4].textContent) || 0;
+                 previousBalance = previousBalance + debit - credit;
+                 row.cells[5].textContent = previousBalance.toFixed(2);
+                 }
+
+                     $("#txtClosingAmount").val(previousBalance);
+                      return previousBalance; // Return the final balance
             }
 
-            $("#txtClosingAmount").val(previousBalance);
-            return previousBalance; // Return the final balance
-            }
+
+
             function getDriverHisabById(settlementId) {
             $.ajax({
             cache: false,

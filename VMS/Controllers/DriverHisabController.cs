@@ -396,7 +396,7 @@ namespace VMS.Controllers
 
                                 // Identify lines to add
                                 var linesToAdd = _lstDriverLine.Where(item => !existingLines.Any(e =>
-                                    e.ExpenseCode == item.ExpenseCode)).Select(item => new TblDriverHisabLine
+                                    e.ExpenseCode == item.ExpenseCode && (e.CrAmt==item.CrAmt && e.DrAmt==item.DrAmt))).Select(item => new TblDriverHisabLine
                                     {
                                         SettlementNo = existingDriverHisab.SettlementNo,
                                         DriverId = driverId,
