@@ -128,6 +128,8 @@ namespace VMS.Controllers
                 MakeId = x.MakeId,
                 ModelId = x.ModelId,
                 NoOfTyres = x.NoOfTyres,
+                BS6Model = x.BS6_Model.ToStringFromNull(),
+                SaleDate = x.Sale_Date.HasValue ? x.Sale_Date.Value.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture) : "",
                 EngineNo = x.EngineNo,
                 ChasisNo = x.ChasisNo,
                 VehicleTypeId = x.VehicleTypeId,
@@ -499,7 +501,7 @@ namespace VMS.Controllers
 
         [HttpPost]
         public ActionResult Save(string vehicleNo, string vehicleOwner, string purchaseDate, string mfgYear,
-            Int32 makeId, Int32 modelId, string noOfTyres, string engineNo, string chasisNo, Int32 vehicleTypeId,
+            Int32 makeId, Int32 modelId,string BS6Model,string SaleDate, string noOfTyres, string engineNo, string chasisNo, Int32 vehicleTypeId,
             Int32 bodyTypeId, string financerName, Int32 bodyManufacturerId, string runningKm, string panNo,
             IFormFile panNoImage, string insuranceDue, IFormFile insuranceDoc, string nationalPermitDue, IFormFile nationalPermitDoc,
             string localPermitDue, IFormFile localPermitDoc, string rcValidityDue, IFormFile rcDoc, string rtoDue,
@@ -592,6 +594,8 @@ namespace VMS.Controllers
                         vehicleMaster.MfgYear = Convert.ToString(mfgYear.ToStringFromNull());
                         vehicleMaster.MakeId = Convert.ToInt32(makeId.ToIntFromNull());
                         vehicleMaster.ModelId = Convert.ToInt32(modelId.ToIntFromNull());
+                        vehicleMaster.BS6_Model = BS6Model.ToStringFromNull();
+                        vehicleMaster.Sale_Date = SaleDate.ToStringFromNull()==""?null:Convert.ToDateTime(SaleDate);
                         vehicleMaster.NoOfTyres = Convert.ToInt32(noOfTyres.ToIntFromNull());
                         vehicleMaster.EngineNo = engineNo.ToStringFromNull();
                         vehicleMaster.ChasisNo = chasisNo.ToStringFromNull();
@@ -664,7 +668,7 @@ namespace VMS.Controllers
 
         [HttpPost]
         public ActionResult Update(Int32 id, string vehicleNo, string vehicleOwner, string purchaseDate, string mfgYear,
-            Int32 makeId, Int32 modelId, string noOfTyres, string engineNo, string chasisNo, Int32 vehicleTypeId,
+            Int32 makeId, Int32 modelId, string bS6Model, string saleDate, string noOfTyres, string engineNo, string chasisNo, Int32 vehicleTypeId,
             Int32 bodyTypeId, string financerName, Int32 bodyManufacturerId, string runningKm, string panNo,
             IFormFile panNoImage, string insuranceDue, IFormFile insuranceDoc, string nationalPermitDue, IFormFile nationalPermitDoc,
             string localPermitDue, IFormFile localPermitDoc, string rcValidityDue, IFormFile rcDoc, string rtoDue,
@@ -763,7 +767,8 @@ namespace VMS.Controllers
                         vehicleMaster.UpdateDate = utilityHelper.CurrentDateTime;
                         //vehicleMaster.CreatedBy = userID;
                         vehicleMaster.UpdatedBy = userID;
-
+                        vehicleMaster.BS6_Model = bS6Model.ToStringFromNull();
+                        vehicleMaster.Sale_Date = saleDate.ToStringFromNull() == "" ? null : Convert.ToDateTime(saleDate);
                         _context.TblVehicleMasters.Update(vehicleMaster);
                         _context.SaveChanges();
                         model.Id = id;

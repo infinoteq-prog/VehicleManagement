@@ -62,7 +62,8 @@ namespace VMS
                             cm.Description,dh.Dr_amt,dh.Cr_Amt 
                             from [dbo].[tbl_Driver_Hisab_Lines] dh
                             inner join [dbo].[tbl_Code_Master] cm on dh.Expense_Code=cm.ID
-                            where dh.Settlement_No=@settlementId";
+                            where dh.Settlement_No=@settlementId 
+                            ORDER BY CASE WHEN cm.Code = 'PESAGI' THEN 1 ELSE 2 END, cm.Code;";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {

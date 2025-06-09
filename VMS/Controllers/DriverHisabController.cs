@@ -117,6 +117,7 @@ namespace VMS.Controllers
                              SettlementNo = driver.SettlementNo,
                              LastTripStartDate = Convert.ToString(Convert.ToDateTime(driver.TripStartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
                              LastTripEndDate = Convert.ToString(Convert.ToDateTime(driver.TripEndDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
+                             NextTripStartDate = Convert.ToString(Convert.ToDateTime(driver.TripEndDate).AddDays(1).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
                              LastTripRouteDescr = driver.RouteDescription,
                              OpeningBalance = driver.OpeningBalance == null || driver.OpeningBalance == 0
                                              ? 1

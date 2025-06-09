@@ -84,6 +84,8 @@ public partial class TblVehicleMaster
     public DateTime UpdateDate { get; set; }
 
     public int UpdatedBy { get; set; }
+    public string BS6_Model { get; set; }
+    public DateTime? Sale_Date { get; set; }
 
     public virtual TblCodeMaster BodyManufacturer { get; set; } = null!;
 

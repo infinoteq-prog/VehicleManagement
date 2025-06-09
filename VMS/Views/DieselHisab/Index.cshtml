@@ -71,6 +71,14 @@
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLastTripId">LastTrip Id:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtLastTripId" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtLastTripStartDate">LastTrip Start Date:</label>
                                         <div class="col-sm-8">
                                             <input type="text" id="txtLastTripStartDate" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly" />
@@ -441,7 +449,7 @@
 
     $(document).ready(function () { 
         $('#ddlVehicleNo').select2();
-            $('#ddlDriver').select2();
+        $('#ddlDriver').select2();
         $('#ddlDistanceMaster').select2();
         //Fill Vehicle Master DropdownList
        setSideMenu("diesel-hisab-master");
@@ -1053,16 +1061,21 @@
             dataType: "json",
                 success: function (data) {  
                 if (data != null && data != undefined) {                    
-                    $("#hdnLastTripId").val(data.tripId);
+                        $("#hdnLastTripId").val(data.tripId);
+                        $("#txtLastTripId").val(data.tripId);
                     $("#txtLastTripStartDate").val(data.lastTripStartDate);
                     $("#txtLastTripEndDate").val(data.lastTripEndDate);
                     $("#txtLastTripRouteDesc").val(data.lastTripRouteDescr);
                     $("#txtLastTripDriver").val(data.lastTripDriver);
                     $("#txtLastTripDriverFather").val(data.lastTripDriverFatherName);
                     $("#txtLastTripVendor").val(data.lastTripVendor);
-                    $("#txtStartOdometer").val(data.startOdometer);
-                    // $("#txtOpeningDiesel").val(data.closingDiesel);
+                    if (data.nextTripStartDate) {
+                        $("#from-date-picker").datepicker("setDate", data.nextTripStartDate);
+                    }
+                    $("#txtStartOdometer").val(data.endOdometer);
+                    $("#txtOpeningDiesel").val(data.closingDiesel);
                 } else {
+                        $("#txtLastTripId").val("N/A");
                     $("#txtLastTripStartDate").val("N/A");
                     $("#txtLastTripEndDate").val("N/A");
                     $("#txtLastTripRouteDesc").val("N/A");
@@ -1427,6 +1440,7 @@
 
             // Clear Form Fields after Adding Record
             function clearFillingForm() {
+            $("#ddlVendor").val(null).trigger('change');
                 document.getElementById('txt-filling-date').value = '';
                 document.getElementById('ddlVendor').selectedIndex = 0;
                 document.getElementById('txtLitre').value = '';
@@ -1468,7 +1482,7 @@
                     const existingStationId = row.cells[0].textContent;
                     if (existingStationId === stationId) {
                         alert('This station already exists in the table.');
-                        return;
+                        //return;
                     }
                 }
             }
@@ -1510,11 +1524,13 @@
 
 
             // Clear inputs after adding
-            $("#ddlDistanceMaster").val("");
+            $("#ddlDistanceMaster").val(null).trigger('change');
+            // $("#ddlDistanceMaster").val("");
             $("#txtDistance").val("");
             $("#ddlLoadType").val("");
             $("#txtAverage").val("");
             $("#txtEstDiesel").val("");
+            document.getElementById('ddlDistanceMaster').focus();
 
             //Call addDifferenceLine and addLoadingUnloadingLine to make sure the difference row is at the last
             if (document.getElementById('addDifference').checked) {
@@ -1536,7 +1552,6 @@
             formData.append("estKm", estKm);
             formData.append("addDifference", addDifferenceChecked); // Append the checkbox value
             formData.append("addLoadingUnloading", addLoadingUnloadingChecked);
-            // ... append other form data ...
         }
 
         function deleteStationRow(btn) {
@@ -1578,6 +1593,7 @@
 
                         $('#hdnDieselHisabID').val(data.tripId);
                         $('#hdnLastTripId').val(data.lastTripId);
+                        $("#txtLastTripId").val(data.lastTripId);
                         //Setting Diesel Hisab Details to Page Controls
                         // Dropdowns - Disable
                         $("#ddlVehicleNo").prop("disabled", true);

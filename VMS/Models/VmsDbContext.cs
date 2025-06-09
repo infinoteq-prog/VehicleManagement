@@ -477,6 +477,9 @@ public partial class VmsDbContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("Update_Date");
             entity.Property(e => e.UpdatedBy).HasColumnName("Updated_By");
+            entity.Property(e => e.Percent_Loss).HasColumnType("decimal(10, 3)");
+            entity.Property(e => e.Profit_Loss).HasColumnType("decimal(10, 3)");
+            entity.Property(e => e.Bhari_Ka_Average).HasColumnType("decimal(10, 3)");
 
             entity.HasOne(d => d.Driver).WithMany(p => p.TblDieselHeaders)
                 .HasForeignKey(d => d.DriverId)
@@ -1743,6 +1746,9 @@ public partial class VmsDbContext : DbContext
             entity.Property(e => e.VehicleOwner)
                 .HasMaxLength(2000)
                 .HasColumnName("Vehicle_Owner");
+            entity.Property(e => e.Sale_Date)
+                .HasColumnType("datetime");
+            entity.Property(e => e.BS6_Model);
 
             entity.HasOne(d => d.BodyManufacturer).WithMany(p => p.TblVehicleMasterBodyManufacturers)
                 .HasForeignKey(d => d.BodyManufacturerId)

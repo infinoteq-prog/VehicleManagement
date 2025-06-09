@@ -506,6 +506,9 @@ namespace VMS.Controllers
                                     IsDifferenceAdded = IsDifferenceAdded,
                                     IsLoadingAdded = IsLoadingAdded,
                                     IsActive = true,
+                                    Profit_Loss = DieselHisabContext.calProfitLoss(openingDiesel,closingDiesel,_lstDieselFilling,_lstDieselLine),
+                                    Percent_Loss = DieselHisabContext.calPercentLoss(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine),
+                                    Bhari_Ka_Average = DieselHisabContext.calBhariKaAverage(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine),
                                     CreationDate = utilityHelper.CurrentDateTime,
                                     UpdateDate = utilityHelper.CurrentDateTime,
                                     CreatedBy = userID.ToIntFromNull(),
@@ -629,7 +632,9 @@ namespace VMS.Controllers
                                 existingDieselHisab.IsLoadingAdded = IsLoadingAdded;
                                 existingDieselHisab.UpdateDate = utilityHelper.CurrentDateTime;
                                 existingDieselHisab.UpdatedBy = userID;
-
+                                existingDieselHisab.Profit_Loss = DieselHisabContext.calProfitLoss(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine);
+                                existingDieselHisab.Percent_Loss = DieselHisabContext.calPercentLoss(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine);
+                                existingDieselHisab.Bhari_Ka_Average = DieselHisabContext.calBhariKaAverage(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine);
                                 _context.TblDieselHeaders.Update(existingDieselHisab);
                                 _context.SaveChanges(); // Save changes to the header first to ensure TripId is consistent
                             }
@@ -718,47 +723,29 @@ namespace VMS.Controllers
                                 // Get existing lines for the current TripId
                                 var existingLines = _context.TblDieselLines.Where(l => l.TripId == tripNo).ToList();
 
-                                // Identify lines to add
-                                var linesToAdd = _lstDieselLine.Where(item => !existingLines.Any(e =>
-                                    e.RouteId == item.RouteId)).Select(item => new TblDieselLine
-                                    {
-                                        TripId = existingDieselHisab.TripId,
-                                        RouteId = item.RouteId,
-                                        RouteDesc = item.RouteDesc,
-                                        LoadType = item.LoadType,
-                                        Distance = item.Distance,
-                                        Average = item.Average,
-                                        EstimatedDiesel = item.EstimatedDiesel,
-                                        CreationDate = utilityHelper.CurrentDateTime,
-                                        UpdateDate = utilityHelper.CurrentDateTime,
-                                        CreatedBy = userID,
-                                        UpdatedBy = userID
-                                    }).ToList();
-                                _context.TblDieselLines.AddRange(linesToAdd);
+                                // Remove all existing lines for this TripId
+                                _context.TblDieselLines.RemoveRange(existingLines);
 
-                                // Identify lines to remove
-                                var linesToRemove = existingLines.Where(existing => !_lstDieselLine.Any(item =>
-                                    existing.RouteId == item.RouteId)).ToList();
-                                _context.TblDieselLines.RemoveRange(linesToRemove);
-
-                                // Check for Existing Row Update
-                                // Identify Lines to update and remove
-                                foreach (var existingLine in existingLines)
+                                // Create new TblDieselLine entries from _lstDieselLine
+                                var newLines = _lstDieselLine.Select(item => new TblDieselLine
                                 {
-                                    var matchingItem = _lstDieselLine.FirstOrDefault(item =>
-                                                       existingLine.RouteId == item.RouteId);
+                                    TripId = existingDieselHisab.TripId, // Assuming existingDieselHisab.TripId is the correct TripId
+                                    RouteId = item.RouteId,
+                                    RouteDesc = item.RouteDesc,
+                                    LoadType = item.LoadType,
+                                    Distance = item.Distance,
+                                    Average = item.Average,
+                                    EstimatedDiesel = item.EstimatedDiesel,
+                                    CreationDate = utilityHelper.CurrentDateTime,
+                                    UpdateDate = utilityHelper.CurrentDateTime, // Set update date as well for new entries
+                                    CreatedBy = userID,
+                                    UpdatedBy = userID
+                                }).ToList();
 
-                                    if (matchingItem != null)
-                                    {
-                                        existingLine.Distance = matchingItem.Distance;
-                                        existingLine.Average = matchingItem.Average;
-                                        existingLine.EstimatedDiesel = matchingItem.EstimatedDiesel;
-                                        existingLine.LoadType = matchingItem.LoadType;
-                                        existingLine.UpdateDate = utilityHelper.CurrentDateTime;
-                                        existingLine.UpdatedBy = userID;
-                                        _context.TblDieselLines.Update(existingLine);
-                                    }
-                                }
+                                // Add all the newly created lines
+                                _context.TblDieselLines.AddRange(newLines);
+
+                                // Save all changes to the database
                                 _context.SaveChanges();
                             }
                             else

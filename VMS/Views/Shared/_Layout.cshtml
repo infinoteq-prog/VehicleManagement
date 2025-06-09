@@ -1573,7 +1573,7 @@
         }
 
         function viewImageModel(url){
-            window.open(url, '_blank');
+              window.location.href = url;
         }
 
         function getBillNumber(transporterCode) {
@@ -2812,13 +2812,13 @@
         //Function Vehicle Master List Functions
         function viewVehicleMaster(vehicleMasterID) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "VehicleMaster/Details?vehicleMasterID=")' + vehicleMasterID;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         function editVehicleMaster(vehicleMasterID) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "VehicleMaster/Update?vehicleMasterID=")' + vehicleMasterID;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
@@ -2900,13 +2900,13 @@
         //Function Expense Master List Functions
         function viewExpenseMaster(expenseMasterId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "ExpenseMaster/Details?expenseMasterId=")' + expenseMasterId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         function editExpenseMaster(expenseMasterId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "ExpenseMaster/Update?expenseMasterId=")' + expenseMasterId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
@@ -2988,13 +2988,13 @@
         //Function Distance Master List Functions
         function viewDistanceMaster(distanceMasterId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DistanceMaster/Details?distanceMasterId=")' + distanceMasterId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         function editDistanceMaster(distanceMasterId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DistanceMaster/Update?distanceMasterId=")' + distanceMasterId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
@@ -3076,34 +3076,34 @@
         //Function View Disptach Details
         function viewDispatchDetails(dispatchId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/ViewDispatchDetails?dispatchId=")' + dispatchId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         //Function View Disptach Details
         function viewDispatchDetails(dispatchId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/ViewDispatchDetails?dispatchId=")' + dispatchId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         //Function Transporter Bill
         function viewTransportBillDetails(billNo) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/ViewBillDetails?billno=")' + billNo;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         //Function GST Master List Functions
         function viewGSTMaster(gstMasterId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "GSTMaster/Details?gstMasterId=")' + gstMasterId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         function editGSTMaster(gstMasterId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "GSTMaster/Update?gstMasterId=")' + gstMasterId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
@@ -3185,13 +3185,13 @@
         //Function GST Rate Master List Functions
         function viewGSTMaster(gstMasterId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "GSTMaster/Details?gstMasterId=")' + gstMasterId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         function editGSTMaster(gstMasterId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "GSTMaster/Update?gstMasterId=")' + gstMasterId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
@@ -3274,14 +3274,14 @@
         function viewUser(userID) {
             //window.location.href = '@Url.Action("Details", "RateMaster")?rateID=' + rateID;
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "User/Details?userID=")' + userID;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         function editUser(userID) {
             //window.location.href = '@Url.Action("Update", "RateMaster")?rateID=' + rateID;
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "User/Update?userID=")' + userID;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
@@ -3366,14 +3366,14 @@
         function viewUserRole(userRoleID) {
             //window.location.href = '@Url.Action("Details", "RateMaster")?rateID=' + rateID;
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "UserRole/Details?userRoleID=")' + userRoleID;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         function editUserRole(userRoleID) {
             //window.location.href = '@Url.Action("Update", "RateMaster")?rateID=' + rateID;
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "UserRole/Update?userRoleID=")' + userRoleID;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
@@ -3458,14 +3458,14 @@
         function viewFunctionMaster(functionMasterId) {
             //window.location.href = '@Url.Action("Details", "RateMaster")?rateID=' + rateID;
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "FunctionMaster/Details?functionMasterId=")' + functionMasterId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         function editFunctionMaster(functionMasterId) {
             //window.location.href = '@Url.Action("Update", "RateMaster")?rateID=' + rateID;
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "FunctionMaster/Update?functionMasterId=")' + functionMasterId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
@@ -3547,13 +3547,13 @@
         //Function User Role Access List Functions
         function viewUserRoleAccess(userRoleAccessId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "UserRoleAccess/Details?userRoleAccessId=")' + userRoleAccessId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         function editUserRoleAccess(userRoleAccessId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "UserRoleAccess/Update?userRoleAccessId=")' + userRoleAccessId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
@@ -3637,13 +3637,13 @@
         //User Subscripton Common Function List
         function viewUserSubscription(userSubscriptionId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "UserSubscription/Details?userSubscriptionId=")' + userSubscriptionId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         function editUserSubscription(userSubscriptionId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "UserSubscription/Update?userSubscriptionId=")' + userSubscriptionId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
@@ -3725,13 +3725,13 @@
         //Transporter Master Common Function List
         function viewTransporterMaster(transporterMasterId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterMaster/Details?transporterMasterId=")' + transporterMasterId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         function editTransporterMaster(transporterMasterId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterMaster/Update?transporterMasterId=")' + transporterMasterId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
@@ -3813,13 +3813,13 @@
         //Company Master Common Function List
         function viewCompanyMaster(companyMasterId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "CompanyMaster/Details?companyMasterId=")' + companyMasterId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         function editCompanyMaster(companyMasterId) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "CompanyMaster/Update?companyMasterId=")' + companyMasterId;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
@@ -3926,13 +3926,13 @@
         //Function Driver Master List Functions
         function viewDriverMaster(driverMasterID) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/Details?driverMasterID=")' + driverMasterID;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         function editDriverMaster(driverMasterID) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/Update?driverMasterID=")' + driverMasterID;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
@@ -4015,13 +4015,13 @@
         //Function Model Master List Functions
         function viewModelMaster(modelMasterID) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "ModelMaster/Details?modelMasterID=")' + modelMasterID;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
         function editModelMaster(modelMasterID) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "ModelMaster/Update?modelMasterID=")' + modelMasterID;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
 
@@ -4103,13 +4103,13 @@
         //Function Make Master List Functions
         function viewMakeMaster(makeMasterID) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "MakeMaster/Details?makeMasterID=")' + makeMasterID;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
         //Function Make Master Edit Functions
         function editMakeMaster(makeMasterID) {
             var url = '@(VMS.Helper.utilityHelper.SiteUrl() + "MakeMaster/Update?makeMasterID=")' + makeMasterID;
-            window.open(url, '_blank');
+              window.location.href = url;
             return false;
         }
         //Function Make Master Delete Functions

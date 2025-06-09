@@ -7,6 +7,7 @@ namespace VMS
 {
     public static class DieselHisabContext
     {
+        private static string _controllerName = "DieselHisabContext";
         public static async Task<object> GetLastTripHistoryAsync(string _connectionString, int vehicleNo)
         {
             object lastTrip = null;
@@ -264,6 +265,7 @@ namespace VMS
                 dh.TripId,
                 CONVERT(VARCHAR, dh.Trip_Start_Date, 105) AS LastTripStartDate,
                 CONVERT(VARCHAR, dh.Trip_End_Date, 105) AS LastTripEndDate,
+                CONVERT(VARCHAR, DATEADD(day, 1, dh.Trip_End_Date), 105) AS NextTripStartDate,
                 dh.Last_Trip_Route_Descr,
                 ISNULL(dh.Start_Odometer, 1) AS StartOdometer,
                 ISNULL(dh.End_Odometer, 1) AS EndOdometer,
@@ -294,6 +296,7 @@ namespace VMS
                                 TripId = reader.GetInt32("TripId"),
                                 LastTripStartDate = reader.GetString("LastTripStartDate"),
                                 LastTripEndDate = reader.GetString("LastTripEndDate"),
+                                NextTripStartDate = reader.GetString("NextTripStartDate"),
                                 LastTripRouteDescr = reader.GetString("Last_Trip_Route_Descr"),
                                 StartOdometer = reader.GetInt64("StartOdometer"),
                                 EndOdometer = reader.GetInt64("EndOdometer"),
@@ -350,6 +353,9 @@ namespace VMS
                                 EndOdometer = reader.GetInt64("End_Odometer"),
                                 OpeningDiesel = reader.GetInt64("Opening_Diesel"),
                                 RunningKm = reader.IsDBNull("RunningKm") ? (decimal?)null : reader.GetInt32("RunningKm"),
+                                ProfitLoss = reader.IsDBNull("Profit_Loss") ? (decimal?)null : reader.GetDecimal("Profit_Loss").To2Decimal(),
+                                PercentLoss = reader.IsDBNull("Percent_Loss") ? (decimal?)null : reader.GetDecimal("Percent_Loss").To2Decimal(),
+                                BhariKaAverage = reader.IsDBNull("Bhari_Ka_Average") ? (decimal?)null : reader.GetDecimal("Bhari_Ka_Average").To2Decimal(),
                                 IsActive = reader.GetBoolean("Is_Active"),
                                 LastTripVendor = "Test Vendor",
                                 DieselHeaderCreationDate = reader.GetDateTime("DieselHeaderCreationDate"),
@@ -367,6 +373,60 @@ namespace VMS
                 }
             }
             return dieselHeaders;
+        }
+        public static decimal calProfitLoss(decimal openingDiesel, decimal closingDiesel, List<TblDieselFilling> _lstDieselFilling, List<TblDieselLine> _lstDieselLine)
+        {
+            decimal ProfitLoss = 0;
+            try
+            {
+                decimal sumTotalDiesel = ((openingDiesel + (_lstDieselFilling?.Sum(x => x.DieselQty).To3Decimal() ?? 0)) - closingDiesel);
+                decimal sumTotalEstimatedDiesel = _lstDieselLine?.Sum(x => x.EstimatedDiesel).To3Decimal() ?? 0;
+
+                ProfitLoss = sumTotalEstimatedDiesel- sumTotalDiesel ;
+            }
+            catch (Exception ex)
+            {
+                Globalsettings.Log(_controllerName, string.Format("calProfitLoss: {0}", ex.Message.ToString()));
+            }
+            return ProfitLoss;
+        }
+        public static decimal calPercentLoss(decimal openingDiesel, decimal closingDiesel, List<TblDieselFilling> _lstDieselFilling, List<TblDieselLine> _lstDieselLine)
+        {
+            decimal PercentLoss = 0; 
+            try
+            {
+                decimal sumTotalDiesel = ((openingDiesel + (_lstDieselFilling?.Sum(x => x.DieselQty).To3Decimal() ?? 0)) - closingDiesel);
+                decimal sumTotalEstimatedDiesel = _lstDieselLine?.Sum(x => x.EstimatedDiesel).To3Decimal() ?? 0;
+                decimal ProfitLoss = sumTotalEstimatedDiesel - sumTotalDiesel;
+
+                PercentLoss = ((ProfitLoss * 100) / sumTotalEstimatedDiesel).To2Decimal();
+
+            }
+            catch (Exception ex)
+            {
+                Globalsettings.Log(_controllerName, string.Format("calPercentLoss: {0}", ex.Message.ToString()));
+            }
+            return PercentLoss;
+        }
+        public static decimal calBhariKaAverage(decimal openingDiesel,decimal closingDiesel,List<TblDieselFilling> _lstDieselFilling,List<TblDieselLine> _lstDieselLine)
+        {
+            // Bhari ka KM (Total(TotalRunningKm)  - Total khali ka KM) / Bhari Ka Diesel (Total Consumed - Khali ka Diesel)
+            decimal BhariKaAverage = 0;
+            try
+            {
+                decimal sumTotalRunningKm = _lstDieselLine?.Sum(x => x.Distance).To3Decimal() ?? 0;
+                decimal sumTotalKhaliKaKm = _lstDieselLine?.Where(x => x.LoadType.ToUpper() == "KHALI").Sum(x => x.Distance).To3Decimal() ?? 0;
+
+                decimal sumTotalDiesel = ((openingDiesel + (_lstDieselFilling?.Sum(x => x.DieselQty).To3Decimal() ?? 0)) - closingDiesel);
+                decimal sumTotalKhaliKaDiesel = _lstDieselLine?.Where(x => x.LoadType.ToUpper() == "KHALI").Sum(x => x.EstimatedDiesel).To3Decimal() ?? 0;
+
+                BhariKaAverage = (sumTotalRunningKm - sumTotalKhaliKaKm) / (sumTotalDiesel - sumTotalKhaliKaDiesel);
+            }
+            catch(Exception ex)
+            {
+                Globalsettings.Log(_controllerName, string.Format("calBhariKaAverage: {0}", ex.Message.ToString()));
+            }
+            return BhariKaAverage;
         }
     }
 }

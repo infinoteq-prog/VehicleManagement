@@ -109,5 +109,7 @@ namespace VMS.ViewModel
         public string CreatedByName { get; set; }
 
         public string UpdatedByName { get; set; }
+        public string BS6Model { get; set; }
+        public string? SaleDate { get; set; }
     }
 }

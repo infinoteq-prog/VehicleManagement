@@ -40,6 +40,9 @@ public partial class TblDieselHeader
     public int? RunningKm { get; set; }
     public int? ApprovedBy { get; set; }
     public DateTime? ApprovedDate { get; set; }
+    public decimal? Profit_Loss { get; set; } = 0;
+    public decimal? Percent_Loss { get; set; } = 0;
+    public decimal? Bhari_Ka_Average { get; set; } = 0;
 
     public virtual TblDriverMaster Driver { get; set; } = null!;
 

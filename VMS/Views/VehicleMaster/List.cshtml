@@ -4,6 +4,9 @@
 @using VMS.ViewModel
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Vehicle Master";
+}
 @* @{
     var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
 }

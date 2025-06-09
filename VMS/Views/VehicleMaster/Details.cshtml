@@ -4,6 +4,9 @@
 @using VMS.ViewModel
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Vehicle Master";
+}
 @* @{
     var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
 }
@@ -68,6 +71,24 @@
                                         <label class="col-sm-4 col-form-label" for="txtModelMaster">Model Master:</label>
                                         <div class="col-sm-8">
                                             @Html.TextBoxFor(m => m.ModelName, new { @class = "form-control numberonly", id = "txtModelMaster", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtBS6Model">BS6 Model: </label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.BS6Model, new { @class = "form-control", id = "txtBS6Model", @maxlength = "50", placeholder = "Enter BS6 model name", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtSaleDate">Sale Date:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtSaleDate" placeholder="Select Sale Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
                                         </div>
                                     </div>
                                 </div>
@@ -499,7 +520,8 @@
                         $("#txtBranchOffice").val(data.branchOffice);
                         $("#txtRcCapicity").val(data.rcCapicity);
                         $("#txtActualCapicity").val(data.actualCapicity);
-
+                        $("#txtBS6Model").val(data.bS6Model);
+                        $("#txtSaleDate").val(data.saleDate);
 
                         $("#chkIsActive").prop('checked', data.isActive);
                     } else {

@@ -63,6 +63,14 @@
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLastTripId">LastTrip Id:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtLastTripId" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtLastTripStartDate">LastTrip Start Date:</label>
                                         <div class="col-sm-8">
                                             <input type="text" id="txtLastTripStartDate" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly" />
@@ -430,12 +438,17 @@
                 success: function (data) {  
                 if (data != null && data != undefined) {
                     $("#hdnLastSettlementId").val(data.settlementNo);
+                    $("#txtLastTripId").val(data.settlementNo);
                     $("#txtLastTripStartDate").val(data.lastTripStartDate);
                     $("#txtLastTripEndDate").val(data.lastTripEndDate);
                     $("#txtLastTripRouteDesc").val(data.lastTripRouteDescr);
                     $("#txtLastTripVehicle").val(data.vehicleNumber);
-                        $("#txtOpeningAmount").val(data.closingBalance);
-                } else {
+                    $("#txtOpeningAmount").val(data.closingBalance);
+                        if (data.nextTripStartDate) {
+                            $("#from-date-picker").datepicker("setDate", data.nextTripStartDate);
+                        }
+                    } else {
+                        $("#txtLastTripId").val("N/A");
                     $("#txtLastTripStartDate").val("N/A");
                     $("#txtLastTripEndDate").val("N/A");
                     $("#txtLastTripRouteDesc").val("N/A");
@@ -690,11 +703,12 @@
                     $("#expenseListTable tbody").append(newRow);
                 
                     // Clear the input fields
-                    $("#ddlExpenseHead").prop("selectedIndex", 0).val();
+             $("#ddlExpenseHead").val(null).trigger('change');
                     $("#txtGroup").val("");
                     $("#txtAmountDR").val("");
                     $("#txtAmountCR").val("");
-                
+
+            document.getElementById('ddlExpenseHead').focus();
                     calculateClosingBalance('expenseListTable', openingBalance);
                 }
             
@@ -719,8 +733,6 @@
                       return previousBalance; // Return the final balance
             }
 
-
-
             function getDriverHisabById(settlementId) {
             $.ajax({
             cache: false,
@@ -733,6 +745,7 @@
             // Bind the form controls
             $("#hdnDriverHisabID").val(data.settlementNo);
             $("#hdnLastSettlementId").val(data.lastSettlementId);
+                        $("#txtLastTripId").val(data.lastSettlementId);
                         $('#ddlDriver').val(data.driverId).trigger('change');
             $("#txtDriverFatherName").val(data.driverFatherName);
             $("#txtSettlementNumber").val(data.settlementNo);

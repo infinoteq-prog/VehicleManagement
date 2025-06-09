@@ -497,7 +497,7 @@
                             }else{
                                 $("#bhariKaAverage").text("0");
                             }
-                            totalDieselProfitLoss = (parseFloat(totalConsumedDiesel) - parseFloat(totalEstimateDiesel)).toFixed(2);
+                            totalDieselProfitLoss = (parseFloat(totalEstimateDiesel)-parseFloat(totalConsumedDiesel)).toFixed(2);
                             $("#dieselProfitLoss").text(totalDieselProfitLoss);
 
                             var percentageLoss=parseFloat((parseFloat(totalDieselProfitLoss)*100) / parseFloat(totalAvgDieselValue) ).toFixed(2);
