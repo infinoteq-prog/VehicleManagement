@@ -75,6 +75,24 @@
                     <div class="row rowHeight">
                         <div class="col-md-6">
                             <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtBS6Model">BS6 Model: </label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.BS6Model, new { @class = "form-control", id = "txtBS6Model", @maxlength = "50", placeholder = "Enter BS6 model name" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtSaleDate">Sale Date:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="txtSaleDate" placeholder="Select Sale Date" class="form-control" onchange="setTextboxStyle(this);">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
                                 <label class="col-sm-4 col-form-label" for="txtNoOfTyres">No of Tyres:  </label>
                                 <div class="col-sm-8">
                                     @Html.TextBoxFor(m => m.NoOfTyres, new { @class = "form-control numberonly", id = "txtNoOfTyres", @maxlength = "2" })
@@ -385,6 +403,11 @@
                 getVehicleMasterList();
                 $(function () {
                          $("#txtVehicleCreationDate").datepicker({
+                        dateFormat: 'dd-mm-yy',
+                        changeYear: true,
+                        changeMonth: true,
+                    });
+                    $("#txtSaleDate").datepicker({
                         dateFormat: 'dd-mm-yy',
                         changeYear: true,
                         changeMonth: true,
@@ -835,7 +858,9 @@
             $("#txtRcValidityDue").val("");
             $("#txtRTODue").val("");
             $("#txtPollutionDue").val("");
-            $("#txtFitnessDue").val("");
+            $("#txtFitnessDue").val(""); 
+            $("#txtBS6Model").val("");
+            $("#txtSaleDate").val("");
             $("#chkIsActive").prop("checked", false);
         }
 
@@ -852,6 +877,7 @@
             var rtoDue = $("#txtRTODue").val().split("-").reverse().join("-");
             var pollutionDue = $("#txtPollutionDue").val().split("-").reverse().join("-");
             var fitnessDue = $("#txtFitnessDue").val().split("-").reverse().join("-");
+            var saleDate = $("#txtSaleDate").val().split("-").reverse().join("-");
 
             var formData = new FormData();
             formData.append("vehicleNo", $('#txtVehicleNo').val());
@@ -880,6 +906,8 @@
             formData.append("branchOffice", $("#txtBranchOffice").val());
             formData.append("rcCapicity", $("#txtRcCapicity").val());
             formData.append("actualCapicity", $("#txtActualCapicity").val());
+            formData.append("saleDate", saleDate);
+            formData.append("bS6Model", $("#txtBS6Model").val());
             formData.append("isActive", true);
 
             $.ajax({

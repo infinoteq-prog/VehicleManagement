@@ -664,6 +664,17 @@
                       alert("Please enter either DR amount or CR amount.");
                          return;
                      }
+
+                     const table = document.getElementById('expenseListTable').getElementsByTagName('tbody')[0];
+                      // Check if the expenseHeadId already exists in the table, excluding the difference row
+                     for (let i = 0; i < table.rows.length; i++) {
+                         const row = table.rows[i];
+                         const existingExpenseHeadId = row.cells[0].textContent;
+                             if (existingExpenseHeadId === expenseHeadId) {
+                                 alert('This expense already exists in the table.');
+                                 break;
+                             }
+                     }
                 
                     // Create a new row object
                     var newExpense = {

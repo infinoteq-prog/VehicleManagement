@@ -1,0 +1,17 @@
+﻿ALTER TABLE [dbo].[tbl_Vehicle_Master] ADD BS6_Model nvarchar(50)    
+CONSTRAINT Constraint_BS6_Model DEFAULT '' WITH VALUES
+
+ALTER TABLE [dbo].[tbl_Vehicle_Master] ADD Sale_Date datetime null    -- Demonstration with NULL-able column added
+CONSTRAINT Constraint_name DEFAULT null WITH VALUES
+
+ALTER TABLE [dbo].[tbl_Diesel_Header] ADD Profit_Loss decimal(18,3)   
+CONSTRAINT Constraint_Profit_Loss DEFAULT 0 WITH VALUES
+
+ALTER TABLE [dbo].[tbl_Diesel_Header] ADD Percent_Loss decimal(18,3)   
+CONSTRAINT Constraint_Percent_Loss DEFAULT 0 WITH VALUES
+
+ALTER TABLE [dbo].[tbl_Diesel_Header] ADD Bhari_Ka_Average decimal(18,3)   
+CONSTRAINT Constraint_Bhari_Ka_Average DEFAULT 0 WITH VALUES
+
+Update SP [dbo].[DieselHisab_List]
+Update SP [dbo].[DieselHisab_List_DownloadExcel]
