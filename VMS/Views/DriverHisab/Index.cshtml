@@ -240,13 +240,14 @@
                         <div class="table-responsive">
                             <table id="expenseListTable" class="table table-bordered">
                                 <thead class="thead-light">
-                                    <tr>
+                                   <tr>
                                         <th style="width: 120px;display:none;">ExpenseHeadId/th>
                                         <th style="width: 120px;">Expense Name</th>
                                         <th style="width: 120px;">Head</th>
                                         <th style="width: 120px;">Amount Dr</th>
                                         <th style="width: 120px;">Amount Cr</th>
                                         <th style="width: 120px;">Closing Balance</th>
+                                        <th style="width: 120px;display:none;">Sno/th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -520,11 +521,13 @@
                         var expenseType = $(row).find("td:eq(1)").text();                        
                         var drAmt = $(row).find("td:eq(3)").text();
                         var crAmt = $(row).find("td:eq(4)").text();
+                        var Sno = $(row).find("td:eq(6)").text();
 
                         formData.append(`_lstDriverLine[${index}].ExpenseCode`, expenseCode);
                         formData.append(`_lstDriverLine[${index}].ExpenseType`, expenseType);
                         formData.append(`_lstDriverLine[${index}].CrAmt`, crAmt);
                         formData.append(`_lstDriverLine[${index}].DrAmt`, drAmt);
+                        formData.append(`_lstDriverLine[${index}].Sno`, Sno);
                     });
                
                 $.ajax({
@@ -695,6 +698,7 @@
                     newRow.append("<td>" + amountDR + "</td>");
                     newRow.append("<td>" + amountCR + "</td>");
                     newRow.append("<td></td>"); //leave blank for now
+                    newRow.append("<td style=\"display:none;\">0</td>"); //leave blank for now
                     // Add a delete button to the row
                     var deleteButton = $("<button>")
                         .addClass("btn btn-danger btn-sm")
@@ -791,6 +795,7 @@
                 newRow.append("<td>" + expense.drAmt + "</td>");
                 newRow.append("<td>" + expense.crAmt + "</td>");
                 newRow.append("<td>" + expense.closingBalance + "</td>");
+                newRow.append("<td style=\"display:none;\">" + expense.Sno + "</td>");
 
                  var deleteButton = $("<button>")
                         .addClass("btn btn-danger btn-sm")

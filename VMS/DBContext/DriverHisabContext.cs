@@ -58,12 +58,12 @@ namespace VMS
         public static async Task<List<object>> GetExpenseListAsync(string _connectionString, int settlementId)
         {
             List<object> stationList = new List<object>();
-            string sql = @"select dh.Expense_Code,cm.Code_Type,cm.Code,
+            string sql = @"select dh.Sno,dh.Expense_Code,cm.Code_Type,cm.Code,
                             cm.Description,dh.Dr_amt,dh.Cr_Amt 
                             from [dbo].[tbl_Driver_Hisab_Lines] dh
                             inner join [dbo].[tbl_Code_Master] cm on dh.Expense_Code=cm.ID
                             where dh.Settlement_No=@settlementId 
-                            ORDER BY CASE WHEN cm.Code = 'PESAGI' THEN 1 ELSE 2 END, cm.Code;";
+                            ORDER BY CASE WHEN cm.ID = 16 THEN 1 ELSE 2 END, cm.Code;";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -79,6 +79,7 @@ namespace VMS
                         {
                             stationList.Add(new
                             {
+                                Sno = reader.GetInt32("Sno"),
                                 SettlementNo = settlementId,
                                 ExpenseCode = reader.GetString("Expense_Code"),
                                 ExpenseType = reader.GetString("Code_Type"),

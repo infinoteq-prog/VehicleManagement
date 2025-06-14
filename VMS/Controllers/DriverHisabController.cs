@@ -397,7 +397,8 @@ namespace VMS.Controllers
 
                                 // Identify lines to add
                                 var linesToAdd = _lstDriverLine.Where(item => !existingLines.Any(e =>
-                                    e.ExpenseCode == item.ExpenseCode && (e.CrAmt==item.CrAmt && e.DrAmt==item.DrAmt))).Select(item => new TblDriverHisabLine
+                                    e.Sno==item.Sno)).Select(item => new TblDriverHisabLine
+                                    //e.ExpenseCode == item.ExpenseCode && (e.CrAmt==item.CrAmt && e.DrAmt==item.DrAmt))).Select(item => new TblDriverHisabLine
                                     {
                                         SettlementNo = existingDriverHisab.SettlementNo,
                                         DriverId = driverId,
@@ -414,7 +415,8 @@ namespace VMS.Controllers
 
                                 // Identify lines to remove
                                 var linesToRemove = existingLines.Where(existing => !_lstDriverLine.Any(item =>
-                                    existing.ExpenseCode == item.ExpenseCode)).ToList();
+                                    existing.Sno==item.Sno)).ToList();
+                                    //existing.ExpenseCode == item.ExpenseCode && (existing.CrAmt == item.CrAmt && existing.DrAmt == item.DrAmt))).ToList();
                                 _context.TblDriverHisabLines.RemoveRange(linesToRemove);
 
                                 // Check for Existing Row Update
@@ -422,7 +424,7 @@ namespace VMS.Controllers
                                 foreach (var existingLine in existingLines)
                                 {
                                     var matchingItem = _lstDriverLine.FirstOrDefault(item =>
-                                                       existingLine.ExpenseCode == item.ExpenseCode);
+                                                       existingLine.Sno == item.Sno);
 
                                     if (matchingItem != null)
                                     {
