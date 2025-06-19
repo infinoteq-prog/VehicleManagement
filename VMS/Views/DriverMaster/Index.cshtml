@@ -238,8 +238,8 @@
                                         <div class="col-sm-8">
                                             <select class="form-control" id="ddlExistingReference" name="ddlExistingReference" onchange="setDropDownStyle(this);">
                                                 <option value="0">Select Existing Reference</option>
-                                                <option value="True">Yes</option>
-                                                <option value="False">No</option>
+                                                <option value="true">Yes</option>
+                                                <option value="false">No</option>
                                             </select>
                                         </div>
                                     </div>
@@ -249,8 +249,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtReferenceName">Reference Name :</label>
-                                        <div class="col-sm-8">
-                                            @Html.TextBoxFor(m => m.ReferenceName, new { @class = "form-control", id = "txtReferenceName", @maxlength = "100" })
+                                        <div class="col-sm-4">
+                                            <select class="form-control" id="ddlDriver" name="ddlDriver"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -394,6 +394,7 @@
 </div>
 @* } *@
 @section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript">
         // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
         // var addAccess = '@ViewBag.AddUserRoleAddAccess';
@@ -416,8 +417,10 @@
             $("#chkIsActive").attr("checked", true);
             $("#chkIsActive").attr("disabled", true);
 
+            $('#ddlDriver').select2();
             getStateByCountryId(1);
-
+            getDriverMaster();
+            enableReferenceDriverDropDown("False");
             if (fullAccess === "True" || addAccess === "True") {
                 checkValidationOnChange();
             }
@@ -440,8 +443,64 @@
             $("#ddlDistrict").on("change", function () {
                 getCityByDisctrictId($(this).val());
             });
+
+            $("#ddlExistingReference").on("change", function () {
+                var selectedValue = $(this).val();
+                enableReferenceDriverDropDown(selectedValue);
+            });
+
+            $("#ddlDriver").on("change", function () {
+                var selectedValue = $(this).val();
+                if (selectedValue === "0") {
+                    return;
+                }
+                getDriverInfo(selectedValue)
+            });
         });
 
+        function getDriverInfo(driverId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DriverMaster/getDriverMasterByID")',
+                type: "GET",
+                data: { driverMasterID: driverId },
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+
+                        $("#txtReferenceAddress1").val(data.driverAddress1);
+                        $("#txtReferenceAddress2").val(data.driverAddress2);
+                        $("#txtReferenceAddress3").val(data.driverAddress3);
+                        $("#txtReferenceCity").val(data.cityName);
+                        $("#txtReferencePinCode").val(data.pinCode);
+                        $("#txtReferenceMobile").val(data.mobileNumber1);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function enableReferenceDriverDropDown(selectedValue) {
+            // Select the ddlDriver dropdown
+            var ddlDriver = $("#ddlDriver");
+
+            // Check if the selected value is 'True' (which corresponds to 'Yes')
+            if (selectedValue === "true") {
+                ddlDriver.prop("disabled", false); // Enable the dropdown
+            } else {
+                ddlDriver.prop("disabled", true); // Disable the dropdown
+                // Optionally, you might want to reset its value when disabled
+
+                $("#ddlDriver").val(null).trigger('change');
+                $("#txtReferenceAddress1").val("");
+                $("#txtReferenceAddress2").val("");
+                $("#txtReferenceAddress3").val("");
+                $("#txtReferenceCity").val("");
+                $("#txtReferencePinCode").val("");
+                $("#txtReferenceMobile").val("");
+            }
+        }
         function setDropDownStyle(cltr){
             if ($(cltr).find(":selected").val() == "0") {
                 $(cltr).attr('class', 'form-control vaidationTextBoxError');
@@ -868,6 +927,13 @@
             $("#txtMobileNumber1").val("");
             $("#txtMobileNumber2").val("");
             $("#chkIsActive").prop("checked", false);
+            $("#ddlDriver").val(null).trigger('change');
+            $("#txtReferenceAddress1").val("");
+            $("#txtReferenceAddress2").val("");
+            $("#txtReferenceAddress3").val("");
+            $("#txtReferenceCity").val("");
+            $("#txtReferencePinCode").val("");
+            $("#txtReferenceMobile").val("");
         }
 
         function getDriverMasterList() {
@@ -1013,7 +1079,7 @@
                     formData.append("mobileNo1", $("#txtMobileNumber1").val());
                     formData.append("mobileNo2", $("#txtMobileNumber2").val());
                     formData.append("isExistingReference", $('#ddlExistingReference option:selected').val());
-                    formData.append("referenceName", $("#txtReferenceName").val());
+                    formData.append("referenceName", $("#ddlDriver option:selected").val());
                     formData.append("referenceAddress1", $("#txtReferenceAddress1").val());
                     formData.append("referenceAddress2", $("#txtReferenceAddress2").val());
                     formData.append("referenceAddress3", $("#txtReferenceAddress3").val());
