@@ -233,7 +233,9 @@ namespace VMS.Controllers
                 MobileNumber1 = x.MobileNumber1,
                 MobileNumber2 = x.MobileNumber2,
                 IsExistingReference = x.IsExistingReference,
-                ReferenceName = x.ReferenceName,
+                ReferenceName = _context.TblDriverMasters
+    .Where(p => p.Id == (string.IsNullOrEmpty(x.ReferenceName) ? 0 : Convert.ToInt32(x.ReferenceName)))
+    .Select(p => p.DriverName).FirstOrDefault(),
                 ReferenceAddress1 = x.ReferenceAddress1,
                 ReferenceAddress2 = x.ReferenceAddress2,
                 ReferenceAddress3 = x.ReferenceAddress3,
@@ -246,22 +248,21 @@ namespace VMS.Controllers
                 CreatedBy = x.CreatedBy,
                 UpdatedBy = x.UpdatedBy,
                 StateName = _context.TblStates
-                            .Where(p => p.Id == x.StateId)
-                            .Select(p => p.StateName).FirstOrDefault(),
+                         .Where(p => p.Id == x.StateId)
+                         .Select(p => p.StateName).FirstOrDefault(),
                 CityName = _context.TblCities
-                            .Where(p => p.Id == x.CityId)
-                            .Select(p => p.CityName).FirstOrDefault(),
+                         .Where(p => p.Id == x.CityId)
+                         .Select(p => p.CityName).FirstOrDefault(),
                 DistrictName = _context.TblDistricts
-                            .Where(p => p.Id == x.DistrictId)
-                            .Select(p => p.DistrictName).FirstOrDefault(),
+                         .Where(p => p.Id == x.DistrictId)
+                         .Select(p => p.DistrictName).FirstOrDefault(),
                 CreatedByName = _context.TblUserMasters
-                            .Where(p => p.Id == x.CreatedBy)
-                            .Select(p => p.UserName).FirstOrDefault(),
+                         .Where(p => p.Id == x.CreatedBy)
+                         .Select(p => p.UserName).FirstOrDefault(),
                 UpdatedByName = _context.TblUserMasters
-                            .Where(p => p.Id == x.UpdatedBy)
-                            .Select(p => p.UserName).FirstOrDefault()
+                         .Where(p => p.Id == x.UpdatedBy)
+                         .Select(p => p.UserName).FirstOrDefault()
             }).OrderByDescending(n => n.Id).ToList();
-
             if (model.Count() == 0)
             {
                 return Json(null);
