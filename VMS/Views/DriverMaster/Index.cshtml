@@ -1054,6 +1054,15 @@
                     var drivingLicenceValidity = $("#txtDrivingLicenceValidity").val();
                     drivingLicenceValidity = drivingLicenceValidity.split("-").reverse().join("-");
 
+                    if ($('#ddlExistingReference option:selected').val() === 'true') {
+                        var driverValue = $("#ddlDriver option:selected").val();
+
+                        if (driverValue === null || driverValue === "" || parseInt(driverValue) <= 0 || isNaN(parseInt(driverValue))) {
+                            alert("Please select a reference driver.");
+                            return false; // Stop further execution in this block
+                        }
+                    }
+
                     var formData = new FormData();
                     formData.append("driverName", $('#txtDriverName').val());
                     formData.append("fatherName", $("#txtFatherName").val());

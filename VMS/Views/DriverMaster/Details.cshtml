@@ -245,9 +245,13 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtExistingReference">Existing Reference:</label>
+                                        <label class="col-sm-4 col-form-label" for="ddlExistingReference">Existing Reference :</label>
                                         <div class="col-sm-8">
-                                            @Html.TextBoxFor(m => m.IsExistingReference, new { @class = "form-control", id = "txtExistingReference", @maxlength = "20", @readonly = "readonly" })
+                                            <select class="form-control" id="ddlExistingReference" name="ddlExistingReference" onchange="setDropDownStyle(this);">
+                                                <option value="0">Select Existing Reference</option>
+                                                <option value="true">Yes</option>
+                                                <option value="false">No</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -257,10 +261,10 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtReferenceName">Reference Name :</label>
                                         <div class="col-sm-8">
-                                            @Html.TextBoxFor(m => m.ReferenceName, new { @class = "form-control", id = "txtReferenceName", @maxlength = "100", @readonly = "readonly" })
+                                            <select class="form-control" id="ddlDriver" name="ddlDriver"></select>
                                         </div>
                                     </div>
-                                </div>
+                                    </div>
                                 <div class="col-md-6">
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtReferenceAddress1">Ref Address 1:</label>
@@ -336,6 +340,7 @@
 </div>
 @* } *@
 @section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript">
         // var fullAccess = '@ViewBag.AddUserRoleFullAccess';
         // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
@@ -353,14 +358,34 @@
          });
 
         $(document).ready(function () {
-            setSideMenu("driver-master");
+            setSideMenu("driver-master"); $('#ddlDriver').select2();
+            getDriverMaster();
             if (fullAccess === "True" || viewAccess === "True") {
                 makeFieldsReadOnly();
                 var driverMasterID = GetParameterValues('driverMasterID');
                 getdriverMasterID(driverMasterID);
+
+                $("#ddlExistingReference").on("change", function () {
+                    var selectedValue = $(this).val();
+                    enableReferenceDriverDropDown(selectedValue);
+                });
             }
         });
+        function enableReferenceDriverDropDown(selectedValue) {
+            // Select the ddlDriver dropdown
+            var ddlDriver = $("#ddlDriver");
+                ddlDriver.prop("disabled", true); // Disable the dropdown
+                // Optionally, you might want to reset its value when disabled
 
+                $("#ddlDriver").val(null).trigger('change');
+                $("#txtReferenceAddress1").val("");
+                $("#txtReferenceAddress2").val("");
+                $("#txtReferenceAddress3").val("");
+                $("#txtReferenceCity").val("");
+                $("#txtReferencePinCode").val("");
+                $("#txtReferenceMobile").val("");
+            
+        }
         function makeFieldsReadOnly() {
             $("#txtState").prop("readonly", true);
             $("#txtCity").prop("readonly", true);
@@ -383,8 +408,8 @@
             $("#txtBankName").prop("readonly", true);
             $("#txtBankAccountNumber").prop("readonly", true);
             $("#txtBankIFSCCode").prop("readonly", true);
-            $("#txtExistingReference").prop("readonly", true);
-            $("#txtReferenceName").prop("readonly", true);
+            document.getElementById('ddlExistingReference').disabled = true;
+             $('#ddlDriver').prop('disabled', true);
             $("#txtReferenceAddress1").prop("readonly", true);
             $("#txtReferenceAddress2").prop("readonly", true);
             $("#txtReferenceAddress3").prop("readonly", true);
@@ -424,8 +449,9 @@
                         $("#txtBankName").val(data.bankName);
                         $("#txtBankAccountNumber").val(data.bankAccountNumber);
                         $("#txtBankIFSCCode").val(data.bankIFSCCode);
-                        $("#txtExistingReference").val(data.isExistingReference);
-                        $("#txtReferenceName").val(data.referenceName);
+                        $("#ddlExistingReference").val(data.isExistingReference.toString());
+                        enableReferenceDriverDropDown(data.isExistingReference.toString())
+                        $('#ddlDriver').val(data.referenceName).trigger('change');
                         $("#txtReferenceAddress1").val(data.referenceAddress1);
                         $("#txtReferenceAddress2").val(data.referenceAddress2);
                         $("#txtReferenceAddress3").val(data.referenceAddress3);
