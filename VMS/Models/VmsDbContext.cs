@@ -76,6 +76,8 @@ public partial class VmsDbContext : DbContext
     public virtual DbSet<TblUserSubscription> TblUserSubscriptions { get; set; }
 
     public virtual DbSet<TblVehicleMaster> TblVehicleMasters { get; set; }
+    public virtual DbSet<TblServiceDueMaster> TblServiceDueMaster { get; set; }
+    public virtual DbSet<TblServiceCompletion> TblServiceCompletion { get; set; }
 
     //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -1774,6 +1776,66 @@ public partial class VmsDbContext : DbContext
                 .HasForeignKey(d => d.VehicleTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_tbl_Vehicle_Master_tbl_Code_Master");
+        });
+
+        modelBuilder.Entity<TblServiceDueMaster>(entity =>
+        {
+            entity.ToTable("tbl_ServiceDue_Master");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.VehicleId).HasColumnName("Vehicle_Id");
+            entity.Property(e => e.PurchaseDate).HasColumnName("Purchase_Date");
+            entity.Property(e => e.ServiceCode).HasColumnName("Service_Code");
+            entity.Property(e => e.IntervalKm).HasColumnName("Interval_Km");
+            entity.Property(e => e.IntervalMonth).HasColumnName("Interval_Month");
+            entity.Property(e => e.DueDate).HasColumnName("Due_Date");
+            entity.Property(e => e.PartCost).HasColumnName("Parts_Cost");
+            entity.Property(e => e.LabourCost).HasColumnName("Labour_Cost");
+            entity.Property(e => e.TotalCost).HasColumnName("Total_Cost");
+            entity.Property(e => e.Workshop).HasColumnName("Workshop");
+            entity.Property(e => e.Remarks).HasColumnName("Remarks");           
+
+            entity.Property(e => e.IsActive).HasColumnName("Is_Active");
+            entity.Property(e => e.CreatedBy).HasColumnName("Created_By");
+            entity.Property(e => e.CreationDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("Creation_Date");
+            entity.Property(e => e.UpdatedBy).HasColumnName("Updated_By");
+            entity.Property(e => e.UpdateDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("Update_Date");
+        });
+
+        modelBuilder.Entity<TblServiceCompletion>(entity =>
+        {
+            entity.ToTable("tbl_Service_Completion");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.VehicleId).HasColumnName("Vehicle_Id");
+            entity.Property(e => e.ServiceDate).HasColumnName("Service_Date");
+            entity.Property(e => e.KmReadingOnService).HasColumnName("Km_Reading_On_Service");
+            entity.Property(e => e.IntervalKm).HasColumnName("Interval_Km");
+            entity.Property(e => e.IntervalMonth).HasColumnName("Interval_Month");
+            entity.Property(e => e.DueDate).HasColumnName("Due_Date");
+            entity.Property(e => e.PartCost).HasColumnName("Parts_Cost");
+            entity.Property(e => e.LabourCost).HasColumnName("Labour_Cost");
+            entity.Property(e => e.TotalCost).HasColumnName("Total_Cost");
+            entity.Property(e => e.Workshop).HasColumnName("Workshop");
+            entity.Property(e => e.Remarks).HasColumnName("Remarks");
+
+            entity.Property(e => e.IsActive).HasColumnName("Is_Active");
+            entity.Property(e => e.CreatedBy).HasColumnName("Created_By");
+            entity.Property(e => e.CreationDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("Creation_Date");
+            entity.Property(e => e.UpdatedBy).HasColumnName("Updated_By");
+            entity.Property(e => e.UpdateDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("Update_Date");
         });
 
         OnModelCreatingPartial(modelBuilder);

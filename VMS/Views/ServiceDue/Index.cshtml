@@ -1,0 +1,498 @@
+﻿@model TblServiceDueMaster
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Service Due Add/Update";
+}
+
+<style>
+    .form-check-inline {
+        display: flex;
+        align-items: center;
+        margin-right: 1rem;
+    }
+
+    .form-check-input {
+        margin-top: 0 !important;
+        margin-right: 0.3rem;
+    }
+
+    .form-check-inline .form-check-label {
+        margin-left: 0 !important;
+    }
+
+    .reqFields {
+        color: red;
+    }
+
+    .vaidationTextBoxError {
+        border: 1px solid red;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Add Service Due Details</h4>
+                    <div>
+                        <form id="frmServiceDueMaster" name="frmServiceDueMaster" method="post" class="forms-sample" autocomplete="off">
+                            @Html.AntiForgeryToken()
+                            <input id="hdnServiceDueID" name="Id" type="hidden" value="0"> @* Changed name to "Id" to match model property *@
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <label id="lblMandatoryMessage" class="reqFields">@utilityHelper.reqFieldMessage</label>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="ddlVehicleNo">Vehicle No:<span class="reqFields">*</span> </label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" id="ddlVehicleNo" name="ddlVehicleNo"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtServiceCode">Service Code:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtServiceCode" name="ServiceCode" placeholder="Enter Service Code" class="form-control" onchange="setTextboxStyle(this);" maxlength="50"> @* Changed to ServiceCode *@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtIntervalKm">Interval (KM):<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtIntervalKm" name="IntervalKm" placeholder="Enter Interval in KM" class="form-control numberonly" onchange="setTextboxStyle(this);" maxlength="10"> @* Changed to IntervalKm *@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtIntervalMonth">Interval (Months):<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtIntervalMonth" name="IntervalMonth" placeholder="Enter Interval in Months" class="form-control numberonly" onchange="setTextboxStyle(this);" maxlength="5"> @* Changed to IntervalMonth *@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPurchaseDate">Purchase Date:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtPurchaseDate" name="PurchaseDate" placeholder="Select Purchase Date" class="form-control" onchange="setTextboxStyle(this);"> @* Added PurchaseDate *@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtDueDate">Due Date:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtDueDate" name="DueDate" placeholder="Select Due Date" class="form-control" onchange="setTextboxStyle(this);"> @* Added DueDate *@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtPartCost">Part Cost:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtPartCost" name="PartCost" placeholder="Enter Part Cost" class="form-control decimalonly" onchange="setTextboxStyle(this);" maxlength="15"> @* Added PartCost *@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLabourCost">Labour Cost:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtLabourCost" name="LabourCost" placeholder="Enter Labour Cost" class="form-control decimalonly" onchange="setTextboxStyle(this);" maxlength="15"> @* Added LabourCost *@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtTotalCost">Total Cost:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtTotalCost" name="TotalCost" placeholder="Calculated Total Cost" class="form-control" readonly="readonly"> @* Added TotalCost - Made readonly as it's calculated *@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtWorkshop">Workshop:<span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtWorkshop" name="Workshop" placeholder="Enter Workshop Name" class="form-control alphanumericonlywithspace" onchange="setTextboxStyle(this);" maxlength="200"> @* Added Workshop *@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRemarks">Remarks:</label>
+                                        <div class="col-sm-8">
+                                            <textarea id="txtRemarks" name="Remarks" class="form-control" maxlength="500" placeholder="Enter Remarks" rows="3"></textarea> @* Added Remarks *@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="chkIsActive">Is Active:</label>
+                                        <div class="col-sm-8">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="chkIsActive" name="IsActive" value="true" checked> @* Added IsActive *@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row rowHeight" style="text-align:center;">
+                                <div class="col-md-12">
+                                    <button type="button" id="saveButton" class="btn btn-primary mr-2" onclick="saveServiceDue();">Save</button>
+                                    <button type="button" class="btn btn-light" onclick="clearControls();">Clear</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script type="text/javascript">
+        var fullAccess = 'True';
+        var addAccess = 'True';
+        var viewAccess = 'True';
+        var updateAccess = 'True';
+        var deleteAccess = 'True';
+
+        $(document).ready(function () {
+            $('#ddlVehicleNo').select2();
+
+            setSideMenu("service-due-master");
+
+            getVehicleNumber(); // Renamed to accurately reflect its purpose
+
+            // Initialize date pickers
+            $("#txtPurchaseDate").datepicker({
+                dateFormat: 'dd-mm-yy', // Or your preferred format
+                changeMonth: true,
+                changeYear: true
+            });
+            $("#txtDueDate").datepicker({
+                dateFormat: 'dd-mm-yy', // Or your preferred format
+                changeMonth: true,
+                changeYear: true
+            });
+
+            // Calculate Total Cost
+            $('#txtPartCost, #txtLabourCost').on('input', function () {
+                calculateTotalCost();
+            });
+
+            // Check if Page is Opening on Edit Click
+            var id = GetParameterValues('id');
+            if (id && id.length > 0 && parseInt(id[0]) > 0) {
+                document.getElementById("saveButton").textContent = "Update";
+                getServiceDueByID(id[0]); // Pass the ID directly
+            }
+        });
+
+        function setDropDownStyle(cltr) {
+            if ($(cltr).val() == "0" || $(cltr).val() == "") { // Added empty string check for dropdowns
+                $(cltr).attr('class', 'form-control vaidationTextBoxError');
+            } else {
+                $(cltr).attr('class', 'form-control');
+            }
+        }
+
+        function setTextboxStyle(cltr) {
+            if ($(cltr).val() == "") {
+                $(cltr).attr('class', 'form-control vaidationTextBoxError');
+            } else {
+                $(cltr).attr('class', 'form-control');
+            }
+        }
+
+        function calculateTotalCost() {
+            var partCost = parseFloat($('#txtPartCost').val()) || 0;
+            var labourCost = parseFloat($('#txtLabourCost').val()) || 0;
+            var totalCost = partCost + labourCost;
+            $('#txtTotalCost').val(totalCost.toFixed(2)); // Format to 2 decimal places
+        }
+
+
+
+        function clearControls() {
+            $('#hdnServiceDueID').val('0');
+            $('#ddlVehicleNo').val('0').trigger('change');
+            $('#txtPurchaseDate').val('');
+            $('#txtServiceCode').val('');
+            $('#txtIntervalKm').val('');
+            $('#txtIntervalMonth').val('');
+            $('#txtDueDate').val('');
+            $('#txtPartCost').val('');
+            $('#txtLabourCost').val('');
+            $('#txtTotalCost').val('');
+            $('#txtWorkshop').val('');
+            $('#txtRemarks').val('');
+            $('#chkIsActive').prop('checked', true); // Set to checked by default for new entry
+            document.getElementById("saveButton").textContent = "Save";
+
+            // Remove validation error styles
+            $('.form-control').removeClass('vaidationTextBoxError');
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            var date = new Date(dateString);
+            var year = date.getFullYear();
+            var month = (date.getMonth() + 1).toString().padStart(2, '0');
+            var day = date.getDate().toString().padStart(2, '0');
+            return year + '-' + month + '-' + day;
+        }
+
+        // Custom validation for numbers only (integers)
+        $(document).on('input', '.numberonly', function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Custom validation for decimal numbers
+        $(document).on('input', '.decimalonly', function () {
+            this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+        });
+
+        // Custom validation for alphanumeric with space
+        $(document).on('input', '.alphanumericonlywithspace', function () {
+            this.value = this.value.replace(/[^a-zA-Z0-9\s]/g, '');
+        });
+
+        function checkValidation() {
+            var isValid = true;
+
+            // Vehicle Number validation
+            if ($('#ddlVehicleNo option:selected').val() == "0" || $('#ddlVehicleNo option:selected').val() == "") {
+                $("#ddlVehicleNo").attr('class', 'form-control vaidationTextBoxError');
+                isValid = false;
+            } else {
+                $("#ddlVehicleNo").attr('class', 'form-control');
+            }
+
+            // Service Code validation
+            if ($('#txtServiceCode').val().trim() == "") {
+                $("#txtServiceCode").attr('class', 'form-control vaidationTextBoxError');
+                isValid = false;
+            } else {
+                $("#txtServiceCode").attr('class', 'form-control');
+            }
+
+            // Interval Km validation
+            if ($('#txtIntervalKm').val().trim() == "" || isNaN(parseInt($('#txtIntervalKm').val()))) {
+                $("#txtIntervalKm").attr('class', 'form-control vaidationTextBoxError');
+                isValid = false;
+            } else {
+                $("#txtIntervalKm").attr('class', 'form-control');
+            }
+
+            // Interval Month validation
+            if ($('#txtIntervalMonth').val().trim() == "" || isNaN(parseInt($('#txtIntervalMonth').val()))) {
+                $("#txtIntervalMonth").attr('class', 'form-control vaidationTextBoxError');
+                isValid = false;
+            } else {
+                $("#txtIntervalMonth").attr('class', 'form-control');
+            }
+
+            // Purchase Date validation
+            if ($('#txtPurchaseDate').val().trim() == "") {
+                $("#txtPurchaseDate").attr('class', 'form-control vaidationTextBoxError');
+                isValid = false;
+            } else {
+                $("#txtPurchaseDate").attr('class', 'form-control');
+            }
+
+            // Due Date validation
+            if ($('#txtDueDate').val().trim() == "") {
+                $("#txtDueDate").attr('class', 'form-control vaidationTextBoxError');
+                isValid = false;
+            } else {
+                $("#txtDueDate").attr('class', 'form-control');
+            }
+
+            // Part Cost validation
+            if ($('#txtPartCost').val().trim() == "" || isNaN(parseFloat($('#txtPartCost').val()))) {
+                $("#txtPartCost").attr('class', 'form-control vaidationTextBoxError');
+                isValid = false;
+            } else {
+                $("#txtPartCost").attr('class', 'form-control');
+            }
+
+            // Labour Cost validation
+            if ($('#txtLabourCost').val().trim() == "" || isNaN(parseFloat($('#txtLabourCost').val()))) {
+                $("#txtLabourCost").attr('class', 'form-control vaidationTextBoxError');
+                isValid = false;
+            } else {
+                $("#txtLabourCost").attr('class', 'form-control');
+            }
+
+            // Workshop validation
+            if ($('#txtWorkshop').val().trim() == "") {
+                $("#txtWorkshop").attr('class', 'form-control vaidationTextBoxError');
+                isValid = false;
+            } else {
+                $("#txtWorkshop").attr('class', 'form-control');
+            }
+
+            return isValid;
+        }
+
+        // Function to get query parameters
+        function GetParameterValues(param) {
+            var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < url.length; i++) {
+                var urlparam = url[i].split('=');
+                if (urlparam[0] == param) {
+                    return urlparam[1].split('#');
+                }
+            }
+        }
+
+        function getServiceDueByID(Id) {
+            $.ajax({
+            cache: false,
+                url: '@(utilityHelper.SiteUrl() + "ServiceDue/GetServiceDueById")',
+            type: "GET",
+                data: { id: Id },
+            dataType: "json",
+            success: function (data) {
+                    if (data) {
+                        $('#hdnServiceDueID').val(data.id);
+                        $('#ddlVehicleNo').val(data.vehicleId).trigger('change');
+                        $('#txtPurchaseDate').val(formatDate(data.purchaseDate));
+                        $('#txtServiceCode').val(data.serviceCode);
+                        $('#txtIntervalKm').val(data.intervalKm);
+                        $('#txtIntervalMonth').val(data.intervalMonth);
+                        $('#txtDueDate').val(formatDate(data.dueDate));
+                        $('#txtPartCost').val(data.partCost);
+                        $('#txtLabourCost').val(data.labourCost);
+                        $('#txtTotalCost').val(data.totalCost);
+                        $('#txtWorkshop').val(data.workshop);
+                        $('#txtRemarks').val(data.remarks);
+                        $('#chkIsActive').prop('checked', data.isActive);
+                    } else {
+                    console.log(data);
+                }
+            }
+        });
+        }
+
+        function saveServiceDue() {
+            if (!checkValidation()) {
+                alert("Please fill in all mandatory fields.");
+                return false;
+            }
+
+            var strPurchaseDate = $("#txtPurchaseDate").val().split("-").reverse().join("-");
+            var strDueDate = $("#txtDueDate").val().split("-").reverse().join("-");
+
+            var serviceDueData = {
+                Id: parseInt($('#hdnServiceDueID').val()),
+                VehicleId: parseInt($('#ddlVehicleNo').val()),
+                StrPurchaseDate: strPurchaseDate.toString(),
+                ServiceCode: $('#txtServiceCode').val().trim(),
+                IntervalKm: parseInt($('#txtIntervalKm').val()),
+                IntervalMonth: parseInt($('#txtIntervalMonth').val()),
+                StrDueDate: strDueDate.toString(),
+                PartCost: parseFloat($('#txtPartCost').val()),
+                LabourCost: parseFloat($('#txtLabourCost').val()),
+                TotalCost: parseFloat($('#txtTotalCost').val()), // Send calculated value
+                Workshop: $('#txtWorkshop').val().trim(),
+                Remarks: $('#txtRemarks').val().trim(),
+                IsActive: $('#chkIsActive').is(':checked')
+            };
+
+            // var serviceDueData = {
+            //     id: parseInt($('#hdnServiceDueID').val()),
+            //     vehicleId: parseInt($('#ddlVehicleNo').val()),
+            //     strPurchaseDate: strPurchaseDate,
+            //     serviceCode: $('#txtServiceCode').val().trim(),
+            //     intervalKm: parseInt($('#txtIntervalKm').val()),
+            //     intervalMonth: parseInt($('#txtIntervalMonth').val()),
+            //     strDueDate: strDueDate,
+            //     partCost: parseFloat($('#txtPartCost').val()),
+            //     labourCost: parseFloat($('#txtLabourCost').val()),
+            //     totalCost: parseFloat($('#txtTotalCost').val()), // Send calculated value
+            //     workshop: $('#txtWorkshop').val().trim(),
+            //     remarks: $('#txtRemarks').val().trim(),
+            //     isActive: $('#chkIsActive').is(':checked')
+            // };
+
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "ServiceDue/SaveUpdate")',
+                type: "POST",
+                processData: false,
+                contentType: "application/json; charset=utf-8", 
+                dataType: "json",
+                data: JSON.stringify(serviceDueData),
+                success: function (data) {
+                    if (data.success) {
+                        $.confirm({
+                            title: 'Save Driver Hisab!',
+                            content: "Service Due Details has been saved successfully!",
+                            type: 'green',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-green',
+                                    action: function () {
+                                        clearControls();
+                                        window.location.href = '@(utilityHelper.SiteUrl() + "ServiceDue/List")';
+                                    }
+                                },
+                            }
+                        });
+                    } else {
+                        $.confirm({
+                            title: 'Service Due Details Error!',
+                            content: data.message,
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                        $("#divServiceDueMaster").hide();
+                    }
+                },
+                error: function (error) {
+                    toastr.error('An error occurred while saving service due details.', 'Error');
+                    console.error("Error saving service due details: ", error);
+                }
+            });
+        }
+
+    </script>
+}

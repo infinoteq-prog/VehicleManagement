@@ -1,0 +1,284 @@
+﻿@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Service Due Master";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="page-title">Service Due List</h1>
+            <div class="card">
+                <div class="card-body">
+                    <form id="searchServiceDueForm">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="txtServiceDueId">Id</label>
+                                    <input type="number" class="form-control" id="txtServiceDueId" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="ddlVehicleNo">Vehicle No</label>
+                                    <select class="form-control" id="ddlVehicleNo">
+                                        <!-- Options will be dynamically populated here -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="txtDueDateFrom">Due Date From</label>
+                                    <input type="date" class="form-control" id="txtDueDateFrom" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="txtDueDateTo">Due Date To</label>
+                                    <input type="date" class="form-control" id="txtDueDateTo" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-primary mt-4" onclick="searchServiceDueMaster()">Search</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <table id="tblServiceDueMasterList" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Id</th>
+                                <th>Vehicle Number</th>
+                                <th>Purchase Date</th>
+                                <th>Service Code</th>
+                                <th>Interval Km</th>
+                                <th>Interval Month</th>
+                                <th>Due Date</th>
+                                <th>Part Cost</th>
+                                <th>Labour Cost</th>
+                                <th>Total Cost</th>
+                                <th>Workshop</th>
+                                <th>Remarks</th>
+                                <th>Creation Date</th>
+                                <th>Created By</th>
+                                <th>Update Date</th>
+                                <th>Updated By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic Rows Will Appear Here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script type="text/javascript">
+        // Set permissions for accessing and interacting with records
+        var fullAccess = 'True';
+        var viewAccess = 'True';
+        var updateAccess = 'True';
+        var deleteAccess = 'True';
+        var approvalAccess = 'True';
+
+        var viewButton = "";
+        var updateButton = "";
+        var deleteButton = "";
+        var approvalButton = "";
+
+        $(document).ready(function () {
+            $('#ddlVehicleNo').select2();
+            getUserAccess();
+             $('[data-toggle="tooltip"]').tooltip();
+            setSideMenu("service-due-master");
+            if (fullAccess === "True" || viewAccess === "True") {
+                getVehicleNumber();
+                searchServiceDueMaster();
+            }
+        });
+
+        function getUserAccess(){
+           var roleName = '@ViewBag.roleName';
+            if(roleName==='User')
+            {fullAccess = 'false';
+            approvalAccess = 'false';
+            }
+        }
+
+        function setDefaultDate()
+        {
+              const tripStartDateInput = document.getElementById('txtDueDateFrom');
+              const today1 = new Date();
+              const oneMonthAgo = new Date(today1); // Create a copy of today's date
+
+              // Subtract one month
+              oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+              // Format the date as YYYY-MM-DD (required for <input type="date">)
+              const year = oneMonthAgo.getFullYear();
+              const month = String(oneMonthAgo.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+              const day = String(oneMonthAgo.getDate()).padStart(2, '0');
+              const formattedDate = `${year}-${month}-${day}`;  
+              tripStartDateInput.value = formattedDate;
+              
+
+              const tripEndDateInput = document.getElementById('txtDueDateTo');
+             const today = new Date();
+             // Format the date as YYYY-MM-DD (required for <input type="date">)
+             const yearEnd = today.getFullYear();
+             const monthEnd = String(today.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+             const dayEnd = String(today.getDate()).padStart(2, '0');
+             const formattedDateEnd = `${yearEnd}-${monthEnd}-${dayEnd}`;
+               tripEndDateInput.value = formattedDateEnd;
+         }
+
+        function bindDataTable() {
+            $('#tblServiceDueMasterList').DataTable({
+                deferRender: true,
+                scroller: true,
+                scrollX: true,
+                scrollY: true,
+                searching: true,
+                info: true,
+                paging: true,
+                dom: 'Bfrtip',
+                "bDestroy": true,
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: 'Copy'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: 'Csv',
+                        title: function () {
+                            return "Diesel Hisab Master List";
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        title: function () {
+                            return "Diesel Hisab Master List";
+                        }
+                    },
+                    {
+                        extend: "print",
+                        exportOptions: {
+                            orientation: 'landscape'
+                        },
+                        pageSize: 'A0'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: function () {
+                            return "Diesel Hisab Master List";
+                        },
+                        orientation: 'landscape',
+                        pageSize: 'A4'
+                    }
+                ]
+            });
+        }
+
+        function searchServiceDueMaster() {
+            if ($.fn.DataTable.isDataTable("#tblServiceDueMasterList")) {
+                $('#tblServiceDueMasterList tr').remove();
+                $('#tblServiceDueMasterList tbody').empty();
+                $('#tblServiceDueMasterList').DataTable().clear().destroy();
+            }
+
+            var id = $("#txtServiceDueId").val();
+            var vehicleNo = $('#ddlVehicleNo option:selected').val();
+            var dueDateFrom = $("#txtDueDateFrom").val();
+            var dueDateTo = $("#txtDueDateTo").val();
+
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "ServiceDue/searchServiceDueMaster")',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    id: id, // Id can be added if needed, for now it's set to 0
+                    vehicleNo: vehicleNo,
+                    dueDateFrom: dueDateFrom,
+                    dueDateTo: dueDateTo
+                },
+                success: function (data) {
+                    if (data != null && data.length > 0) {
+                        var rows = "";
+                        $.each(data, function (i, item) {
+
+                                 if (fullAccess === "True" || viewAccess === "True") {
+                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" title="View" data-toggle="tooltip" data-placement="top" onclick="viewServiceDueMaster(\'' + item.id + '\');"> <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                            }
+
+                            if (fullAccess === "True" || updateAccess === "True") {
+                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" title="Edit" data-toggle="tooltip" data-placement="top" onclick="editServiceDueMaster(\'' + item.id + '\');"> <i class="typcn typcn-edit btn-icon-append"></i></button> ';
+                            }
+                            // if (fullAccess === "True" || updateAccess === "True") {
+                            //      printButton = '<button type="button" class="btn btn-primary btn-sm btn-icon-text mr-3" title="Print" data-toggle="tooltip" data-placement="top" onclick="printServiceDueMaster(\'' + item.id + '\');"> <i class="typcn typcn-printer btn-icon-append"></i></button> ';
+                            //                                                        }
+
+
+                            if (fullAccess === "True" || deleteAccess === "True") {
+                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" title="Delete" data-toggle="tooltip" data-placement="top" onclick="deleteServiceDueMaster(\'' + item.id + '\');"> <i class="typcn typcn-delete-outline btn-icon-append"></i></button>  ';
+                            }
+
+                            if(item.approvedStatus==='Approved')
+                            {
+                                updateButton='';
+                                deleteButton='';
+                            }
+                            var row = '<tr>' +
+                                '<td>' +
+                                '<div class="d-flex align-items-center">' +
+                                viewButton +
+                                updateButton +
+                                // printButton +
+                                deleteButton +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + item.id + '</td>' +
+                                '<td>' + item.vehicleNumber + '</td>' +
+                                '<td>' + item.purchaseDate + '</td>' +
+                                '<td>' + item.serviceCode + '</td>' +
+                                '<td>' + item.intervalKm + '</td>' +
+                                '<td>' + item.intervalMonth + '</td>' +
+                                '<td>' + item.dueDate + '</td>' +
+                                '<td>' + item.partCost + '</td>' +
+                                '<td>' + item.labourCost + '</td>' +
+                                '<td>' + item.totalCost + '</td>' +
+                                '<td>' + item.workshop + '</td>' +
+                                '<td>' + item.remarks + '</td>' +
+                                '<td>' + item.creationDate + '</td>' +
+                                '<td>' + item.createdBy + '</td>' +
+                                '<td>' + item.updateDate + '</td>' +
+                                '<td>' + item.updatedBy + '</td>' +
+                                '</tr>';
+                            rows += row;
+                        });
+                        $("#tblServiceDueMasterList tbody").html(rows);
+                        bindDataTable();
+                    } else {
+                        var row = '<tr><td colspan="12" style="text-align:center">No Data Found!</td></tr>';
+                        $("#tblServiceDueMasterList tbody").html(row);
+                    }
+                },
+                error: function (ex) {
+                    alert("Error: " + ex);
+                }
+            });
+        }
+    </script>
+}
+}

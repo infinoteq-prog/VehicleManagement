@@ -134,6 +134,19 @@
                     </ul>
                 </div>
             </li>
+            <li class="nav-item">
+                <a id="lnkServiceDueMaster" class="nav-link" data-toggle="collapse" href="#service-due-master" aria-expanded="false" aria-controls="service-due-master">
+                    <i class="typcn typcn-document-text menu-icon"></i>
+                    <span class="menu-title">Service Due</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="service-due-master">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ServiceDue/Index")">Add Service Due</a></li>
+                        <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ServiceDue/List")">View Service Due</a></li>
+                    </ul>
+                </div>
+            </li>
 
             @* @if (userLogin.RoleName.Equals(SiteConstants.Admin) || userLogin.RoleName.Equals(SiteConstants.SuperAdmin))
             {
