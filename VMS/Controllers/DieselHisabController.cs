@@ -409,7 +409,7 @@ namespace VMS.Controllers
 
                 if(tripStartDate.ToStringFromNull()=="" && tripEndDate.ToStringFromNull()=="")
                 {
-                    tripStartDate = DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd");
+                    tripStartDate = DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd");
                     tripEndDate = DateTime.Now.ToString("yyyy-MM-dd");
                 }
                 var model = await DieselHisabContext.searchDieselHisabMaster(_connectionString, id, vehicleNo, driverId, tripStartDate,
@@ -491,7 +491,7 @@ namespace VMS.Controllers
                                 // Insert Vehicle Release Info
                                 var dieselHisab = new TblDieselHeader
                                 {
-                                    TripId = tripNo.ToIntFromNull(),
+                                    //TripId = tripNo.ToIntFromNull(),
                                     LastTripId = lastTripId.ToIntFromNull(),
                                     DriverId = driverId.ToIntFromNull(),
                                     VehicleNo = vehicleNo.ToIntFromNull(),

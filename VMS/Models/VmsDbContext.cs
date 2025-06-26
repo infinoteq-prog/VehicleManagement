@@ -446,8 +446,8 @@ public partial class VmsDbContext : DbContext
             entity.HasKey(e => e.TripId);
 
             entity.ToTable("tbl_Diesel_Header");
-
-            entity.Property(e => e.TripId).ValueGeneratedNever();
+            //entity.Property(e => e.TripId).ValueGeneratedNever();
+            entity.Property(e => e.TripId);
             entity.Property(e => e.CreatedBy).HasColumnName("Created_By");
             entity.Property(e => e.LastTripId).HasColumnName("Last_Trip_Id");
             entity.Property(e => e.CreationDate)
