@@ -419,8 +419,9 @@ namespace VMS
 
                 decimal sumTotalDiesel = ((openingDiesel + (_lstDieselFilling?.Sum(x => x.DieselQty).To3Decimal() ?? 0)) - closingDiesel);
                 decimal sumTotalKhaliKaDiesel = _lstDieselLine?.Where(x => x.LoadType.ToUpper() == "KHALI").Sum(x => x.EstimatedDiesel).To3Decimal() ?? 0;
+                decimal sumTotalLoadingUnloadingDiesel = _lstDieselLine?.Where(x => x.RouteDesc.ToUpper() == "Loading/Unloading").Sum(x => x.EstimatedDiesel).To3Decimal() ?? 0;
 
-                BhariKaAverage = (sumTotalRunningKm - sumTotalKhaliKaKm) / (sumTotalDiesel - sumTotalKhaliKaDiesel);
+                BhariKaAverage = (sumTotalRunningKm - sumTotalKhaliKaKm) / (sumTotalDiesel - sumTotalKhaliKaDiesel- sumTotalLoadingUnloadingDiesel);
             }
             catch(Exception ex)
             {

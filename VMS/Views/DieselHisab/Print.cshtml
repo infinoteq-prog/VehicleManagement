@@ -408,6 +408,7 @@
 
                         var totalKhaliKaKm=0;
                         var totalKhaliKaDiesel=0;
+                        var totalLoadUnloadDiesel=0;
 
                          // $("#driverName").html(`Driver Name: <span>${data.driverName}</span>`);
                         $("#driverName").text(data.driverName);
@@ -461,6 +462,11 @@
                                     if (parseFloat(entry.average)>0)
                                     totalKhaliKaDiesel=totalKhaliKaDiesel+(entry.distance / entry.average);
                                 }
+
+                                if (entry.routeDesc == "LOADING/UNLOADING") {
+                                    if (parseFloat(entry.average) > 0)
+                                        totalLoadUnloadDiesel = totalLoadUnloadDiesel + (entry.distance / entry.average);
+                                }
                                 $(`#${station}`).text(entry.routeDesc);
                                 $(`#${loadType}`).text(entry.loadType);
                                 $(`#${km}`).text(entry.distance);
@@ -490,10 +496,10 @@
                             //Khali ka Diesel
                             $("#khaliKaDisel").text(Math.round(parseFloat(totalKhaliKaDiesel)));
                             $("#khaliKaKiloMeter").text(Math.round(parseFloat(totalKhaliKaKm)));
-                            $("#bhariKaDiesel").text(Math.round((parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel))));
+                            $("#bhariKaDiesel").text(Math.round((parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel) - parseFload(totalLoadUnloadDiesel))));
                             $("#bhariKaKilometer").text(Math.round((parseFloat(totalRunKm) - parseFloat(totalKhaliKaKm))));
                             if ((parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel)) > 0) {
-                                $("#bhariKaAverage").text(((parseFloat(totalRunKm) - parseFloat(totalKhaliKaKm)) / (parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel))).toFixed(2));
+                                $("#bhariKaAverage").text(((parseFloat(totalRunKm) - parseFloat(totalKhaliKaKm)) / (parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel) - parseFloat(totalLoadUnloadDiesel))).toFixed(2));
                             }else{
                                 $("#bhariKaAverage").text("0");
                             }
