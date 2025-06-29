@@ -496,7 +496,7 @@
                             //Khali ka Diesel
                             $("#khaliKaDisel").text(Math.round(parseFloat(totalKhaliKaDiesel)));
                             $("#khaliKaKiloMeter").text(Math.round(parseFloat(totalKhaliKaKm)));
-                            $("#bhariKaDiesel").text(Math.round((parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel) - parseFload(totalLoadUnloadDiesel))));
+                            $("#bhariKaDiesel").text(Math.round((parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel) - parseFloat(totalLoadUnloadDiesel))));
                             $("#bhariKaKilometer").text(Math.round((parseFloat(totalRunKm) - parseFloat(totalKhaliKaKm))));
                             if ((parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel)) > 0) {
                                 $("#bhariKaAverage").text(((parseFloat(totalRunKm) - parseFloat(totalKhaliKaKm)) / (parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel) - parseFloat(totalLoadUnloadDiesel))).toFixed(2));
