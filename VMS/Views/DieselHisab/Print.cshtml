@@ -463,9 +463,9 @@
                                     totalKhaliKaDiesel=totalKhaliKaDiesel+(entry.distance / entry.average);
                                 }
 
-                                if (entry.routeDesc == "LOADING/UNLOADING") {
+                                if (entry.routeDesc.toUpperCase() === "LOADING/UNLOADING") {
                                     if (parseFloat(entry.average) > 0)
-                                        totalLoadUnloadDiesel = totalLoadUnloadDiesel + (entry.distance / entry.average);
+                                        totalLoadUnloadDiesel = totalLoadUnloadDiesel + entry.estimatedDiesel;
                                 }
                                 $(`#${station}`).text(entry.routeDesc);
                                 $(`#${loadType}`).text(entry.loadType);
