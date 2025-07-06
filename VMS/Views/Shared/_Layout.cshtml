@@ -160,6 +160,7 @@
         }
     </style>
 
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
@@ -401,18 +402,6 @@
                 });
 
                 $("#to-date-picker").datepicker({
-                    dateFormat: 'dd-mm-yy',
-                    changeYear: true,
-                    changeMonth: true,
-                });
-
-                 $("#txtLastTripStartDate").datepicker({
-                    dateFormat: 'dd-mm-yy',
-                    changeYear: true,
-                    changeMonth: true,
-                });
-
-                $("#txtLastTripEndDate").datepicker({
                     dateFormat: 'dd-mm-yy',
                     changeYear: true,
                     changeMonth: true,
@@ -4871,6 +4860,113 @@
                         }
                     });
                 }
+
+        // Function getMunuList
+        function getMenuList() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "UserRoleAccess/getMenuList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Menu</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            s += '<option value="' + data[i].codeTypeId + '">' + data[i].code + '</option>';
+                        }
+                        $("#ddlMenuMaster").html(s);
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+        // Function getMenuList by ID
+        function getMenuList(menuTypeId) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "UserRoleAccess/getMenuList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Menu</option>';
+                        s += '<option value="1">Assign All</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i])
+                            if (data[i].codeTypeId === menuTypeId) {
+                                s += '<option selected="selected" value="' + data[i].codeTypeId + '">' + data[i].code + '</option>';
+                            } else {
+                                s += '<option value="' + data[i].codeTypeId + '">' + data[i].code + '</option>';
+                            }
+                        }
+                        $("#ddlMenuMaster").html(s);
+                    } else {
+                        var s = '<option value="0">Select a Menu</option>';
+                        $("#ddlMenuMaster").html(s);
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        // Function getFunctionName
+        function getFunctionName(menuName,callback) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "Home/getFunctionName?menuName=")' + menuName,
+                type: "GET",
+                dataType: "json",
+                async:false,
+                success: function (data) {
+                    var updateAccess = "False";
+                    var addAccess = "False";
+                    var deleteAccess = "False";
+                    var viewAccess = "True";
+                    var fullAccess = "False";
+
+                    $.each(data, function (index, item) {
+                        
+                        if (item.functionName === "FullUserAccess") {
+                            fullAccess = "True";
+                             updateAccess = "True";
+                              addAccess = "True";
+                              deleteAccess = "True";
+                              viewAccess = "True";
+                            return false;
+                        }
+
+                        if (item.functionName === "EditUserAccess") {
+                            updateAccess = "True";
+                        }
+                        if (item.functionName === "AddUserAccess") {
+                            addAccess = "True";
+                        }
+
+                        if (item.functionName === "DeleteUserAccess") {
+                            deleteAccess = "True";
+                        }
+                        if (item.functionName === "ViewUserAccess") {
+                            viewAccess = "True";
+                        }
+                    });
+
+                   const accessRights = {
+                updateAccess: updateAccess,
+                addAccess: addAccess,
+                deleteAccess: deleteAccess,
+                viewAccess: viewAccess,
+                fullAccess: fullAccess
+            };
+
+            // Call the provided callback with the access rights
+            if (typeof callback === 'function') {
+                callback(accessRights);
+            }
+                }
+            });
+        };
     </script>
     @RenderSection("scripts", required: false)
 </body>

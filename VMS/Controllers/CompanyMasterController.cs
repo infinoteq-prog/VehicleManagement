@@ -22,16 +22,16 @@ namespace VMS.Controllers
             //VMUserRoleAccess userAccess = utilityHelper.getCurrentUserAccess();
             //if (userAccess != null)
             //{
-                //ViewBag.AddUserRoleFullAccess = userAcc.AddUserRoleFullAccess;
-                //ViewBag.AddUserRoleAddAccess = userAcc.AddUserRoleAddAccess;
-                //ViewBag.AddUserRoleUpdateAccess = userAcc.AddUserRoleUpdateAccess;
-                //ViewBag.AddUserRoleDeleteAccess = userAcc.AddUserRoleDeleteAccess;
-                //ViewBag.AddUserRoleViewAccess = userAcc.AddUserRoleViewAccess;
+            //    ViewBag.AddUserRoleFullAccess = userAcc.AddUserRoleFullAccess;
+            //    ViewBag.AddUserRoleAddAccess = userAcc.AddUserRoleAddAccess;
+            //    ViewBag.AddUserRoleUpdateAccess = userAcc.AddUserRoleUpdateAccess;
+            //    ViewBag.AddUserRoleDeleteAccess = userAcc.AddUserRoleDeleteAccess;
+            //    ViewBag.AddUserRoleViewAccess = userAcc.AddUserRoleViewAccess;
             //}
             //else
             //{
-                //Logging out a user because user sesstion is null
-                //return RedirectToAction("Logout", "Login");
+            //    Logging out a user because user sesstion is null
+            //    return RedirectToAction("Logout", "Login");
             //}
             return View();
         }

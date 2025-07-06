@@ -1541,6 +1541,7 @@ public partial class VmsDbContext : DbContext
                 .HasColumnName("Update_Date");
             entity.Property(e => e.UpdatedBy).HasColumnName("Updated_By");
             entity.Property(e => e.UserId).HasColumnName("User_ID");
+            entity.Property(e => e.MenuTypeId).HasColumnName("MenuTypeId");
 
             entity.HasOne(d => d.Function).WithMany(p => p.TblUserFunctions)
                 .HasForeignKey(d => d.FunctionId)

@@ -78,6 +78,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="ddlMenuMaster">Menu: <span class="reqFields">*</span></label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="ddlMenuMaster" name="ddlMenuMaster" onchange="setDropDownStyle(this);"></select>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-6"></div>
                     </div>
                     <div class="row rowHeight">
@@ -119,6 +127,7 @@
                                             <th>Created By</th>
                                             <th>Update Date</th>
                                             <th>Updatd By</th>
+                                            <th>Menu Access</th>
                                         </tr>
                                     </thead>
                                     <tbody id="userAccessBody">
@@ -140,17 +149,34 @@
         // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
         // var updateAccess = '@ViewBag.AddUserRoleUpdateAccess';
         // var deleteAccess = '@ViewBag.AddUserRoleDeleteAccess';
-        var fullAccess = 'True';
-        var addAccess = 'True';
-        var viewAccess = 'True';
-        var updateAccess = 'True';
-        var deleteAccess = 'True';
+        var fullAccess = 'False';
+        var addAccess = 'False';
+        var viewAccess = 'False';
+        var updateAccess = 'False';
+        var deleteAccess = 'False';
         var viewButton = "";
         var updateButton = "";
         var deleteButton = "";
 
         $(document).ready(function () {
             setSideMenu("users-access");
+            getFunctionName('USER ACCESS', function (userRights) {
+                if (userRights) {
+                    console.log("Update Access:", userRights.updateAccess);
+                    console.log("Add Access:", userRights.addAccess);
+                    console.log("Delete Access:", userRights.deleteAccess);
+                    console.log("View Access:", userRights.viewAccess);
+                    console.log("Full Access:", userRights.fullAccess);
+
+                    fullAccess = userRights.fullAccess;
+                    addAccess = userRights.addAccess;
+                    viewAccess = userRights.viewAccess;
+                    updateAccess = userRights.updateAccess;
+                    deleteAccess = userRights.deleteAccess;
+                } else {
+                    console.log("Failed to get user rights.");
+                }
+            });
             if (fullAccess === "True" || viewAccess === "True") {
                 //checkValidationOnChange();
                 getUserRoleAccessList();
@@ -159,6 +185,7 @@
             getUserList();
             getRoleList();
             getFunctionList();
+            getMenuList();
             makeFieldsReadOnly();
 
             $("#ddlUser").on("change", function () {
@@ -313,6 +340,14 @@
                 $("#to-date-picker").attr('class', 'form-control');
                 $("#to-date-picker").focus();
             }
+            if ($("#ddlMenuMaster").val() == "") {
+                $("#ddlMenuMaster").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlMenuMaster").focus();
+                isValid = false;
+            } else {
+                $("#ddlMenuMaster").attr('class', 'form-control');
+                $("#ddlMenuMaster").focus();
+            }
             return isValid;
         }
 
@@ -377,6 +412,15 @@
                         $(this).focus();
                     }
                 });
+                 $("#ddlMenuMaster").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
             });
         }
 
@@ -387,6 +431,7 @@
             $("#txtFunctionName").val("");
             $("#from-date-picker").val("");
             $("#to-date-picker").val("");
+            $("#ddlMenuMaster").val("");
             $("#chkIsActive").prop("checked", false);
         }
 
@@ -405,13 +450,15 @@
             var endDate = $("#to-date-picker").val();
             var fromDate = startDate.split("-").reverse().join("-");
             var toDate = endDate.split("-").reverse().join("-");
+            var menuType =  $('#ddlMenuMaster').val();
 
             $.ajax({
                 cache: false,
                 url: '@(utilityHelper.SiteUrl() + "UserRoleAccess/searchUserRoleAccess")',
                 type: "GET",
                 dataType: "json",
-                data: { userId: userId, roleId: roleId, functionId: functionId, functionName: functionName, startDate: fromDate, endDate: toDate, isActive: isActive, },
+                data: { userId: userId, roleId: roleId, functionId: functionId, functionName: functionName,
+                    startDate: fromDate, endDate: toDate, isActive: isActive, menuType: menuType},
                 success: function (data) {
                     if (data != null && data != undefined) {
                         console.log(data);
@@ -448,6 +495,7 @@
                                 '<td>' + item.createdBy + '</td>' +
                                 '<td>' + item.updateDate + '</td>' +
                                 '<td>' + item.updateBy + '</td>' +
+                                '<td>' + item.codes + '</td>' +
                                 '</tr>';
                             rows = rows + row;
                         });
@@ -480,6 +528,7 @@
                             '<td></td>' +
                             '<td></td>' +
                             '<td style="text-align:center">No Data Found!!!</td>' +
+                            '<td></td>' +
                             '<td></td>' +
                             '<td></td>' +
                             '<td></td>' +
@@ -543,6 +592,7 @@
                                 '<td>' + item.createdBy + '</td>' +
                                 '<td>' + item.updateDate + '</td>' +
                                 '<td>' + item.updateBy + '</td>' +
+                                '<td>' + item.codes + '</td>' +
                                 '</tr>';
                             rows = rows + row;
                             row = "";

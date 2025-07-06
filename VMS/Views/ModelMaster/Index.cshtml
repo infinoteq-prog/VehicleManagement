@@ -191,6 +191,32 @@
             $("#chkIsActive").attr("checked", true);
             $("#chkIsActive").attr("disabled", true);
             getMakeMaster();
+            getFunctionName('MODEL MASTER', function (userRights) {
+                if (userRights) {
+                    console.log("Update Access:", userRights.updateAccess);
+                    console.log("Add Access:", userRights.addAccess);
+                    console.log("Delete Access:", userRights.deleteAccess);
+                    console.log("View Access:", userRights.viewAccess);
+                    console.log("Full Access:", userRights.fullAccess);
+
+                    fullAccess = userRights.fullAccess;
+                    addAccess = userRights.addAccess;
+                    viewAccess = userRights.viewAccess;
+                    updateAccess = userRights.updateAccess;
+                    deleteAccess = userRights.deleteAccess;
+                    if (addAccess === "False") {
+                        const buttons = document.querySelectorAll('button[type="button"], input[type="button"]');
+                        buttons.forEach(button => {
+                            // Prevent removing the trigger button itself, if it also has type="button"
+                            if (button.id !== 'removeAllTypeButtonsBtn') {
+                                button.remove();
+                            }
+                        });
+                    }
+                } else {
+                    console.log("Failed to get user rights.");
+                }
+            });
             if (fullAccess === "True" || addAccess === "True") {
                 checkValidationOnChange();
             }

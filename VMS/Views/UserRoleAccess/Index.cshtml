@@ -73,12 +73,21 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        @* <label class="col-sm-4 col-form-label" for="to-date-picker">To Date: <span class="reqFields">*</span></label>
+                                        <label class="col-sm-4 col-form-label" for="ddlMenuMaster">Menu: <span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
-                                            <input type="text" id="to-date-picker" placeholder="Select To Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
-                                        </div> *@
+                                            <select class="form-control" id="ddlMenuMaster" name="ddlMenuMaster" onchange="setDropDownStyle(this);"></select>
+                                        </div>
                                     </div>
                                 </div>
+          @*                       <div class="col-md-6">
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="to-date-picker">To Date: <span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="to-date-picker" placeholder="Select To Date" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div> *@
                             </div>
                             <div class="row rowHeight">
                                 <div class="col-md-6">
@@ -127,6 +136,7 @@
                                         <th>Created By</th>
                                         <th>Update Date</th>
                                         <th>Updatd By</th>
+                                        <th>Mennu Access</th>
                                     </tr>
                                 </thead>
                                 <tbody id="userAccessBody">
@@ -149,30 +159,37 @@
         // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
         // var updateAccess = '@ViewBag.AddUserRoleUpdateAccess';
         // var deleteAccess = '@ViewBag.AddUserRoleDeleteAccess';
-        var fullAccess = 'True';
-        var addAccess = 'True';
-        var viewAccess = 'True';
-        var updateAccess = 'True';
-        var deleteAccess = 'True';
+        var fullAccess = "False";
+        var addAccess = "False";
+        var viewAccess = "False";
+        var updateAccess = "False";
+        var deleteAccess = "False";
         
         var viewButton = "";
         var updateButton = "";
         var deleteButton = "";
 
         $(document).ready(function () {
+           var userRights= getFunctionName('USER ACCESSS');
+            console.log("Access flags:", { fullAccess, viewAccess, updateAccess, deleteAccess });
             setSideMenu("users-access");
+            
             $("#chkIsActive").attr("checked", true);
             $("#chkIsActive").attr("disabled", true);
+            
             if (fullAccess === "True" || addAccess === "True") {
                 checkValidationOnChange();
             }
-            if (fullAccess === "True" || viewAccess === "True") {
-                getUserRoleAccessList();
-            }
+            //setTimeout(function () {}, 500);
+            // if(fullAccess === "True" || viewAccess === "True" || updateAccess === "True" || deleteAccess === "True") {
+            //     getUserRoleAccessList();
+            // }
             getUserList();
             getRoleList();
             getFunctionList();
+            getMenuList();
             makeFieldsReadOnly();
+            
 
             $("#ddlUser").on("change", function () {
                 if ($("#ddlUser option:selected").val() != 0) {
@@ -318,13 +335,13 @@
                 $("#from-date-picker").focus();
             }
 
-            if ($("#to-date-picker").val() == "") {
-                $("#to-date-picker").attr('class', 'form-control vaidationTextBoxError');
-                $("#to-date-picker").focus();
+            if ($('#ddlMenuMaster option:selected').val() == "0") {
+                $("#ddlMenuMaster").attr('class', 'form-control vaidationTextBoxError');
+                $("#ddlMenuMaster").focus();
                 isValid = false;
             } else {
-                $("#to-date-picker").attr('class', 'form-control');
-                $("#to-date-picker").focus();
+                $("#ddlMenuMaster").attr('class', 'form-control');
+                $("#ddlMenuMaster").focus();
             }
             return isValid;
         }
@@ -381,8 +398,8 @@
                     }
                 });
 
-                $("#to-date-picker").on("input", function () {
-                    if ($(this).val() == "") {
+                $("#ddlMenuMaster").on("input", function () {
+                    if ($('option:selected', this).val() == "0") {
                         $(this).attr('class', 'form-control vaidationTextBoxError');
                         $(this).focus();
                     } else {
@@ -399,7 +416,7 @@
             $("#ddlFunction").prop("selectedIndex", 0).val();
             $("#txtFunctionName").val("");
             $("#from-date-picker").val("");
-            $("#to-date-picker").val("");
+            $("#ddlMenuMaster").val("");
             $("#chkIsActive").prop("checked", false);
         }
 
@@ -424,13 +441,22 @@
                             if (fullAccess === "True" || viewAccess === "True") {
                                 viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewUserRoleAccess(\'' + item.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
                             }
+                            else{
+                                viewButton = "";
+                            }
 
                             if (fullAccess === "True" || updateAccess === "True") {
                                 updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="editUserRoleAccess(\'' + item.id + '\');"> Edit <i class="typcn typcn-edit btn-icon-append"></i></button> ';
                             }
+                            else{
+                                updateButton = "";
+                            }
 
                             if (fullAccess === "True" || deleteAccess === "True") {
                                 deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" onclick="deleteUserRoleAccess(\'' + item.id + '\');"> Delete <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
+                            }
+                            else{
+                                deleteButton = "";
                             }
                             row = '<tr>' +
                                 '<td>' +
@@ -450,6 +476,7 @@
                                 '<td>' + item.createdBy + '</td>' +
                                 '<td>' + item.updateDate + '</td>' +
                                 '<td>' + item.updateBy + '</td>' +
+                                '<td>' + item.codes + '</td>' +
                                 '</tr>';
                             rows = rows + row;
                             $("#userAccessBody").append(rows);
@@ -479,7 +506,8 @@
                     && $('#ddlFunction option:selected').val() != "0"
                     && $("#txtFunctionName").val() != ""
                     && $("#from-date-picker").val() != ""
-                    && $("#to-date-picker").val() != "") {
+                    && $("#to-date-picker").val() != ""
+                    && $('#ddlMenuMaster').val() != "0") {
                     var userId = $('#ddlUser option:selected').val();
                     var roleId = $('#ddlRole option:selected').val();
                     var functionId = $('#ddlFunction option:selected').val();
@@ -487,14 +515,16 @@
                     var isActive = $("#chkIsActive").is(":checked");
                     var startDate = $("#from-date-picker").val();
                     var endDate = $("#to-date-picker").val();
-                    var fromDate = startDate.split("-").reverse().join("-");
-                    var toDate = endDate.split("-").reverse().join("-");
+                    //var fromDate = startDate.split("-").reverse().join("-");
+                    //var toDate = endDate.split("-").reverse().join("-");
+                    var menuType = $('#ddlMenuMaster').val();
                     $.ajax({
                         cache: false,
                         url: '@(utilityHelper.SiteUrl() + "UserRoleAccess/Save")',
                         type: "POST",
                         dataType: "json",
-                        data: { userId: userId, roleId: roleId, functionId: functionId, functionName: functionName, isActive: isActive, startDate: fromDate, endDate: toDate},
+                        data: { userId: userId, roleId: roleId, functionId: functionId, functionName: functionName,
+                            isActive: isActive, startDate: startDate, endDate: endDate, menuType: menuType},
                         success: function (data) {
                             if (data != null && data != undefined) {
                                 if (data.transactionMessage.status == '@((byte)TransactionStatus.Success)') {
@@ -552,5 +582,7 @@
                 }
             }
         }
+
+
     </script>
 }

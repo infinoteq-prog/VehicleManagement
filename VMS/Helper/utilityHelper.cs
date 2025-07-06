@@ -92,13 +92,48 @@ namespace VMS.Helper
                 RoleName = _context.TblRoleMasters
                                     .Where(p => p.Id == x.RoleId)
                                     .Select(p => p.Role).FirstOrDefault(),
-                TransporterName = _context.TblTransporterMasters
-                                    .Where(t => t.UserId.Equals(x.Id))
+                TransporterName = _context.TblTransporterMasters.Where(t => t.UserId.Equals(x.Id))
                                     .Select(t => t.TransporterName).FirstOrDefault(),
                 LastLoginTime = DateTime.Now.ToString("dd MMMM yyyy, HH:mm:ss"),
                 Message = "User Authentication Successful!!! Redirecting to Dashboard Page.",
                 Success = true
             }).Where(x => x.UserId.Equals(userName) && x.Password.Equals(password)).FirstOrDefault();
+
+            var menuTypeIds = _context.TblUserFunctions
+                          .Where(uf => uf.UserId == userDetails.Id)
+                          .Select(uf => uf.MenuTypeId)
+                          .ToList();
+            if (menuTypeIds.Any())
+            {
+                var menuCodes = new List<string>(); 
+
+                foreach (var menuTypeId in menuTypeIds)
+                {
+                    if (menuTypeId == 1)
+                    {
+                        menuCodes.Add("1");
+                    }
+                    else
+                    {
+                        var code = _context.TblCodeMasters
+                                           .Where(cm => cm.Id == menuTypeId)
+                                           .Select(cm => cm.Code)
+                                           .FirstOrDefault();
+
+                        if (code != null) 
+                        {
+                            menuCodes.Add(code);
+                        }
+                    }
+                }
+
+                userDetails.MenuCode = string.Join(",", menuCodes);
+            }
+            else
+            {
+                userDetails.MenuCode = string.Empty;
+            }
+
 
             if (userDetails != null)
             {
@@ -204,33 +239,33 @@ namespace VMS.Helper
 
             //Code for User Access Function
             userAccess = _context.TblUserFunctions.Where(x => x.UserId.Equals(userId)).Select(x => new VMUserRoleAccess
-                                          {
-                                             Id = x.Id,
-                                             UserId = x.UserId,
-                                             RoleId = x.RoleId,
-                                             FunctionId = x.FunctionId,
-                                             FunctionName = x.FunctionName,
-                                             IsActive = x.IsActive,
-                                             StartDate = x.StartDate,
-                                             EndDate = x.EndDate,
-                                             CreateDate = x.CreationDate,
-                                             UpdateDate = x.UpdateDate,
-                                             CreatedBy = _context.TblUserMasters
+            {
+                Id = x.Id,
+                UserId = x.UserId,
+                RoleId = x.RoleId,
+                FunctionId = x.FunctionId,
+                FunctionName = x.FunctionName,
+                IsActive = x.IsActive,
+                StartDate = x.StartDate,
+                EndDate = x.EndDate,
+                CreateDate = x.CreationDate,
+                UpdateDate = x.UpdateDate,
+                CreatedBy = _context.TblUserMasters
                                                         .Where(p => p.Id == x.CreatedBy)
                                                         .Select(p => p.UserName).FirstOrDefault(),
-                                             UpdateBy = _context.TblUserMasters
+                UpdateBy = _context.TblUserMasters
                                                         .Where(p => p.Id == x.UpdatedBy)
                                                         .Select(p => p.UserName).FirstOrDefault(),
-                                             UserName = _context.TblUserMasters
+                UserName = _context.TblUserMasters
                                                         .Where(p => p.Id == x.UserId)
                                                         .Select(p => p.UserName).FirstOrDefault(),
-                                             RoleName = _context.TblRoleMasters
+                RoleName = _context.TblRoleMasters
                                                         .Where(p => p.Id == x.RoleId)
                                                         .Select(p => p.RoleName).FirstOrDefault(),
-                                             FunctionMasterName = _context.TblFunctionMasters
+                FunctionMasterName = _context.TblFunctionMasters
                                                         .Where(p => p.Id == x.FunctionId)
                                                         .Select(p => p.FunctionName).FirstOrDefault()
-                                             }).ToList();
+            }).ToList();
 
             if (userAccess.Count > 0)
             {
@@ -255,9 +290,9 @@ namespace VMS.Helper
             string numbers = "1234567890";
 
             string characters = numbers;
-           
+
             characters += alphabets + small_alphabets + numbers;
-            
+
             int length = 10;
             string uniqueId = string.Empty;
             for (int i = 0; i < length; i++)
@@ -424,28 +459,28 @@ namespace VMS.Helper
                                 }
                             }
                             #region ...[Commented Code]...
-                                //if (isDeliveryColFound)
-                                //{
-                                //    //Code to Validate Excel File Data
-                                //    var list = dt.AsEnumerable().Select(r => r["Delivery_No"].ToString());
-                                //    string value = string.Join(",", list);
+                            //if (isDeliveryColFound)
+                            //{
+                            //    //Code to Validate Excel File Data
+                            //    var list = dt.AsEnumerable().Select(r => r["Delivery_No"].ToString());
+                            //    string value = string.Join(",", list);
 
-                                //    var dispatchEntry = _context.TblDispatchDetails.Where(x => value.Contains(x.DeliveryNo)).ToList();
-                                //    if (dispatchEntry.Count() > 0)
-                                //    {
-                                //        foreach (TblDispatchDetail dispatchDetail in dispatchEntry)
-                                //        {
-                                //            sno = sno + 1;
-                                //            //dtDispatchError.Rows.Add(sno, "Duplicate Delivery Number", dispatchDetail.DeliveryNo + " Already Exists!", dispatchDetail.DeliveryNo + " already Exists in the database.");
-                                //            VMDispatchErrorModel dispatchErrorModel = new VMDispatchErrorModel();
-                                //            dispatchErrorModel.Sno = sno;
-                                //            dispatchErrorModel.ErrorType = "Duplicate Delivery Number";
-                                //            dispatchErrorModel.ErrorReason = "Delivery Number " + dispatchDetail.DeliveryNo + " Already Exists!";
-                                //            dispatchErrorModel.ErrorDescription = "Delivery Number " + dispatchDetail.DeliveryNo + " already Exists in the database.";
-                                //            dispatchErrorModelList.Add(dispatchErrorModel);
-                                //        }
-                                //    }
-                                //}
+                            //    var dispatchEntry = _context.TblDispatchDetails.Where(x => value.Contains(x.DeliveryNo)).ToList();
+                            //    if (dispatchEntry.Count() > 0)
+                            //    {
+                            //        foreach (TblDispatchDetail dispatchDetail in dispatchEntry)
+                            //        {
+                            //            sno = sno + 1;
+                            //            //dtDispatchError.Rows.Add(sno, "Duplicate Delivery Number", dispatchDetail.DeliveryNo + " Already Exists!", dispatchDetail.DeliveryNo + " already Exists in the database.");
+                            //            VMDispatchErrorModel dispatchErrorModel = new VMDispatchErrorModel();
+                            //            dispatchErrorModel.Sno = sno;
+                            //            dispatchErrorModel.ErrorType = "Duplicate Delivery Number";
+                            //            dispatchErrorModel.ErrorReason = "Delivery Number " + dispatchDetail.DeliveryNo + " Already Exists!";
+                            //            dispatchErrorModel.ErrorDescription = "Delivery Number " + dispatchDetail.DeliveryNo + " already Exists in the database.";
+                            //            dispatchErrorModelList.Add(dispatchErrorModel);
+                            //        }
+                            //    }
+                            //}
                             #endregion
                         }
                     }
@@ -461,7 +496,8 @@ namespace VMS.Helper
                     dt.Columns.Add(newColumn);
 
                     //Insert the Data read from the Excel file to Database Table and Save All Data in Temp Table.
-                    foreach (DataRow dr in dt.Rows) {
+                    foreach (DataRow dr in dt.Rows)
+                    {
                         if (!string.IsNullOrEmpty(Convert.ToString(dr[SiteConstants.Delivery_No])))
                         {
                             var item = _context.TblDispatchDetails.Where(x => x.DeliveryNo.Equals(dr[SiteConstants.Delivery_No])).FirstOrDefault();
@@ -609,7 +645,8 @@ namespace VMS.Helper
                                 if (!column.ColumnName.Contains(" "))
                                 {
                                     bool exists = excelColumns.Any(s => s.Equals(column.ColumnName));
-                                    if (!exists) {
+                                    if (!exists)
+                                    {
                                         sno = sno + 1;
                                         //dtDispatchError.Rows.Add(sno, "Column Not Found", column.ColumnName + " not found.", column.ColumnName + " not found in uploaded file.");
                                         VMDispatchErrorModel dispatchErrorModel = new VMDispatchErrorModel();
@@ -624,7 +661,7 @@ namespace VMS.Helper
                                 if (column.ColumnName.Contains(SiteConstants.Delivery_No))
                                 {
                                     isDeliveryColFound = true;
-                                } 
+                                }
                             }
 
                             //if (isDeliveryColFound)
@@ -649,7 +686,7 @@ namespace VMS.Helper
                             //        }
                             //    }
                             //}
-                        } 
+                        }
                     }
                 }
 
@@ -797,8 +834,8 @@ namespace VMS.Helper
                             Directory.CreateDirectory(path);
                         }
 
-                        string fileName = SiteConstants.dispatchErrorFileName 
-                                        + SiteConstants.Underscore + DateTime.Now.ToString(SiteConstants.ddMMyyyyHHss) 
+                        string fileName = SiteConstants.dispatchErrorFileName
+                                        + SiteConstants.Underscore + DateTime.Now.ToString(SiteConstants.ddMMyyyyHHss)
                                         + SiteConstants.Dot + SiteConstants.excelFileExtension;
 
                         string fullFilePath = Path.Combine(path, fileName);
@@ -814,7 +851,7 @@ namespace VMS.Helper
                         dispatchModel.DisptachErrorFilePath = fileName;
                     }
                 }
-            }   
+            }
             catch (Exception ex)
             {
                 dispatchModel.DispatchErrorModel = null;
@@ -890,7 +927,7 @@ namespace VMS.Helper
         {
             get
             {
-                return _configuration.GetValue<String>("ConfigurationSettings:ReqFieldMessage") ;
+                return _configuration.GetValue<String>("ConfigurationSettings:ReqFieldMessage");
             }
         }
 
@@ -1386,5 +1423,4 @@ namespace VMS.Helper
             return/* "FY" +*/ (dateTime.Month >= 4 ? dateTime.AddYears(1).ToString("yy") : dateTime.ToString("yy"));
         }
     }
-
 }

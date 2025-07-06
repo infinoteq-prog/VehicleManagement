@@ -29,6 +29,8 @@ public partial class TblUserFunction
 
     public int UpdatedBy { get; set; }
 
+    public int MenuTypeId { get; set; }
+
     public virtual TblFunctionMaster Function { get; set; } = null!;
 
     public virtual TblRoleMaster Role { get; set; } = null!;

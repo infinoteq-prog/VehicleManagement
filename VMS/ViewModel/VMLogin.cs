@@ -31,5 +31,7 @@ namespace VMS.ViewModel
         public string? UserId { get; set; }
 
         public string? TransporterName { get; set; }
+
+        public string? MenuCode { get; set; }
     }
 }

@@ -82,7 +82,17 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="ddlMenuMaster">Menu: <span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(x => x.Codes, new { @class = "form-control", id = "ddlMenuMaster" })
+                                        </div>
+                                      @*   <div class="col-sm-8">
+                                            <select class="form-control" id="ddlMenuMaster" name="ddlMenuMaster" onchange="setDropDownStyle(this);"></select>
+                                        </div> *@
+                                    </div>
+                                </div>
                             </div>
                             <div class="row rowHeight">
                                 <div class="col-md-12"></div>
@@ -122,6 +132,7 @@
             $("#from-date-picker").attr("readonly", true);
             $("#to-date-picker").attr("readonly", true);
             $("#chkIsActive").attr("disabled", true);
+            $("#ddlMenuMaster").attr("readonly", true);
         }
 
         function getUserRoleAccessbyId(userRoleAccessId) {
@@ -141,6 +152,7 @@
                         $('#from-date-picker').val(data.startDateString);
                         $('#to-date-picker').val(data.endDateString);
                         $("#chkIsActive").prop('checked', data.isActive);
+                        $("#ddlMenuMaster").val(data.codes);
                     } else {
                         $.confirm({
                             title: 'User Role Access',

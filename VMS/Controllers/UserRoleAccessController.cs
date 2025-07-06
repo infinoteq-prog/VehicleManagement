@@ -164,6 +164,7 @@ namespace VMS.Controllers
                 IsActive = x.IsActive,
                 StartDate = x.StartDate,
                 EndDate = x.EndDate,
+                MenuTypeId = x.MenuTypeId,
                 StartDateString = String.IsNullOrEmpty(Convert.ToString(x.StartDate)) ? SiteConstants.Dash : Convert.ToString(Convert.ToDateTime(x.StartDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
                 EndDateString = String.IsNullOrEmpty(Convert.ToString(x.EndDate)) ? SiteConstants.Dash : Convert.ToString(Convert.ToDateTime(x.EndDate).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)),
                 CreateDate = x.CreationDate,
@@ -182,7 +183,10 @@ namespace VMS.Controllers
                             .Select(p => p.RoleName).FirstOrDefault(),
                 FunctionMasterName = _context.TblFunctionMasters
                             .Where(p => p.Id == x.FunctionId)
-                            .Select(p => p.FunctionName).FirstOrDefault()
+                            .Select(p => p.FunctionName).FirstOrDefault(),
+                Codes = _context.TblCodeMasters.Where(p => p.Id == x.MenuTypeId)
+        .Select(p => p.Code).FirstOrDefault(),
+
             }).FirstOrDefault();
 
             if (model == null)
@@ -228,7 +232,11 @@ namespace VMS.Controllers
                             .Select(p => p.RoleName).FirstOrDefault(),
                 FunctionMasterName = _context.TblFunctionMasters
                             .Where(p => p.Id == x.FunctionId)
-                            .Select(p => p.FunctionName).FirstOrDefault()
+                            .Select(p => p.FunctionName).FirstOrDefault(),
+
+                Codes = x.MenuTypeId == 1 ? "All Menu" : _context.TblCodeMasters.Where(p => p.Id == x.MenuTypeId)
+                            .Select(p => p.Code).FirstOrDefault()
+
             }).OrderByDescending(n => n.Id).ToList();
 
             if (model.Count() == 0)
@@ -242,7 +250,7 @@ namespace VMS.Controllers
         }
 
         [HttpGet]
-        public JsonResult searchUserRoleAccess(Int32 userId, Int32 roleId, Int32 functionId, string functionName, string startDate, string endDate, Boolean isActive)
+        public JsonResult searchUserRoleAccess(Int32 userId, Int32 roleId, Int32 functionId, string functionName, string startDate, string endDate, Boolean isActive, int menuType)
         {
             List<VMUserRoleAccess> model = new List<VMUserRoleAccess>();
 
@@ -274,7 +282,9 @@ namespace VMS.Controllers
                             .Select(p => p.RoleName).FirstOrDefault(),
                 FunctionMasterName = _context.TblFunctionMasters
                             .Where(p => p.Id == x.FunctionId)
-                            .Select(p => p.FunctionName).FirstOrDefault()
+                            .Select(p => p.FunctionName).FirstOrDefault(),
+                Codes = _context.TblCodeMasters.Where(p => p.Id == x.MenuTypeId)
+                            .Select(p => p.Code).FirstOrDefault()
             });
 
             if (userId != 0)
@@ -323,7 +333,7 @@ namespace VMS.Controllers
 
         [HttpPost]
         public ActionResult Save(Int32 userId, Int32 roleId, Int32 functionId,
-            string functionName, string startDate, string endDate, Boolean isActive)
+            string functionName, string startDate, string endDate, Boolean isActive, int menuType)
         {
             VMUser model = new VMUser();
             int loginUserID = 0;
@@ -343,6 +353,7 @@ namespace VMS.Controllers
                     EndDate = x.EndDate,
                     CreateDate = x.CreationDate,
                     UpdateDate = x.UpdateDate,
+                    MenuTypeId = x.MenuTypeId,
                     CreatedBy = _context.TblUserMasters
                             .Where(p => p.Id == x.CreatedBy)
                             .Select(p => p.UserName).FirstOrDefault(),
@@ -357,8 +368,10 @@ namespace VMS.Controllers
                             .Select(p => p.RoleName).FirstOrDefault(),
                     FunctionMasterName = _context.TblFunctionMasters
                             .Where(p => p.Id == x.FunctionId)
-                            .Select(p => p.FunctionName).FirstOrDefault()
-                }).Where(x => x.UserId == userId && x.FunctionId == functionId).ToList();
+                            .Select(p => p.FunctionName).FirstOrDefault(),
+                    Codes = _context.TblCodeMasters.Where(p => p.Id == x.MenuTypeId)
+                            .Select(p => p.Code).FirstOrDefault()
+                }).Where(x => x.UserId == userId && x.FunctionId == functionId && x.MenuTypeId==menuType).ToList();
 
                 if (user.Count() == 0)
                 {
@@ -379,6 +392,7 @@ namespace VMS.Controllers
                         userRoleAccess.UpdateDate = utilityHelper.CurrentDateTime;
                         userRoleAccess.CreatedBy = loginUserID;
                         userRoleAccess.UpdatedBy = loginUserID;
+                        userRoleAccess.MenuTypeId = menuType;
 
                         _context.TblUserFunctions.Add(userRoleAccess);
                         _context.SaveChanges();
@@ -409,7 +423,7 @@ namespace VMS.Controllers
 
         [HttpPost]
         public ActionResult Update(Int32 id, Int32 userId, Int32 roleId, Int32 functionId,
-            string functionName, string startDate, string endDate, Boolean isActive)
+            string functionName, string startDate, string endDate, Boolean isActive, int menuType)
         {
             VMUserRoleAccess model = new VMUserRoleAccess();
             int loginUserID = 0;
@@ -443,6 +457,7 @@ namespace VMS.Controllers
                         userRoleAccess.UpdateDate = utilityHelper.CurrentDateTime;
                         //usrRole.CreatedBy = userID;
                         userRoleAccess.UpdatedBy = loginUserID;
+                        userRoleAccess.MenuTypeId = menuType;
 
                         _context.TblUserFunctions.Update(userRoleAccess);
                         _context.SaveChanges();
@@ -519,7 +534,9 @@ namespace VMS.Controllers
                             .Select(p => p.RoleName).FirstOrDefault(),
                 FunctionMasterName = _context.TblFunctionMasters
                             .Where(p => p.Id == x.FunctionId)
-                            .Select(p => p.FunctionName).FirstOrDefault()
+                            .Select(p => p.FunctionName).FirstOrDefault(),
+                Codes = _context.TblCodeMasters.Where(p => p.Id == x.MenuTypeId)
+        .Select(p => p.Code).FirstOrDefault()
             }).OrderByDescending(n => n.Id).Take(10).ToList();
 
             if (model.Count() == 0)
@@ -530,6 +547,16 @@ namespace VMS.Controllers
             {
                 return Json(model);
             }
+        }
+
+        public JsonResult getMenuList()
+        {
+            var item = _context.TblCodeMasters.Where(n => n.CodeType == "MENUTYPE").Select(x => new
+            {
+                CodeTypeId = x.Id,
+                Code = x.Code,
+            }).Distinct().ToList();
+            return Json(item);
         }
     }
 }

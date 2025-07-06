@@ -305,7 +305,7 @@ namespace VMS.Controllers
 
             return Json(model);
         }
-        
+
         [HttpPost]
         public ActionResult Update(string id, string roleName, string roleDescription, Boolean isActive, string startDate, string endDate)
         {

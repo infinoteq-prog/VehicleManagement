@@ -49,6 +49,8 @@ namespace VMS.ViewModel
         public string RoleName { get; set; }
 
         public string FunctionMasterName { get; set; }
+        public int MenuTypeId { get; set; }
+        public string Codes { get; set; }
 
         //public virtual ICollection<AspNetRoleClaim> AspNetRoleClaims { get; set; } = new List<AspNetRoleClaim>();
 

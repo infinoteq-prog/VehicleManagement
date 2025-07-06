@@ -10,298 +10,444 @@
 
 @if (userLogin != null)
 {
-    <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-            @* @if (userAccess.DashboardFullAccess == true)
+    if (userLogin.MenuCode == null || userLogin.MenuCode == "" || userLogin.MenuCode.Contains("1"))
+    {
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                @* @if (userAccess.DashboardFullAccess == true)
         { *@
-            <li class="nav-item">
-                <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "Home/Index")">
-                    <i class="typcn typcn-device-desktop menu-icon"></i>
-                    <span class="menu-title">Dashboard</span>
-                    <div class="badge badge-danger">new</div>
-                </a>
-            </li>
-            @*  } *@
-
-            <li class="nav-item">
-                <a id="lnkMakeMaster" class="nav-link" data-toggle="collapse" href="#make-master" aria-expanded="false" aria-controls="diesel-rate-master">
-                    <i class="typcn typcn-document-text menu-icon"></i>
-                    <span class="menu-title">Code Master</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="make-master">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "MakeMaster/Index")">Add Code Master</a></li>
-                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "MakeMaster/List")">View Code Master</a></li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a id="lnkModelMaster" class="nav-link" data-toggle="collapse" href="#model-master" aria-expanded="false" aria-controls="diesel-rate-master">
-                    <i class="typcn typcn-document-text menu-icon"></i>
-                    <span class="menu-title">Model Master</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="model-master">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "ModelMaster/Index")">Add Model</a></li>                     
-                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "ModelMaster/List")">View Model</a></li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a id="lnkDriverMaster" class="nav-link" data-toggle="collapse" href="#driver-master" aria-expanded="false" aria-controls="diesel-rate-master">
-                    <i class="typcn typcn-document-text menu-icon"></i>
-                    <span class="menu-title">Driver Master</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="driver-master">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/Index")">Add Driver</a></li>
-                        <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/Index")">View Driver</a></li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a id="lnkVehicleMaster" class="nav-link" data-toggle="collapse" href="#vehicle-master" aria-expanded="false" aria-controls="diesel-rate-master">
-                    <i class="typcn typcn-document-text menu-icon"></i>
-                    <span class="menu-title">Vehicle Master</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="vehicle-master">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "VehicleMaster/Index")">Add Vehicle</a></li>
-                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "VehicleMaster/List")">View Vehicle</a></li>
-                    </ul>
-                </div>
-            </li>
-
-             <li class="nav-item">
-                <a id="lnkDistanceMaster" class="nav-link" data-toggle="collapse" href="#distance-master" aria-expanded="false" aria-controls="diesel-rate-master">
-                    <i class="typcn typcn-document-text menu-icon"></i>
-                    <span class="menu-title">Distance Master</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="distance-master">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "DistanceMaster/Index")">Add Distance Master</a></li>
-                        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "DistanceMaster/List")">View Distance Master</a></li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a id="lnkExpenseMaster" class="nav-link" data-toggle="collapse" href="#expense-master" aria-expanded="false" aria-controls="diesel-rate-master">
-                    <i class="typcn typcn-document-text menu-icon"></i>
-                    <span class="menu-title">Expense Master</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="expense-master">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ExpenseMaster/Index")">Add Expense Master</a></li>
-                        <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ExpenseMaster/List")">View Expense Master</a></li>
-                    </ul>
-                </div>
-            </li>
-             
-            <li class="nav-item">
-                <a id="lnkDieselHisabMaster" class="nav-link" data-toggle="collapse" href="#diesel-hisab-master" aria-expanded="false" aria-controls="diesel-rate-master">
-                    <i class="typcn typcn-document-text menu-icon"></i>
-                    <span class="menu-title">Diesel Hisab</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="diesel-hisab-master">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselHisab/Index")">Add Diesel Hisab</a></li>
-                        <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselHisab/List")">View Diesel Hisab</a></li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a id="lnkDriverHisabMaster" class="nav-link" data-toggle="collapse" href="#driver-hisab-master" aria-expanded="false" aria-controls="diesel-rate-master">
-                    <i class="typcn typcn-document-text menu-icon"></i>
-                    <span class="menu-title">Driver Hisab</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="driver-hisab-master">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverHisab/Index")">Add Driver Hisab</a></li>
-                        <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverHisab/List")">View Driver Hisab</a></li>
-                    </ul>
-                </div>
-            </li>
-        @*     <li class="nav-item">
-                <a id="lnkServiceDueMaster" class="nav-link" data-toggle="collapse" href="#service-due-master" aria-expanded="false" aria-controls="service-due-master">
-                    <i class="typcn typcn-document-text menu-icon"></i>
-                    <span class="menu-title">Service Due</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="service-due-master">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ServiceDue/Index")">Add Service Due</a></li>
-                        <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ServiceDue/List")">View Service Due</a></li>
-                    </ul>
-                </div>
-            </li> *@
-
-            @* @if (userLogin.RoleName.Equals(SiteConstants.Admin) || userLogin.RoleName.Equals(SiteConstants.SuperAdmin))
-            {
                 <li class="nav-item">
-                    <a id="lnkCompanyMaster" class="nav-link" data-toggle="collapse" href="#company-master" aria-expanded="false" aria-controls="diesel-rate-master">
+                    <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "Home/Index")">
+                        <i class="typcn typcn-device-desktop menu-icon"></i>
+                        <span class="menu-title">Dashboard</span>
+                        <div class="badge badge-danger">new</div>
+                    </a>
+                </li>
+                @*  } *@
+
+                <li class="nav-item">
+                    <a id="lnkMakeMaster" class="nav-link" data-toggle="collapse" href="#make-master" aria-expanded="false" aria-controls="diesel-rate-master">
                         <i class="typcn typcn-document-text menu-icon"></i>
-                        <span class="menu-title">Company Master</span>
+                        <span class="menu-title">Code Master</span>
                         <i class="menu-arrow"></i>
                     </a>
-                    <div class="collapse" id="company-master">
+                    <div class="collapse" id="make-master">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "CompanyMaster/Index")">Add Company</a></li>
-                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "CompanyMaster/List")">View Company</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "MakeMaster/Index")">Add Code Master</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "MakeMaster/List")">View Code Master</a></li>
                         </ul>
                     </div>
                 </li>
 
                 <li class="nav-item">
-                    <a id="lnkUploadDispatchData" class="nav-link" data-toggle="collapse" href="#upload-dispatch-data" aria-expanded="false" aria-controls="diesel-rate-master">
+                    <a id="lnkModelMaster" class="nav-link" data-toggle="collapse" href="#model-master" aria-expanded="false" aria-controls="diesel-rate-master">
                         <i class="typcn typcn-document-text menu-icon"></i>
-                        <span class="menu-title">Upload Dispatch Data</span>
+                        <span class="menu-title">Model Master</span>
                         <i class="menu-arrow"></i>
                     </a>
-                    <div class="collapse" id="upload-dispatch-data">
+                    <div class="collapse" id="model-master">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/UploadDispatchData")">Upload Dispatch Data</a></li>
-                        </ul>
-                    </div>
-                </li>
-            } *@
-
-            @* @if (userLogin.RoleName.Equals(SiteConstants.User) || userLogin.RoleName.Equals(SiteConstants.Admin) || userLogin.RoleName.Equals(SiteConstants.SuperAdmin))
-            {
-                <li class="nav-item">
-                    <a id="lnkTransporterMaster" class="nav-link" data-toggle="collapse" href="#transporter-master" aria-expanded="false" aria-controls="diesel-rate-master">
-                        <i class="typcn typcn-document-text menu-icon"></i>
-                        <span class="menu-title">Transporter Master</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                    <div class="collapse" id="transporter-master">
-                        <ul class="nav flex-column sub-menu">
-                            @if (userLogin.RoleName.Equals(SiteConstants.Admin) || userLogin.RoleName.Equals(SiteConstants.SuperAdmin))
-                            {
-                                <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterMaster/Index")">Add Transporter</a></li>
-                                <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterMaster/List")">View Transporter</a></li>
-                            }
-
-                            @if (userLogin.RoleName.Equals(SiteConstants.User))
-                            {
-                                <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterMaster/Update")">Update Transporter</a></li>
-                            }
+                            <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ModelMaster/Index")">Add Model</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ModelMaster/List")">View Model</a></li>
                         </ul>
                     </div>
                 </li>
 
                 <li class="nav-item">
-                    <a id="lnkTransporterBill" class="nav-link" data-toggle="collapse" href="#transporter-bill" aria-expanded="false" aria-controls="diesel-rate-master">
+                    <a id="lnkDriverMaster" class="nav-link" data-toggle="collapse" href="#driver-master" aria-expanded="false" aria-controls="diesel-rate-master">
                         <i class="typcn typcn-document-text menu-icon"></i>
-                        <span class="menu-title">Transporter Bill</span>
+                        <span class="menu-title">Driver Master</span>
                         <i class="menu-arrow"></i>
                     </a>
-                    <div class="collapse" id="transporter-bill">
+                    <div class="collapse" id="driver-master">
                         <ul class="nav flex-column sub-menu">
-                            @if (userLogin.RoleName.Equals(SiteConstants.User))
-                            {
-                                <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/Index")">Generate Bill</a></li>
-                            }
-                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/ViewTransporterBill")">View Bill</a></li>
-
-                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/ViewDispatchTransactions")">View Dispatch Transactions</a></li>
-
-                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/UpdateLrGrData")">Update LR GR No</a></li>
-                        </ul>
-                    </div>
-                </li>
-            } *@
-
-            @if (userLogin.RoleName.Equals(SiteConstants.Admin) || userLogin.RoleName.Equals(SiteConstants.SuperAdmin))
-            {
-                <li class="nav-item">
-                    <a id="lnkUsersList" class="nav-link" data-toggle="collapse" href="#users-list" aria-expanded="false" aria-controls="diesel-rate-master">
-                        <i class="typcn typcn-document-text menu-icon"></i>
-                        <span class="menu-title">Users</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                    <div class="collapse" id="users-list">
-                        <ul class="nav flex-column sub-menu">
-                            @* @if (userAccess.AddUserFullAccess == true || userAccess.AddUserAddAccess == true)
-                        { *@
-                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "User/Index")">Add User</a></li>
-                            @*  }
-                        @if (userAccess.AddUserFullAccess == true || userAccess.AddUserEntryViewAccess == true)
-                        { *@
-                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "User/List")">View Users</a></li>
-                            @* } *@
+                            <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/Index")">Add Driver</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/List")">View Driver</a></li>
                         </ul>
                     </div>
                 </li>
 
                 <li class="nav-item">
-                    <a id="lnkUserRole" class="nav-link" data-toggle="collapse" href="#users-role" aria-expanded="false" aria-controls="diesel-rate-master">
+                    <a id="lnkVehicleMaster" class="nav-link" data-toggle="collapse" href="#vehicle-master" aria-expanded="false" aria-controls="diesel-rate-master">
                         <i class="typcn typcn-document-text menu-icon"></i>
-                        <span class="menu-title">User Roles</span>
+                        <span class="menu-title">Vehicle Master</span>
                         <i class="menu-arrow"></i>
                     </a>
-                    <div class="collapse" id="users-role">
+                    <div class="collapse" id="vehicle-master">
                         <ul class="nav flex-column sub-menu">
-                            @*   @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleAddAccess == true)
-                        { *@
-                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRole/Index")">Add User Role</a></li>
-                            @* }
-                        @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
-                        { *@
-                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRole/List")">View User Roles</a></li>
-                            @* } *@
+                            <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "VehicleMaster/Index")">Add Vehicle</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "VehicleMaster/List")">View Vehicle</a></li>
                         </ul>
                     </div>
                 </li>
 
                 <li class="nav-item">
-                    <a id="lnkFunctionMaster" class="nav-link" data-toggle="collapse" href="#function-master" aria-expanded="false" aria-controls="diesel-rate-master">
+                    <a id="lnkDistanceMaster" class="nav-link" data-toggle="collapse" href="#distance-master" aria-expanded="false" aria-controls="diesel-rate-master">
                         <i class="typcn typcn-document-text menu-icon"></i>
-                        <span class="menu-title">Function Master</span>
+                        <span class="menu-title">Distance Master</span>
                         <i class="menu-arrow"></i>
                     </a>
-                    <div class="collapse" id="function-master">
+                    <div class="collapse" id="distance-master">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "FunctionMaster/Index")">Add Function Master</a></li>
-                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "FunctionMaster/List")">View Function Master</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DistanceMaster/Index")">Add Distance Master</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DistanceMaster/List")">View Distance Master</a></li>
                         </ul>
                     </div>
                 </li>
 
                 <li class="nav-item">
-                    <a id="lnkUserAccess" class="nav-link" data-toggle="collapse" href="#users-access" aria-expanded="false" aria-controls="diesel-rate-master">
+                    <a id="lnkExpenseMaster" class="nav-link" data-toggle="collapse" href="#expense-master" aria-expanded="false" aria-controls="diesel-rate-master">
                         <i class="typcn typcn-document-text menu-icon"></i>
-                        <span class="menu-title">User Access</span>
+                        <span class="menu-title">Expense Master</span>
                         <i class="menu-arrow"></i>
                     </a>
-                    <div class="collapse" id="users-access">
+                    <div class="collapse" id="expense-master">
                         <ul class="nav flex-column sub-menu">
-                            @*  @if (userAccess.UserAccessFull == true || userAccess.UserAccessForAdd == true)
-                        { *@
-                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRoleAccess/Index")">Add User Access</a></li>
-                            @* }
-                        @if (userAccess.UserAccessFull == true || userAccess.UserAccessForView == true)
-                        { *@
-                            <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRoleAccess/List")">View User Access</a></li>
-                            @*  } *@
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ExpenseMaster/Index")">Add Expense Master</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ExpenseMaster/List")">View Expense Master</a></li>
                         </ul>
                     </div>
                 </li>
-            }
+
+                <li class="nav-item">
+                    <a id="lnkDieselHisabMaster" class="nav-link" data-toggle="collapse" href="#diesel-hisab-master" aria-expanded="false" aria-controls="diesel-rate-master">
+                        <i class="typcn typcn-document-text menu-icon"></i>
+                        <span class="menu-title">Diesel Hisab</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="diesel-hisab-master">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselHisab/Index")">Add Diesel Hisab</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselHisab/List")">View Diesel Hisab</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a id="lnkDriverHisabMaster" class="nav-link" data-toggle="collapse" href="#driver-hisab-master" aria-expanded="false" aria-controls="diesel-rate-master">
+                        <i class="typcn typcn-document-text menu-icon"></i>
+                        <span class="menu-title">Driver Hisab</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="driver-hisab-master">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverHisab/Index")">Add Driver Hisab</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverHisab/List")">View Driver Hisab</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                @* @if (userLogin.RoleName.Equals(SiteConstants.Admin) || userLogin.RoleName.Equals(SiteConstants.SuperAdmin))
+        {
+        <li class="nav-item">
+        <a id="lnkCompanyMaster" class="nav-link" data-toggle="collapse" href="#company-master" aria-expanded="false" aria-controls="diesel-rate-master">
+        <i class="typcn typcn-document-text menu-icon"></i>
+        <span class="menu-title">Company Master</span>
+        <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="company-master">
+        <ul class="nav flex-column sub-menu">
+        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "CompanyMaster/Index")">Add Company</a></li>
+        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "CompanyMaster/List")">View Company</a></li>
         </ul>
-    </nav>
-}else{
+        </div>
+        </li>
+
+        <li class="nav-item">
+        <a id="lnkUploadDispatchData" class="nav-link" data-toggle="collapse" href="#upload-dispatch-data" aria-expanded="false" aria-controls="diesel-rate-master">
+        <i class="typcn typcn-document-text menu-icon"></i>
+        <span class="menu-title">Upload Dispatch Data</span>
+        <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="upload-dispatch-data">
+        <ul class="nav flex-column sub-menu">
+        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/UploadDispatchData")">Upload Dispatch Data</a></li>
+        </ul>
+        </div>
+        </li>
+        } *@
+
+                @* @if (userLogin.RoleName.Equals(SiteConstants.User) || userLogin.RoleName.Equals(SiteConstants.Admin) || userLogin.RoleName.Equals(SiteConstants.SuperAdmin))
+        {
+        <li class="nav-item">
+        <a id="lnkTransporterMaster" class="nav-link" data-toggle="collapse" href="#transporter-master" aria-expanded="false" aria-controls="diesel-rate-master">
+        <i class="typcn typcn-document-text menu-icon"></i>
+        <span class="menu-title">Transporter Master</span>
+        <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="transporter-master">
+        <ul class="nav flex-column sub-menu">
+        @if (userLogin.RoleName.Equals(SiteConstants.Admin) || userLogin.RoleName.Equals(SiteConstants.SuperAdmin))
+        {
+        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterMaster/Index")">Add Transporter</a></li>
+        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterMaster/List")">View Transporter</a></li>
+        }
+
+        @if (userLogin.RoleName.Equals(SiteConstants.User))
+        {
+        <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterMaster/Update")">Update Transporter</a></li>
+        }
+        </ul>
+        </div>
+        </li>
+
+        <li class="nav-item">
+        <a id="lnkTransporterBill" class="nav-link" data-toggle="collapse" href="#transporter-bill" aria-expanded="false" aria-controls="diesel-rate-master">
+        <i class="typcn typcn-document-text menu-icon"></i>
+        <span class="menu-title">Transporter Bill</span>
+        <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="transporter-bill">
+        <ul class="nav flex-column sub-menu">
+        @if (userLogin.RoleName.Equals(SiteConstants.User))
+        {
+        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/Index")">Generate Bill</a></li>
+        }
+        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/ViewTransporterBill")">View Bill</a></li>
+
+        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/ViewDispatchTransactions")">View Dispatch Transactions</a></li>
+
+        <li class="nav-item"> <a class="nav-link" target="_self"   href="@(VMS.Helper.utilityHelper.SiteUrl() + "TransporterBill/UpdateLrGrData")">Update LR GR No</a></li>
+        </ul>
+        </div>
+        </li>
+        } *@
+
+                @if (userLogin.RoleName.Equals(SiteConstants.Admin) || userLogin.RoleName.Equals(SiteConstants.SuperAdmin))
+                {
+                    <li class="nav-item">
+                        <a id="lnkUsersList" class="nav-link" data-toggle="collapse" href="#users-list" aria-expanded="false" aria-controls="diesel-rate-master">
+                            <i class="typcn typcn-document-text menu-icon"></i>
+                            <span class="menu-title">Users</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="users-list">
+                            <ul class="nav flex-column sub-menu">
+                                @* @if (userAccess.AddUserFullAccess == true || userAccess.AddUserAddAccess == true)
+                    { *@
+                                <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "User/Index")">Add User</a></li>
+                                @*  }
+                    @if (userAccess.AddUserFullAccess == true || userAccess.AddUserEntryViewAccess == true)
+                    { *@
+                                <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "User/List")">View Users</a></li>
+                                @* } *@
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a id="lnkUserRole" class="nav-link" data-toggle="collapse" href="#users-role" aria-expanded="false" aria-controls="diesel-rate-master">
+                            <i class="typcn typcn-document-text menu-icon"></i>
+                            <span class="menu-title">User Roles</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="users-role">
+                            <ul class="nav flex-column sub-menu">
+                                @*   @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleAddAccess == true)
+                    { *@
+                                <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRole/Index")">Add User Role</a></li>
+                                @* }
+                    @if (userAccess.AddUserRoleFullAccess == true || userAccess.AddUserRoleViewAccess == true)
+                    { *@
+                                <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRole/List")">View User Roles</a></li>
+                                @* } *@
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a id="lnkFunctionMaster" class="nav-link" data-toggle="collapse" href="#function-master" aria-expanded="false" aria-controls="diesel-rate-master">
+                            <i class="typcn typcn-document-text menu-icon"></i>
+                            <span class="menu-title">Function Master</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="function-master">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "FunctionMaster/Index")">Add Function Master</a></li>
+                                <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "FunctionMaster/List")">View Function Master</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a id="lnkUserAccess" class="nav-link" data-toggle="collapse" href="#users-access" aria-expanded="false" aria-controls="diesel-rate-master">
+                            <i class="typcn typcn-document-text menu-icon"></i>
+                            <span class="menu-title">User Access</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="users-access">
+                            <ul class="nav flex-column sub-menu">
+                                @*  @if (userAccess.UserAccessFull == true || userAccess.UserAccessForAdd == true)
+                    { *@
+                                <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRoleAccess/Index")">Add User Access</a></li>
+                                @* }
+                    @if (userAccess.UserAccessFull == true || userAccess.UserAccessForView == true)
+                    { *@
+                                <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "UserRoleAccess/List")">View User Access</a></li>
+                                @*  } *@
+                            </ul>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+    else
+    {
+        @if (userLogin != null)
+        {
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "Home/Index")">
+                            <i class="typcn typcn-device-desktop menu-icon"></i>
+                            <span class="menu-title">Dashboard</span>
+                            <div class="badge badge-danger">new</div>
+                        </a>
+                    </li>
+
+                     @if (userLogin.MenuCode.Contains("CODE MASTER"))
+                    {
+                        <li class="nav-item">
+                            <a id="lnkMakeMaster" class="nav-link" data-toggle="collapse" href="#make-master" aria-expanded="false" aria-controls="make-master">
+                                <i class="typcn typcn-document-text menu-icon"></i>
+                                <span class="menu-title">Code Master</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="collapse" id="make-master">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "MakeMaster/Index")">Add Code Master</a></li>
+                                    <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "MakeMaster/List")">View Code Master</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    }
+
+                    @if (userLogin.MenuCode.Contains("MODEL MASTER"))
+                    {
+                        <li class="nav-item">
+                            <a id="lnkModelMaster" class="nav-link" data-toggle="collapse" href="#model-master" aria-expanded="false" aria-controls="model-master">
+                                <i class="typcn typcn-document-text menu-icon"></i>
+                                <span class="menu-title">Model Master</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="collapse" id="model-master">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ModelMaster/Index")">Add Model</a></li>
+                                    <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ModelMaster/List")">View Model</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    }
+
+                    @if (userLogin.MenuCode.Contains("DRIVER MASTER"))
+                    {
+                        <li class="nav-item">
+                            <a id="lnkDriverMaster" class="nav-link" data-toggle="collapse" href="#driver-master" aria-expanded="false" aria-controls="driver-master">
+                                <i class="typcn typcn-document-text menu-icon"></i>
+                                <span class="menu-title">Driver Master</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="collapse" id="driver-master">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/Index")">Add Driver</a></li>
+                                    <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/List")">View Driver</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    }
+
+                    @if (userLogin.MenuCode.Contains("VEHICLE MASTER"))
+                    {
+                        <li class="nav-item">
+                            <a id="lnkVehicleMaster" class="nav-link" data-toggle="collapse" href="#vehicle-master" aria-expanded="false" aria-controls="vehicle-master">
+                                <i class="typcn typcn-document-text menu-icon"></i>
+                                <span class="menu-title">Vehicle Master</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="collapse" id="vehicle-master">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "VehicleMaster/Index")">Add Vehicle</a></li>
+                                    <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "VehicleMaster/List")">View Vehicle</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    }
+
+                    @if (userLogin.MenuCode.Contains("DISTANCE MASTER"))
+                    {
+                        <li class="nav-item">
+                            <a id="lnkDistanceMaster" class="nav-link" data-toggle="collapse" href="#distance-master" aria-expanded="false" aria-controls="distance-master">
+                                <i class="typcn typcn-document-text menu-icon"></i>
+                                <span class="menu-title">Distance Master</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="collapse" id="distance-master">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DistanceMaster/Index")">Add Distance Master</a></li>
+                                    <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DistanceMaster/List")">View Distance Master</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    }
+
+                    @if (userLogin.MenuCode.Contains("EXPENSE MASTER"))
+                    {
+                        <li class="nav-item">
+                            <a id="lnkExpenseMaster" class="nav-link" data-toggle="collapse" href="#expense-master" aria-expanded="false" aria-controls="expense-master">
+                                <i class="typcn typcn-document-text menu-icon"></i>
+                                <span class="menu-title">Expense Master</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="collapse" id="expense-master">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ExpenseMaster/Index")">Add Expense Master</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ExpenseMaster/List")">View Expense Master</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    }
+
+                    @if (userLogin.MenuCode.Contains("DIESEL HISAB"))
+                    {
+                        <li class="nav-item">
+                            <a id="lnkDieselHisabMaster" class="nav-link" data-toggle="collapse" href="#diesel-hisab-master" aria-expanded="false" aria-controls="diesel-hisab-master">
+                                <i class="typcn typcn-document-text menu-icon"></i>
+                                <span class="menu-title">Diesel Hisab</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="collapse" id="diesel-hisab-master">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselHisab/Index")">Add Diesel Hisab</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselHisab/List")">View Diesel Hisab</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    }
+
+                    @if (userLogin.MenuCode.Contains("DRIVER HISAB"))
+                    {
+                        <li class="nav-item">
+                            <a id="lnkDriverHisabMaster" class="nav-link" data-toggle="collapse" href="#driver-hisab-master" aria-expanded="false" aria-controls="driver-hisab-master">
+                                <i class="typcn typcn-document-text menu-icon"></i>
+                                <span class="menu-title">Driver Hisab</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="collapse" id="driver-hisab-master">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item" id="lnkDriverHisabMasterAdd"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverHisab/Index")">Add Driver Hisab</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverHisab/List")">View Driver Hisab</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
+    }
+}
+
+else
+{
     HttpContextAccessor.HttpContext.Response.Redirect(utilityHelper.SiteUrl());
 }

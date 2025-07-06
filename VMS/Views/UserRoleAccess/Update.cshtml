@@ -88,6 +88,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="ddlMenuMaster">Menu: <span class="reqFields">*</span></label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" id="ddlMenuMaster" name="ddlMenuMaster" onchange="setDropDownStyle(this);"></select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-md-6"></div>
                             </div>
                             <div class="row rowHeight">
@@ -125,6 +133,7 @@
                                                 <th>Created By</th>
                                                 <th>Update Date</th>
                                                 <th>Updatd By</th>
+                                                <th>Menu Access</th>
                                             </tr>
                                         </thead>
                                         <tbody id="userAccessBody">
@@ -165,6 +174,7 @@
                 getUserRoleAccessbyId(userRoleAccessId);
                 getUserList();
                 getRoleList();
+                getMenuList();
                 getFunctionList();
                 makeFieldsReadOnly();
 
@@ -313,14 +323,14 @@
                 $("#from-date-picker").focus();
             }
 
-            // if ($("#to-date-picker").val() == "") {
-            //     $("#to-date-picker").attr('class', 'form-control vaidationTextBoxError');
-            //     $("#to-date-picker").focus();
-            //     isValid = false;
-            // } else {
-            //     $("#to-date-picker").attr('class', 'form-control');
-            //     $("#to-date-picker").focus();
-            // }
+            if ($("ddlMenuMaster").val() == "") { 
+                $("ddlMenuMaster").attr('class', 'form-control vaidationTextBoxError');
+                $("ddlMenuMaster").focus();
+                isValid = false;
+            } else {
+                $("#ddlMenuMaster").attr('class', 'form-control');
+                $("#ddlMenuMaster").focus();
+            }
             return isValid;
         }
 
@@ -376,15 +386,15 @@
                     }
                 });
 
-                // $("#to-date-picker").on("input", function () {
-                //     if ($(this).val() == "") {
-                //         $(this).attr('class', 'form-control vaidationTextBoxError');
-                //         $(this).focus();
-                //     } else {
-                //         $(this).attr('class', 'form-control');
-                //         $(this).focus();
-                //     }
-                // });
+                $("#ddlMenuMaster").on("input", function () {
+                    if ($(this).val() == "") {
+                        $(this).attr('class', 'form-control vaidationTextBoxError');
+                        $(this).focus();
+                    } else {
+                        $(this).attr('class', 'form-control');
+                        $(this).focus();
+                    }
+                });
             });
         }
 
@@ -395,6 +405,7 @@
             $("#txtFunctionName").val("");
             $("#from-date-picker").val("");
             $("#to-date-picker").val("");
+            $("#ddlMenuMaster").val("");
             $("#chkIsActive").prop("checked", false);
         }
 
@@ -446,6 +457,7 @@
                                 '<td>' + item.createdBy + '</td>' +
                                 '<td>' + item.updateDate + '</td>' +
                                 '<td>' + item.updateBy + '</td>' +
+                                '<td>' + item.codes + '</td>' +
                                 '</tr>';
                             rows = rows + row;
                             $("#userAccessBody").append(rows);
@@ -475,7 +487,7 @@
                     && $('#ddlFunction option:selected').val() != "0"
                     && $("#txtFunctionName").val() != ""
                     && $("#from-date-picker").val() != ""
-                    // && $("#to-date-picker").val() != ""
+                    &&  $('#ddlMenuMaster').val() != "0"
                     ) {
                     var id = $('#hdnUserRoleAccessId').val();
                     var userId = $('#ddlUser option:selected').val();
@@ -487,6 +499,7 @@
                     var endDate = $("#to-date-picker").val();
                     var fromDate = startDate.split("-").reverse().join("-");
                     var toDate = "";
+                    var menuType = $('#ddlMenuMaster').val();
                     if (endDate != "") {
                         toDate = endDate.split("-").reverse().join("-");
                     }
@@ -497,7 +510,8 @@
                         url: '@(utilityHelper.SiteUrl() + "UserRoleAccess/Update")',
                         type: "POST",
                         dataType: "json",
-                        data: { id: id, userId: userId, roleId: roleId, functionId: functionId, functionName: functionName, startDate: fromDate, endDate: toDate, isActive: isActive},
+                        data: { id: id, userId: userId, roleId: roleId, functionId: functionId, functionName: functionName,
+                            startDate: fromDate, endDate: toDate, isActive: isActive, menuType:menuType},
                         success: function (data) {
                             if (data != null && data != undefined) {
                                 if (data.transactionMessage.status == '@((byte)TransactionStatus.Success)') {
@@ -602,6 +616,7 @@
                             '<td>' + data.createdBy + '</td>' +
                             '<td>' + data.updateDate + '</td>' +
                             '<td>' + data.updateBy + '</td>' +
+                            '<td>' + data.codes + '</td>' +
                             '</tr>';
 
                         //Setting User Role Access Details to Page Controls
@@ -621,11 +636,14 @@
 
                         getFunctionList(data.functionId);
 
+
                         $('#txtFunctionName').val(data.functionName);
                         $("#chkIsActive").prop('checked', data.isActive);
                         $('#hdnUserRoleAccessId').val(data.id);
                         $('#from-date-picker').val(data.startDateString);
                         $('#to-date-picker').val(data.endDateString);
+                        $('#ddlMenuMaster').val(data.menuTypeId);
+                        getMenuList(data.menuTypeId);
 
                         rows = rows + row;
                         $("#userAccessBody").html(rows);
