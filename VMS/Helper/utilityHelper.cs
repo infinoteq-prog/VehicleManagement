@@ -79,6 +79,7 @@ namespace VMS.Helper
 
         public static VMLogin validateUserAndStoreSession(string userName, string password)
         {
+            string _controllerName = "Utility Helper: validateUserAndStoreSession";
             VMLogin userDetails = _context.TblUserMasters.Select(x => new VMLogin
             {
                 Id = x.Id,
@@ -99,41 +100,62 @@ namespace VMS.Helper
                 Success = true
             }).Where(x => x.UserId.Equals(userName) && x.Password.Equals(password)).FirstOrDefault();
 
-            var menuTypeIds = _context.TblUserFunctions
-                          .Where(uf => uf.UserId == userDetails.Id)
-                          .Select(uf => uf.MenuTypeId)
-                          .ToList();
-            if (menuTypeIds.Any())
+            try
             {
-                var menuCodes = new List<string>(); 
-
-                foreach (var menuTypeId in menuTypeIds)
+                var menuTypeIds = _context.TblUserFunctions
+                              .Where(uf => uf.UserId == userDetails.Id)
+                              .Select(uf => uf.MenuTypeId)
+                              .ToList();
+                if (menuTypeIds.Any())
                 {
-                    if (menuTypeId == 1)
+                    var menuCodes = new List<string>();
+
+                    foreach (var menuTypeId in menuTypeIds)
                     {
-                        menuCodes.Add("1");
+                        if (menuTypeId == 1)
+                        {
+                            menuCodes.Add("1");
+                        }
+                        else
+                        {
+                            var code = _context.TblCodeMasters
+                                               .Where(cm => cm.Id == menuTypeId)
+                                               .Select(cm => cm.Code)
+                                               .FirstOrDefault();
+
+                            if (code != null)
+                            {
+                                menuCodes.Add(code);
+                            }
+                        }
+                    }
+
+                    userDetails.MenuCode = string.Join(",", menuCodes);
+                }
+                else
+                {
+                    if (userDetails.RoleName.Equals(SiteConstants.Admin) || userDetails.RoleName.Equals(SiteConstants.SuperAdmin))
+                    {
+                        userDetails.MenuCode = "1";
                     }
                     else
                     {
-                        var code = _context.TblCodeMasters
-                                           .Where(cm => cm.Id == menuTypeId)
-                                           .Select(cm => cm.Code)
-                                           .FirstOrDefault();
-
-                        if (code != null) 
-                        {
-                            menuCodes.Add(code);
-                        }
+                        userDetails.MenuCode = string.Empty;
                     }
                 }
-
-                userDetails.MenuCode = string.Join(",", menuCodes);
             }
-            else
+            catch(Exception ex)
             {
-                userDetails.MenuCode = string.Empty;
+                Globalsettings.Log(_controllerName, string.Format("Error occured while converting date {0}", ex.Message));
+                if (userDetails.RoleName.Equals(SiteConstants.Admin) || userDetails.RoleName.Equals(SiteConstants.SuperAdmin))
+                {
+                    userDetails.MenuCode = "1";
+                }
+                else
+                {
+                    userDetails.MenuCode = string.Empty;
+                }
             }
-
 
             if (userDetails != null)
             {

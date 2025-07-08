@@ -10,7 +10,7 @@
 
 @if (userLogin != null)
 {
-    if (userLogin.MenuCode == null || userLogin.MenuCode == "" || userLogin.MenuCode.Contains("1"))
+    if (userLogin.MenuCode.Contains("1"))
     {
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
