@@ -325,8 +325,12 @@
                             <div class="form-group">
                                 <label for="ddlDistanceMaster">Station:</label>
                                 <select class="form-control" name="ddlDistanceMaster" id="ddlDistanceMaster"></select>
-                                @* <select class="form-control" id="ddlDistanceMaster" onchange="setDropDownStyle(this);">
-                                    </select> *@
+                                            <button type="button" class="btn btn-primary btn-sm" onclick="openNewDistanceMasterPage()" title="Add New Driver">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-secondary btn-sm ms-2" id="btnRefreshDistanceDDList" title="Refresh Driver List">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </button>
                             </div>
                         </div>
                         <div class="col-md-1">
@@ -1973,6 +1977,20 @@
                     });
             });
         }
+
+    </script>
+
+    @* Add New Station and Refresh Station Dropdown *@
+    <script>
+        function openNewDistanceMasterPage() {
+            const newPageUrl = '@(VMS.Helper.utilityHelper.SiteUrl() + "DistanceMaster/Index")';
+
+            window.open(newPageUrl, '_blank', 'noopener, noreferrer');
+        }
+
+        document.getElementById('btnRefreshDistanceDDList').addEventListener('click', function () {
+            getDistanceMaster();
+        });
 
     </script>
 }
