@@ -504,7 +504,15 @@
                             }else{
                                 $("#bhariKaAverage").text("0");
                             }
-                            totalDieselProfitLoss = (parseFloat(totalEstimateDiesel) - parseFloat(totalConsumedDiesel) -  totalDiscountValue).toFixed(2);
+                            totalDieselProfitLoss = (parseFloat(totalEstimateDiesel) - parseFloat(totalConsumedDiesel)).toFixed(2);
+                            if(parseFloat(totalDieselProfitLoss)<0)
+                            {
+                               totalDieselProfitLoss= (parseFloat(totalDieselProfitLoss)  +  parseFloat(totalDiscountValue)).toFixed(2)
+                            }
+                            else
+                            {
+                                totalDieselProfitLoss = (parseFloat(totalEstimateDiesel) - parseFloat(totalConsumedDiesel) - totalDiscountValue).toFixed(2);
+                            }
                             $("#discountValue").text(totalDiscountValue.toFixed(2));
                             $("#dieselProfitLoss").text(totalDieselProfitLoss);
 
