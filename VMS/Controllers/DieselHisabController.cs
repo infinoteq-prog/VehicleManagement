@@ -239,7 +239,8 @@ namespace VMS.Controllers
                          dh.Updated_By AS DieselHeaderUpdatedBy,
                          dm.Driver_Name,dm.Father_Name AS DriverFatherName,
                          uc.User_Name AS DieselHeaderCreatedByName,
-                         uu.User_Name AS DieselHeaderUpdatedByName
+                         uu.User_Name AS DieselHeaderUpdatedByName,
+                         dh.discountPer,dh.DiscountValue
                          FROM [dbo].[tbl_Diesel_Header] dh
                          INNER JOIN [dbo].[tbl_Vehicle_Master] vm ON dh.VehicleNo = vm.Id
                          LEFT JOIN [dbo].[tbl_Driver_Master] dm ON dh.DriverId = dm.Id
@@ -269,6 +270,8 @@ namespace VMS.Controllers
                                     EndOdometer = reader.GetInt64("End_Odometer"),
                                     OpeningDiesel = reader.GetInt64("Opening_Diesel").ToIntFromNull(),
                                     ClosingDiesel = reader.GetInt64("Closing_Diesel").ToIntFromNull(),
+                                    discountPer = reader.GetDecimal("discountPer").To2Decimal(),
+                                    DiscountValue = reader.GetDecimal("DiscountValue").To2Decimal(),
                                     RunningKm = reader.GetInt32("RunningKm").ToIntFromNull(),
                                     IsDifferenceAdded = reader.GetBoolean("Is_DifferenceAdded"),
                                     IsLoadingAdded = reader.GetBoolean("Is_LoadingAdded"),

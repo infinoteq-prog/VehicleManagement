@@ -350,7 +350,7 @@
             <tr>
                 <th colspan="5" style="text-align:left">लोड अनलोड (गुजरात) में एक लाइन में जोड़ कर लिख सकते है</th>
                 <th colspan="3" style="text-align:right">Discount in Ltr.</th>
-                <th></th>
+                <th><span id="discountValue"></span></th>
                 <th colspan="6" style="text-align:left">Discount Ka Reason</th>
             </tr>
             <tr>
@@ -409,6 +409,7 @@
                         var totalKhaliKaKm=0;
                         var totalKhaliKaDiesel=0;
                         var totalLoadUnloadDiesel=0;
+                        var totalDiscountValue=0;
 
                          // $("#driverName").html(`Driver Name: <span>${data.driverName}</span>`);
                         $("#driverName").text(data.driverName);
@@ -422,7 +423,7 @@
                         $("#userName").text(data.dieselHeaderCreatedByName);
                         $("#userName1").text(data.dieselHeaderCreatedByName);
                         $("#currentDate").text(data.dieselHeaderCreationDate);
-
+                        totalDiscountValue = data.discountValue;
                         
                         //Diesel Filling    
                         data.dieselFillingList.forEach((entry, index) => {
@@ -503,7 +504,8 @@
                             }else{
                                 $("#bhariKaAverage").text("0");
                             }
-                            totalDieselProfitLoss = (parseFloat(totalEstimateDiesel)-parseFloat(totalConsumedDiesel)).toFixed(2);
+                            totalDieselProfitLoss = (parseFloat(totalConsumedDiesel) - parseFloat(totalEstimateDiesel) - totalDiscountValue).toFixed(2);
+                            $("#discountValue").text(totalDiscountValue.toFixed(2));
                             $("#dieselProfitLoss").text(totalDieselProfitLoss);
 
                             var percentageLoss=parseFloat((parseFloat(totalDieselProfitLoss)*100) / parseFloat(totalAvgDieselValue) ).toFixed(2);
