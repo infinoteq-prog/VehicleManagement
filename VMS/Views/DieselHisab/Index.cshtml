@@ -222,6 +222,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txt">Discount%:<span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="txtDiscountPer" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Discount%" />
+                                            </div>
+                                        </div>
+                                    </div>
                             </div>
                         
                             <div class="row rowHeight">
@@ -1006,6 +1014,7 @@
         $("#txtOpeningDiesel").val("");
         $("#txtClosingDiesel").val("");
         $("#txtRouteDescription").val("");
+        $("#txtDiscountPer").val("");
 
             $('#dieselFillingTable tbody').empty();
             $('#dieselFillingTable').DataTable().clear().destroy();
@@ -1219,6 +1228,7 @@
                 formData.append("tripRouteDescription", $("#txtRouteDescription").val());
                     formData.append("IsDifferenceAdded", addDifferenceChecked); // Append the checkbox value
                     formData.append("IsLoadingAdded", addLoadingUnloadingChecked);
+                    formData.append("discountPer",$("#txtDiscountPer").val());
 
                  // Diesel Filling Entries from Table
                    $("#dieselFillingTable tbody tr").each(function (index, row) {
@@ -1771,16 +1781,31 @@
             row.insertCell(2).textContent = "Total";
             let totalDistance = 0;
             let totalEstKm = 0;
+            let totalDiscountValue = 0;
             for (let i = 0; i < table.rows.length - 1; i++) {
                 if (table.rows[i].id !== 'differenceRow' && table.rows[i].id !== 'loadingUnloadingRow') {
                     totalDistance += Number(table.rows[i].cells[3].textContent);
                     totalEstKm += Number(table.rows[i].cells[6].textContent);
                 }
             }
+
+            try
+            {
+                totalDiscountValue=((totalEstKm*$("#txtDiscountPer").val())/100);
+            }catch{
+            }
+
             row.insertCell(3).textContent = totalDistance.toFixed(0)
             row.insertCell(4).textContent = "";
             row.insertCell(5).textContent = "";
-            row.insertCell(6).textContent = totalEstKm.toFixed(2)
+
+            if(totalDiscountValue>0)
+            {
+                row.insertCell(6).textContent = totalEstKm.toFixed(2).toString()  +" ("+totalDiscountValue.toFixed(2).toString()+")";
+            }else
+            {
+                 row.insertCell(6).textContent = totalEstKm.toFixed(2)
+            }
                 let totalKm = $("#txtRunningKm").val();
             row.insertCell(7).textContent = (totalKm- totalDistance.toFixed(0));
         }

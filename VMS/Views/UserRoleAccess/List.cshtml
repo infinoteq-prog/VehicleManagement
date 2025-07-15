@@ -149,34 +149,34 @@
         // var viewAccess = '@ViewBag.AddUserRoleViewAccess';
         // var updateAccess = '@ViewBag.AddUserRoleUpdateAccess';
         // var deleteAccess = '@ViewBag.AddUserRoleDeleteAccess';
-        var fullAccess = 'False';
-        var addAccess = 'False';
-        var viewAccess = 'False';
-        var updateAccess = 'False';
-        var deleteAccess = 'False';
+        var fullAccess = 'True';
+        var addAccess = 'True';
+        var viewAccess = 'True';
+        var updateAccess = 'True';
+        var deleteAccess = 'True';
         var viewButton = "";
         var updateButton = "";
         var deleteButton = "";
 
         $(document).ready(function () {
             setSideMenu("users-access");
-            getFunctionName('USER ACCESS', function (userRights) {
-                if (userRights) {
-                    console.log("Update Access:", userRights.updateAccess);
-                    console.log("Add Access:", userRights.addAccess);
-                    console.log("Delete Access:", userRights.deleteAccess);
-                    console.log("View Access:", userRights.viewAccess);
-                    console.log("Full Access:", userRights.fullAccess);
+            // getFunctionName('USER ACCESS', function (userRights) {
+            //     if (userRights) {
+            //         console.log("Update Access:", userRights.updateAccess);
+            //         console.log("Add Access:", userRights.addAccess);
+            //         console.log("Delete Access:", userRights.deleteAccess);
+            //         console.log("View Access:", userRights.viewAccess);
+            //         console.log("Full Access:", userRights.fullAccess);
 
-                    fullAccess = userRights.fullAccess;
-                    addAccess = userRights.addAccess;
-                    viewAccess = userRights.viewAccess;
-                    updateAccess = userRights.updateAccess;
-                    deleteAccess = userRights.deleteAccess;
-                } else {
-                    console.log("Failed to get user rights.");
-                }
-            });
+            //         fullAccess = userRights.fullAccess;
+            //         addAccess = userRights.addAccess;
+            //         viewAccess = userRights.viewAccess;
+            //         updateAccess = userRights.updateAccess;
+            //         deleteAccess = userRights.deleteAccess;
+            //     } else {
+            //         console.log("Failed to get user rights.");
+            //     }
+            // });
             if (fullAccess === "True" || viewAccess === "True") {
                 //checkValidationOnChange();
                 getUserRoleAccessList();

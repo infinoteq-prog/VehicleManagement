@@ -356,6 +356,8 @@ namespace VMS
                                 ProfitLoss = reader.IsDBNull("Profit_Loss") ? (decimal?)null : reader.GetDecimal("Profit_Loss").To2Decimal(),
                                 PercentLoss = reader.IsDBNull("Percent_Loss") ? (decimal?)null : reader.GetDecimal("Percent_Loss").To2Decimal(),
                                 BhariKaAverage = reader.IsDBNull("Bhari_Ka_Average") ? (decimal?)null : reader.GetDecimal("Bhari_Ka_Average").To2Decimal(),
+                                DiscountPer = reader.IsDBNull("DiscountPer") ? (decimal?)null : reader.GetDecimal("DiscountPer").To2Decimal(),
+                                DiscountValue = reader.IsDBNull("DiscountValue") ? (decimal?)null : reader.GetDecimal("DiscountValue").To2Decimal(),
                                 IsActive = reader.GetBoolean("Is_Active"),
                                 LastTripVendor = "Test Vendor",
                                 DieselHeaderCreationDate = reader.GetDateTime("DieselHeaderCreationDate"),
@@ -429,5 +431,26 @@ namespace VMS
             }
             return BhariKaAverage;
         }
+
+        public static decimal calDiscountValue(decimal discountPer, List<TblDieselLine> _lstDieselLine)
+        {
+            // Bhari ka KM (Total(TotalRunningKm)  - Total khali ka KM) / Bhari Ka Diesel (Total Consumed - Khali ka Diesel)
+            decimal discountValue = 0;
+            try
+            {
+                decimal sumTotalEstimatedDiesel = _lstDieselLine?.Sum(x => x.EstimatedDiesel).To3Decimal() ?? 0;
+                if (discountPer>0 && sumTotalEstimatedDiesel>0)
+                {
+                    discountValue = ((sumTotalEstimatedDiesel * discountPer) / 100);
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                Globalsettings.Log(_controllerName, string.Format("calBhariKaAverage: {0}", ex.Message.ToString()));
+            }
+            return discountValue;
+        }
+
     }
 }

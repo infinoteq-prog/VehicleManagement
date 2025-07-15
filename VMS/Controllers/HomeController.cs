@@ -50,7 +50,7 @@ namespace VMS.Controllers
 
                 var functionName = (from uf in _context.TblUserFunctions
                                     join cm in _context.TblCodeMasters on uf.MenuTypeId equals cm.Id
-                                    where uf.UserId == userDetails.Id && cm.Code == menuName 
+                                    where uf.UserId == userDetails.Id && cm.Code == menuName  && uf.IsActive==true
                                     select new
                                     {
                                         FunctionName = uf.FunctionName,

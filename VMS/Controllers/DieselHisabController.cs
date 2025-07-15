@@ -442,7 +442,7 @@ namespace VMS.Controllers
         public ActionResult SaveUpdate(int tripId, int vehicleNo, int driverId, int tripNo,int lastTripId, string driverName, 
                                  string driverFatherName, string tripStartDate,
                                  string tripEndDate, Int32 startOdometer, Int32 endOdometer,
-                                 int openingDiesel, int closingDiesel, int runningKm,bool IsDifferenceAdded,bool IsLoadingAdded, string tripRouteDescription,List<TblDieselFilling> _lstDieselFilling, List<TblDieselLine> _lstDieselLine)
+                                 int openingDiesel, int closingDiesel, int runningKm,decimal DiscountPer, bool IsDifferenceAdded,bool IsLoadingAdded, string tripRouteDescription,List<TblDieselFilling> _lstDieselFilling, List<TblDieselLine> _lstDieselLine)
         {
             VMTrip model = new VMTrip();
             DateTime dtTripStartDate = DateTime.Now;
@@ -509,6 +509,8 @@ namespace VMS.Controllers
                                     Profit_Loss = DieselHisabContext.calProfitLoss(openingDiesel,closingDiesel,_lstDieselFilling,_lstDieselLine),
                                     Percent_Loss = DieselHisabContext.calPercentLoss(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine),
                                     Bhari_Ka_Average = DieselHisabContext.calBhariKaAverage(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine),
+                                    DiscountPer = DiscountPer,
+                                    DiscountValue = DieselHisabContext.calDiscountValue(DiscountPer, _lstDieselLine),
                                     CreationDate = utilityHelper.CurrentDateTime,
                                     UpdateDate = utilityHelper.CurrentDateTime,
                                     CreatedBy = userID.ToIntFromNull(),
@@ -635,6 +637,8 @@ namespace VMS.Controllers
                                 existingDieselHisab.Profit_Loss = DieselHisabContext.calProfitLoss(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine);
                                 existingDieselHisab.Percent_Loss = DieselHisabContext.calPercentLoss(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine);
                                 existingDieselHisab.Bhari_Ka_Average = DieselHisabContext.calBhariKaAverage(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine);
+                                existingDieselHisab.DiscountPer = DiscountPer;
+                                existingDieselHisab.DiscountValue = DieselHisabContext.calDiscountValue(DiscountPer, _lstDieselLine);
                                 _context.TblDieselHeaders.Update(existingDieselHisab);
                                 _context.SaveChanges(); // Save changes to the header first to ensure TripId is consistent
                             }

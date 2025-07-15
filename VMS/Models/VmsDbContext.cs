@@ -482,6 +482,8 @@ public partial class VmsDbContext : DbContext
             entity.Property(e => e.Percent_Loss).HasColumnType("decimal(10, 3)");
             entity.Property(e => e.Profit_Loss).HasColumnType("decimal(10, 3)");
             entity.Property(e => e.Bhari_Ka_Average).HasColumnType("decimal(10, 3)");
+            entity.Property(e => e.DiscountPer).HasColumnType("decimal(10, 3)");
+            entity.Property(e => e.DiscountValue).HasColumnType("decimal(10, 3)");
 
             entity.HasOne(d => d.Driver).WithMany(p => p.TblDieselHeaders)
                 .HasForeignKey(d => d.DriverId)
