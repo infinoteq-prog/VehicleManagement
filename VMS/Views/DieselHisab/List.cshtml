@@ -83,8 +83,12 @@
                                 <th>Approved Status</th>
                                 <th>Vehicle No</th>
                                 <th>Driver Name</th>
+                                <th>Driver Father</th>
                                 <th>Trip Start Date</th>
                                 <th>Trip End Date</th>
+                                <th>Total Diesel Filled</th>
+                                <th>Total Distance KM</th>
+                                <th>Total Estimated Diesel</th>
                                 <th>Discount%</th>
                                 <th>Discount Value</th>
                                 <th>Profit & Loss</th>
@@ -318,89 +322,18 @@
                                 '<td>' + item.approvedStatus + '</td>' +
                                 '<td>' + item.vehicleNumber + '</td>' +
                                 '<td>' + item.driverName + '</td>' +
+                                '<td>' + item.driverFatherName + '</td>' +
                                 '<td>' + item.tripStartDate + '</td>' +
                                 '<td>' + item.tripEndDate + '</td>' +
+                                '<td>' + item.totalDieselFilled + '</td>' +
+                                '<td>' + item.totalDistanceKM + '</td>' +
+                                '<td>' + item.totalEstimatedDiesel + '</td>' +
                                    '<td>' + item.discountPer + '</td>' +
                                 '<td>' + item.discountValue + '</td>' +
                                 '<td>' + item.profitLoss + '</td>' +
                                 '<td>' + item.percentLoss + '</td>' +
                                 '<td>' + item.bhariKaAverage + '</td>' +
                              
-                                '<td>' + item.startOdometer + '</td>' +
-                                '<td>' + item.endOdometer + '</td>' +
-                                '<td>' + item.openingDiesel + '</td>' +
-                                '<td>' + item.creationDate + '</td>' +
-                                '<td>' + item.dieselHeaderCreatedByName + '</td>' +
-                                '<td>' + item.updateDate + '</td>' +
-                                '<td>' + item.dieselHeaderUpdatedByName + '</td>' +
-                                '</tr>';
-                            rows += row;
-                        });
-                        $("#tblDieselHisabMasterList tbody").html(rows);
-                        bindDataTable();
-                    } else {
-                        var row = '<tr><td colspan="12" style="text-align:center">No Data Found!</td></tr>';
-                        $("#tblDieselHisabMasterList tbody").html(row);
-                    }
-                },
-                error: function (ex) {
-                    alert("Error: " + ex);
-                }
-            });
-        }
-
-        function getDieselHisabMasterList() {
-            $.ajax({
-                cache: false,
-                url: '@(utilityHelper.SiteUrl() + "DieselHisab/getTopDieselHisabList")',
-                type: "GET",
-                dataType: "json",
-                success: function (data) {
-                    if (data != null && data.length > 0) {
-                        var rows = "";
-                        $.each(data, function (i, item) {
-                           
-
-                             if (fullAccess === "True" || viewAccess === "True") {
-                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" title="View" data-toggle="tooltip" data-placement="top" onclick="viewDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
-                            }
-
-                            if (fullAccess === "True" || updateAccess === "True") {
-                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" title="Edit" data-toggle="tooltip" data-placement="top" onclick="editDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-edit btn-icon-append"></i></button> ';
-                            }
-
-                            if (fullAccess === "True" || approvalAccess === "True") {
-                                approvalButton = '<button id="approveConfirm" type="button" class="btn btn-warning btn-sm btn-icon-text" title="Approve" data-toggle="tooltip" data-placement="top" onclick="approvalDieselHisabMaster(\'' + item.tripId + '\',\'' + item.approvedStatus + '\');"> <i class="typcn typcn-thumbs-up btn-icon-append"></i></button> ';
-                            }
-
-                            if (fullAccess === "True" || updateAccess === "True") {
-                                 printButton = '<button type="button" class="btn btn-primary btn-sm btn-icon-text mr-3" title="Print" data-toggle="tooltip" data-placement="top" onclick="printDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-printer btn-icon-append"></i></button> ';
-                                                                                   }
-
-
-                            if (fullAccess === "True" || deleteAccess === "True") {
-                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" title="Delete" data-toggle="tooltip" data-placement="top" onclick="deleteDieselHisabMaster1(\'' + item.tripId + '\');"> <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
-                            }
-
-                            var row = '<tr>' +
-                                '<td>' +
-                                '<div class="d-flex align-items-center">' +
-                                viewButton +
-                                updateButton +
-                                printButton +
-                                deleteButton +
-                                approvalButton +
-                                '</div>' +
-                                '</td>' +
-                                '<td>' + item.tripId + '</td>' +
-                                '<td>' + item.approvedStatus + '</td>' +
-                                '<td>' + item.vehicleNo + '</td>' +
-                                '<td>' + item.driverName + '</td>' +
-                                '<td>' + item.tripStartDate + '</td>' +
-                                '<td>' + item.tripEndDate + '</td>' +
-                                '<td>' + item.profitLoss + '</td>' +
-                                '<td>' + item.percentLoss + '</td>' +
-                                '<td>' + item.bhariKaAverage + '</td>' +
                                 '<td>' + item.startOdometer + '</td>' +
                                 '<td>' + item.endOdometer + '</td>' +
                                 '<td>' + item.openingDiesel + '</td>' +
