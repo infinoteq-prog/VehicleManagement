@@ -6,6 +6,7 @@ using System.Data;
 using System.Reflection.Metadata;
 using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace VMS.Controllers
 {
@@ -206,6 +207,13 @@ namespace VMS.Controllers
         public JsonResult getDriverMasterList()
         {
             List<VMDriverMaster> model = new List<VMDriverMaster>();
+            var driverMaster = _context.TblDriverMasters.Where(x => x.ReferenceName == "undefined").ToList();
+            foreach (var item in driverMaster)
+            {
+                item.ReferenceName = "0";
+            }
+            _context.TblDriverMasters.UpdateRange(driverMaster);
+            _context.SaveChanges();
 
             model = _context.TblDriverMasters.Select(x => new VMDriverMaster
             {
