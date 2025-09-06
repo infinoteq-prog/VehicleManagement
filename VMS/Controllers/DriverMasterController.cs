@@ -164,7 +164,7 @@ namespace VMS.Controllers
                 MobileNumber1 = x.MobileNumber1,
                 MobileNumber2 = x.MobileNumber2,
                 IsExistingReference = x.IsExistingReference,
-                ReferenceName = x.ReferenceName,
+                ReferenceName = x.ReferenceName.ToIntFromNull().ToStringFromNull(),
                 ReferenceAddress1 = x.ReferenceAddress1,
                 ReferenceAddress2 = x.ReferenceAddress2,
                 ReferenceAddress3 = x.ReferenceAddress3,
@@ -215,69 +215,76 @@ namespace VMS.Controllers
             _context.TblDriverMasters.UpdateRange(driverMaster);
             _context.SaveChanges();
 
-            model = _context.TblDriverMasters.Select(x => new VMDriverMaster
+            try
             {
-                Id = x.Id,
-                DriverName = x.DriverName,
-                FatherName = x.FatherName,
-                DriverAddress1 = x.DriverAddress1,
-                DriverAddress2 = x.DriverAddress2,
-                DriverAddress3 = x.DriverAddress3,
-                CityId = x.CityId,
-                StateId = x.StateId,
-                PinCode = x.PinCode,
-                DriverPhoto = x.DriverPhoto,
-                AadharNo = x.AadharNo,
-                AadharNoImage = x.AadharNoImage,
-                PanNo = x.PanNo,
-                PanNoImage = x.PanNoImage,
-                BankName = x.BankName,
-                BankAccountNumber = x.BankAccountNumber,
-                BankIFSCCode = x.BankIfsccode,
-                DrivingLicenceNo = x.DrivingLicenceNo,
-                DrivingLicenceIssueAuth = x.DrivingLicenceIssueAuth,
-                DrivingLicenceValidity = x.DrivingLicenceValidity.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
-                DrivingLicenceImage = x.DrivingLicenceImage,
-                MobileNumber1 = x.MobileNumber1,
-                MobileNumber2 = x.MobileNumber2,
-                IsExistingReference = x.IsExistingReference,
-                ReferenceName = _context.TblDriverMasters
-    .Where(p => p.Id == (string.IsNullOrEmpty(x.ReferenceName) ? 0 : Convert.ToInt32(x.ReferenceName)))
-    .Select(p => p.DriverName).FirstOrDefault(),
-                ReferenceAddress1 = x.ReferenceAddress1,
-                ReferenceAddress2 = x.ReferenceAddress2,
-                ReferenceAddress3 = x.ReferenceAddress3,
-                ReferenceCity = x.ReferenceCity,
-                ReferencePinCode = x.ReferencePin,
-                ReferenceMobile = x.ReferenceMobile,
-                IsActive = x.IsActive,
-                CreationDate = x.CreationDate,
-                UpdateDate = x.UpdateDate,
-                CreatedBy = x.CreatedBy,
-                UpdatedBy = x.UpdatedBy,
-                StateName = _context.TblStates
-                         .Where(p => p.Id == x.StateId)
-                         .Select(p => p.StateName).FirstOrDefault(),
-                CityName = _context.TblCities
-                         .Where(p => p.Id == x.CityId)
-                         .Select(p => p.CityName).FirstOrDefault(),
-                DistrictName = _context.TblDistricts
-                         .Where(p => p.Id == x.DistrictId)
-                         .Select(p => p.DistrictName).FirstOrDefault(),
-                CreatedByName = _context.TblUserMasters
-                         .Where(p => p.Id == x.CreatedBy)
-                         .Select(p => p.UserName).FirstOrDefault(),
-                UpdatedByName = _context.TblUserMasters
-                         .Where(p => p.Id == x.UpdatedBy)
-                         .Select(p => p.UserName).FirstOrDefault()
-            }).OrderByDescending(n => n.Id).ToList();
-            if (model.Count() == 0)
+                model = _context.TblDriverMasters.Select(x => new VMDriverMaster
+                {
+                    Id = x.Id,
+                    DriverName = x.DriverName,
+                    FatherName = x.FatherName,
+                    DriverAddress1 = x.DriverAddress1,
+                    DriverAddress2 = x.DriverAddress2,
+                    DriverAddress3 = x.DriverAddress3,
+                    CityId = x.CityId,
+                    StateId = x.StateId,
+                    PinCode = x.PinCode,
+                    DriverPhoto = x.DriverPhoto,
+                    AadharNo = x.AadharNo,
+                    AadharNoImage = x.AadharNoImage,
+                    PanNo = x.PanNo,
+                    PanNoImage = x.PanNoImage,
+                    BankName = x.BankName,
+                    BankAccountNumber = x.BankAccountNumber,
+                    BankIFSCCode = x.BankIfsccode,
+                    DrivingLicenceNo = x.DrivingLicenceNo,
+                    DrivingLicenceIssueAuth = x.DrivingLicenceIssueAuth,
+                    DrivingLicenceValidity = x.DrivingLicenceValidity.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture),
+                    DrivingLicenceImage = x.DrivingLicenceImage,
+                    MobileNumber1 = x.MobileNumber1,
+                    MobileNumber2 = x.MobileNumber2,
+                    IsExistingReference = x.IsExistingReference,
+                    ReferenceName = _context.TblDriverMasters
+                            .Where(p => p.Id == (string.IsNullOrEmpty(x.ReferenceName) ? 0 : Convert.ToInt32(x.ReferenceName)))
+                            .Select(p => p.DriverName).SingleOrDefault() ?? "",
+                    ReferenceAddress1 = x.ReferenceAddress1,
+                    ReferenceAddress2 = x.ReferenceAddress2,
+                    ReferenceAddress3 = x.ReferenceAddress3,
+                    ReferenceCity = x.ReferenceCity,
+                    ReferencePinCode = x.ReferencePin,
+                    ReferenceMobile = x.ReferenceMobile,
+                    IsActive = x.IsActive,
+                    CreationDate = x.CreationDate,
+                    UpdateDate = x.UpdateDate,
+                    CreatedBy = x.CreatedBy,
+                    UpdatedBy = x.UpdatedBy,
+                    StateName = _context.TblStates
+                            .Where(p => p.Id == x.StateId)
+                            .Select(p => p.StateName).FirstOrDefault(),
+                    CityName = _context.TblCities
+                             .Where(p => p.Id == x.CityId)
+                             .Select(p => p.CityName).FirstOrDefault(),
+                    DistrictName = _context.TblDistricts
+                             .Where(p => p.Id == x.DistrictId)
+                             .Select(p => p.DistrictName).FirstOrDefault(),
+                    CreatedByName = _context.TblUserMasters
+                             .Where(p => p.Id == x.CreatedBy)
+                             .Select(p => p.UserName).FirstOrDefault(),
+                    UpdatedByName = _context.TblUserMasters
+                             .Where(p => p.Id == x.UpdatedBy)
+                             .Select(p => p.UserName).FirstOrDefault()
+                }).OrderByDescending(n => n.Id).ToList();
+                if (model.Count() == 0)
+                {
+                    return Json(null);
+                }
+                else
+                {
+                    return Json(model);
+                }
+            }
+            catch(Exception ex)
             {
                 return Json(null);
-            }
-            else
-            {
-                return Json(model);
             }
         }
 
@@ -544,7 +551,7 @@ namespace VMS.Controllers
                     MobileNumber1 = x.MobileNumber1,
                     MobileNumber2 = x.MobileNumber2,
                     IsExistingReference = x.IsExistingReference,
-                    ReferenceName = x.ReferenceName,
+                    ReferenceName = x.ReferenceName.ToIntFromNull().ToStringFromNull(),
                     ReferenceAddress1 = x.ReferenceAddress1,
                     ReferenceAddress2 = x.ReferenceAddress2,
                     ReferenceAddress3 = x.ReferenceAddress3,
