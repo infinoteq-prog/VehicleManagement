@@ -1092,6 +1092,24 @@
         console.log("Calculated Estkm:", Estkm); // Good for debugging
     }
 
+        function getDateObject(tripDateString) {
+            // Split the string into date and time parts
+            var dateTimeParts = tripDateString.split(' ');
+            var dateParts = dateTimeParts[0].split('-'); // ["18", "09", "2025"]
+            var timeParts = dateTimeParts[1].split(':'); // ["10", "03", "00"]
+
+            // Create a Date object. Note: Month is 0-indexed in JavaScript Date constructor.
+            var dateObject = new Date(
+                parseInt(dateParts[2], 10), // Year
+                parseInt(dateParts[1], 10) - 1, // Month (0-indexed)
+                parseInt(dateParts[0], 10), // Day
+                parseInt(timeParts[0], 10), // Hours
+                parseInt(timeParts[1], 10), // Minutes
+                parseInt(timeParts[2], 10)  // Seconds
+            );
+            return dateObject;
+        }
+
     function getLastDieselTripHistory(vehicleNo) {
         $.ajax({
             cache: false,
@@ -1110,7 +1128,7 @@
                     $("#txtLastTripDriverFather").val(data.lastTripDriverFatherName);
                     $("#txtLastTripVendor").val(data.lastTripVendor);
                     if (data.nextTripStartDate) {
-                        $("#from-date-picker").datepicker("setDate", data.nextTripStartDate);
+                            $("#from-date-picker").datetimepicker("setDate", getDateObject(data.nextTripStartDate));
                     }
                     $("#txtStartOdometer").val(data.endOdometer);
                     $("#txtOpeningDiesel").val(data.closingDiesel);
@@ -1182,6 +1200,22 @@
         }
     }
 
+        function GetConvertedDateToSave(fullDateTime) {
+            //var fullDateTime = $("#from-date-picker").val();
+
+            // Split the string into date and time parts
+            var parts = fullDateTime.split(' ');
+            var datePart = parts[0]; 
+            var timePart = parts[1]; 
+
+            // Reverse the date part to a yyyy-mm-dd format
+            var tripStartDate = datePart.split("-").reverse().join("-"); 
+            console.log(tripStartDate);
+            var fullTripStartDate = tripStartDate + " " + timePart; 
+            console.log(fullTripStartDate);
+            return fullTripStartDate;
+        }
+
     function saveDieselHisab() {
         var isValid = checkValidation();
         if (isValid == true) {
@@ -1199,8 +1233,8 @@
                 $("#txtClosingDiesel").val() != "" &&
                 $("#txtRouteDescription").val() != ""){
 
-                var tripStartDate = $("#from-date-picker").val().split("-").reverse().join("-");
-                var tripEndDate = $("#to-date-picker").val().split("-").reverse().join("-");
+                    var tripStartDate = GetConvertedDateToSave($("#from-date-picker").val());// $("#from-date-picker").val().split("-").reverse().join("-");
+                    var tripEndDate = GetConvertedDateToSave($("#to-date-picker").val());// $("#to-date-picker").val().split("-").reverse().join("-");
 
                 var formData = new FormData();
 
@@ -1645,11 +1679,11 @@
                         $('#ddlDriver').val(data.driverId).trigger('change');
                         $("#txtDriverFatherName").val(data.driverFatherName);
                         if (data.tripStartDate) {
-                            $("#from-date-picker").datepicker("setDate", data.tripStartDate);
+                            $("#from-date-picker").datetimepicker("setDate", getDateObject(data.tripStartDate));
                         }
                         if (data.tripEndDate) {
                             // const formattedDate_tripEndDate = convertDdMmYyyyToYyyyMmDd(data.tripEndDate);
-                            $("#to-date-picker").datepicker("setDate", data.tripEndDate);
+                            $("#to-date-picker").datetimepicker("setDate", getDateObject(data.tripEndDate));
                         }
 
                         $("#txtStartOdometer").val(data.startOdometer);

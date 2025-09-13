@@ -228,8 +228,8 @@ namespace VMS.Controllers
 
                     string sql = @"  SELECT
                          dh.TripId,dh.Last_Trip_Id[LastTripId],dh.VehicleNo,vm.Vehicle_No[VehicleNumber], dh.DriverId,
-                         CONVERT(VARCHAR, dh.Trip_Start_Date, 105) AS TripStartDate,
-                         CONVERT(VARCHAR, dh.Trip_End_Date, 105) AS TripEndDate,
+                         CONVERT(VARCHAR, dh.Trip_Start_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS TripStartDate,
+                         CONVERT(VARCHAR, dh.Trip_End_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_End_Date, 108) AS TripEndDate,
                          dh.Last_Trip_Route_Descr,dh.Start_Odometer,
                          dh.End_Odometer, dh.Opening_Diesel,dh.Closing_Diesel,
                          dh.RunningKm, dh.Is_Active,dh.Is_DifferenceAdded,dh.Is_LoadingAdded,
@@ -498,8 +498,8 @@ namespace VMS.Controllers
                                     LastTripId = lastTripId.ToIntFromNull(),
                                     DriverId = driverId.ToIntFromNull(),
                                     VehicleNo = vehicleNo.ToIntFromNull(),
-                                    TripStartDate =Convert.ToDateTime(dtTripStartDate.ToString("yyyy-MM-dd")),
-                                    TripEndDate = Convert.ToDateTime(dtTripEndDate.ToString("yyyy-MM-dd")),
+                                    TripStartDate =Convert.ToDateTime(dtTripStartDate.ToString("yyyy-MM-dd HH:mm")),
+                                    TripEndDate = Convert.ToDateTime(dtTripEndDate.ToString("yyyy-MM-dd HH:mm")),
                                     LastTripRouteDescr = tripRouteDescription,
                                     StartOdometer = startOdometer,
                                     EndOdometer = endOdometer.ToIntFromNull(),
