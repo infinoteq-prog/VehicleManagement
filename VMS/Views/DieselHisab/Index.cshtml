@@ -1094,19 +1094,40 @@
 
         function getDateObject(tripDateString) {
             // Split the string into date and time parts
-            var dateTimeParts = tripDateString.split(' ');
-            var dateParts = dateTimeParts[0].split('-'); // ["18", "09", "2025"]
-            var timeParts = dateTimeParts[1].split(':'); // ["10", "03", "00"]
+            var datePart, timePart = ""; // Initialize timePart to empty
 
-            // Create a Date object. Note: Month is 0-indexed in JavaScript Date constructor.
-            var dateObject = new Date(
-                parseInt(dateParts[2], 10), // Year
-                parseInt(dateParts[1], 10) - 1, // Month (0-indexed)
-                parseInt(dateParts[0], 10), // Day
-                parseInt(timeParts[0], 10), // Hours
-                parseInt(timeParts[1], 10), // Minutes
-                parseInt(timeParts[2], 10)  // Seconds
-            );
+            var dateTimeParts = tripDateString.split(' ');
+
+            if (dateTimeParts.length > 1) {
+                // Time is present
+                datePart = dateTimeParts[0]; // e.g., "19-09-2025"
+                timePart = dateTimeParts[1]; // e.g., "10:03:00"
+            } else {
+                // Only date is present
+                datePart = tripDateString; // e.g., "19-09-2025"
+                // timePart remains ""
+            }
+
+            var dateComponents = datePart.split('-'); // ["19", "09", "2025"]
+
+            // Reconstruct date for JavaScript Date constructor (YYYY, MM, DD)
+            // Note: Month is 0-indexed in JavaScript Date constructor.
+            var year = parseInt(dateComponents[2], 10);
+            var month = parseInt(dateComponents[1], 10) - 1; // Subtract 1 for 0-indexed month
+            var day = parseInt(dateComponents[0], 10);
+
+            var hours = 0;
+            var minutes = 0;
+            var seconds = 0;
+
+            if (timePart) {
+                var timeComponents = timePart.split(':'); // e.g., ["10", "03", "00"]
+                hours = parseInt(timeComponents[0], 10);
+                minutes = parseInt(timeComponents[1], 10);
+                seconds = parseInt(timeComponents[2], 10) || 0; // Default to 0 if seconds are missing
+            }
+
+            dateObject = new Date(year, month, day, hours, minutes, seconds);
             return dateObject;
         }
 
