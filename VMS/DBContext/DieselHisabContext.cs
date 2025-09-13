@@ -14,8 +14,8 @@ namespace VMS
             string sql = @"
                             SELECT 
                             dh.TripId,
-                            CONVERT(VARCHAR, dh.Trip_Start_Date, 105) AS LastTripStartDate,
-                            CONVERT(VARCHAR, dh.Trip_End_Date, 105) AS LastTripEndDate,
+                            CONVERT(VARCHAR, dh.Trip_Start_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS LastTripStartDate,
+                            CONVERT(VARCHAR, dh.Trip_End_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS LastTripEndDate,
                             dh.Last_Trip_Route_Descr,
                             dh.Opening_Diesel,
                             vm.Vehicle_No AS VehicleNumber,
@@ -63,8 +63,8 @@ namespace VMS
             string sql = @"
                             SELECT 
                             dh.TripId,
-                            CONVERT(VARCHAR, dh.Trip_Start_Date, 105) AS LastTripStartDate,
-                            CONVERT(VARCHAR, dh.Trip_End_Date, 105) AS LastTripEndDate,
+                            CONVERT(VARCHAR, dh.Trip_Start_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS LastTripStartDate,
+                            CONVERT(VARCHAR, dh.Trip_End_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS LastTripEndDate,
                             dh.Last_Trip_Route_Descr,
                             dh.Opening_Diesel,
                             vm.Vehicle_No AS VehicleNumber,
@@ -263,9 +263,9 @@ namespace VMS
             object dieselInfo = null;
             string sql = @"SELECT TOP 1
                 dh.TripId,
-                CONVERT(VARCHAR, dh.Trip_Start_Date, 105) AS LastTripStartDate,
-                CONVERT(VARCHAR, dh.Trip_End_Date, 105) AS LastTripEndDate,
-                CONVERT(VARCHAR, DATEADD(day, 1, dh.Trip_End_Date), 105) AS NextTripStartDate,
+                CONVERT(VARCHAR, dh.Trip_Start_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS LastTripStartDate,
+                CONVERT(VARCHAR, dh.Trip_End_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS LastTripEndDate,
+                CONVERT(VARCHAR, DATEADD(day, 1, dh.Trip_End_Date), 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS NextTripStartDate,
                 dh.Last_Trip_Route_Descr,
                 ISNULL(dh.Start_Odometer, 1) AS StartOdometer,
                 ISNULL(dh.End_Odometer, 1) AS EndOdometer,
