@@ -15,7 +15,7 @@ namespace VMS
                             SELECT 
                             dh.TripId,
                             CONVERT(VARCHAR, dh.Trip_Start_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS LastTripStartDate,
-                            CONVERT(VARCHAR, dh.Trip_End_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS LastTripEndDate,
+                            CONVERT(VARCHAR, dh.Trip_End_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_End_Date, 108) AS LastTripEndDate,
                             dh.Last_Trip_Route_Descr,
                             dh.Opening_Diesel,
                             vm.Vehicle_No AS VehicleNumber,
@@ -64,12 +64,12 @@ namespace VMS
                             SELECT 
                             dh.TripId,
                             CONVERT(VARCHAR, dh.Trip_Start_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS LastTripStartDate,
-                            CONVERT(VARCHAR, dh.Trip_End_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS LastTripEndDate,
+                            CONVERT(VARCHAR, dh.Trip_End_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_End_Date, 108) AS LastTripEndDate,
                             dh.Last_Trip_Route_Descr,
                             dh.Opening_Diesel,
                             vm.Vehicle_No AS VehicleNumber,
                             dm.Driver_Name AS LastTripDriver,
-                            dm.Father_Name AS LastTripDriverFatherName
+                            dm.Father_Name AS LastTripDriverFatherName,dh.Bhari_Ka_Average[lastBhariKaAverage]
                             FROM [dbo].[tbl_Diesel_Header] dh
                             INNER JOIN [dbo].[tbl_Vehicle_Master] vm ON dh.VehicleNo = vm.Id
                            LEFT JOIN [dbo].[tbl_Driver_Master] dm ON dh.DriverId = dm.Id
@@ -95,6 +95,7 @@ namespace VMS
                                 LastTripRouteDescr = reader.GetString("Last_Trip_Route_Descr"),
                                 OpeningDiesel = reader.GetInt64("Opening_Diesel") == 0 ? 1 : reader.GetInt64("Opening_Diesel"),
                                 LastTripVendor = "Test Vendor",
+                                LastBhariKaAverage = reader.GetDecimal("lastBhariKaAverage").To2Decimal(),
                                 LastTripDriver = reader.IsDBNull("LastTripDriver") ? null : reader.GetString("LastTripDriver"),
                                 LastTripDriverFatherName = reader.IsDBNull("LastTripDriverFatherName") ? null : reader.GetString("LastTripDriverFatherName"),
                                 VehicleNumber = reader.GetString("VehicleNumber")
@@ -264,8 +265,8 @@ namespace VMS
             string sql = @"SELECT TOP 1
                 dh.TripId,
                 CONVERT(VARCHAR, dh.Trip_Start_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS LastTripStartDate,
-                CONVERT(VARCHAR, dh.Trip_End_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS LastTripEndDate,
-                CONVERT(VARCHAR, DATEADD(day, 1, dh.Trip_End_Date), 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS NextTripStartDate,
+                CONVERT(VARCHAR, dh.Trip_End_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_End_Date, 108) AS LastTripEndDate,
+                CONVERT(VARCHAR, DATEADD(day, 1, dh.Trip_End_Date), 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_End_Date, 108) AS NextTripStartDate,
                 dh.Last_Trip_Route_Descr,
                 ISNULL(dh.Start_Odometer, 1) AS StartOdometer,
                 ISNULL(dh.End_Odometer, 1) AS EndOdometer,
@@ -273,7 +274,7 @@ namespace VMS
                 ISNULL(dh.Closing_Diesel, 1) AS ClosingDiesel,
                 vm.Vehicle_No AS VehicleNumber,
                 dm.Driver_Name AS LastTripDriver,
-                dm.Father_Name AS LastTripDriverFatherName
+                dm.Father_Name AS LastTripDriverFatherName,dh.Bhari_Ka_Average[lastBhariKaAverage]
             FROM [dbo].[tbl_Diesel_Header] dh
             INNER JOIN [dbo].[tbl_Vehicle_Master] vm ON dh.VehicleNo = vm.Id
             LEFT JOIN [dbo].[tbl_Driver_Master] dm ON dh.DriverId = dm.Id
@@ -302,6 +303,7 @@ namespace VMS
                                 EndOdometer = reader.GetInt64("EndOdometer"),
                                 OpeningDiesel = reader.GetInt64("OpeningDiesel"),
                                 ClosingDiesel = reader.GetInt64("ClosingDiesel"),
+                                LastBhariKaAverage = reader.GetDecimal("lastBhariKaAverage").To2Decimal(),
                                 LastTripVendor = "Test Vendor",
                                 LastTripDriver = reader.IsDBNull("LastTripDriver") ? null : reader.GetString("LastTripDriver"),
                                 LastTripDriverFatherName = reader.IsDBNull("LastTripDriverFatherName") ? null : reader.GetString("LastTripDriverFatherName"),

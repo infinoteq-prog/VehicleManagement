@@ -93,6 +93,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtLastTripBhariKaAverage">LastTrip Bhari Ka Average:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtLastTripBhariKaAverage" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row rowHeight">
                                 <div class="col-md-6">
@@ -1144,6 +1152,7 @@
                         $("#txtLastTripId").val(data.tripId);
                     $("#txtLastTripStartDate").val(data.lastTripStartDate);
                     $("#txtLastTripEndDate").val(data.lastTripEndDate);
+                        $("#txtLastTripBhariKaAverage").val(data.lastBhariKaAverage);
                     $("#txtLastTripRouteDesc").val(data.lastTripRouteDescr);
                     $("#txtLastTripDriver").val(data.lastTripDriver);
                     $("#txtLastTripDriverFather").val(data.lastTripDriverFatherName);
@@ -1157,6 +1166,7 @@
                         $("#txtLastTripId").val("N/A");
                     $("#txtLastTripStartDate").val("N/A");
                     $("#txtLastTripEndDate").val("N/A");
+                        $("#txtLastTripBhariKaAverage").val("N/A");
                     $("#txtLastTripRouteDesc").val("N/A");
                     $("#txtLastTripDriver").val("N/A");
                     $("#txtLastTripDriverFather").val("N/A");
@@ -1720,6 +1730,7 @@
                         {
                         $("#txtLastTripStartDate").val(data.lastTripHistory.lastTripStartDate);
                         $("#txtLastTripEndDate").val(data.lastTripHistory.lastTripEndDate);
+                            $("#txtLastTripBhariKaAverage").val(data.lastTripHistory.lastBhariKaAverage);
                         $("#txtLastTripRouteDesc").val(data.lastTripHistory.lastTripRouteDescr);
                         $("#txtLastTripDriver").val(data.lastTripHistory.lastTripDriver);
                         $("#txtLastTripDriverFather").val(data.lastTripHistory.lastTripDriverFatherName);
