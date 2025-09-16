@@ -266,7 +266,7 @@ namespace VMS
                 dh.TripId,
                 CONVERT(VARCHAR, dh.Trip_Start_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS LastTripStartDate,
                 CONVERT(VARCHAR, dh.Trip_End_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_End_Date, 108) AS LastTripEndDate,
-                CONVERT(VARCHAR, DATEADD(day, 1, dh.Trip_End_Date), 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_End_Date, 108) AS NextTripStartDate,
+                CONVERT(VARCHAR, dh.Trip_End_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_End_Date, 108) AS NextTripStartDate,
                 dh.Last_Trip_Route_Descr,
                 ISNULL(dh.Start_Odometer, 1) AS StartOdometer,
                 ISNULL(dh.End_Odometer, 1) AS EndOdometer,

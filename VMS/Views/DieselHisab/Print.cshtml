@@ -354,7 +354,7 @@
                 <th colspan="6" style="text-align:left">Discount Ka Reason</th>
             </tr>
             <tr>
-                <th rowspan="2" colspan="6" style="text-align:left">अगर ड्राईवर का लास्ट ट्रिप है तो बेलैन्स नाम डालना है <br />या महीने का लास्ट ट्रिप है तो बेलैन्स नाम डालना है।</th>
+                <th rowspan="2" colspan="6" style="text-align:left">लास्ट ट्रिप का भरी का Average: <span id="lastBhariKaAverage"></span></th>
                 <th colspan="2" style="text-align:right">Diesel Profit/Loss</th>
                 <th><span id="dieselProfitLoss"></span></th>
                 <th colspan="6" style="text-align:left">(F-MEANS TANK FULL AND T MEANS TOP UP)</th>
@@ -423,6 +423,7 @@
                         $("#userName").text(data.dieselHeaderCreatedByName);
                         $("#userName1").text(data.dieselHeaderCreatedByName);
                         $("#currentDate").text(data.dieselHeaderCreationDate);
+                        $("#lastBhariKaAverage").text(data.lastTripHistory.lastBhariKaAverage);
                         totalDiscountValue = data.discountValue;
                         
                         //Diesel Filling    
