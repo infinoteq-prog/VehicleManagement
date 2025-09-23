@@ -160,6 +160,35 @@
         }
     </style>
 
+    @* For ddlVendor *@
+    <style type="text/css">
+        #ddlVendor + span.select2-container {
+            height: 34px !important; /* Adjust this value */
+            vertical-align: middle; /* Try this */
+            display: inline-block; /* Ensure it behaves like other inline elements */
+        }
+
+            #ddlVendor + span.select2-container .select2-selection--single {
+                height: 34px !important; /* Match the container height */
+                display: flex !important;
+                align-items: center !important; /* Vertically center text */
+                padding: 0.25rem 0.5rem !important; /* Add some padding for visual consistency */
+            }
+
+                #ddlVendor + span.select2-container .select2-selection--single .select2-selection__rendered {
+                    line-height: normal !important; /* Reset line-height */
+                    padding-left: 0 !important; /* Adjust text indentation if needed */
+                }
+
+                #ddlVendor + span.select2-container .select2-selection--single .select2-selection__arrow {
+                    height: 34px !important; /* Match container height */
+                    top: auto !important;
+                    bottom: auto !important;
+                    margin-top: auto !important;
+                    margin-bottom: auto !important; /* Vertically center the arrow */
+                }
+    </style>
+
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />

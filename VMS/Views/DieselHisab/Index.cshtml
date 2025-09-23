@@ -232,7 +232,23 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label" for="txt">Discount%:<span class="reqFields">*</span></label>
+                                            <label class="col-sm-4 col-form-label" for="txt">Bhari Ka Average:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="txtBhariKaAverage" class="form-control numberonly" readonly maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Value" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txt">Profit/Loss%:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="txtProfitLoss" class="form-control numberonly" readonly maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Value" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txt">Discount%:</label>
                                             <div class="col-sm-8">
                                                 <input type="text" id="txtDiscountPer" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Discount%" />
                                             </div>
@@ -404,6 +420,7 @@
                             { *@
                                 <div class="row rowHeight" style="text-align:center;">
                                     <div class="col-md-12">
+                                    @* <button type="button" id="computeButton" class="btn btn-primary mr-2" onclick="computeData();">Compute</button> *@
                                     <button type="button" id="saveButton" class="btn btn-primary mr-2" onclick="saveDieselHisab();">Save</button>
                                         <button type="button" class="btn btn-light" onclick="clearControls();">Clear</button>
                                     </div>
@@ -570,7 +587,13 @@
               $("#txtAverage").on("input", calculateEstkm); 
 
              // Also calculate when txtDistance changes (assuming you have this input).
-              $("#txtDistance").on("input", calculateEstkm); 
+              $("#txtDistance").on("input", calculateEstkm);
+
+                // Calculate Bhari Ka Average and Profit Loss
+              $("#txtOpeningDiesel").on("input", function () { calAverageAndOthers();});
+
+                // Calculate Bhari Ka Average and Profit Loss
+                $("#txtClosingDiesel").on("input", function () { calAverageAndOthers(); });
         });
 
         $(function () {
@@ -1023,6 +1046,8 @@
         $("#txtClosingDiesel").val("");
         $("#txtRouteDescription").val("");
         $("#txtDiscountPer").val("");
+            $("#txtBhariKaAverage").val("");
+        $("#txtProfitLoss").val("");
 
             $('#dieselFillingTable tbody').empty();
             $('#dieselFillingTable').DataTable().clear().destroy();
@@ -1541,6 +1566,7 @@
                `;
 
                clearFillingForm();
+            calAverageAndOthers();
            }
 
 
@@ -1723,6 +1749,8 @@
                         $("#txtOpeningDiesel").val(data.openingDiesel);
                         $("#txtClosingDiesel").val(data.closingDiesel);
                         $("#txtDiscountPer").val(data.discountPer);
+                        // $("#txtBhariKaAverage").val(data.BhariKaAverage);
+                        // $("#txtProfitLoss").val(data.ProfitLoss);
                         $("#txtRouteDescription").val(data.lastTripRouteDescr);
 
                         //Last Trip Detail
@@ -1742,7 +1770,8 @@
 
                         fillDieselFillingTable(data.dieselFillingList);
                         fillstationDetailsTable(data.stationList);
-
+                        // Call the function with sample data
+                        calAverageAndOthers();
                         bindDataTable();
                     } else {
                        
@@ -1875,6 +1904,9 @@
             }
                 let totalKm = $("#txtRunningKm").val();
             row.insertCell(7).textContent = (totalKm- totalDistance.toFixed(0));
+
+            // Call the function with sample data
+            calAverageAndOthers();
         }
     </script>
 
@@ -2084,5 +2116,132 @@
             getDistanceMaster();
         });
 
+    </script>
+
+
+    @*Calculate BhariKaAverage and Profit Loss*@
+    <script>
+        function to3Decimal(num) {
+            if (typeof num !== 'number' || isNaN(num)) {
+                return 0;
+            }
+            return Math.round(num * 1000) / 1000;
+        }
+        function to2Decimal(num) {
+            if (typeof num !== 'number' || isNaN(num)) {
+                return 0;
+            }
+            return Math.round(num * 100) / 100;
+        }
+
+        function calAverageAndOthers()
+        {
+            const openingDiesel = parseFloat($("#txtOpeningDiesel").val()) || 0;
+            const closingDiesel = parseFloat($("#txtClosingDiesel").val()) || 0;
+            // Get the dynamic data from the HTML table
+            const _lstDieselLine = getDieselLineDataFromTable();
+            const _lstDieselFilling = getDieselFillingDataFromTable();
+
+            calBhariKaAverage(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine)
+            calProfitLoss(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine);
+        }
+        function calBhariKaAverage(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine) {
+
+            let bhariKaAverage = 0;
+            try {
+                // C#: sumTotalRunningKm = _lstDieselLine?.Sum(x => x.Distance).To3Decimal() ?? 0
+                const sumTotalRunningKm = to3Decimal(_lstDieselLine?.reduce((sum, item) => sum + (item.Distance || 0), 0) ?? 0);
+
+                // C#: sumTotalKhaliKaKm = _lstDieselLine?.Where(x => x.LoadType.ToUpper() == "KHALI").Sum(x => x.Distance).To3Decimal() ?? 0
+                const sumTotalKhaliKaKm = to3Decimal(_lstDieselLine
+                    ?.filter(x => x.LoadType?.toUpperCase() === "KHALI")
+                    .reduce((sum, item) => sum + (item.Distance || 0), 0) ?? 0);
+
+                // C#: sumTotalDiesel = ((openingDiesel + (_lstDieselFilling?.Sum(x => x.DieselQty).To3Decimal() ?? 0)) - closingDiesel)
+                const sumTotalDiesel = (openingDiesel + to3Decimal(_lstDieselFilling?.reduce((sum, item) => sum + (item.DieselQty || 0), 0) ?? 0)) - closingDiesel;
+
+                // C#: sumTotalKhaliKaDiesel = _lstDieselLine?.Where(x => x.LoadType.ToUpper() == "KHALI").Sum(x => x.EstimatedDiesel).To3Decimal() ?? 0
+                const sumTotalKhaliKaDiesel = to3Decimal(_lstDieselLine
+                    ?.filter(x => x.LoadType?.toUpperCase() === "KHALI")
+                    .reduce((sum, item) => sum + (item.EstimatedDiesel || 0), 0) ?? 0);
+
+                // C#: sumTotalLoadingUnloadingDiesel = _lstDieselLine?.Where(x => x.RouteDesc.ToUpper() == "Loading/Unloading".ToUpper()).Sum(x => x.EstimatedDiesel).To3Decimal() ?? 0
+                const sumTotalLoadingUnloadingDiesel = to3Decimal(_lstDieselLine
+                    ?.filter(x => x.RouteDesc?.toUpperCase() === "Loading/Unloading".toUpperCase())
+                    .reduce((sum, item) => sum + (item.EstimatedDiesel || 0), 0) ?? 0);
+
+                // Calculate the final average
+                // C#: BhariKaAverage = (sumTotalRunningKm - sumTotalKhaliKaKm) / (sumTotalDiesel - sumTotalKhaliKaDiesel - sumTotalLoadingUnloadingDiesel);
+                const numerator = sumTotalRunningKm - sumTotalKhaliKaKm;
+                const denominator = sumTotalDiesel - sumTotalKhaliKaDiesel - sumTotalLoadingUnloadingDiesel;
+
+                if (denominator !== 0) {
+                    bhariKaAverage = numerator / denominator;
+                } else {
+                    // Handle division by zero case gracefully
+                    console.warn("Denominator for BhariKaAverage is zero. Returning 0.");
+                }
+            } catch (ex) {
+                // C#: Globalsettings.Log(_controllerName, string.Format("calBhariKaAverage: {0}", ex.Message.ToString()));
+                console.error("An error occurred in calBhariKaAverage:", ex);
+            }
+
+            $("#txtBhariKaAverage").val(to2Decimal(bhariKaAverage).toString());
+        }
+
+        function calProfitLoss(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine) {
+            let profitLoss = 0;
+            try {
+                // C#: sumTotalDiesel = ((openingDiesel + (_lstDieselFilling?.Sum(x => x.DieselQty).To3Decimal() ?? 0)) - closingDiesel);
+                const sumTotalDiesel = (openingDiesel + (to3Decimal(_lstDieselFilling?.reduce((sum, item) => sum + (item.DieselQty || 0), 0) ?? 0))) - closingDiesel;
+
+                // C#: sumTotalEstimatedDiesel = _lstDieselLine?.Sum(x => x.EstimatedDiesel).To3Decimal() ?? 0;
+                const sumTotalEstimatedDiesel = to3Decimal(_lstDieselLine?.reduce((sum, item) => sum + (item.EstimatedDiesel || 0), 0) ?? 0);
+
+                // C#: ProfitLoss = sumTotalEstimatedDiesel - sumTotalDiesel;
+                profitLoss = sumTotalEstimatedDiesel - sumTotalDiesel;
+            } catch (ex) {
+                // C#: Globalsettings.Log(_controllerName, string.Format("calProfitLoss: {0}", ex.Message.ToString()));
+                console.error("An error occurred in calProfitLoss:", ex);
+            }
+            $("#txtProfitLoss").val(to2Decimal(profitLoss).toString());
+        }
+        // Function to read data from the HTML table
+        function getDieselLineDataFromTable() {
+            const dieselLineData = [];
+            $("#stationDetailsTable tbody tr").each(function (index, row) {
+                var routeId = $(row).find("td:eq(0)").text();
+                var routeDesc = $(row).find("td:eq(2)").text();
+                var distance = $(row).find("td:eq(3)").text();
+                var loadType = $(row).find("td:eq(4)").text();
+                var Average = $(row).find("td:eq(5)").text();
+                var estimatedDiesel = $(row).find("td:eq(6)").text();
+
+                if (routeDesc != "Total") {
+                    dieselLineData.push({
+                        Distance: parseFloat(distance) || 0,
+                        LoadType: loadType,
+                        RouteDesc: routeDesc,
+                        EstimatedDiesel: parseFloat(estimatedDiesel) || 0,
+                    });
+                }
+            });
+            return dieselLineData;
+               
+        }
+        function getDieselFillingDataFromTable() {
+            const dieselFillingData = [];
+            $("#dieselFillingTable tbody tr").each(function (index, row) {
+                var date = $(row).find("td:eq(0)").text();
+                var fillingDate = date.split("-").reverse().join("-");
+                var vendorId = $(row).find("td:eq(1)").text();
+                var litre = $(row).find("td:eq(3)").text();
+
+                dieselFillingData.push({
+                    DieselQty: parseFloat(litre) || 0
+                });
+            });
+            return dieselFillingData;
+        }
     </script>
 }

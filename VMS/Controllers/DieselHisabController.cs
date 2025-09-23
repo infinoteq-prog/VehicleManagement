@@ -32,6 +32,10 @@ namespace VMS.Controllers
         {
             return View();
         }
+        public ActionResult DieselFilter()
+        {
+            return View();
+        }
 
         public ActionResult Details(String tripid)
         {
@@ -429,6 +433,37 @@ namespace VMS.Controllers
                 }
             }
             catch(Exception ex)
+            {
+                return Json(null);
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> searchDieselFilter(int id, int vehicleNo, int vendorId, string tripStartDate,
+            string tripEndDate)
+        {
+            try
+            {
+
+                if (tripStartDate.ToStringFromNull() == "" && tripEndDate.ToStringFromNull() == "")
+                {
+                    tripStartDate = DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd");
+                    tripEndDate = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+                var model = await DieselHisabContext.searchDieselFilter(_connectionString, id, vehicleNo, vendorId, tripStartDate,
+                tripEndDate);
+
+
+                if (model != null)
+                {
+                    return Json(model);
+                }
+                else
+                {
+                    return Json(null);
+                }
+            }
+            catch (Exception ex)
             {
                 return Json(null);
             }

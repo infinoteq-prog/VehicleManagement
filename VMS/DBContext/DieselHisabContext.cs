@@ -381,6 +381,46 @@ namespace VMS
             }
             return dieselHeaders;
         }
+        public static async Task<List<object>> searchDieselFilter(string _connectionString, int id, int vehicleNo, int vendorId, string tripStartDate, string tripEndDate)
+        {
+            List<object> dieselHeaders = new List<object>();
+            string sql = @"[dbo].[DieselHisab_DieselList]";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@TripId", id);
+                    command.Parameters.AddWithValue("@VehicleNo", vehicleNo);
+                    command.Parameters.AddWithValue("@vendorId", vendorId);
+                    command.Parameters.AddWithValue("@TripStartDate", string.IsNullOrEmpty(tripStartDate) ? (object)DBNull.Value : tripStartDate);
+                    command.Parameters.AddWithValue("@TripEndDate", string.IsNullOrEmpty(tripEndDate) ? (object)DBNull.Value : tripEndDate);
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            dieselHeaders.Add(new
+                            {
+                                TripId = reader.GetInt32("TripId"),
+                                DieselFillingId = reader.GetInt32("DieselFillingId"),
+                                VehicleNumber = reader.GetString("VehicleNumber"),
+                                VendorName = reader.IsDBNull("VendorName") ? null : reader.GetString("VendorName"),
+                                DriverId = reader.IsDBNull("DriverId")? 0: reader.GetInt32("DriverId"),
+                                DieselFillingDate = reader.GetString("Diesel_Filling_Date"),                                
+                                DriverName = reader.IsDBNull("Driver_Name") ? null : reader.GetString("Driver_Name"),
+                                DriverFatherName = reader.IsDBNull("DriverFatherName") ? null : reader.GetString("DriverFatherName"),
+                                DieselQty = reader.IsDBNull("Diesel_Qty") ? 0 : reader.GetInt64("Diesel_Qty")
+                            });
+                        }
+                    }
+                }
+            }
+            return dieselHeaders;
+        }
+
         public static decimal calProfitLoss(decimal openingDiesel, decimal closingDiesel, List<TblDieselFilling> _lstDieselFilling, List<TblDieselLine> _lstDieselLine)
         {
             decimal ProfitLoss = 0;

@@ -1,0 +1,297 @@
+﻿@model VMS.ViewModel.VMGstRateMaster
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Diesel Filter";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="page-title">Diesel Filter</h1>
+            <div class="card">
+                <div class="card-body">
+                    <form id="searchDieselHisabForm">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="txtTripId">Trip Id</label>
+                                    <input type="number" class="form-control" id="txtTripId" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="ddlVehicleNo">Vehicle No</label>
+                                    <select class="form-control" id="ddlVehicleNo">
+                                        <!-- Options will be dynamically populated here -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="ddlVendor">Vendor</label>
+                                    <select class="form-control" id="ddlVendor" name="ddlVendor" onchange="setDropDownStyle(this);">
+                                        <!-- Options will be dynamically populated here -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="txtTripStartDate">Start Date</label>
+                                    <input type="date" class="form-control" id="txtTripStartDate" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="txtTripEndDate">End Date</label>
+                                    <input type="date" class="form-control" id="txtTripEndDate" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-primary mt-4" onclick="searchDieselHisabMaster()">Search</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <table id="tblDieselFilterList" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>TripId</th>
+                                <th>DieselFillingId</th>
+                                <th>Diesel Filling Date</th>
+                                <th>Vehicle No</th>
+                                <th>Vendor Name</th>
+                                <th>Driver Name</th>
+                                <th>Driver Father</th>
+                                <th>Diesel Qty</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic Rows Will Appear Here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script type="text/javascript">
+        // Set permissions for accessing and interacting with records
+        var fullAccess = 'True';
+        var viewAccess = 'True';
+        var updateAccess = 'True';
+        var deleteAccess = 'True';
+        var approvalAccess = 'True';
+
+        var viewButton = "";
+        var updateButton = "";
+        var deleteButton = "";
+        var approvalButton = "";
+        var printButton = "";
+
+        $(document).ready(function () {
+            $('#ddlVehicleNo').select2();
+            $('#ddlVendor').select2();
+            getUserAccess();
+             $('[data-toggle="tooltip"]').tooltip();
+            setSideMenu("diesel-hisab-master");
+            getFunctionName('DIESEL HISAB', function (userRights) {
+                if (userRights) {
+                    console.log("Update Access:", userRights.updateAccess);
+                    console.log("Add Access:", userRights.addAccess);
+                    console.log("Delete Access:", userRights.deleteAccess);
+                    console.log("View Access:", userRights.viewAccess);
+                    console.log("Full Access:", userRights.fullAccess);
+
+                    fullAccess = userRights.fullAccess;
+                    addAccess = userRights.addAccess;
+                    viewAccess = userRights.viewAccess;
+                    updateAccess = userRights.updateAccess;
+                    deleteAccess = userRights.deleteAccess;
+                } else {
+                    console.log("Failed to get user rights.");
+                }
+            });
+            if (fullAccess === "True" || viewAccess === "True") {
+                getVehicleNumber();
+                getVendorMaster();
+                //setDefaultDate();
+                searchDieselHisabMaster(); // Load diesel data on page load
+            }
+        });
+
+        function getUserAccess(){
+           var roleName = '@ViewBag.roleName';
+            if(roleName==='User')
+            {fullAccess = 'false';
+            approvalAccess = 'false';
+            }
+        }
+
+        function setDefaultDate()
+        {
+              const tripStartDateInput = document.getElementById('txtTripStartDate');
+              const today1 = new Date();
+              const oneMonthAgo = new Date(today1); // Create a copy of today's date
+
+              // Subtract one month
+              oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+              // Format the date as YYYY-MM-DD (required for <input type="date">)
+              const year = oneMonthAgo.getFullYear();
+              const month = String(oneMonthAgo.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+              const day = String(oneMonthAgo.getDate()).padStart(2, '0');
+              const formattedDate = `${year}-${month}-${day}`;  
+              tripStartDateInput.value = formattedDate;
+              
+
+              const tripEndDateInput = document.getElementById('txtTripEndDate');
+             const today = new Date();
+             // Format the date as YYYY-MM-DD (required for <input type="date">)
+             const yearEnd = today.getFullYear();
+             const monthEnd = String(today.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+             const dayEnd = String(today.getDate()).padStart(2, '0');
+             const formattedDateEnd = `${yearEnd}-${monthEnd}-${dayEnd}`;
+               tripEndDateInput.value = formattedDateEnd;
+         }
+
+        function bindDataTable() {
+            $('#tblDieselFilterList').DataTable({
+                deferRender: true,
+                scroller: true,
+                scrollX: true,
+                scrollY: true,
+                searching: true,
+                info: true,
+                paging: true,
+                dom: 'Bfrtip',
+                "bDestroy": true,
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: 'Copy'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: 'Csv',
+                        title: function () {
+                            return "Diesel Filling List";
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        title: function () {
+                            return "Diesel Filling List";
+                        }
+                    },
+                    {
+                        extend: "print",
+                        exportOptions: {
+                            orientation: 'landscape'
+                        },
+                        pageSize: 'A0'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: function () {
+                            return "Diesel Filling List";
+                        },
+                        orientation: 'landscape',
+                        pageSize: 'A4'
+                    }
+                ]
+            });
+        }
+
+        function searchDieselHisabMaster() {
+            if ($.fn.DataTable.isDataTable("#tblDieselFilterList")) {
+                $('#tblDieselFilterList tr').remove();
+                $('#tblDieselFilterList tbody').empty();
+                $('#tblDieselFilterList').DataTable().clear().destroy();
+            }
+
+            var tripId = $("#txtTripId").val();
+            var vehicleNo = $('#ddlVehicleNo option:selected').val();
+            var vendorId = $('#ddlVendor option:selected').val();
+            var tripStartDate = $("#txtTripStartDate").val();
+            var tripEndDate = $("#txtTripEndDate").val();
+
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DieselHisab/searchDieselFilter")',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    id: tripId, // Id can be added if needed, for now it's set to 0
+                    vehicleNo: vehicleNo,
+                    vendorId: vendorId,
+                    tripStartDate: tripStartDate,
+                    tripEndDate: tripEndDate
+                },
+                success: function (data) {
+                    if (data != null && data.length > 0) {
+                        var rows = "";
+                        $.each(data, function (i, item) {
+
+                            //      if (fullAccess === "True" || viewAccess === "True") {
+                            //     viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" title="View" data-toggle="tooltip" data-placement="top" onclick="viewDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
+                            // }
+
+                            // if (fullAccess === "True" || updateAccess === "True") {
+                            //     updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" title="Edit" data-toggle="tooltip" data-placement="top" onclick="editDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-edit btn-icon-append"></i></button> ';
+                            // }
+
+                            // if (fullAccess === "True" || approvalAccess === "True") {
+                            //     approvalButton = '<button id="approveConfirm" type="button" class="btn btn-warning btn-sm btn-icon-text" title="Approve" data-toggle="tooltip" data-placement="top" onclick="approvalDieselHisabMaster(\'' + item.tripId + '\',\'' +item.approvedStatus+ '\');"  style="margin-left: 10px;"> <i class="typcn typcn-thumbs-up btn-icon-append"></i></button> ';
+                            // }
+
+                            // if (fullAccess === "True" || updateAccess === "True") {
+                            //      printButton = '<button type="button" class="btn btn-primary btn-sm btn-icon-text mr-3" title="Print" data-toggle="tooltip" data-placement="top" onclick="printDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-printer btn-icon-append"></i></button> ';
+                            //                                                        }
+
+
+                            // if (fullAccess === "True" || deleteAccess === "True") {
+                            //     deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" title="Delete" data-toggle="tooltip" data-placement="top" onclick="deleteDieselHisabMaster(\'' + item.tripId + '\');"> <i class="typcn typcn-delete-outline btn-icon-append"></i></button>  ';
+                            // }
+
+                            if(item.approvedStatus==='Approved')
+                            {
+                                updateButton='';
+                                deleteButton='';
+                            }
+
+                            var row = '<tr>' +                              
+                                '<td>' + item.tripId + '</td>' +
+                                '<td>' + item.dieselFillingId + '</td>' +
+                                '<td>' + item.dieselFillingDate + '</td>' +
+                                '<td>' + item.vehicleNumber + '</td>' +
+                                '<td>' + item.vendorName + '</td>' +
+                                '<td>' + item.driverName + '</td>' +
+                                '<td>' + item.driverFatherName + '</td>' +
+                                '<td>' + item.dieselQty + '</td>' +
+                                '</tr>';
+                            rows += row;
+                        });
+                        $("#tblDieselFilterList tbody").html(rows);
+                        bindDataTable();
+                    } else {
+                        var row = '<tr><td colspan="12" style="text-align:center">No Data Found!</td></tr>';
+                        $("#tblDieselFilterList tbody").html(row);
+                    }
+                },
+                error: function (ex) {
+                    alert("Error: " + ex);
+                }
+            });
+        }
+    </script>
+}
+}
