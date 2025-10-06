@@ -87,13 +87,15 @@
                     Driver Name:
                     <span id="driverName"></span>
                 </th>
-                <th colspan="2" style="text-align:left">Truck No: <span id="vehicleNumber"></span></th>
+                
+                <th colspan="2" style="text-align:left">A/c No: <span id="driverAccountNumber"></span></th>
                 <th colspan="4" style="text-align:left">Date Trip Start: <span id="tripStartDate"></span></th>
                 <th colspan="3" style="text-align:left">Date Trip End: <span id="tripEndDate"></span></th>
-                <th colspan="2" rowspan="2" style="text-align:left;">Sr No:<span id="srNo"></span></th>
+                <th colspan="2" style="text-align:left">Truck No: <span id="vehicleNumber"></span></th>
             </tr>
             <tr>
-                <th colspan="13" style="text-align:left" id="note"><p>Note : ट्रोली की टंकी की डीजल खरीदने से कोई लेना देना नहीं है केवल पीछे बैलेन्स है तो स्टॉक जोड़ना है और अभी बैलेन्स है तो स्टॉक घटाना है।</p> </th>
+                <th colspan="13" style="text-align:left" id="note"><p>Previous Remark: </p> </th>                
+                <th colspan="2" style="text-align:left;">Sr No:<span id="srNo"></span></th>
                 @* <th colspan="2"></th> *@
             </tr>
             <tr>
@@ -300,7 +302,7 @@
                 <th><span id="stationdetail_loadType7"></span></th>
                 <th><span id="stationdetail_Avg7"></span></th>
                 <th><span id="stationdetail_AvgDiesel7"></span></th>
-                <th rowspan="2" colspan="6" style="text-align:left">डीजल ज्यादा आने का कारण - Driver Mistake, Truck Mistake, Weather या <span id="dieselJyadaAaneKaKaran"></span></th>
+                <th rowspan="4" colspan="6" style="text-align:left">Current Remarks: <span id="currentRemarks"></span></th>
             </tr>
             <tr>
                 <th colspan="3" style="text-align:left"><span id="stationdetail_station8"></span></th>
@@ -319,7 +321,7 @@
                 <th><span id="stationdetail_loadType9"></span></th>
                 <th><span id="stationdetail_Avg9"></span></th>
                 <th><span id="stationdetail_AvgDiesel9"></span></th>
-                <th rowspan="2" colspan="6" style="text-align:left">Solution क्या किया : <span id="solution"></span></th>
+                @* <th rowspan="2" colspan="6" style="text-align:left">Solution क्या किया : <span id="solution"></span></th> *@
             </tr>
             <tr>
                 <th colspan="3" style="text-align:left"><span id="stationdetail_station10"></span></th>
@@ -360,11 +362,11 @@
                 <th colspan="6" style="text-align:left">(F-MEANS TANK FULL AND T MEANS TOP UP)</th>
             </tr>
             <tr>
-                <th colspan="2" style="text-align:right">Old Balance ईसी Driver Ka B/F</th>
+                <th colspan="2" style="text-align:right">Diesel Amt PnL: <span id="dieselAmtPnL"></span></th>
                 <th></th>
                 <th rowspan="2" colspan="1" style="text-align:left">C/F</th>
                 <th rowspan="2" colspan="1" style="text-align:left">Not C/F</th>
-                <th rowspan="2" colspan="4" style="text-align:left">Amount:</th>
+                <th rowspan="2" colspan="4" style="text-align:left">Score: <b><span id="scoreCard"></span></b></th>
             </tr>
             <tr>
                 <th colspan="6" style="text-align:left">Bal. आगे ले जाओ तो C/F पर मार्क करना है नहीं तो Not C/F पर</th>
@@ -412,6 +414,12 @@
                         var totalDiscountValue=0;
 
                          // $("#driverName").html(`Driver Name: <span>${data.driverName}</span>`);
+                         let accountNumber = data.bankAccountNumber;
+
+                        let displayNumber = (accountNumber && accountNumber.length >= 4) ? accountNumber.slice(-4) : accountNumber || "N/A";
+
+                         $("#note").text('Previous Remark: '+ data.lastTripRouteDescr);
+                        $("#driverAccountNumber").text(displayNumber);
                         $("#driverName").text(data.driverName);
                         $("#vehicleNumber").text(data.vehicleNumber);
                         $("#tripStartDate").text(data.tripStartDate);
@@ -420,6 +428,9 @@
                         $("#odoMeterStart").text(data.startOdometer);
                         $("#odoMeterEnd").text(data.endOdometer);
                         $("#totalRunningKm").text(data.runningKm);
+                        $("#currentRemarks").text(data.route_Descr);
+                        $("#scoreCard").text(data.scoreCard);
+                        $("#dieselAmtPnL").text(0);
                         $("#userName").text(data.dieselHeaderCreatedByName);
                         $("#userName1").text(data.dieselHeaderCreatedByName);
                         $("#currentDate").text(data.dieselHeaderCreationDate);
@@ -517,6 +528,10 @@
                             $("#discountValue").text(totalDiscountValue.toFixed(2));
                             $("#dieselProfitLoss").text(totalDieselProfitLoss);
 
+                            let dieselRate = parseFloat(data?.dieselRate) || 0;
+                            let profitLoss = parseFloat(totalDieselProfitLoss) || 0;
+                            let dieselAmtPnL = profitLoss * dieselRate;
+                            $("#dieselAmtPnL").text(dieselAmtPnL.toFixed(2));
                             var percentageLoss=parseFloat((parseFloat(totalDieselProfitLoss)*100) / parseFloat(totalAvgDieselValue) ).toFixed(2);
                             $("#percentageOfLoss").text(percentageLoss);
                             $("#khaliBhariTotalKi").text(((parseFloat(totalRunKm) / parseFloat(totalConsumedDiesel))).toFixed(2));
@@ -524,7 +539,6 @@
                         catch{}
                         
                         $("#naamDaalneWala").text('');
-                        $("#dieselJyadaAaneKaKaran").text('');
                         $("#solution").text('');
 
 

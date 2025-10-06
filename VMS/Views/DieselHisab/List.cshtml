@@ -79,29 +79,29 @@
                         <thead>
                             <tr>
                                 <th>Action</th>
-                                <th>TripId</th>
-                                <th>Approved Status</th>
                                 <th>Vehicle No</th>
                                 <th>Driver Name</th>
+                                <th>Trip End Date</th>
+                                <th>Bhari Ka Average</th>
+                                <th>Profit & Loss</th>
+                                <th>TripId</th>
+                                @* <th>Approved Status</th>
                                 <th>Driver Father</th>
                                 <th>Trip Start Date</th>
-                                <th>Trip End Date</th>
                                 <th>Total Diesel Filled</th>
                                 <th>Total Distance KM</th>
                                 <th>Total Estimated Diesel</th>
                                 <th>Discount%</th>
                                 <th>Discount Value</th>
-                                <th>Profit & Loss</th>
                                 <th>% Loss</th>
-                                <th>Bhari Ka Average</th>
                            
                                 <th>Start Odometer</th>
                                 <th>End Odometer</th>
                                 <th>Opening Diesel</th>
                                 <th>Creation Date</th>
                                 <th>Created By</th>
-                                <th>Update Date</th>
-                                <th>Updated By</th>
+                                <th>Update Date</th> 
+                                <th>Updated By</th>*@
                             </tr>
                         </thead>
                         <tbody>
@@ -318,29 +318,29 @@
                                 approvalButton +
                                 '</div>' +
                                 '</td>' +
-                                '<td>' + item.tripId + '</td>' +
-                                '<td>' + item.approvedStatus + '</td>' +
                                 '<td>' + item.vehicleNumber + '</td>' +
                                 '<td>' + item.driverName + '</td>' +
-                                '<td>' + item.driverFatherName + '</td>' +
-                                '<td>' + item.tripStartDate + '</td>' +
                                 '<td>' + item.tripEndDate + '</td>' +
-                                '<td>' + item.totalDieselFilled + '</td>' +
-                                '<td>' + item.totalDistanceKM + '</td>' +
-                                '<td>' + item.totalEstimatedDiesel + '</td>' +
-                                   '<td>' + item.discountPer + '</td>' +
-                                '<td>' + item.discountValue + '</td>' +
-                                '<td>' + item.profitLoss + '</td>' +
-                                '<td>' + item.percentLoss + '</td>' +
                                 '<td>' + item.bhariKaAverage + '</td>' +
+                                '<td>' + item.profitLoss + '</td>' +
+                                '<td>' + item.tripId + '</td>' +
+                                // '<td>' + item.approvedStatus + '</td>' +
+                                // '<td>' + item.driverFatherName + '</td>' +
+                                // '<td>' + item.tripStartDate + '</td>' +
+                                // '<td>' + item.totalDieselFilled + '</td>' +
+                                // '<td>' + item.totalDistanceKM + '</td>' +
+                                // '<td>' + item.totalEstimatedDiesel + '</td>' +
+                                //    '<td>' + item.discountPer + '</td>' +
+                                // '<td>' + item.discountValue + '</td>' +
+                                // '<td>' + item.percentLoss + '</td>' +
                              
-                                '<td>' + item.startOdometer + '</td>' +
-                                '<td>' + item.endOdometer + '</td>' +
-                                '<td>' + item.openingDiesel + '</td>' +
-                                '<td>' + item.creationDate + '</td>' +
-                                '<td>' + item.dieselHeaderCreatedByName + '</td>' +
-                                '<td>' + item.updateDate + '</td>' +
-                                '<td>' + item.dieselHeaderUpdatedByName + '</td>' +
+                                // '<td>' + item.startOdometer + '</td>' +
+                                // '<td>' + item.endOdometer + '</td>' +
+                                // '<td>' + item.openingDiesel + '</td>' +
+                                // '<td>' + item.creationDate + '</td>' +
+                                // '<td>' + item.dieselHeaderCreatedByName + '</td>' +
+                                // '<td>' + item.updateDate + '</td>' +
+                                // '<td>' + item.dieselHeaderUpdatedByName + '</td>' +
                                 '</tr>';
                             rows += row;
                         });

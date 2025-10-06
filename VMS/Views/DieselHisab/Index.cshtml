@@ -101,11 +101,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>                            
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtLastTripRouteDesc">LastTrip Route Desc:</label>
+                                        <label class="col-sm-4 col-form-label" for="txtLastTripRouteDesc">LastTrip Remarks:</label>
                                         <div class="col-sm-8">
                                             @Html.TextAreaFor(m => m.LastTripRouteLine, new { @class = "form-control", cols = "10", rows = "5", id = "txtLastTripRouteDesc", @readonly="readonly" })
                                         </div>
@@ -138,7 +138,47 @@
                                     </div>
                                 </div>
                             </div>
-
+                       @*   <div class="row rowHeight">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <h5>Accumulative Report :</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtProfitLossDriver">Profit & Loss (Driver)</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtProfitLossDriver" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtNoOfTripsDriver">No Of Trips (Driver):</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtNoOfTripsDriver" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtProfitLossVehicle">Profit & Loss (Vehicle)</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtProfitLossVehicle" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtNoOfTripsVehicle">No Of Trips (Vehicle):</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtNoOfTripsVehicle" class="form-control" onchange="setTextboxStyle(this);" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> *@
                         <div class="row rowHeight">
                             <div class="col-md-12">
                                 <div class="form-group row">
@@ -232,22 +272,6 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label" for="txt">Bhari Ka Average:</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" id="txtBhariKaAverage" class="form-control numberonly" readonly maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Value" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label" for="txt">Profit/Loss%:</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" id="txtProfitLoss" class="form-control numberonly" readonly maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Value" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
                                             <label class="col-sm-4 col-form-label" for="txt">Discount%:</label>
                                             <div class="col-sm-8">
                                                 <input type="text" id="txtDiscountPer" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Discount%" />
@@ -259,13 +283,36 @@
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtRouteDescription">Route Desc :<span class="reqFields">*</span></label>
+                                        <label class="col-sm-4 col-form-label" for="txtRouteDescription">Remarks :<span class="reqFields">*</span></label>
                                         <div class="col-sm-8">
                                                 <textarea id="txtRouteDescription" class="form-control" maxlength="300" onchange="setTextboxStyle(this);" placeholder="Please Enter Route Description" rows="3"></textarea>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6"></div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txtRouteName">Route Name:<span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" id="ddlRouteName" name="ddlRouteName"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txtDriverScore">Driver Score:<span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" id="ddlDriverScore" name="ddlDriverScore"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txtDriverChangeRemarks">Driver Change Desc :<span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <textarea id="txtDriverChangeRemarks" class="form-control" maxlength="300" onchange="setTextboxStyle(this);" placeholder="Please Enter Driver Change Remarks" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                             </div>
                         </div>
 
@@ -395,6 +442,24 @@
                             </div>
                         </div>
                     </div>
+                                <div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txt">Current Bhari Ka Avg:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="txtBhariKaAverage" class="form-control numberonly" readonly maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Value" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txt">Current Profit/Loss%:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="txtProfitLoss" class="form-control numberonly" readonly maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Value" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                                     <div class="table-responsive mt-3">
                                   <table id="stationDetailsTable" class="table table-bordered">
@@ -497,6 +562,8 @@
         getVendorMaster();
         getDistanceMaster();
          getLoadTypeMaster();
+        getRouteNameMaster();
+        getDriverScoreMaster();
         // $("#chkIsActive").attr("checked", true);
         // $("#chkIsActive").attr("disabled", true);
             getFunctionName('DIESEL HISAB', function (userRights) {
@@ -1049,6 +1116,10 @@
             $("#txtBhariKaAverage").val("");
         $("#txtProfitLoss").val("");
 
+            $("#ddlRouteName").prop("selectedIndex", 0).val();
+            $("#ddlDriverScore").prop("selectedIndex", 0).val();
+            $("#txtDriverChangeRemarks").val("");
+
             $('#dieselFillingTable tbody').empty();
             $('#dieselFillingTable').DataTable().clear().destroy();
             $('#stationDetailsTable tbody').empty();
@@ -1187,6 +1258,7 @@
                     }
                     $("#txtStartOdometer").val(data.endOdometer);
                     $("#txtOpeningDiesel").val(data.closingDiesel);
+                        $('#ddlDriver').val(data.lastTripDriverId).trigger('change');
                 } else {
                         $("#txtLastTripId").val("N/A");
                     $("#txtLastTripStartDate").val("N/A");
@@ -1319,6 +1391,9 @@
                     formData.append("IsDifferenceAdded", addDifferenceChecked); // Append the checkbox value
                     formData.append("IsLoadingAdded", addLoadingUnloadingChecked);
                     formData.append("discountPer",$("#txtDiscountPer").val());
+                    formData.append("RouteNameId", $("#ddlRouteName option:selected").val());
+                    formData.append("DriverScoreId", $("#ddlDriverScore option:selected").val());
+                    formData.append("DriverChnageRemarks", $("#txtDriverChangeRemarks").val());
 
                  // Diesel Filling Entries from Table
                    $("#dieselFillingTable tbody tr").each(function (index, row) {
@@ -1749,6 +1824,10 @@
                         $("#txtOpeningDiesel").val(data.openingDiesel);
                         $("#txtClosingDiesel").val(data.closingDiesel);
                         $("#txtDiscountPer").val(data.discountPer);
+
+                        $('#ddlRouteName').val(data.routeNameId).trigger('change');
+                        $('#ddlDriverScore').val(data.driverScoreId).trigger('change');
+                        $("#txtDriverChangeRemarks").val(data.driverChnageRemarks);
                         // $("#txtBhariKaAverage").val(data.BhariKaAverage);
                         // $("#txtProfitLoss").val(data.ProfitLoss);
                         $("#txtRouteDescription").val(data.lastTripRouteDescr);
@@ -2138,14 +2217,15 @@
         {
             const openingDiesel = parseFloat($("#txtOpeningDiesel").val()) || 0;
             const closingDiesel = parseFloat($("#txtClosingDiesel").val()) || 0;
+            const discountPer= parseFloat($("#txtDiscountPer").val()) || 0;
             // Get the dynamic data from the HTML table
             const _lstDieselLine = getDieselLineDataFromTable();
             const _lstDieselFilling = getDieselFillingDataFromTable();
 
-            calBhariKaAverage(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine)
-            calProfitLoss(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine);
+            calBhariKaAverage(openingDiesel, closingDiesel,discountPer, _lstDieselFilling, _lstDieselLine)
+            calProfitLoss(openingDiesel, closingDiesel, discountPer, _lstDieselFilling, _lstDieselLine);
         }
-        function calBhariKaAverage(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine) {
+        function calBhariKaAverage(openingDiesel, closingDiesel,discountPer, _lstDieselFilling, _lstDieselLine) {
 
             let bhariKaAverage = 0;
             try {
@@ -2189,7 +2269,7 @@
             $("#txtBhariKaAverage").val(to2Decimal(bhariKaAverage).toString());
         }
 
-        function calProfitLoss(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine) {
+        function calProfitLoss(openingDiesel, closingDiesel,discountPer, _lstDieselFilling, _lstDieselLine) {
             let profitLoss = 0;
             try {
                 // C#: sumTotalDiesel = ((openingDiesel + (_lstDieselFilling?.Sum(x => x.DieselQty).To3Decimal() ?? 0)) - closingDiesel);
@@ -2198,13 +2278,22 @@
                 // C#: sumTotalEstimatedDiesel = _lstDieselLine?.Sum(x => x.EstimatedDiesel).To3Decimal() ?? 0;
                 const sumTotalEstimatedDiesel = to3Decimal(_lstDieselLine?.reduce((sum, item) => sum + (item.EstimatedDiesel || 0), 0) ?? 0);
 
+                const sumTotalDiscountValue = to3Decimal(sumTotalEstimatedDiesel * discountPer/100);
                 // C#: ProfitLoss = sumTotalEstimatedDiesel - sumTotalDiesel;
                 profitLoss = sumTotalEstimatedDiesel - sumTotalDiesel;
+
+                if (parseFloat(profitLoss) < 0) {
+                    profitLoss = (parseFloat(profitLoss) + parseFloat(sumTotalDiscountValue)).toFixed(2)
+                }
+                else {
+                    profitLoss = (parseFloat(sumTotalEstimatedDiesel) - parseFloat(sumTotalDiesel) + sumTotalDiscountValue).toFixed(2);
+                }
+
             } catch (ex) {
                 // C#: Globalsettings.Log(_controllerName, string.Format("calProfitLoss: {0}", ex.Message.ToString()));
                 console.error("An error occurred in calProfitLoss:", ex);
             }
-            $("#txtProfitLoss").val(to2Decimal(profitLoss).toString());
+            $("#txtProfitLoss").val(parseFloat(profitLoss).toString());
         }
         // Function to read data from the HTML table
         function getDieselLineDataFromTable() {

@@ -131,33 +131,62 @@
         }
     </style>
 
-    @* For ddlDriver *@
+    @* For ddlRouteName *@
     <style type="text/css">
-        #ddlDriver + span.select2-container {
+        #ddlRouteName + span.select2-container {
             height: 34px !important; /* Adjust this value */
             vertical-align: middle; /* Try this */
             display: inline-block; /* Ensure it behaves like other inline elements */
         }
-        
-        #ddlDriver + span.select2-container .select2-selection--single{
+
+            #ddlRouteName + span.select2-container .select2-selection--single {
             height: 34px !important; /* Match the container height */
             display: flex !important;
             align-items: center !important; /* Vertically center text */
             padding: 0.25rem 0.5rem !important; /* Add some padding for visual consistency */
         }
-        
-        #ddlDriver + span.select2-container .select2-selection--single .select2-selection__rendered{
+
+                #ddlRouteName + span.select2-container .select2-selection--single .select2-selection__rendered {
             line-height: normal !important; /* Reset line-height */
             padding-left: 0 !important; /* Adjust text indentation if needed */
         }
-        
-        #ddlDriver + span.select2-container .select2-selection--single .select2-selection__arrow{
+
+                #ddlRouteName + span.select2-container .select2-selection--single .select2-selection__arrow {
             height: 34px !important; /* Match container height */
             top: auto !important;
             bottom: auto !important;
             margin-top: auto !important;
             margin-bottom: auto !important; /* Vertically center the arrow */
         }
+    </style>
+
+    @* For ddlDriverScore *@
+    <style type="text/css">
+        #ddlDriverScore + span.select2-container {
+            height: 34px !important; /* Adjust this value */
+            vertical-align: middle; /* Try this */
+            display: inline-block; /* Ensure it behaves like other inline elements */
+        }
+
+            #ddlDriverScore + span.select2-container .select2-selection--single {
+                height: 34px !important; /* Match the container height */
+                display: flex !important;
+                align-items: center !important; /* Vertically center text */
+                padding: 0.25rem 0.5rem !important; /* Add some padding for visual consistency */
+            }
+
+                #ddlDriverScore + span.select2-container .select2-selection--single .select2-selection__rendered {
+                    line-height: normal !important; /* Reset line-height */
+                    padding-left: 0 !important; /* Adjust text indentation if needed */
+                }
+
+                #ddlDriverScore + span.select2-container .select2-selection--single .select2-selection__arrow {
+                    height: 34px !important; /* Match container height */
+                    top: auto !important;
+                    bottom: auto !important;
+                    margin-top: auto !important;
+                    margin-bottom: auto !important; /* Vertically center the arrow */
+                }
     </style>
 
     @* For ddlVendor *@
@@ -181,6 +210,35 @@
                 }
 
                 #ddlVendor + span.select2-container .select2-selection--single .select2-selection__arrow {
+                    height: 34px !important; /* Match container height */
+                    top: auto !important;
+                    bottom: auto !important;
+                    margin-top: auto !important;
+                    margin-bottom: auto !important; /* Vertically center the arrow */
+                }
+    </style>
+
+    @* For ddlDriver *@
+    <style type="text/css">
+        #ddlDriver + span.select2-container {
+            height: 34px !important; /* Adjust this value */
+            vertical-align: middle; /* Try this */
+            display: inline-block; /* Ensure it behaves like other inline elements */
+        }
+
+            #ddlDriver + span.select2-container .select2-selection--single {
+                height: 34px !important; /* Match the container height */
+                display: flex !important;
+                align-items: center !important; /* Vertically center text */
+                padding: 0.25rem 0.5rem !important; /* Add some padding for visual consistency */
+            }
+
+                #ddlDriver + span.select2-container .select2-selection--single .select2-selection__rendered {
+                    line-height: normal !important; /* Reset line-height */
+                    padding-left: 0 !important; /* Adjust text indentation if needed */
+                }
+
+                #ddlDriver + span.select2-container .select2-selection--single .select2-selection__arrow {
                     height: 34px !important; /* Match container height */
                     top: auto !important;
                     bottom: auto !important;
@@ -1750,6 +1808,54 @@
                         
                         $("#ddlDriver").select2();
                         $("#ddlDriver").trigger('change');
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getRouteNameMaster() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DieselHisab/getRouteNameMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Route</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            // console.log(data[i])
+                            s += '<option value="' + data[i].RouteId + '">' + data[i].RouteName + '</option>';
+                        }
+                        $("#ddlRouteName").html(s);
+
+                        $("#ddlRouteName").select2();
+                        $("#ddlRouteName").trigger('change');
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+        function getDriverScoreMaster() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DieselHisab/getDriverScoreMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="-1">Select a Score</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            // console.log(data[i])
+                            s += '<option value="' + data[i].driverScoreId + '">' + data[i].driverScoreName + '</option>';
+                        }
+                        $("#ddlDriverScore").html(s);
+
+                        $("#ddlDriverScore").select2();
+                        $("#ddlDriverScore").trigger('change');
                     } else {
                         console.log(data);
                     }

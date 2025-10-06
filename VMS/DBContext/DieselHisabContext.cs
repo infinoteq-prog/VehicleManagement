@@ -273,6 +273,7 @@ namespace VMS
                 ISNULL(dh.Opening_Diesel, 1) AS OpeningDiesel,
                 ISNULL(dh.Closing_Diesel, 1) AS ClosingDiesel,
                 vm.Vehicle_No AS VehicleNumber,
+                dm.Id[LastTripDriverId],
                 dm.Driver_Name AS LastTripDriver,
                 dm.Father_Name AS LastTripDriverFatherName,dh.Bhari_Ka_Average[lastBhariKaAverage]
             FROM [dbo].[tbl_Diesel_Header] dh
@@ -305,6 +306,7 @@ namespace VMS
                                 ClosingDiesel = reader.GetInt64("ClosingDiesel"),
                                 LastBhariKaAverage = reader.GetDecimal("lastBhariKaAverage").To2Decimal(),
                                 LastTripVendor = "Test Vendor",
+                                LastTripDriverId = reader.IsDBNull("LastTripDriverId") ? 0 : reader.GetInt32("LastTripDriverId"),
                                 LastTripDriver = reader.IsDBNull("LastTripDriver") ? null : reader.GetString("LastTripDriver"),
                                 LastTripDriverFatherName = reader.IsDBNull("LastTripDriverFatherName") ? null : reader.GetString("LastTripDriverFatherName"),
                                 VehicleNumber = reader.GetString("VehicleNumber")
@@ -497,5 +499,60 @@ namespace VMS
             return discountValue;
         }
 
+        public static async Task<List<object>> getRouteMaster(string _connectionString)
+        {
+            List<object> _lst = new List<object>();
+            string sql = @"[dbo].[GetRouteNameMaster]";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var row = new Dictionary<string, object>();
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                row[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader.GetValue(i);
+                            }
+                            _lst.Add(row);
+                        }
+                    }
+                }
+            }
+            return _lst;
+        }
+
+        public static async Task<List<object>> getDriverScore(string _connectionString)
+        {
+            List<object> _lst = new List<object>();
+            string sql = @"[dbo].[GetDriverScore]";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var row = new Dictionary<string, object>();
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                row[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader.GetValue(i);
+                            }
+                            _lst.Add(row);
+                        }
+                    }
+                }
+            }
+            return _lst;
+        }
     }
 }

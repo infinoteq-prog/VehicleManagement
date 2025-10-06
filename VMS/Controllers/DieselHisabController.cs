@@ -142,6 +142,50 @@ namespace VMS.Controllers
         }
 
         [HttpGet]
+        public async Task<JsonResult> getRouteNameMaster()
+        {
+            try
+            {
+                var model = await DieselHisabContext.getRouteMaster(_connectionString);
+
+                if (model != null)
+                {
+                    return Json(model);
+                }
+                else
+                {
+                    return Json(null);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(null);
+            }
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> getDriverScoreMaster()
+        {
+            try
+            {
+                var model = await DieselHisabContext.getDriverScore(_connectionString);
+
+                if (model != null)
+                {
+                    return Json(model);
+                }
+                else
+                {
+                    return Json(null);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(null);
+            }
+        }
+
+        [HttpGet]
         public JsonResult getCurrentTripNumber(int vehicleNo)
         {
             var model = _context.TblDieselHeaders
@@ -234,7 +278,7 @@ namespace VMS.Controllers
                          dh.TripId,dh.Last_Trip_Id[LastTripId],dh.VehicleNo,vm.Vehicle_No[VehicleNumber], dh.DriverId,
                          CONVERT(VARCHAR, dh.Trip_Start_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS TripStartDate,
                          CONVERT(VARCHAR, dh.Trip_End_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_End_Date, 108) AS TripEndDate,
-                         dh.Last_Trip_Route_Descr,dh.Start_Odometer,
+                         dh.Last_Trip_Route_Descr[Route_Descr], dhlast.Last_Trip_Route_Descr,dh.Start_Odometer,
                          dh.End_Odometer, dh.Opening_Diesel,dh.Closing_Diesel,
                          dh.RunningKm, dh.Is_Active,dh.Is_DifferenceAdded,dh.Is_LoadingAdded,
                          CONVERT(VARCHAR(10),dh.Creation_Date, 105) AS DieselHeaderCreationDate,
@@ -244,12 +288,18 @@ namespace VMS.Controllers
                          dm.Driver_Name,dm.Father_Name AS DriverFatherName,
                          uc.User_Name AS DieselHeaderCreatedByName,
                          uu.User_Name AS DieselHeaderUpdatedByName,
-                         dh.discountPer,dh.DiscountValue
+                         dh.discountPer,dh.DiscountValue,dh.RouteNameId,dh.DriverScoreId,dh.DriverChnageRemarks,ISNULL(dm.Bank_AccountNumber,'')[Bank_AccountNumber]
+                         ,(CASE WHEN dh.DriverScoreId=0 THEN 'Below'  
+						 WHEN dh.DriverScoreId=1 THEN 'Low' 
+						 WHEN dh.DriverScoreId=2 THEN 'Medium' 
+						 WHEN dh.DriverScoreId=3 THEN 'Good' 
+						 ELSE '' END)[ScoreCard], [dbo].[GetDieselRate](GetDATE(), 'SALE')[DieselRate]
                          FROM [dbo].[tbl_Diesel_Header] dh
                          INNER JOIN [dbo].[tbl_Vehicle_Master] vm ON dh.VehicleNo = vm.Id
                          LEFT JOIN [dbo].[tbl_Driver_Master] dm ON dh.DriverId = dm.Id
                          LEFT JOIN [dbo].[tbl_UserMaster] uc ON dh.Created_By = uc.Id
                          LEFT JOIN [dbo].[tbl_UserMaster] uu ON dh.Updated_By = uu.Id
+						 LEFT OUTER JOIN [dbo].[tbl_Diesel_Header] dhlast on dh.Last_Trip_Id=dhlast.TripId
                         WHERE dh.Is_Active = 1 AND dh.TripId = @TripId;";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
@@ -269,6 +319,8 @@ namespace VMS.Controllers
                                     DriverId = reader.GetInt32("DriverId"),
                                     TripStartDate = reader.GetString("TripStartDate"),
                                     TripEndDate = reader.GetString("TripEndDate"),
+                                    ScoreCard = reader.GetString("ScoreCard"),
+                                    Route_Descr = reader.GetString("Route_Descr"),
                                     LastTripRouteDescr = reader.GetString("Last_Trip_Route_Descr"),
                                     StartOdometer = reader.GetInt64("Start_Odometer"),
                                     EndOdometer = reader.GetInt64("End_Odometer"),
@@ -288,6 +340,12 @@ namespace VMS.Controllers
                                     DriverFatherName = reader.GetString("DriverFatherName"),
                                     DieselHeaderCreatedByName = reader.GetString("DieselHeaderCreatedByName"),
                                     DieselHeaderUpdatedByName = reader.GetString("DieselHeaderUpdatedByName"),
+                                    BankAccountNumber = reader.GetString("Bank_AccountNumber"),
+                                    DieselRate = reader.IsDBNull("DieselRate") ? 0 : reader.GetDecimal("DieselRate"),
+
+                                    RouteNameId = reader.IsDBNull("RouteNameId") ? 0 : reader.GetInt32("RouteNameId"),
+                                    DriverScoreId = reader.IsDBNull("DriverScoreId") ? 0 : reader.GetInt32("DriverScoreId"),
+                                    DriverChnageRemarks = reader.IsDBNull("DriverChnageRemarks") ? "" : reader.GetString("DriverChnageRemarks"),
                                     LastTripHistory = await DieselHisabContext.GetLastTripHistoryByTripIdAsync(_connectionString, reader.GetInt32("LastTripId")),
                                     DieselFillingList = await DieselHisabContext.GetDieselFillingListAsync(_connectionString, TripId),
                                     stationList = await DieselHisabContext.GetStationListAsync(_connectionString, TripId, reader.GetInt32("VehicleNo"))
@@ -480,7 +538,9 @@ namespace VMS.Controllers
         public ActionResult SaveUpdate(int tripId, int vehicleNo, int driverId, int tripNo,int lastTripId, string driverName, 
                                  string driverFatherName, string tripStartDate,
                                  string tripEndDate, Int32 startOdometer, Int32 endOdometer,
-                                 int openingDiesel, int closingDiesel, int runningKm,decimal DiscountPer, bool IsDifferenceAdded,bool IsLoadingAdded, string tripRouteDescription,List<TblDieselFilling> _lstDieselFilling, List<TblDieselLine> _lstDieselLine)
+                                 int openingDiesel, int closingDiesel, int runningKm,decimal DiscountPer, bool IsDifferenceAdded,bool IsLoadingAdded,
+                               int RouteNameId,int DriverScoreId,   string DriverChnageRemarks,
+                                 string tripRouteDescription,List<TblDieselFilling> _lstDieselFilling, List<TblDieselLine> _lstDieselLine)
         {
             VMTrip model = new VMTrip();
             DateTime dtTripStartDate = DateTime.Now;
@@ -544,6 +604,9 @@ namespace VMS.Controllers
                                     IsDifferenceAdded = IsDifferenceAdded,
                                     IsLoadingAdded = IsLoadingAdded,
                                     IsActive = true,
+                                    RouteNameId = RouteNameId,
+                                    DriverScoreId = DriverScoreId,
+                                    DriverChnageRemarks = DriverChnageRemarks,
                                     Profit_Loss = DieselHisabContext.calProfitLoss(openingDiesel,closingDiesel,_lstDieselFilling,_lstDieselLine),
                                     Percent_Loss = DieselHisabContext.calPercentLoss(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine),
                                     Bhari_Ka_Average = DieselHisabContext.calBhariKaAverage(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine),
@@ -672,6 +735,9 @@ namespace VMS.Controllers
                                 existingDieselHisab.IsLoadingAdded = IsLoadingAdded;
                                 existingDieselHisab.UpdateDate = utilityHelper.CurrentDateTime;
                                 existingDieselHisab.UpdatedBy = userID;
+                                existingDieselHisab.RouteNameId = RouteNameId;
+                                existingDieselHisab.DriverScoreId = DriverScoreId;
+                                existingDieselHisab.DriverChnageRemarks = DriverChnageRemarks;
                                 existingDieselHisab.Profit_Loss = DieselHisabContext.calProfitLoss(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine);
                                 existingDieselHisab.Percent_Loss = DieselHisabContext.calPercentLoss(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine);
                                 existingDieselHisab.Bhari_Ka_Average = DieselHisabContext.calBhariKaAverage(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine);

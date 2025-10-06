@@ -45,6 +45,9 @@ public partial class TblDieselHeader
     public decimal? Bhari_Ka_Average { get; set; } = 0;
     public decimal? DiscountPer { get; set; } = 0;
     public decimal? DiscountValue { get; set; } = 0;
+    public int? RouteNameId { get; set; } = 0;
+    public int? DriverScoreId { get; set; } = 0;
+    public string? DriverChnageRemarks { get; set; } = "";
 
     public virtual TblDriverMaster Driver { get; set; } = null!;
 
