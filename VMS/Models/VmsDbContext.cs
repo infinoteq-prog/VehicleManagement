@@ -485,6 +485,7 @@ public partial class VmsDbContext : DbContext
             entity.Property(e => e.DiscountPer).HasColumnType("decimal(10, 3)");
             entity.Property(e => e.DiscountValue).HasColumnType("decimal(10, 3)");
 
+            entity.Property(e => e.DieselRate).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.RouteNameId).HasColumnType("int");
             entity.Property(e => e.DriverScoreId).HasColumnType("int");
             entity.Property(e => e.DriverChnageRemarks).HasColumnType("nvarchar(200)");

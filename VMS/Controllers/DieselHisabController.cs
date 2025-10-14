@@ -515,7 +515,7 @@ namespace VMS.Controllers
                                  string driverFatherName, string tripStartDate,
                                  string tripEndDate, Int32 startOdometer, Int32 endOdometer,
                                  int openingDiesel, int closingDiesel, int runningKm,decimal DiscountPer, bool IsDifferenceAdded,bool IsLoadingAdded,
-                               int RouteNameId,int DriverScoreId,   string DriverChnageRemarks,
+                               int RouteNameId,int DriverScoreId, decimal DieselRate, string DriverChnageRemarks,
                                  string tripRouteDescription,List<TblDieselFilling> _lstDieselFilling, List<TblDieselLine> _lstDieselLine)
         {
             VMTrip model = new VMTrip();
@@ -580,6 +580,7 @@ namespace VMS.Controllers
                                     IsDifferenceAdded = IsDifferenceAdded,
                                     IsLoadingAdded = IsLoadingAdded,
                                     IsActive = true,
+                                    DieselRate = DieselRate,
                                     RouteNameId = RouteNameId,
                                     DriverScoreId = DriverScoreId,
                                     DriverChnageRemarks = DriverChnageRemarks,
@@ -712,6 +713,7 @@ namespace VMS.Controllers
                                 existingDieselHisab.UpdateDate = utilityHelper.CurrentDateTime;
                                 existingDieselHisab.UpdatedBy = userID;
                                 existingDieselHisab.RouteNameId = RouteNameId;
+                                existingDieselHisab.DieselRate = DieselRate;
                                 existingDieselHisab.DriverScoreId = DriverScoreId;
                                 existingDieselHisab.DriverChnageRemarks = DriverChnageRemarks;
                                 existingDieselHisab.Profit_Loss = DieselHisabContext.calProfitLoss(openingDiesel, closingDiesel, _lstDieselFilling, _lstDieselLine);

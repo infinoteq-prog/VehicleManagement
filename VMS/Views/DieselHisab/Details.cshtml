@@ -185,7 +185,23 @@
                                         <div class="form-group row">
                                             <label class="col-sm-4 col-form-label" for="txtOpeningDiesel">Opening Diesel:<span class="reqFields">*</span></label>
                                             <div class="col-sm-8">
-                                                <input type="text" id="txtOpeningDiesel" class="form-control numberonly" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Opening Diesel" />
+                                                <input type="text" id="txtOpeningDiesel" class="form-control numberonly" maxlength="20" readonly="readonly" onchange="setTextboxStyle(this);" placeholder="Please Enter Opening Diesel" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txtClosingDiesel">Closing Diesel:<span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="txtClosingDiesel" class="form-control numberonly" maxlength="20" readonly="readonly" onchange="setTextboxStyle(this);" placeholder="Please Enter Opening Diesel" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txt">Discount%:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="txtDiscountPer" class="form-control numberonly" maxlength="20" readonly="readonly" onchange="setTextboxStyle(this);" placeholder="Please Enter Discount%" />
                                             </div>
                                         </div>
                                     </div>
@@ -194,13 +210,45 @@
                                 <div class="row rowHeight">
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label" for="txtRouteDescription">Route Desc :<span class="reqFields">*</span></label>
+                                            <label class="col-sm-4 col-form-label" for="txtRouteDescription">Remarks :<span class="reqFields">*</span></label>
                                             <div class="col-sm-8">
-                                                <input type="text" id="txtRouteDescription" class="form-control" maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Route Description" />
+                                                <textarea id="txtRouteDescription" class="form-control" maxlength="300" readonly="readonly" onchange="setTextboxStyle(this);" placeholder="Please Enter Route Description" rows="3"></textarea>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6"></div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txtRouteName">Route Name:<span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" id="ddlRouteName" readonly="readonly" name="ddlRouteName"></select>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txtDriverScore">Driver Score:<span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" id="ddlDriverScore" readonly="readonly" name="ddlDriverScore"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txtDriverChangeRemarks">Driver Change Desc:<span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <textarea id="txtDriverChangeRemarks" class="form-control" readonly="readonly" maxlength="300" onchange="setTextboxStyle(this);" placeholder="Please Enter Driver Change Remarks" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txtDieselRate">Diesel Rate:<span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="txtDieselRate" class="form-control" readonly="readonly" maxlength="20" inputmode="decimal" pattern="^\d*\.?\d*$" onchange="setTextboxStyle(this);" placeholder="Please Enter DieselRate" />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -316,7 +364,9 @@
         var viewAccess = 'True';
 
         $(document).ready(function () {
-            
+
+            getRouteNameMaster();
+            getDriverScoreMaster();
             setSideMenu("diesel-hisab-master");
             if (fullAccess === "True" || viewAccess === "True") {
                  getVehicleNumber();
@@ -354,6 +404,8 @@
                  $("#ddlVehicleNo").prop("disabled", true);
                  $("#ddlDriver").prop("disabled", true);
                  $("#ddlVendor").prop("disabled", true);
+            $("#ddlRouteName").prop("disabled", true);
+            $("#ddlDriverScore").prop("disabled", true);
 
                  // Button - Disable
                  $("#btnAddFilling").prop("disabled", true);
@@ -386,6 +438,15 @@
                  $("#txtRunningKm").val(data.runningKm);
                  $("#txtOpeningDiesel").val(data.openingDiesel);
                  $("#txtRouteDescription").val(data.lastTripRouteDescr);
+
+                        $("#txtClosingDiesel").val(data.closingDiesel);
+
+                        $("#txtDiscountPer").val(data.discountPer);
+                        $("#txtDieselRate").val(data.dieselRate);
+
+                        $('#ddlRouteName').val(data.routeNameId).trigger('change');
+                        $('#ddlDriverScore').val(data.driverScoreId).trigger('change');
+                        $("#txtDriverChangeRemarks").val(data.driverChnageRemarks);
 
                  //Last Trip Detail
                         if (data.lastTripHistory != null && data.lastTripHistory != undefined) { 
