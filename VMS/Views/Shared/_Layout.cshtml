@@ -1847,7 +1847,7 @@
                 dataType: "json",
                 success: function (data) {
                     if (data != null && data != undefined) {
-                        var s = '<option value="-1">Select a Score</option>';
+                        var s = '<option value="-3">Select a Score</option>';
                         for (var i = 0; i < data.length; i++) {
                             // console.log(data[i])
                             s += '<option value="' + data[i].driverScoreId + '">' + data[i].driverScoreName + '</option>';

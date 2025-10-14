@@ -450,7 +450,6 @@ namespace VMS
             }
             return dieselHeaders;
         }
-
         public static decimal calProfitLoss(decimal openingDiesel, decimal closingDiesel, List<TblDieselFilling> _lstDieselFilling, List<TblDieselLine> _lstDieselLine)
         {
             decimal ProfitLoss = 0;
@@ -506,7 +505,6 @@ namespace VMS
             }
             return BhariKaAverage;
         }
-
         public static decimal calDiscountValue(decimal discountPer, List<TblDieselLine> _lstDieselLine)
         {
             // Bhari ka KM (Total(TotalRunningKm)  - Total khali ka KM) / Bhari Ka Diesel (Total Consumed - Khali ka Diesel)
@@ -526,7 +524,6 @@ namespace VMS
             }
             return discountValue;
         }
-
         public static async Task<List<object>> getRouteMaster(string _connectionString)
         {
             List<object> _lst = new List<object>();
@@ -554,7 +551,6 @@ namespace VMS
             }
             return _lst;
         }
-
         public static async Task<List<object>> getDriverScore(string _connectionString)
         {
             List<object> _lst = new List<object>();

@@ -294,6 +294,12 @@
                                             <label class="col-sm-4 col-form-label" for="txtRouteName">Route Name:<span class="reqFields">*</span></label>
                                             <div class="col-sm-8">
                                                 <select class="form-control" id="ddlRouteName" name="ddlRouteName"></select>
+                                                <button type="button" class="btn btn-primary btn-sm" onclick="openNewRouteName()" title="Add New Route">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-secondary btn-sm ms-2" id="btnRefreshRouteNameList" title="Refresh Route List">
+                                                    <i class="fas fa-sync-alt"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -307,7 +313,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label" for="txtDriverChangeRemarks">Driver Change Desc :<span class="reqFields">*</span></label>
+                                            <label class="col-sm-4 col-form-label" for="txtDriverChangeRemarks">Driver Change Desc:<span class="reqFields">*</span></label>
                                             <div class="col-sm-8">
                                                 <textarea id="txtDriverChangeRemarks" class="form-control" maxlength="300" onchange="setTextboxStyle(this);" placeholder="Please Enter Driver Change Remarks" rows="3"></textarea>
                                             </div>
@@ -453,7 +459,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label" for="txt">Current Profit/Loss%:</label>
+                                            <label class="col-sm-4 col-form-label" for="txt">Current Profit/Loss:</label>
                                             <div class="col-sm-8">
                                                 <input type="text" id="txtProfitLoss" class="form-control numberonly" readonly maxlength="20" onchange="setTextboxStyle(this);" placeholder="Please Enter Value" />
                                             </div>
@@ -1685,7 +1691,7 @@
             // Check if the stationId already exists in the table, excluding the difference row
             for (let i = 0; i < table.rows.length; i++) {
                 const row = table.rows[i];
-                if (row.id !== 'differenceRow' && row.id !== 'loadingUnloadingRow' && row.id !== 'totalRow') { // Exclude the difference row from the check
+                if (row.id !== 'differenceRow' && row.id !== 'loadingUnloadingRow' && table.rows[i].id !== 'misclaneousRow' && row.id !== 'totalRow') { // Exclude the difference row from the check
                     const existingStationId = row.cells[0].textContent;
                     if (existingStationId === stationId) {
                         alert('This station already exists in the table.');
@@ -1698,12 +1704,16 @@
             //insert row before the difference row if it exists
             const differenceRow = document.getElementById('differenceRow');
             const loadingUnloadingRow = document.getElementById('loadingUnloadingRow');
+            const misclaneousRow = document.getElementById('misclaneousRow');
             const totalRow = document.getElementById('totalRow');
             if (differenceRow) {
                 row = table.insertRow(differenceRow.rowIndex - 1);
             }
             else if (loadingUnloadingRow) {
                 row = table.insertRow(loadingUnloadingRow.rowIndex - 1);
+            }
+            else if (misclaneousRow) {
+                row = table.insertRow(misclaneousRow.rowIndex - 1);
             }
             else if (totalRow) {
                 row = table.insertRow(totalRow.rowIndex - 1);
@@ -1746,6 +1756,7 @@
             if (document.getElementById('addLoadingUnloading').checked) {
                 addLoadingUnloadingLine();
             }
+            //addMisclaneousLine() they asked to add but than asked to remove
             addTotalRow();
 
             // Example of appending the checkbox value to formData:
@@ -1958,7 +1969,7 @@
             let totalEstKm = 0;
             let totalDiscountValue = 0;
             for (let i = 0; i < table.rows.length - 1; i++) {
-                if (table.rows[i].id !== 'differenceRow' && table.rows[i].id !== 'loadingUnloadingRow') {
+                if (table.rows[i].id !== 'differenceRow' && table.rows[i].id !== 'loadingUnloadingRow' && table.rows[i].id !== 'misclaneousRow') {
                     totalDistance += Number(table.rows[i].cells[3].textContent);
                     totalEstKm += Number(table.rows[i].cells[6].textContent);
                 }
@@ -2040,7 +2051,7 @@
 
              let totalDistance = 0;
             for (let i = 0; i < table.rows.length - 1; i++) {
-                if (table.rows[i].id !== 'differenceRow' && table.rows[i].id !== 'loadingUnloadingRow' && table.rows[i].id !== 'Total') {
+                if (table.rows[i].id !== 'differenceRow' && table.rows[i].id !== 'loadingUnloadingRow' && table.rows[i].id !== 'misclaneousRow' && table.rows[i].id !== 'Total') {
                     totalDistance += Number(table.rows[i].cells[3].textContent);
                 }
             }
@@ -2153,6 +2164,49 @@
             if (rowToDelete) {
                 table.deleteRow(rowToDelete.rowIndex - 1);
             }
+        }
+
+        function addMisclaneousLine() {
+            const table = document.getElementById('stationDetailsTable').getElementsByTagName('tbody')[0];
+            let row;
+
+            // Check if the loading/unloading row already exists
+            if (document.getElementById('misclaneousRow')) {
+                // If it exists, remove it before adding a new one
+                table.removeChild(document.getElementById('misclaneousRow'));
+            }
+
+            //insert row before the difference row.
+            const differenceRow = document.getElementById('differenceRow');
+            const totalRow = document.getElementById('totalRow');
+            if (differenceRow) {
+                row = table.insertRow(differenceRow.rowIndex - 1);
+            }
+            else if (totalRow) {
+                row = table.insertRow(totalRow.rowIndex - 1);
+            }
+            else {
+                row = table.insertRow();
+            }
+
+            row.id = 'misclaneousRow';
+
+            const routeId = row.insertCell(0);
+            routeId.textContent = 0;
+            routeId.style.display = 'none';
+
+            const loadTypeId = row.insertCell(1);
+            loadTypeId.textContent = 21;
+            loadTypeId.style.display = 'none';
+
+            row.insertCell(2).textContent = "Misclaneous";
+            row.insertCell(3).textContent = 0;
+            row.insertCell(4).textContent = "";
+            row.insertCell(5).textContent = 0;
+            row.insertCell(6).textContent = 0;
+
+            const actionsCell = row.insertCell(7);
+            actionsCell.innerHTML = `<button class="btn btn-danger btn-sm" onclick="deleteStationRow(this)">Delete</button>`;
         }
 
         function getLoadingUnloadingRouteMasterId() {
@@ -2332,5 +2386,19 @@
             });
             return dieselFillingData;
         }
+    </script>
+
+    @* Add New Route and Refresh Route Dropdown *@
+    <script>
+        function openNewRouteName() {
+            const newPageUrl = '@(VMS.Helper.utilityHelper.SiteUrl() + "DieselEntry/AddRoute")';
+
+            window.open(newPageUrl, '_blank', 'noopener, noreferrer');
+        }
+
+        document.getElementById('btnRefreshRouteNameList').addEventListener('click', function () {
+            getDriverMaster();
+        });
+
     </script>
 }

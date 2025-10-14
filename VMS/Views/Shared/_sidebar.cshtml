@@ -26,6 +26,34 @@
                 @*  } *@
 
                 <li class="nav-item">
+                    <a id="lnkdieselentry" class="nav-link" data-toggle="collapse" href="#dieselentrycollapse" aria-expanded="false" aria-controls="diesel-rate-master">
+                        <i class="typcn typcn-document-text menu-icon"></i>
+                        <span class="menu-title">Diesel Entry Master</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="dieselentrycollapse">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselEntry/Create")">Add Diesel Entry </a></li>
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselEntry/Index")">View Diesel Entry</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a id="lnkrouteentry" class="nav-link" data-toggle="collapse" href="#routeentrycollapse" aria-expanded="false" aria-controls="diesel-rate-master">
+                        <i class="typcn typcn-document-text menu-icon"></i>
+                        <span class="menu-title">Route Master Entry</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="routeentrycollapse">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselEntry/AddRoute")">Add Route </a></li>
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselEntry/RouteList")">View Route </a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
                     <a id="lnkMakeMaster" class="nav-link" data-toggle="collapse" href="#make-master" aria-expanded="false" aria-controls="diesel-rate-master">
                         <i class="typcn typcn-document-text menu-icon"></i>
                         <span class="menu-title">Code Master</span>
@@ -229,6 +257,34 @@
                             <span class="menu-title">Dashboard</span>
                             <div class="badge badge-danger">new</div>
                         </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a id="lnkdieselentry" class="nav-link" data-toggle="collapse" href="#dieselentrycollapse" aria-expanded="false" aria-controls="diesel-rate-master">
+                            <i class="typcn typcn-document-text menu-icon"></i>
+                            <span class="menu-title">Diesel Entry Master</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="dieselentrycollapse">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselEntry/Create")">Add Diesel Entry </a></li>
+                                <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselEntry/Index")">View Diesel Entry</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a id="lnkrouteentry" class="nav-link" data-toggle="collapse" href="#routeentrycollapse" aria-expanded="false" aria-controls="diesel-rate-master">
+                            <i class="typcn typcn-document-text menu-icon"></i>
+                            <span class="menu-title">Route Master Entry</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="routeentrycollapse">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselEntry/AddRoute")">Add Route </a></li>
+                                <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselEntry/RouteList")">View Route </a></li>
+                            </ul>
+                        </div>
                     </li>
 
                     @if (userLogin.MenuCode.Contains("CODE MASTER"))
