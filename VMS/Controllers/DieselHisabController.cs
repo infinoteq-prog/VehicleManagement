@@ -274,38 +274,12 @@ namespace VMS.Controllers
                 {
                     await connection.OpenAsync();
 
-                    string sql = @"  SELECT
-                         dh.TripId,dh.Last_Trip_Id[LastTripId],dh.VehicleNo,vm.Vehicle_No[VehicleNumber], dh.DriverId,
-                         CONVERT(VARCHAR, dh.Trip_Start_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_Start_Date, 108) AS TripStartDate,
-                         CONVERT(VARCHAR, dh.Trip_End_Date, 105) + ' ' + CONVERT(VARCHAR(8), dh.Trip_End_Date, 108) AS TripEndDate,
-                         dh.Last_Trip_Route_Descr[Route_Descr], dhlast.Last_Trip_Route_Descr,dh.Start_Odometer,
-                         dh.End_Odometer, dh.Opening_Diesel,dh.Closing_Diesel,
-                         dh.RunningKm, dh.Is_Active,dh.Is_DifferenceAdded,dh.Is_LoadingAdded,
-                         CONVERT(VARCHAR(10),dh.Creation_Date, 105) AS DieselHeaderCreationDate,
-                         CONVERT(VARCHAR(10),dh.Update_Date, 105) AS DieselHeaderUpdateDate,
-                         dh.Created_By AS DieselHeaderCreatedBy,
-                         dh.Updated_By AS DieselHeaderUpdatedBy,
-                         dm.Driver_Name,dm.Father_Name AS DriverFatherName,
-                         uc.User_Name AS DieselHeaderCreatedByName,
-                         uu.User_Name AS DieselHeaderUpdatedByName,
-                         dh.discountPer,dh.DiscountValue,dh.RouteNameId,dh.DriverScoreId,dh.DriverChnageRemarks,ISNULL(dm.Bank_AccountNumber,'')[Bank_AccountNumber]
-                         ,(CASE WHEN dh.DriverScoreId=0 THEN 'Below'  
-						 WHEN dh.DriverScoreId=1 THEN 'Low' 
-						 WHEN dh.DriverScoreId=2 THEN 'Medium' 
-						 WHEN dh.DriverScoreId=3 THEN 'Good' 
-						 ELSE '' END)[ScoreCard], [dbo].[GetDieselRate](GetDATE(), 'SALE')[DieselRate]
-                         FROM [dbo].[tbl_Diesel_Header] dh
-                         INNER JOIN [dbo].[tbl_Vehicle_Master] vm ON dh.VehicleNo = vm.Id
-                         LEFT JOIN [dbo].[tbl_Driver_Master] dm ON dh.DriverId = dm.Id
-                         LEFT JOIN [dbo].[tbl_UserMaster] uc ON dh.Created_By = uc.Id
-                         LEFT JOIN [dbo].[tbl_UserMaster] uu ON dh.Updated_By = uu.Id
-						 LEFT OUTER JOIN [dbo].[tbl_Diesel_Header] dhlast on dh.Last_Trip_Id=dhlast.TripId
-                        WHERE dh.Is_Active = 1 AND dh.TripId = @TripId;";
+                    string sql = @"dbo.[DieselHisab_ListById]";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@TripId", TripId);
-
+                        command.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader reader = await command.ExecuteReaderAsync())
                         {
                             if (await reader.ReadAsync())
@@ -344,11 +318,13 @@ namespace VMS.Controllers
                                     DieselRate = reader.IsDBNull("DieselRate") ? 0 : reader.GetDecimal("DieselRate"),
 
                                     RouteNameId = reader.IsDBNull("RouteNameId") ? 0 : reader.GetInt32("RouteNameId"),
+                                    RouteNameWithBestAvg = reader.IsDBNull("RouteNameWithBestAvg") ? "" : reader.GetString("RouteNameWithBestAvg"),
                                     DriverScoreId = reader.IsDBNull("DriverScoreId") ? 0 : reader.GetInt32("DriverScoreId"),
                                     DriverChnageRemarks = reader.IsDBNull("DriverChnageRemarks") ? "" : reader.GetString("DriverChnageRemarks"),
                                     LastTripHistory = await DieselHisabContext.GetLastTripHistoryByTripIdAsync(_connectionString, reader.GetInt32("LastTripId")),
                                     DieselFillingList = await DieselHisabContext.GetDieselFillingListAsync(_connectionString, TripId),
-                                    stationList = await DieselHisabContext.GetStationListAsync(_connectionString, TripId, reader.GetInt32("VehicleNo"))
+                                    stationList = await DieselHisabContext.GetStationListAsync(_connectionString, TripId, reader.GetInt32("VehicleNo")),
+                                    previous4TripAverage = await DieselHisabContext.GetPrevious4TripAverageAsync(_connectionString, TripId, reader.GetString("VehicleNumber"))
                                 };
                             }
                         }

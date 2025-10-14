@@ -193,11 +193,9 @@
             <tr>
                 <th colspan="4" style="text-align:left">TOTAL DIESEL FOR CALCULATE AVERAGE (a) </th>
                 <th style="text-align:center"> <span id="dieselConsumed"></span></th>
-                <th rowspan="2" style="text-align:left">KM Run (Y)</th>
-                <th rowspan="2" style="text-align:left">WAJAN/<br />UL/<br />NH/MG/<br />KHALI</th>
-                <th colspan="2" style="text-align:left">Diesel Capacity</th>
-                <th colspan="3" style="text-align:left">Tank 1</th>
-                <th colspan="3" style="text-align:left">Tank 2</th>
+                <th rowspan="2" style="text-align:left">KM RUN BY GPS</th>
+                <th rowspan="2" style="text-align:left">KM <br/>Run by<br/>Tata<br/>AL GPS </th>
+                <th colspan="8" style="text-align:left">Diesel Consumption by GPS  </th>
             </tr>
             <tr>
                 <th colspan="3" style="text-align:left">PUMP SE PUMP TAK MANUAL</th>
@@ -206,11 +204,9 @@
                     Start
                 </th>
                 <th>ODO Meter End</th>
-                <th colspan="3" style="text-align:left">
-                    एवरेज निकालने वाले का: <span id="userName"></span></br>
-                    नाम व हस्ताक्षर 
+                <th colspan="8" style="text-align:left">
+                   Route Name:  <span id="routeNameWithBestAvg"></span>
                 </th>
-                <th colspan="5" style="text-align:left">Tally Check Sign</th>
             </tr>
             <tr>
                 <th colspan="3" style="text-align:left">Route Sr No. फॉर फिक्स डीज़ल</th>
@@ -356,14 +352,20 @@
                 <th colspan="6" style="text-align:left">Discount Ka Reason</th>
             </tr>
             <tr>
-                <th rowspan="2" colspan="6" style="text-align:left">लास्ट ट्रिप का भरी का Average: <span id="lastBhariKaAverage"></span></th>
+                @* <th rowspan="2" colspan="6" style="text-align:left">लास्ट ट्रिप का भरी का Average: <span id="lastBhariKaAverage"></span></th> *@
+                <th rowspan="2" colspan="6" style="text-align:left"><span id="lastBhariKaAverage" style="display:none"></span> <br/>
+                    PrvAverage1: <span id="prvTripAverage1"></span><br />
+                    PrvAverage2:  <span id="prvTripAverage2"></span><br />
+                    PrvAverage3:  <span id="prvTripAverage3"></span><br />
+                    PrvAverage4:  <span id="prvTripAverage4"></span><br />
+                </th>
                 <th colspan="2" style="text-align:right">Diesel Profit/Loss</th>
                 <th><span id="dieselProfitLoss"></span></th>
                 <th colspan="6" style="text-align:left">(F-MEANS TANK FULL AND T MEANS TOP UP)</th>
             </tr>
             <tr>
-                <th colspan="2" style="text-align:right">Diesel Amt PnL: <span id="dieselAmtPnL"></span></th>
-                <th></th>
+                <th colspan="2" style="text-align:right">Diesel Amt PnL:</th>
+                <th> <span id="dieselAmtPnL"></span></th>
                 <th rowspan="2" colspan="1" style="text-align:left">C/F</th>
                 <th rowspan="2" colspan="1" style="text-align:left">Not C/F</th>
                 <th rowspan="2" colspan="4" style="text-align:left">Score: <b><span id="scoreCard"></span></b></th>
@@ -420,6 +422,7 @@
 
                          $("#note").text('Previous Remark: '+ data.lastTripRouteDescr);
                         $("#driverAccountNumber").text(displayNumber);
+                        $("#routeNameWithBestAvg").text(data.routeNameWithBestAvg);
                         $("#driverName").text(data.driverName);
                         $("#vehicleNumber").text(data.vehicleNumber);
                         $("#tripStartDate").text(data.tripStartDate);
@@ -437,6 +440,15 @@
                         $("#lastBhariKaAverage").text(data.lastTripHistory.lastBhariKaAverage);
                         totalDiscountValue = data.discountValue;
                         
+                        //GetPrevious Trip Average
+                        data.previous4TripAverage.forEach((entry, index) => {
+                            numberIndex = index + 1;
+                            const prvTripAverage = `prvTripAverage${numberIndex}`;
+                            try {
+                                $(`#${prvTripAverage}`).text(entry.RouteName + " " + entry.PrvAverage);
+                            } catch { }
+                        });
+
                         //Diesel Filling    
                         data.dieselFillingList.forEach((entry, index) => {
                             totalDieselFillingRow=index+1;

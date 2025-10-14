@@ -186,6 +186,34 @@ namespace VMS
             }
             return stationList;
         }
+        public static async Task<List<object>> GetPrevious4TripAverageAsync(string _connectionString, int tripId, string vehicleNo)
+        {
+            List<object> _lst = new List<object>();
+            string sql = @"[dbo].[GetPrevious4Bhari_Ka_Average]";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@CurTripID", tripId);
+                    command.Parameters.AddWithValue("@CurVehicleNo", vehicleNo);
+                    command.CommandType = CommandType.StoredProcedure;
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var row = new Dictionary<string, object>();
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                row[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader.GetValue(i);
+                            }
+                            _lst.Add(row);
+                        }
+                    }
+                }
+            }
+            return _lst;
+        }
         public static async Task<object> GetDieselAverage(string _connectionString, int vehicleNo, string loadType)
         {
             string sql = "";
