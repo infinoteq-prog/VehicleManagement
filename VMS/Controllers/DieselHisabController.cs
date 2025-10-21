@@ -294,8 +294,8 @@ namespace VMS.Controllers
                                     TripStartDate = reader.GetString("TripStartDate"),
                                     TripEndDate = reader.GetString("TripEndDate"),
                                     ScoreCard = reader.GetString("ScoreCard"),
-                                    Route_Descr = reader.GetString("Route_Descr"),
-                                    LastTripRouteDescr = reader.GetString("Last_Trip_Route_Descr"),
+                                    Route_Descr = reader.IsDBNull("Route_Descr") ? "" : reader.GetString("Route_Descr"),
+                                    LastTripRouteDescr = reader.IsDBNull("Last_Trip_Route_Descr") ? "" : reader.GetString("Last_Trip_Route_Descr"),
                                     StartOdometer = reader.GetInt64("Start_Odometer"),
                                     EndOdometer = reader.GetInt64("End_Odometer"),
                                     OpeningDiesel = reader.GetInt64("Opening_Diesel").ToIntFromNull(),
@@ -571,7 +571,7 @@ namespace VMS.Controllers
                                     VehicleNo = vehicleNo.ToIntFromNull(),
                                     TripStartDate =Convert.ToDateTime(dtTripStartDate.ToString("yyyy-MM-dd HH:mm")),
                                     TripEndDate = Convert.ToDateTime(dtTripEndDate.ToString("yyyy-MM-dd HH:mm")),
-                                    LastTripRouteDescr = tripRouteDescription,
+                                    LastTripRouteDescr = tripRouteDescription.ToStringFromNull(),
                                     StartOdometer = startOdometer,
                                     EndOdometer = endOdometer.ToIntFromNull(),
                                     OpeningDiesel = openingDiesel.ToIntFromNull(),
@@ -701,7 +701,7 @@ namespace VMS.Controllers
                                 existingDieselHisab.VehicleNo = vehicleNo;
                                 existingDieselHisab.TripStartDate = dtTripStartDate;
                                 existingDieselHisab.TripEndDate = dtTripEndDate;
-                                existingDieselHisab.LastTripRouteDescr = tripRouteDescription;
+                                existingDieselHisab.LastTripRouteDescr = tripRouteDescription.ToStringFromNull();
                                 existingDieselHisab.StartOdometer = startOdometer;
                                 existingDieselHisab.EndOdometer = endOdometer;
                                 existingDieselHisab.OpeningDiesel = openingDiesel;
