@@ -451,7 +451,7 @@ namespace VMS.Controllers
                 if(tripStartDate.ToStringFromNull()=="" && tripEndDate.ToStringFromNull()=="")
                 {
                     tripStartDate = DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd");
-                    tripEndDate = DateTime.Now.ToString("yyyy-MM-dd");
+                    tripEndDate = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
                 }
                 var model = await DieselHisabContext.searchDieselHisabMaster(_connectionString, id, vehicleNo, driverId, tripStartDate,
                 tripEndDate, startOdometer, endOdometer, openingDiesel);
