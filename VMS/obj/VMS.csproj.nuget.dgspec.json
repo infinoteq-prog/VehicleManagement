@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Gaurav PC\\Projects\\Goswami Ji\\VMS\\VMS\\VMS\\VMS\\VMS.csproj": {}
+    "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\VMS.csproj": {}
   },
   "projects": {
-    "C:\\Gaurav PC\\Projects\\Goswami Ji\\VMS\\VMS\\VMS\\VMS\\VMS.csproj": {
+    "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\VMS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Gaurav PC\\Projects\\Goswami Ji\\VMS\\VMS\\VMS\\VMS\\VMS.csproj",
+        "projectUniqueName": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\VMS.csproj",
         "projectName": "VMS",
-        "projectPath": "C:\\Gaurav PC\\Projects\\Goswami Ji\\VMS\\VMS\\VMS\\VMS\\VMS.csproj",
-        "packagesPath": "C:\\Users\\gaura\\.nuget\\packages\\",
-        "outputPath": "C:\\Gaurav PC\\Projects\\Goswami Ji\\VMS\\VMS\\VMS\\VMS\\obj\\",
+        "projectPath": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\VMS.csproj",
+        "packagesPath": "C:\\Users\\Shashi\\.nuget\\packages\\",
+        "outputPath": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\gaura\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Shashi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -39,7 +43,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -48,6 +53,18 @@
             "ClosedXML": {
               "target": "Package",
               "version": "[0.104.2, )"
+            },
+            "EPPlus": {
+              "target": "Package",
+              "version": "[8.0.5, )"
+            },
+            "ExcelDataReader": {
+              "target": "Package",
+              "version": "[3.8.0, )"
+            },
+            "ExcelDataReader.DataSet": {
+              "target": "Package",
+              "version": "[3.8.0, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -74,6 +91,10 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
+            },
+            "Rotativa.AspNetCore": {
+              "target": "Package",
+              "version": "[1.4.0, )"
             },
             "System.Data.OleDb": {
               "target": "Package",
@@ -107,7 +128,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\8.0.402/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.312/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -54,7 +54,7 @@
                     <div class="row rowHeight">
                         <div class="col-md-6">
                             <div class="form-group row">
-                                <label class="col-sm-4 col-form-label" for="txtDriverAddress3">Driver Address 3:</label>
+                                <label class="col-sm-4 col-form-label" for="txtDriverAddress3">Driver Group:</label>
                                 <div class="col-sm-8">
                                     @Html.TextBoxFor(m => m.DriverAddress3, new { @class = "form-control", id = "txtDriverAddress3", @maxlength = "500" })
                                 </div>
@@ -271,6 +271,29 @@
                             </div>
                         </div>
                     </div>
+                    @* Added below 2 column  for Old Firm and Remark on 25-Apr-2026 by skg *@
+                    <div class="row rowHeight">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtOldFirm">Old Firm Name:</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.OldFirm, new { @class = "form-control", id = "txtOldFirm", @maxlength = "200" })
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="txtRemark">Remarks :</label>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.Remark, new { @class = "form-control", id = "txtRemark", @maxlength = "200" })
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                   
+
                     <div class="row rowHeight" style="text-align:center;">
                         <div class="col-md-12"></div>
                     </div>
@@ -301,6 +324,7 @@
                                             <th>Actions</th>
                                             <th>Driver Name</th>
                                             <th>Father's Name</th>
+                                            <th>Old Firm</th>                                         
                                             <th>Driver Address 1</th>
                                             <th>Driver Address 2</th>
                                             <th>Driver Address 3</th>
@@ -330,6 +354,7 @@
                                             <th>Reference City</th>
                                             <th>Reference Pin</th>
                                             <th>Reference Mobile</th>
+                                            <th>Remark</th>
                                             <th>Is Active</th>
                                             <th>Creation Date</th>
                                             <th>Created By</th>
@@ -830,6 +855,8 @@
             $("#txtMobileNumber1").val("");
             $("#txtMobileNumber2").val("");
             $("#chkIsActive").prop("checked", false);
+            $("#txtOldFirm").val("");
+            $("#txtRemark").val("");
         }
 
         function searchDriverMaster() {
@@ -844,6 +871,7 @@
             var formData = new FormData();
             formData.append("driverName", $('#txtDriverName').val());
             formData.append("fatherName", $("#txtFatherName").val());
+           
             formData.append("driverAddress1", $("#txtDriverAddress1").val());
             formData.append("driverAddress2", $("#txtDriverAddress2").val());
             formData.append("driverAddress3", $("#txtDriverAddress3").val());
@@ -873,6 +901,8 @@
             formData.append("referenceCity", $("#txtReferenceCity").val());
             formData.append("referencePin", $("#txtReferencePinCode").val());
             formData.append("referenceMobile", $("#txtReferenceMobile").val());
+            formData.append("oldFirm", $("#txtOldFirm").val());
+            formData.append("remark", $("#txtRemark").val());
             formData.append("isActive", $("#chkIsActive").is(":checked"));
 
             $.ajax({
@@ -884,8 +914,6 @@
                 contentType: false,
                 data: formData,
                 success: function (data) {
-                    alert("#3");
-                    alert(data);
                     if (data != null && data != undefined) {
                         console.log(data);
                         var rows = "";
@@ -913,6 +941,8 @@
                                 '</td>' +
                                 '<td>' + item.driverName + '</td>' +
                                 '<td>' + item.fatherName + '</td>' +
+                                @*Added Old Firm column on 26-04-2026 *@
+                                '<td>' + item.oldFirm + '</td>' +
                                 '<td>' + item.driverAddress1 + '</td>' +
                                 '<td>' + item.driverAddress2 + '</td>' +
                                 '<td>' + item.driverAddress3 + '</td>' +
@@ -942,6 +972,8 @@
                                 '<td>' + item.referenceCity + '</td>' +
                                 '<td>' + item.referencePinCode + '</td>' +
                                 '<td>' + item.referenceMobile + '</td>' +
+                                 @*Added Remark column on 26-04-2026 *@
+                                '<td>' + item.remark + '</td>' +
                                 '<td>' + item.isActive + '</td>' +
                                 '<td>' + item.creationDate + '</td>' +
                                 '<td>' + item.createdByName + '</td>' +
@@ -976,6 +1008,8 @@
                             '<div class="d-flex align-items-center">' +
                             '</div>' +
                             '</td>' +
+                            '<td></td>' +
+                            '<td></td>' +
                             '<td></td>' +
                             '<td></td>' +
                             '<td></td>' +
@@ -1031,84 +1065,72 @@
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
-                    console.log(data);
-                    if (data != null && data != undefined) {
-                        var sno = 0;
-                        var rows = "";
-                        var row = "";
-                        $("#driverMasterBody").html("");
-                        $.each(data, function (i, item) {
-                            sno = sno + 1;
-                            if (fullAccess === "True" || viewAccess === "True") {
-                                viewButton = '<button type="button" class="btn btn-view btn-sm btn-icon-text mr-3" onclick="viewDriverMaster(\'' + item.id + '\');"> View <i class="typcn typcn-eye-outline btn-icon-append"></i></button> ';
-                            }
+    if (data != null && data != undefined) {
+        var rows = "";
+        $.each(data, function (i, item) {
 
-                            if (fullAccess === "True" || updateAccess === "True") {
-                                updateButton = '<button type="button" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="editDriverMaster(\'' + item.id + '\');"> Edit <i class="typcn typcn-edit btn-icon-append"></i></button> ';
-                            }
+            if (fullAccess === "True" || viewAccess === "True") {
+                viewButton = '<button type="button" class="btn btn-view btn-sm mr-3" onclick="viewDriverMaster(\'' + item.id + '\');">View</button>';
+            }
 
-                            if (fullAccess === "True" || deleteAccess === "True") {
-                                deleteButton = '<button id="complexConfirm" type="button" class="btn btn-danger btn-sm btn-icon-text" onclick="deleteDriverMaster(\'' + item.id + '\');"> Delete <i class="typcn typcn-delete-outline btn-icon-append"></i></button> ';
-                            }
+            if (fullAccess === "True" || updateAccess === "True") {
+                updateButton = '<button type="button" class="btn btn-success btn-sm mr-3" onclick="editDriverMaster(\'' + item.id + '\');">Edit</button>';
+            }
 
-                            row = '<tr>' +
-                                '<td>' +
-                                '<div class="d-flex align-items-center">' +
-                                viewButton +
-                                updateButton +
-                                deleteButton +
-                                '</div>' +
-                                '</td>' +
-                                '<td>' + item.driverName + '</td>' +
-                                '<td>' + item.fatherName + '</td>' +
-                                '<td>' + item.driverAddress1 + '</td>' +
-                                '<td>' + item.driverAddress2 + '</td>' +
-                                '<td>' + item.driverAddress3 + '</td>' +
-                                    '<td style="text-align:center"><a href="' + initialURL + item.driverPhoto + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
-                                  '<td>' + item.stateName + '</td>' +
-                                  '<td>' + item.districtName + '</td>' +
-                                  '<td>' + item.cityName + '</td>' +
-                                  '<td>' + item.pinCode + '</td>' +
-                                  '<td>' + item.aadharNo + '</td>' +
-                                  '<td style="text-align:center"><a href="' + initialURL + item.aadharNoImage + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
-                                  '<td>' + item.panNo + '</td>' +
-                                  '<td style="text-align:center"><a href="' + initialURL + item.panNoImage + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
-                                  '<td>' + item.bankName + '</td>' +
-                                  '<td>' + item.bankAccountNumber + '</td>' +
-                                  '<td>' + item.bankIFSCCode + '</td>' +
-                                  '<td>' + item.drivingLicenceNo + '</td>' +
-                                  '<td>' + item.drivingLicenceIssueAuth + '</td>' +
-                                  '<td>' + item.drivingLicenceValidity + '</td>' +
-                                '<td style="text-align:center"><a href="' + initialURL + item.drivingLicenceImage + '" target="_blank"><img src="../images/viewImage.png" style="height:100x; width:120x"/></a></td>' +
-                                '<td>' + item.mobileNumber1 + '</td>' +
-                                '<td>' + item.mobileNumber2 + '</td>' +
-                                '<td>' + item.isExistingReference + '</td>' +
-                                '<td>' + item.referenceName + '</td>' +
-                                '<td>' + item.referenceAddress1 + '</td>' +
-                                '<td>' + item.referenceAddress2 + '</td>' +
-                                '<td>' + item.referenceAddress3 + '</td>' +
-                                '<td>' + item.referenceCity + '</td>' +
-                                '<td>' + item.referencePinCode + '</td>' +
-                                '<td>' + item.referenceMobile + '</td>' +
-                                '<td>' + item.isActive + '</td>' +
-                                '<td>' + item.creationDate + '</td>' +
-                                '<td>' + item.createdByName + '</td>' +
-                                '<td>' + item.updateDate + '</td>' +
-                                '<td>' + item.updatedByName + '</td>' +
-                                '</tr>';
-                            rows = rows + row;
-                            row = "";
-                            $("#tblDriverMaster").focus();
-                        });
-                        $("#driverMasterBody").append(rows);
-                        bindDataTable();
-                    } else {
-                        var row = '<tr>' +
-                            '<td colspan="37" style="text-align:center">No Data Found!!!</td>' +
-                            '</tr>';
-                        $("#driverMasterBody").html(row);
-                    }
-                },
+            if (fullAccess === "True" || deleteAccess === "True") {
+                deleteButton = '<button type="button" class="btn btn-danger btn-sm" onclick="deleteDriverMaster(\'' + item.id + '\');">Delete</button>';
+            }
+
+            var row = '<tr>' +
+                '<td>' + viewButton + updateButton + deleteButton + '</td>' +
+                '<td>' + item.driverName + '</td>' +
+                '<td>' + item.fatherName + '</td>' +
+                '<td>' + item.oldFirm + '</td>' +   // ✅ FIXED
+                '<td>' + item.driverAddress1 + '</td>' +
+                '<td>' + item.driverAddress2 + '</td>' +
+                '<td>' + item.driverAddress3 + '</td>' +
+                '<td></td>' + // Driver Photo
+                '<td>' + item.stateName + '</td>' +
+                '<td>' + item.districtName + '</td>' +
+                '<td>' + item.cityName + '</td>' +
+                '<td>' + item.pinCode + '</td>' +
+                '<td>' + item.aadharNo + '</td>' +
+                '<td></td>' + // Aadhar Image
+                '<td>' + item.panNo + '</td>' +
+                '<td></td>' + // PAN Image
+                '<td>' + item.bankName + '</td>' +
+                '<td>' + item.bankAccountNumber + '</td>' +
+                '<td>' + item.bankIFSCCode + '</td>' +
+                '<td>' + item.drivingLicenceNo + '</td>' +
+                '<td>' + item.drivingLicenceIssueAuth + '</td>' +
+                '<td>' + item.drivingLicenceValidity + '</td>' + // ✅ FIXED
+                '<td></td>' + // DL Image
+                '<td>' + item.mobileNumber1 + '</td>' +
+                '<td>' + item.mobileNumber2 + '</td>' +
+                '<td>' + item.isExistingReference + '</td>' +
+                '<td>' + item.referenceName + '</td>' +
+                '<td>' + item.referenceAddress1 + '</td>' +
+                '<td>' + item.referenceAddress2 + '</td>' +
+                '<td>' + item.referenceAddress3 + '</td>' +
+                '<td>' + item.referenceCity + '</td>' +
+                '<td>' + item.referencePinCode + '</td>' +
+                '<td>' + item.referenceMobile + '</td>' +
+                '<td>' + item.remark + '</td>' +   // ✅ FIXED
+                '<td>' + item.isActive + '</td>' +
+                '<td>' + item.creationDate + '</td>' +
+                '<td>' + item.createdByName + '</td>' +
+                '<td>' + item.updateDate + '</td>' +
+                '<td>' + item.updatedByName + '</td>' +
+                '</tr>';
+
+            rows += row;
+        });
+
+        $("#driverMasterBody").html(rows);
+        bindDataTable();
+    }
+},
+              
                 error: function (ex) {
                     alert(ex);
                 }

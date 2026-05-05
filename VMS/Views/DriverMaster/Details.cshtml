@@ -58,7 +58,7 @@
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtDriverAddress3">Driver Address 3:</label>
+                                        <label class="col-sm-4 col-form-label" for="txtDriverAddress3">Driver Group:</label>
                                         <div class="col-sm-8">
                                             @Html.TextAreaFor(m => m.DriverAddress3, new { @class = "form-control", cols = "10", rows = "4", id = "txtDriverAddress3", @readonly = "readonly" })
                                         </div>
@@ -328,6 +328,27 @@
                                     </div>
                                 </div>
                             </div>
+                            @*Added below 2 block for Old Firm and Remark on 25-Apr-2026 by skg*@
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtOldFirm">Old Firm Name:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.OldFirm, new { @class = "form-control", id = "txtOldFirm", @maxlength = "200" })
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRemark">Remarks :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Remark, new { @class = "form-control", id = "txtRemark", @maxlength = "200" })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                     <div class="row rowHeight">
@@ -416,6 +437,8 @@
             $("#txtReferenceCity").prop("readonly", true);
             $("#txtReferencePinCode").prop("readonly", true);
             $("#txtReferenceMobile").prop("readonly", true);
+            $("#txtOldFirm").prop("readonly", true);
+            $("#txtRemark").prop("readonly", true);
         }
 
         function getdriverMasterID(driverMasterID) {
@@ -429,7 +452,7 @@
                     console.log(data);
                     if (data != null && data != undefined) {
                         $("#txtState").val(data.stateName);
-                        $("#txtCity").val(data.cityName);
+                        $("#txtCity").val(data.cityName);;
                         $("#txtDriverName").val(data.driverName);
                         $("#txtDriverAddress1").val(data.driverAddress1);
                         $("#txtDriverAddress2").val(data.driverAddress2);
@@ -458,7 +481,12 @@
                         $("#txtReferenceCity").val(data.referenceCity);
                         $("#txtReferencePinCode").val(data.referencePinCode);
                         $("#txtReferenceMobile").val(data.referenceMobile);
-                         
+
+                        @* Added below 2 columns on 25-Apr-2026 *@
+                        $("#txtOldFirm").val(data.oldFirm);
+                        $("#txtRemark").val(data.remark)
+
+
                         $("#imgDriverPhoto").attr('src', '@(utilityHelper.SiteUrl())' + data.driverPhoto);
                         $("#imgDriverPhoto").attr('data-src', '@(utilityHelper.SiteUrl())' + data.driverPhoto);
                         $("#aDriverPhotoLink").attr('href', '@(utilityHelper.SiteUrl())' + data.driverPhoto);

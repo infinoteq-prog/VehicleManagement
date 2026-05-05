@@ -4,6 +4,13 @@
 @using VMS.ViewModel
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<style>
+    .vaidationTextBoxError {
+        border: 1px solid red !important;
+    }
+</style>
+
+
 @* @{
     var userAccess = (VMUserRoleAccess)HttpContextAccessor.HttpContext.Session.GetObjectFromJson<VMUserRoleAccess>("userAccess");
 }
@@ -64,7 +71,8 @@
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtDriverAddress3">Driver Address 3:</label>
+@*                                         <label class="col-sm-4 col-form-label" for="txtDriverAddress3">Driver Address 3:</label> *@
+                                           <label class="col-sm-4 col-form-label" for="txtDriverAddress3">Driver Group:</label>
                                         <div class="col-sm-8">
                                             @Html.TextBoxFor(m => m.DriverAddress3, new { @class = "form-control", id = "txtDriverAddress3", @maxlength = "500" })
                                         </div>
@@ -250,7 +258,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtReferenceName">Reference Name :</label>
                                         <div class="col-sm-4">
-                                            <select class="form-control" id="ddlDriver" name="ddlDriver"></select>
+                                            <select class="form-control" style="width:334px" id="ddlDriver" name="ddlDriver"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -318,6 +326,27 @@
                                     </div>
                                 </div>
                             </div>
+                           @*Added below 2 column  for Old Firm and Remark on 25-Apr-2026 by skg*@
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtOldFirm">Old Firm Name:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.OldFirm, new { @class = "form-control", id = "txtOldFirm", @maxlength = "200" })
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRemark">Remarks :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Remark, new { @class = "form-control", id = "txtRemark", @maxlength = "200" })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row rowHeight">
                                 <div class="col-md-12"></div>
                             </div>
@@ -345,9 +374,11 @@
                                         <th>Actions</th>
                                         <th>Driver Name</th>
                                         <th>Father's Name</th>
+                                        <th>Old Firm Name</th>
                                         <th>Driver Address 1</th>
                                         <th>Driver Address 2</th>
-                                        <th>Driver Address 3</th>
+                                      @*  8-j1n-2026 by skg <th>Driver Address 3</th> *@
+                                        <th>Driver Group</th>
                                         <th>Driver Photo</th>
                                         <th>State</th>
                                         <th>District</th>
@@ -374,6 +405,7 @@
                                         <th>Reference City</th>
                                         <th>Reference Pin</th>
                                         <th>Reference Mobile</th>
+                                        <th>Remark</th>
                                         <th>Is Active</th>
                                         <th>Creation Date</th>
                                         <th>Created By</th>
@@ -420,7 +452,11 @@
             $('#ddlDriver').select2();
             getStateByCountryId(1);
             getDriverMaster();
-            enableReferenceDriverDropDown("False");
+            // Set Existing Reference = Yes by default
+            $("#ddlExistingReference").val("true");
+            // Enable Reference Name dropdown
+            enableReferenceDriverDropDown("true");
+            //enableReferenceDriverDropDown("False");
             getFunctionName('DRIVER MASTER', function (userRights) {
                 if (userRights) {
                     console.log("Update Access:", userRights.updateAccess);
@@ -470,10 +506,14 @@
                 getCityByDisctrictId($(this).val());
             });
 
+            // $("#ddlExistingReference").on("change", function () {
+            //     var selectedValue = $(this).val();
+            //     enableReferenceDriverDropDown(selectedValue);
+            // });
             $("#ddlExistingReference").on("change", function () {
-                var selectedValue = $(this).val();
-                enableReferenceDriverDropDown(selectedValue);
+                enableReferenceDriverDropDown($(this).val());
             });
+
 
             $("#ddlDriver").on("change", function () {
                 var selectedValue = $(this).val();
@@ -692,6 +732,21 @@
                 $("#txtAadharNo").attr('class', 'form-control');
                 $("#txtAadharNo").focus();
             }
+            // if ($('#ddlDriver option:selected').val() == "0" || $('#ddlDriver option:selected').val() == "") {
+            //     $("#ddlDriver").attr('class', 'form-control vaidationTextBoxError');
+            //     $("#ddlDriver").focus();
+            //     isValid = false;
+            // } else {
+            //     $("#ddlDriver").attr('class', 'form-control');
+            //     $("#ddlDriver").focus();
+            // }
+
+            if ($('#ddlDriver option:selected').val() == "0" || $('#ddlDriver option:selected').val() == "") 
+            {
+                alert("Please Select Reference Name")
+                
+            } 
+            
 
             // removed validation on 05-05-2025
             // if ($("#txtPanNo").val() == "") {
@@ -1002,6 +1057,8 @@
                                 '</td>' +
                                 '<td>' + item.driverName + '</td>' +
                                 '<td>' + item.fatherName + '</td>' +
+                                '<td>' + item.oldFirm + '</td>' +
+                              
                                 '<td>' + item.driverAddress1 + '</td>' +
                                 '<td>' + item.driverAddress2 + '</td>' +
                                 '<td>' + item.driverAddress3 + '</td>' +
@@ -1031,6 +1088,7 @@
                                 '<td>' + item.referenceCity + '</td>' +
                                 '<td>' + item.referencePinCode + '</td>' +
                                 '<td>' + item.referenceMobile + '</td>' +
+                                '<td>' + item.remark + '</td>' +
                                 '<td>' + item.isActive + '</td>' +
                                 '<td>' + item.creationDate + '</td>' +
                                 '<td>' + item.createdByName + '</td>' +
@@ -1122,6 +1180,8 @@
                     formData.append("referencePin", $("#txtReferencePinCode").val());
                     formData.append("referenceMobile", $("#txtReferenceMobile").val());
                     formData.append("isActive", $("#chkIsActive").is(":checked"));
+                    formData.append("oldFirm", $("#txtOldFirm").val());
+                    formData.append("remark", $("#txtRemark").val());
 
                     $.ajax({
                         cache: false,

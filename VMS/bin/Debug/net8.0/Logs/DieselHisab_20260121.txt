@@ -1,0 +1,12 @@
+23:21:40.031 - Before conversion StartDate 2026-01-18 23:17, EndDate 2026-01-20 23:17
+23:21:40.047 - After conversion StartDate 01/18/2026 11:17:00 PM, EndDate 01/20/2026 11:17:00 PM
+23:21:40.048 - Save update started
+23:21:40.048 - Save started
+23:21:41.631 - Diesel Filling Date 2026-01-18
+23:21:41.730 - Diesel Filling Date 2026-01-20
+23:30:58.841 - Before conversion StartDate 2026-01-18 11:06, EndDate 2026-01-20 23:24
+23:30:58.842 - After conversion StartDate 01/18/2026 11:06:00 AM, EndDate 01/20/2026 11:24:00 PM
+23:30:58.842 - Save update started
+23:30:58.843 - Save started
+23:30:59.988 - Diesel Filling Date 2026-01-18
+23:30:59.989 - Diesel Filling Date 2026-01-19

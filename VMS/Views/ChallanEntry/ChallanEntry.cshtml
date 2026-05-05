@@ -1,0 +1,705 @@
+﻿@model VMS.ViewModel.VMChallanEntry
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Challan Entry";
+}
+<style>
+    html {
+        font-size: 16px;
+    }
+
+    input.form-control,
+    select.form-control {
+        height: 2.375rem;
+        font-size: 0.8125rem;
+        line-height: 1.2;
+        padding: 0.375rem 0.75rem;
+    }
+
+    .form-group {
+        margin-bottom: 14px;
+    }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+    .reqFields {
+        color: red;
+        font-weight: bold;
+    }
+
+    .rowHeight {
+        margin-bottom: 10px;
+    }
+    table.dataTable thead th {
+        background-color: #6c2eb9;
+        color: #fff;
+        text-align: center;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+
+    /* Enable vertical scrolling area */
+    .dataTables_scrollBody {
+        max-height: 350px !important;
+        overflow-y: auto !important;
+    }
+    /* Enable horizontal scroll */
+    .dataTables_scroll {
+        overflow-x: auto;
+    }
+
+    .dataTables_wrapper .dt-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 0px;
+    }
+
+    .dataTables_filter {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Prevent column squeeze */
+    table.dataTable {
+        white-space: nowrap;
+    }
+
+    .select2-container--default .select2-selection--single {
+        height: 38px !important;
+        padding: 4px 8px !important;
+        display: flex !important;
+        align-items: center !important; /* TEXT CENTER vertically */
+    }
+
+        /* Fix selected text position */
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: normal !important;
+            padding-left: 6px !important;
+            padding-right: 20px !important;
+        }
+
+        /* Fix dropdown arrow alignment */
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px !important;
+            top: 1px !important;
+        }
+
+        /* Fix placeholder color */
+        .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: #6c757d !important;
+        }
+
+    .custom-swal-popup .swal2-title {
+        font-size: 22px;
+        font-weight: 600;
+    }
+</style>
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Challan Entry</h4>
+                    <div>
+                        <div class="row rowHeight">
+                            <div class="col-md-6">
+                                <label class="reqFields">
+                                    Note: All fields marked with * are mandatory fields
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- ROW 1 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Vehicle No <span class="reqFields">*</span></label>
+                                    <select class="form-control" id="ddlVehicleNo" name="ddlVehicleNo"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                        Challan Entry Date
+                                    </label>
+                                    <input type="date" class="form-control" id="txtChallanEntryDate">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                        Challan Date
+                                    </label>
+                                    <input type="date" class="form-control" id="txtChallanDate">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ROW 2 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Challan No <span class="reqFields">*</span></label>
+                                    @Html.TextBoxFor(m => m.ChallanNo, new { @class = "form-control", id = "txtChallanNo", placeholder = "Enter Challan No" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Driver Name <span class="reqFields">*</span></label>
+                                    <select class="form-control" id="ddlDriver"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Amount <span class="reqFields">*</span></label>
+                                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", id = "txtAmount", placeholder = "Enter Amount"})
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ROW 3 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Action </label>
+                                    <select class="form-control" id="ddlAction" name="ddlAction">
+                                        <option value="">Select Action</option>
+                                        <option value="Debit To Driver">Debit To Driver</option>
+                                        <option value="Bear By Company">Bear By Company</option>
+                                        <option value="Challan Exempt">Challan Exempt</option>
+                                        <option value=" Grievances Pending"> Grievances Pending</option>
+                                        <option value=" Grievances Accepted"> Grievances Accepted</option>
+                                       
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Remarks</label>
+                                    @Html.TextBoxFor(m => m.Remarks, new { @class = "form-control", id = "txtRemarks", placeholder = "Enter Remarks" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Grievances Ticket</label>
+                                    @Html.TextBoxFor(m => m.GrievancesTicket, new { @class = "form-control", id = "txtGrievancesTicket", placeholder = "Enter Grievances Ticket" })
+                                </div>
+                            </div>
+                           
+
+                        </div>
+                        <!-- ROW 4 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Challan Status</label>
+                                    <select class="form-control" id="ddlChallanStatus" name="ddlChallanStatus">
+                                        <option value="">Select Challan Status</option>
+                                        <option value="Paid">Paid</option>
+                                        <option value="Due">Due</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                         Paid Date
+                                    </label>
+                                    <input type="date" class="form-control" id="txtPaidDate">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="fileChallan">
+                                        Upload Challan Attachment
+                                    </label>
+
+                                    <input type="file"
+                                           class="form-control"
+                                           id="fileChallan"
+                                           name="ChallanFile"
+                                           accept=".pdf,.jpg,.jpeg,.png" />
+
+                                    <small class="form-text text-muted">
+                                        Allowed formats: PDF,JPG, PNG| Max size: 2MB
+                                    </small>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <!-- ROW 5 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="fileChallan">
+                                        Upload Receipt
+                                    </label>
+
+                                    <input type="file"
+                                           class="form-control"
+                                           id="fileReceipt"
+                                           name="ChallanFile"
+                                           accept=".pdf,.jpg,.jpeg,.png" />
+
+                                    <small class="form-text text-muted">
+                                        Allowed formats: PDF,JPG, PNG| Max size: 2MB
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight" style="text-align:center;">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary mr-2" id="btnSave" onclick="saveOrUpdateChallan(false)">Save </button>
+                            <button type="button" class="btn btn-light" onclick="clearChallanForm()();">Clear</button>
+                            <input type="hidden" id="hdnChallanId" />
+
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 14px; margin-bottom: 19px; border: 1px solid #ccc; border-radius: 5px;">
+                    <form id="searchDieselHisabForm">
+                        <div class="row">
+                            <div class="col-md-3">
+
+                                <div class="form-group">
+                                    <label for="ddlVehicleNos">Vehicle No</label>
+                                    <select class="form-control" id="ddlVehicleNos" name="ddlVehicleNos"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="ddlDrivers">Driver Name</label>
+                                    <select class="form-control" id="ddlDrivers"></select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="txtStartDate">Challan From Date</label>
+
+                                    <input type="date" class="form-control" id="txtStartDate" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="txtEndDate">Challan Date Upto</label>
+                                    <input type="date" class="form-control" id="txtEndDate" />
+                                </div>
+                            </div>
+                           
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-primary mt-4" onclick="loadChallanList()">Search</button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="hdnDispatchId" value="" />
+                    </form>
+                </div>
+                <h4 class="mt-4">All Challan Entries</h4>
+                <table id="tblChallan" class="display nowrap table table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th style="width:3%">Vehicle No</th>
+                            <th style="width:3%">Driver Name</th>
+                            <th style="width:3%">Challan Date</th>
+                            <th style="width:3%">Challan Amt</th>
+                            <th style="width:3%">Action</th>
+                            <th style="width:2%">Challan No</th>
+                            <th style="width:3%">Remark</th>
+                            <th style="width:5%">Created On</th>
+                            <th style="width:2%">Challan</th>
+                            <th style="width:12%">Challan Receipt</th>
+                            <th style="width:10%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modeldispatchEntry">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#ddlVehicleNo').select2();
+            $('#ddlVehicleNos').select2();
+            $('#ddlDriver').select2();
+            $('#ddlDrivers').select2();
+            getVehicleNumber();
+            getDriverMaster();
+            getVehicleNumberList();
+            loadChallanList();
+            getDriverMasters();
+        });
+        /* ================= LOAD VEHICLE/DRIVER ================= */
+        function getVehicleNumberList() {
+            $.ajax({
+                url: '@(utilityHelper.SiteUrl() + "VehicleMaster/getVehicleMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                    var $ddl = $("#ddlVehicleNos");
+                    $ddl.empty();
+                    $ddl.append('<option></option>');
+
+                    $.each(data || [], function (i, v) {
+                        $ddl.append(
+                            `<option value="${v.vehicleId}">${v.vehicleName}</option>`
+                        );
+                    });
+                    if ($ddl.hasClass("select2-hidden-accessible")) {
+                        $ddl.select2('destroy');
+                    }
+
+                    $ddl.select2({
+                        placeholder: "Select a Vehicle",
+                        allowClear: true,
+                        width: '100%'
+                    });
+                }
+            });
+        }
+        function getDriverMasters() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DriverMaster/getDriverMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Driver</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            // console.log(data[i])
+                            s += '<option value="' + data[i].driverId + '">' + data[i].driverName + '</option>';
+                        }
+                        $("#ddlDrivers").html(s);
+
+                        $("#ddlDrivers").select2();
+                        $("#ddlDrivers").trigger('change');
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+        /* ================= SAVE CHALLAN Start================= */
+       
+        function saveOrUpdateChallan() {
+            var vehicleVal = $("#ddlVehicleNo").val();
+            if (!vehicleVal || vehicleVal === "0") {
+                showErrorPopup("Validation", "Please Select Vehicle No");
+                $("#ddlVehicleNo").focus();
+                return;
+            }
+            if ($("#txtChallanEntryDate").val() == "") {
+                showErrorPopup("Validation", "Please Enter Challan Entry Date");
+                return;
+            }
+            if ($("#txtChallanDate").val() == "") {
+                showErrorPopup("Validation", "Please Enter Challan Date");
+                return;
+            }
+            if ($("#txtChallanNo").val() == "") {
+                showErrorPopup("Validation", "Please Enter Challan No");
+                return;
+            }
+            if ($("#txtAmount").val() == "") {
+                showErrorPopup("Validation", "Please Enter Amount");
+                return;
+            }
+            var driverVal = $("#ddlDriver").val();
+            if (!driverVal || driverVal === "0") {
+                showErrorPopup("Validation", "Please Select Driver Name");
+                $("#ddlDriver").focus();
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append("ChallanId", $("#hdnChallanId").val() || null);
+            formData.append("ChallanEntryDate", $("#txtChallanEntryDate").val());
+            formData.append("ChallanDate", $("#txtChallanDate").val());
+            formData.append("ChallanNo", $("#txtChallanNo").val());
+            formData.append("VehicleNo", $('#ddlVehicleNo option:selected').text());
+            formData.append("DriverName", $('#ddlDriver option:selected').text());
+            formData.append("DriverName", $('#ddlDriver option:selected').text());
+            formData.append("DriverId", $("#ddlDriver").val());
+            formData.append("Amount", $("#txtAmount").val());
+            formData.append("Remark", $("#txtRemarks").val());
+            formData.append("ActionName", $("#ddlAction").val());
+            formData.append("GrievancesTicket", $("#txtGrievancesTicket").val());
+            formData.append("ChallanStatus", $("#ddlChallanStatus").val());
+            formData.append("PaidDate", $("#txtPaidDate").val());
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.pdf)$/i;
+
+            // Challan File
+            var challanFileInput = $("#fileChallan")[0];
+            if (challanFileInput.files.length > 0) {
+                var challanFile = challanFileInput.files[0];
+                if (challanFile.size > 2 * 1024 * 1024) { alert("Challan file size must be < 2MB"); return; }
+                if (!allowedExtensions.exec(challanFile.name)) { alert("Only PDF,JPG,JPEG,PNG allowed"); return; }
+                formData.append("ChallanFile", challanFile);
+            }
+
+            // Receipt File
+            var receiptFileInput = $("#fileReceipt")[0];
+            if (receiptFileInput.files.length > 0) {
+                var receiptFile = receiptFileInput.files[0];
+                if (receiptFile.size > 2 * 1024 * 1024) { alert("Receipt file size must be < 2MB"); return; }
+                if (!allowedExtensions.exec(receiptFile.name)) { alert("Only PDF,JPG,JPEG,PNG allowed"); return; }
+                formData.append("ReceiptFile", receiptFile);
+            }
+
+            $.ajax({
+                url: '/ChallanEntry/SaveChallanEntry',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.success) {
+                        showSuccessPopup("Success", response.message);
+
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000); 
+
+                    } else {
+                        Swal.fire("Error", response.message, "error");
+                    }
+                },
+                error: function () {
+                    alert("Error while saving challan");
+                }
+            });
+        }
+
+        function clearChallanForm() {
+
+            // Textboxes clear
+            $("#txtChallanEntryDate").val("");
+            $("#txtChallanDate").val("");
+            $("#txtChallanNo").val("");
+            $("#txtAmount").val("");
+            $("#txtRemarks").val("");
+            $("#txtGrievancesTicket").val("");
+            $("#ddlChallanStatus").val("");
+            $("#txtPaidDate").val("");
+            // Dropdown reset
+            $("#ddlVehicleNo").val("0").trigger("change");
+            $("#ddlDriver").val("0").trigger("change");
+            $("#ddlAction").val("").trigger("change");
+            // File input reset
+            $("#fileChallan").val("");
+        }
+
+        function loadChallanList() {
+
+            var vehicleNo = $('#ddlVehicleNos option:selected').text();
+            var driverName = $('#ddlDrivers option:selected').text();
+            var startDate = $("#txtStartDate").val();
+            var endDate = $("#txtEndDate").val();
+
+            if (vehicleNo === "Select a Vehicle" || vehicleNo === "")
+                vehicleNo = null;
+
+            if (driverName === "Select a Driver" || driverName === "")
+                driverName = null;
+
+            $.ajax({
+                url: '/ChallanEntry/GetChallanEntryList',
+                type: 'GET',
+                data: {
+                    vehicleNo: vehicleNo,
+                    driverName: driverName,
+                    startDate: startDate || null,
+                    endDate: endDate || null
+                },
+                success: function (data) {
+
+                    if ($.fn.DataTable.isDataTable('#tblChallan')) {
+                        $('#tblChallan').DataTable().destroy();
+                    }
+
+                    $("#tblChallan tbody").empty();
+
+                    var tbody = "";
+
+                    $.each(data, function (i, item) {
+
+                        tbody += "<tr>";
+                        tbody += "<td>" + item.vehicleNo + "</td>";
+                        tbody += "<td>" + item.driverName + "</td>";
+                        tbody += "<td>" + item.challanDate + "</td>";
+                        tbody += "<td>" + item.amount + "</td>";
+                        tbody += "<td>" + (item.actionName || '') + "</td>";
+                        tbody += "<td>" + item.challanNo + "</td>";
+                        tbody += "<td>" + (item.remark || '') + "</td>";
+                        tbody += "<td>" + (item.createdOn || '') + "</td>";
+
+                        // 🔥 EDIT + DELETE BUTTON
+                        tbody += "<td>";
+                        tbody += "<button class='btn btn-sm btn-primary mr-1' onclick='editChallan(" + item.challanId + ")'>Edit</button>";
+                        tbody += "<button class='btn btn-sm btn-danger' onclick='deleteChallan(" + item.challanId + ")'>Delete</button>";
+                        tbody += "</td>";
+
+                        tbody += "<td><button class='btn btn-sm btn-info' onclick='viewChallan(" + item.challanId + ")'>View</button></td>";
+                        tbody += "<td><button class='btn btn-sm btn-info' onclick='viewReceipt(" + item.challanId + ")'>View</button></td>";
+
+
+                        tbody += "</tr>";
+                    });
+
+                    $("#tblChallan tbody").append(tbody);
+
+                    $('#tblChallan').DataTable({
+                        scrollX: true,
+                        scrollY: "350px",
+                        scrollCollapse: true,
+                        paging: true,
+                        searching: true
+                    });
+                }
+            });
+        }
+        function viewChallan(id) {
+            window.open('/ChallanEntry/ViewChallanFile?id=' + id, '_blank');
+        }
+        function viewReceipt(id) {
+            window.open('/ChallanEntry/ViewReceiptFile?id=' + id, '_blank');
+        }
+        function showSuccessPopup(title, message) {
+            Swal.fire({
+                title: title,
+                text: message,
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2ecc71',
+                width: '338px',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2ecc71',
+                iconColor: '#9be39b',
+                buttonsStyling: true,
+                customClass: {
+                    popup: 'custom-swal-popup'
+                }
+            });
+
+        }
+        function showErrorPopup(title, message) {
+            return Swal.fire({
+                title: title,
+                text: message,
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#e74c3c',
+                width: '338px',
+                iconColor: '#f5a6a6',
+                buttonsStyling: true,
+                customClass: {
+                    popup: 'custom-swal-popup'
+                }
+            });
+        }
+
+        function editChallan(id) {
+
+            $.ajax({
+                url: '/ChallanEntry/GetChallanById',
+                type: 'GET',
+                data: { id: id },
+                success: function (data) {
+
+                    $("#hdnChallanId").val(data.challanId);
+
+                    $("#txtChallanEntryDate").val(data.challanEntryDate);
+                    $("#txtChallanDate").val(data.challanDate);
+                    $("#txtChallanNo").val(data.challanNo);
+                    $("#txtAmount").val(data.amount);
+                    $("#txtRemarks").val(data.remark);
+                    $("#txtGrievancesTicket").val(data.grievancesTicket);
+                    $("#ddlChallanStatus").val(data.challanStatus);
+                    $("#txtPaidDate").val(data.paidDate);
+                    if ($("#ddlVehicleNo option[value='" + data.vehicleNo + "']").length === 0) {
+                        var newOption = new Option(data.vehicleNo, data.vehicleNo, true, true);
+                        $("#ddlVehicleNo").append(newOption);
+                    }
+                    if ($("#ddlDriver option[value='" + data.driverName + "']").length === 0) {
+                        var newOption = new Option(data.driverName, data.driverName, true, true);
+                        $("#ddlDriver").append(newOption);
+                    }
+                    $("#ddlAction").val(data.actionName);
+                    $("#btnSave").text("Update");
+                    $('html, body').animate({
+                        scrollTop: $(".card-body").offset().top
+                    }, 500);
+                }
+            });
+        }
+        function deleteChallan(id) {
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You want to delete this record!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#e74c3c",
+                cancelButtonColor: "#95a5a6",
+                confirmButtonText: "Yes, Delete",
+                cancelButtonText: "Cancel",
+                width: '338px'
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: '/ChallanEntry/DeleteChallan',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (response) {
+
+                            if (response.success) {
+                                showSuccessPopup("Deleted!", response.message);
+                                loadChallanList();
+                            } else {
+                                showErrorPopup("Error!", response.message);
+                            }
+                        },
+                        error: function () {
+                            showErrorPopup("Error!", "Something went wrong.");
+                        }
+                    });
+
+                }
+
+            });
+        }
+    </script>
+}

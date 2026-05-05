@@ -176,6 +176,8 @@ namespace VMS.Controllers
                 UpdateDate = x.UpdateDate,
                 CreatedBy = x.CreatedBy,
                 UpdatedBy = x.UpdatedBy,
+                OldFirm   = x.OldFirm,
+                Remark = x.Remark,
                 StateName = _context.TblStates
                             .Where(p => p.Id == x.StateId)
                             .Select(p => p.StateName).FirstOrDefault(),
@@ -222,6 +224,8 @@ namespace VMS.Controllers
                     Id = x.Id,
                     DriverName = x.DriverName,
                     FatherName = x.FatherName,
+                    OldFirm = x.OldFirm,
+                    Remark = x.Remark,
                     DriverAddress1 = x.DriverAddress1,
                     DriverAddress2 = x.DriverAddress2,
                     DriverAddress3 = x.DriverAddress3,
@@ -295,7 +299,7 @@ namespace VMS.Controllers
             string drivingLicenceNo, string drivingLicenceAuth, string drivingLicenceValidity,
             string mobileNo1, string mobileNo2, Boolean isExistingReference, string referenceName, string referenceAddress1,
             string referenceAddress2, string referenceAddress3, string referenceCity, string referencePin,
-            string referenceMobile, Boolean isActive)
+            string referenceMobile, Boolean isActive ,string  oldFirm , string remark ) 
         {
             List<VMDriverMaster> model = new List<VMDriverMaster>();
 
@@ -333,6 +337,8 @@ namespace VMS.Controllers
                 ReferencePinCode = x.ReferencePin,
                 ReferenceMobile = x.ReferenceMobile,
                 IsActive = x.IsActive,
+                OldFirm = x.OldFirm,
+                Remark = x.Remark,
                 CreationDate = x.CreationDate,
                 UpdateDate = x.UpdateDate,
                 CreatedBy = x.CreatedBy,
@@ -517,7 +523,7 @@ namespace VMS.Controllers
             string drivingLicenceNo, string drivingLicenceAuth, string drivingLicenceValidity, IFormFile drivingLicenceImage,
             string mobileNo1, string mobileNo2, Boolean isExistingReference, string referenceName, string referenceAddress1,
             string referenceAddress2, string referenceAddress3, string referenceCity, string referencePin,
-            string referenceMobile, Boolean isActive)
+            string referenceMobile, Boolean isActive, string oldFirm, string remark)
         {
             VMUser model = new VMUser();
             int userID = 0;
@@ -530,6 +536,8 @@ namespace VMS.Controllers
                     Id = x.Id,
                     DriverName = x.DriverName,
                     FatherName = x.FatherName,
+                    OldFirm  = x.OldFirm,
+                    Remark = x.Remark,
                     DriverAddress1 = x.DriverAddress1,
                     DriverAddress2 = x.DriverAddress2,
                     DriverAddress3 = x.DriverAddress3,
@@ -624,6 +632,9 @@ namespace VMS.Controllers
                         driverMaster.UpdateDate = utilityHelper.CurrentDateTime;
                         driverMaster.CreatedBy = userID;
                         driverMaster.UpdatedBy = userID;
+                        driverMaster.OldFirm = oldFirm;
+                        driverMaster.Remark = remark;
+                           
 
                         _context.TblDriverMasters.Add(driverMaster);
                         _context.SaveChanges();
@@ -659,7 +670,7 @@ namespace VMS.Controllers
             string drivingLicenceNo, string drivingLicenceAuth, string drivingLicenceValidity, IFormFile drivingLicenceImage,
             string mobileNo1, string mobileNo2, Boolean isExistingReference, string referenceName, string referenceAddress1,
             string referenceAddress2, string referenceAddress3, string referenceCity, string referencePin,
-            string referenceMobile, Boolean isActive)
+            string referenceMobile, Boolean isActive, string oldFirm, string remark)
         {
             VMDriverMaster model = new VMDriverMaster();
             int userID = 0;
@@ -737,6 +748,9 @@ namespace VMS.Controllers
                         //driverMaster.CreatedBy = userID;
                         driverMaster.UpdatedBy = userID.ToIntFromNull();
 
+                        driverMaster.OldFirm = oldFirm;
+                        driverMaster.Remark = remark;
+
                         _context.TblDriverMasters.Update(driverMaster);
                         _context.SaveChanges();
                         model.Id = id;
@@ -797,6 +811,8 @@ namespace VMS.Controllers
                 Id = x.Id,
                 DriverName = x.DriverName,
                 FatherName = x.FatherName,
+                OldFirm = x.OldFirm,
+                Remark = x.Remark,
                 DriverAddress1 = x.DriverAddress1,
                 DriverAddress2 = x.DriverAddress2,
                 DriverAddress3 = x.DriverAddress3,

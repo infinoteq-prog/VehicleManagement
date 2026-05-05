@@ -386,7 +386,22 @@ namespace VMS.Controllers
                         userRoleAccess.FunctionId = functionId;
                         userRoleAccess.FunctionName = functionName;
                         userRoleAccess.IsActive = isActive;
-                        userRoleAccess.StartDate = DateTime.Parse(startDate);
+                        // userRoleAccess.StartDate = DateTime.Parse(startDate);
+                        DateTime parsedStartDate;
+                        if (DateTime.TryParseExact(startDate,
+                                                   "dd-MM-yyyy HH:mm",
+                                                   CultureInfo.InvariantCulture,
+                                                   DateTimeStyles.None,
+                                                   out parsedStartDate))
+                        {
+                            userRoleAccess.StartDate = parsedStartDate;
+                        }
+                        else
+                        {
+                            model.TransactionMessage.Status = TransactionStatus.Error;
+                            model.TransactionMessage.Message = "Invalid Start Date format.";
+                            return Json(model);
+                        }
                         //userRoleAccess.EndDate = DateTime.Parse(endDate);
                         userRoleAccess.CreationDate = utilityHelper.CurrentDateTime;
                         userRoleAccess.UpdateDate = utilityHelper.CurrentDateTime;

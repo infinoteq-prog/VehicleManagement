@@ -1,0 +1,486 @@
+﻿@model VMS.ViewModel.VendorViewModel
+@{
+    ViewData["Title"] = "Edit Party";
+}
+<style>
+    .select2-container {
+        width: 100% !important;
+    }
+
+    .select2-selection {
+        min-height: 38px !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .select2-selection__rendered {
+        line-height: 36px !important;
+    }
+
+    .select2-selection__arrow {
+        height: 36px !important;
+    }
+</style>
+
+<div class="container" style="margin-bottom:20px">
+    <div class="bg-white p-4 rounded shadow-sm border">
+        <h4 class="card-title mb-4">Edit Party Master</h4>
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="VendorID" />
+
+            <div class="row mb-3">
+                <label class="col-sm-12 text-danger fw-bold">Fields marked with <span class="text-danger">*</span> are mandatory.</label>
+            </div>
+
+            <!-- Editable Vendor Code -->
+            <div class="row mb-3">
+                <div class="col-md-6 d-flex">
+                    <label asp-for="VendorCode" class="col-form-label col-4">Party Code <span class="text-danger">*</span></label>
+                    <div class="col-8">
+                        <input asp-for="VendorCode" class="form-control" />
+                        <span asp-validation-for="VendorCode" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6 d-flex">
+                    <label asp-for="VendorType" class="col-form-label col-4">Party Type <span class="text-danger">*</span></label>
+                    <div class="col-8">
+                        <select asp-for="VendorType" class="form-control select2-dropdown">
+                            <option value="">-- Select Vendor Type --</option>
+                            <option value="Own Party">Own Party</option>
+                            <option value="Market Party">Market Party</option>
+                        </select>
+                        <span asp-validation-for="VendorType" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vendor Name / Address 1 -->
+            <div class="row mb-3">
+                <div class="col-md-6 d-flex">
+                    <label asp-for="VendorName" class="col-form-label col-4">Party Name <span class="text-danger">*</span></label>
+                    <div class="col-8">
+                        <input asp-for="VendorName" class="form-control" />
+                        <span asp-validation-for="VendorName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6 d-flex">
+                    <label asp-for="Address1" class="col-form-label col-4">Address 1 <span class="text-danger">*</span></label>
+                    <div class="col-8">
+                        <input asp-for="Address1" class="form-control" />
+                        <span asp-validation-for="Address1" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address 2 & 3 -->
+            <div class="row mb-3">
+                <div class="col-md-6 d-flex">
+                    <label asp-for="Address2" class="col-form-label col-4">Address 2</label>
+                    <div class="col-8">
+                        <input asp-for="Address2" class="form-control" />
+                        <span asp-validation-for="Address2" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex">
+                    <label asp-for="Address3" class="col-form-label col-4">Address 3</label>
+                    <div class="col-8">
+                        <input asp-for="Address3" class="form-control" />
+                        <span asp-validation-for="Address3" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- City / District -->
+            <div class="row mb-3">
+                <div class="col-md-6 d-flex">
+                    <label asp-for="City" class="col-form-label col-4">City <span class="text-danger">*</span></label>
+                    <div class="col-8">
+                        <select asp-for="City" class="form-control select2-dropdown" id="ddlCity">
+                        </select>
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex">
+                    <label asp-for="District" class="col-form-label col-4">District <span class="text-danger">*</span></label>
+                    <div class="col-8">
+                        <select asp-for="District" class="form-control select2-dropdown" id="ddlDistrict">
+                        </select>
+                        <span asp-validation-for="District" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- State / Pin -->
+            <div class="row mb-3">
+                <div class="col-md-6 d-flex">
+                    <label asp-for="State" class="col-form-label col-4">State <span class="text-danger">*</span></label>
+                    <div class="col-8">
+                        <select asp-for="State" class="form-control select2-dropdown" id="ddlState">
+                        </select>
+                        <span asp-validation-for="State" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex">
+                    <label asp-for="Pin" class="col-form-label col-4">Pin </label>
+                    <div class="col-8">
+                        <input asp-for="Pin" class="form-control" />
+                        <span asp-validation-for="Pin" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GSTIN / PAN -->
+            <div class="row mb-3">
+                <div class="col-md-6 d-flex">
+                    <label asp-for="GSTIN" class="col-form-label col-4">GSTIN No </label>
+                    <div class="col-8">
+                        <input asp-for="GSTIN" class="form-control" />
+                        <span asp-validation-for="GSTIN" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex">
+                    <label asp-for="PAN" class="col-form-label col-4">PAN No </label>
+                    <div class="col-8">
+                        <input asp-for="PAN" class="form-control" />
+                        <span asp-validation-for="PAN" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LR Prefix / Start -->
+            <div class="row mb-3" style="display:none">
+                <div class="col-md-6 d-flex">
+                    <label asp-for="LRNoPrefix" class="col-form-label col-4">LR No Prefix</label>
+                    <div class="col-8">
+                        <input asp-for="LRNoPrefix" class="form-control" />
+                        <span asp-validation-for="LRNoPrefix" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex">
+                    <label asp-for="LRNoStart" class="col-form-label col-4">LR No Start</label>
+                    <div class="col-8">
+                        <input asp-for="LRNoStart" class="form-control" />
+                        <span asp-validation-for="LRNoStart" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="row mb-3">
+                <div class="col-md-6 d-flex">
+                    <label asp-for="ContactPerson" class="col-form-label col-4">Contact Person </label>
+                    <div class="col-8">
+                        <input asp-for="ContactPerson" class="form-control" />
+                        <span asp-validation-for="ContactPerson" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex">
+                    <label asp-for="ContactMobileNo" class="col-form-label col-4">Contact Mobile </label>
+                    <div class="col-8">
+                        <input asp-for="ContactMobileNo" class="form-control" />
+                        <span asp-validation-for="ContactMobileNo" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        $(document).ready(function () {
+            setSideMenu("VendorBillMasterCollapse");
+            var cityFromModel = '@Html.Raw(Model?.City)';
+            var districtFromModel = '@Html.Raw(Model?.District)';
+            var stateFromModel = '@Html.Raw(Model?.State)';
+
+            console.log('Model Values:', {
+                city: cityFromModel,
+                district: districtFromModel,
+                state: stateFromModel
+            });
+
+            $('select.select2-dropdown').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: '-- Select --',
+                allowClear: true
+            });
+
+            loadCityDropdown();
+            setupDropdownEvents();
+        });
+
+        function loadCityDropdown() {
+            $.ajax({
+                url: '/VendorBill/GetCities',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var $ddlCity = $('#ddlCity');
+                    var cityFromModel = '@Html.Raw(Model?.City)';
+
+                    var existingSelectedValue = $ddlCity.val();
+
+                    $ddlCity.empty();
+                    $ddlCity.append($('<option>', {
+                        value: '',
+                        text: '-- Select City --'
+                    }));
+
+                    if (data && data.length > 0) {
+                        $.each(data, function (i, item) {
+                            var option = $('<option>', {
+                                value: item.cityName,
+                                text: item.cityName
+                            });
+
+                            if (item.cityName === cityFromModel) {
+                                option.prop('selected', true);
+                            }
+
+                            $ddlCity.append(option);
+                        });
+                    }
+
+                    if ($ddlCity.hasClass("select2-hidden-accessible")) {
+                        $ddlCity.select2('destroy');
+                    }
+                    $ddlCity.select2({
+                        theme: 'bootstrap-5',
+                        width: '100%',
+                        placeholder: '-- Select City --',
+                        allowClear: true,
+                        dropdownParent: $ddlCity.parent()
+                    });
+
+                    if (cityFromModel && cityFromModel !== '') {
+                        loadDistrictsByCity(cityFromModel, '@Html.Raw(Model?.District)', '@Html.Raw(Model?.State)');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading city list:', error);
+                }
+            });
+        }
+
+        function setupDropdownEvents() {
+            $('#ddlCity').on('change', function () {
+                var cityName = $(this).val();
+                console.log('City changed to:', cityName);
+
+                $('#ddlDistrict').empty().append(
+                    $('<option>', {
+                        value: '',
+                        text: '-- Select District --'
+                    })
+                );
+
+                if ($('#ddlDistrict').hasClass("select2-hidden-accessible")) {
+                    $('#ddlDistrict').select2('destroy');
+                }
+                $('#ddlDistrict').select2({
+                    theme: 'bootstrap-5',
+                    width: '100%',
+                    placeholder: '-- Select District --',
+                    allowClear: true,
+                    dropdownParent: $('#ddlDistrict').parent()
+                });
+
+                $('#ddlState').empty().append(
+                    $('<option>', {
+                        value: '',
+                        text: '-- Select State --'
+                    })
+                );
+
+                if ($('#ddlState').hasClass("select2-hidden-accessible")) {
+                    $('#ddlState').select2('destroy');
+                }
+                $('#ddlState').select2({
+                    theme: 'bootstrap-5',
+                    width: '100%',
+                    placeholder: '-- Select State --',
+                    allowClear: true,
+                    dropdownParent: $('#ddlState').parent()
+                });
+
+                if (cityName) {
+                    loadDistrictsByCity(cityName);
+                }
+            });
+
+            $('#ddlDistrict').on('change', function () {
+                var districtName = $(this).val();
+                console.log('District changed to:', districtName);
+
+                $('#ddlState').empty().append(
+                    $('<option>', {
+                        value: '',
+                        text: '-- Select State --'
+                    })
+                );
+
+                if ($('#ddlState').hasClass("select2-hidden-accessible")) {
+                    $('#ddlState').select2('destroy');
+                }
+                $('#ddlState').select2({
+                    theme: 'bootstrap-5',
+                    width: '100%',
+                    placeholder: '-- Select State --',
+                    allowClear: true,
+                    dropdownParent: $('#ddlState').parent()
+                });
+
+                if (districtName) {
+                    loadStatesByDistrict(districtName);
+                }
+            });
+        }
+
+        function loadDistrictsByCity(cityName, selectedDistrict = '', selectedState = '') {
+            console.log('Loading districts for city:', cityName, 'Selected district:', selectedDistrict);
+
+            $.ajax({
+                url: '/VendorBill/GetDistrictsByCity',
+                type: 'GET',
+                data: { cityName: cityName },
+                success: function (data) {
+                    var $ddlDistrict = $('#ddlDistrict');
+                    $ddlDistrict.empty();
+                    $ddlDistrict.append($('<option>', {
+                        value: '',
+                        text: '-- Select District --'
+                    }));
+
+                    if (data && data.length > 0) {
+                        $.each(data, function (i, item) {
+                            var option = $('<option>', {
+                                value: item.districtName,
+                                text: item.districtName
+                            });
+
+                            if (item.districtName === selectedDistrict) {
+                                option.prop('selected', true);
+                                console.log('District selected:', item.districtName);
+                            }
+
+                            $ddlDistrict.append(option);
+                        });
+                    }
+
+                    if ($ddlDistrict.hasClass("select2-hidden-accessible")) {
+                        $ddlDistrict.select2('destroy');
+                    }
+                    $ddlDistrict.select2({
+                        theme: 'bootstrap-5',
+                        width: '100%',
+                        placeholder: '-- Select District --',
+                        allowClear: true,
+                        dropdownParent: $ddlDistrict.parent()
+                    });
+
+                    if (selectedDistrict && selectedDistrict !== '') {
+                        setTimeout(function () {
+                            loadStatesByDistrict(selectedDistrict, selectedState);
+                        }, 100);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading districts:', error);
+                }
+            });
+        }
+
+        function loadStatesByDistrict(districtName, selectedState = '') {
+            console.log('Loading states for district:', districtName, 'Selected state:', selectedState);
+
+            $.ajax({
+                url: '/VendorBill/GetStateByDistrict',
+                type: 'GET',
+                data: { districtName: districtName },
+                success: function (data) {
+                    var $ddlState = $('#ddlState');
+                    $ddlState.empty();
+                    $ddlState.append($('<option>', {
+                        value: '',
+                        text: '-- Select State --'
+                    }));
+
+                    if (data && data.length > 0) {
+                        $.each(data, function (i, item) {
+                            var option = $('<option>', {
+                                value: item.stateName,
+                                text: item.stateName
+                            });
+                            if (item.stateName === selectedState) {
+                                option.prop('selected', true);
+                                console.log('State selected:', item.stateName);
+                            }
+
+                            $ddlState.append(option);
+                        });
+                    } else {
+                        $ddlState.append($('<option>', {
+                            value: '',
+                            text: 'No states available'
+                        }));
+                    }
+
+                    if ($ddlState.hasClass("select2-hidden-accessible")) {
+                        $ddlState.select2('destroy');
+                    }
+                    $ddlState.select2({
+                        theme: 'bootstrap-5',
+                        width: '100%',
+                        placeholder: '-- Select State --',
+                        allowClear: true,
+                        dropdownParent: $ddlState.parent()
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading states:', error);
+                    var $ddlState = $('#ddlState');
+                    $ddlState.empty();
+                    $ddlState.append($('<option>', {
+                        value: '',
+                        text: 'Error loading states'
+                    }));
+
+                    if ($ddlState.hasClass("select2-hidden-accessible")) {
+                        $ddlState.select2('destroy');
+                    }
+                    $ddlState.select2({
+                        theme: 'bootstrap-5',
+                        width: '100%',
+                        placeholder: '-- Select State --',
+                        allowClear: true,
+                        dropdownParent: $ddlState.parent()
+                    });
+                }
+            });
+        }
+    </script>
+}

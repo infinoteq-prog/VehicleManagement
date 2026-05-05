@@ -64,7 +64,7 @@
                             <div class="row rowHeight">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtDriverAddress3">Driver Address 3:</label>
+                                        <label class="col-sm-4 col-form-label" for="txtDriverAddress3">Driver Group:</label>
                                         <div class="col-sm-8">
                                             @Html.TextBoxFor(m => m.DriverAddress3, new { @class = "form-control", id = "txtDriverAddress3", @maxlength = "500" })
                                         </div>
@@ -317,6 +317,27 @@
                                     </div>
                                 </div>
                             </div>
+                            @*Added below 2 block for Old Firm and Remark on 25-Apr-2026 by skg*@
+                            <div class="row rowHeight">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtOldFirm">Old Firm Name:</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.OldFirm, new { @class = "form-control", id = "txtOldFirm", @maxlength = "200" })
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtRemark">Remarks :</label>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Remark, new { @class = "form-control", id = "txtRemark", @maxlength = "200" })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row rowHeight">
                                 <div class="col-md-12"></div>
                             </div>
@@ -344,9 +365,10 @@
                                                 <th>Actions</th>
                                                 <th>Driver Name</th>
                                                 <th>Father's Name</th>
+                                                <th>Old Firm Name</th>
                                                 <th>Driver Address 1</th>
                                                 <th>Driver Address 2</th>
-                                                <th>Driver Address 3</th>
+                                                <th>Driver Group</th>
                                                 <th>Driver Photo</th>
                                                 <th>State</th>
                                                 <th>District</th>
@@ -373,6 +395,7 @@
                                                 <th>Reference City</th>
                                                 <th>Reference Pin</th>
                                                 <th>Reference Mobile</th>
+                                                <th>Remark</th>
                                                 <th>Is Active</th>
                                                 <th>Creation Date</th>
                                                 <th>Created By</th>
@@ -413,6 +436,10 @@
             $('#ddlDriver').select2();
             getStateByCountryId(1); 
             getDriverMaster();
+            $("#ddlExistingReference").val("true");
+
+            // ✅ Because it is Yes, enable Reference Name
+            enableReferenceDriverDropDown("true");
             if (fullAccess === "True" || viewAccess === "True") {
                 clearControls();
                 checkValidationOnChange();
@@ -968,6 +995,7 @@
                                 '</td>' +
                                 '<td>' + item.driverName + '</td>' +
                                 '<td>' + item.fatherName + '</td>' +
+                                '<td>' + item.oldFirm + '</td>' +
                                 '<td>' + item.driverAddress1 + '</td>' +
                                 '<td>' + item.driverAddress2 + '</td>' +
                                 '<td>' + item.driverAddress3 + '</td>' +
@@ -997,6 +1025,7 @@
                                 '<td>' + item.referenceCity + '</td>' +
                                 '<td>' + item.referencePinCode + '</td>' +
                                 '<td>' + item.referenceMobile + '</td>' +
+                                '<td>' + item.remark + '</td>' +
                                 '<td>' + item.isActive + '</td>' +
                                 '<td>' + item.creationDate + '</td>' +
                                 '<td>' + item.createdByName + '</td>' +
@@ -1057,6 +1086,8 @@
                     formData.append("id", $('#hdnDriverMasterID').val());
                     formData.append("driverName", $('#txtDriverName').val());
                     formData.append("fatherName", $("#txtFatherName").val());
+                    formData.append("oldFirm", $("#txtOldFirm").val());
+                    
                     formData.append("driverAddress1", $("#txtDriverAddress1").val());
                     formData.append("driverAddress2", $("#txtDriverAddress2").val());
                     formData.append("driverAddress3", $("#txtDriverAddress3").val());
@@ -1086,6 +1117,7 @@
                     formData.append("referenceCity", $("#txtReferenceCity").val());
                     formData.append("referencePin", $("#txtReferencePinCode").val());
                     formData.append("referenceMobile", $("#txtReferenceMobile").val());
+                    formData.append("remark", $("#txtRemark").val());
                     formData.append("isActive", $("#chkIsActive").is(":checked"));
 
                     $.ajax({
@@ -1190,6 +1222,8 @@
                                 '</td>' +
                                 '<td>' + data.driverName + '</td>' +
                                 '<td>' + data.fatherName + '</td>' +
+                                '<td>' + data.oldFirm + '</td>' +
+                                
                                 '<td>' + data.driverAddress1 + '</td>' +
                                 '<td>' + data.driverAddress2 + '</td>' +
                                 '<td>' + data.driverAddress3 + '</td>' +
@@ -1219,6 +1253,7 @@
                                 '<td>' + data.referenceCity + '</td>' +
                                 '<td>' + data.referencePinCode + '</td>' +
                                 '<td>' + data.referenceMobile + '</td>' +
+                                '<td>' + data.remark + '</td>' +
                                 '<td>' + data.isActive + '</td>' +
                                 '<td>' + data.creationDate + '</td>' +
                                 '<td>' + data.createdByName + '</td>' +
@@ -1237,6 +1272,8 @@
 
                         $("#txtDriverName").val(data.driverName);
                         $("#txtFatherName").val(data.fatherName);
+                        $("#txtOldFirm").val(data.oldFirm);
+
                         $("#txtDriverAddress1").val(data.driverAddress1);
                         $("#txtDriverAddress2").val(data.driverAddress2);
                         $("#txtDriverAddress3").val(data.driverAddress3);
@@ -1262,7 +1299,7 @@
                         $("#txtReferenceCity").val(data.referenceCity);
                         $("#txtReferencePinCode").val(data.referencePinCode);
                         $("#txtReferenceMobile").val(data.referenceMobile);
-
+                        $("#txtRemark").val(data.remark);
                         $('#hdnDriverMasterID').val(data.id);
                         $("#driverMasterBody").html(row);
                         $("#tblDriverMaster").focus();

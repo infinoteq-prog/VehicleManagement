@@ -1,0 +1,171 @@
+﻿@{
+    ViewData["Title"] = "Report Filter";
+}
+
+<!-- CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<style>
+    .select2-container--default .select2-selection--single {
+        height: 50px !important;
+        display: flex;
+        align-items: center;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        padding-left: 8px;
+    }
+
+    .select2-selection__rendered {
+        line-height: 32px !important;
+    }
+
+    .select2-selection__arrow {
+        top: 12px !important;
+    }
+</style>
+
+<div class="container mb-4">
+    <div class="bg-white p-4 rounded shadow-sm border">
+        <h4 class="mb-4">Report Filter</h4>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">Report Name</label>
+                    <select id="reportName" class="form-select select2-square"></select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Vehicle No</label>
+                    <select id="vehicleNo" class="form-select select2-square"></select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Driver Name</label>
+                    <select id="driverName" class="form-select select2-square"></select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">Route Name</label>
+                    <select id="routeName" class="form-select select2-square"></select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Trip Start Date</label>
+                    <input type="date" id="fromDate" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Trip End Date</label>
+                    <input type="date" id="toDate" class="form-control" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col d-flex gap-2">
+                    <button id="exportBtn" class="btn btn-success px-4" title="Download Excel">
+                        <i class="fa-solid fa-file-excel"></i> Export
+                    </button>
+
+                    <!-- ✅ New Clear Button -->
+                    <button id="clearBtn" class="btn btn-secondary px-4" title="Clear Filters">
+                        <i class="fa-solid fa-broom"></i> Clear
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@section Scripts {
+    <!-- JS Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Initialize Select2
+            $('#reportName, #vehicleNo, #driverName, #routeName').select2({
+                placeholder: "-- Select --",
+                width: '100%'
+            });
+
+            // Load dropdown data
+            loadReports();
+            loadVehicles();
+            loadDrivers();
+            loadRoutes();
+
+            // Export button click event
+            $('#exportBtn').click(function () {
+                const reportName = $('#reportName').val();
+                const vehicleNo = $('#vehicleNo').val();
+                const driverName = $('#driverName').val();
+                const routeName = $('#routeName').val();
+                const fromDate = $('#fromDate').val();
+                const toDate = $('#toDate').val();
+
+                if (!reportName) {
+                    alert("Please select a report name!");
+                    return;
+                }
+
+                const query = `?reportName=${encodeURIComponent(reportName || '')}` +
+                    `&vehicleNo=${encodeURIComponent(vehicleNo || '')}` +
+                    `&driverName=${encodeURIComponent(driverName || '')}` +
+                    `&routeName=${encodeURIComponent(routeName || '')}` +
+                    `&fromDate=${encodeURIComponent(fromDate || '')}` +
+                    `&toDate=${encodeURIComponent(toDate || '')}`;
+
+                window.location.href = '/Report/ExportReportToExcel' + query;
+            });
+
+            $('#clearBtn').click(function () {
+                // Reset dropdowns and inputs
+                $('#reportName, #vehicleNo, #driverName, #routeName').val('').trigger('change');
+                $('#fromDate, #toDate').val('');
+
+                // Optional: show toast or message
+                // alert("Filters cleared!");
+            });
+        });
+
+        // Load Report list
+        function loadReports() {
+            $.get('/Report/GetReports', function (data) {
+                $('#reportName').empty().append('<option value="">-- Select Report --</option>');
+                $.each(data, function (i, v) {
+                    $('#reportName').append(`<option value="${v.reportCode}">${v.reportName}</option>`);
+                });
+            }).fail(() => alert('Error loading report list.'));
+        }
+
+        // Load Vehicles
+        function loadVehicles() {
+            $.get('/Report/GetVehicles', function (data) {
+                $('#vehicleNo').empty().append('<option value="">-- Select Vehicle --</option>');
+                $.each(data, function (i, v) {
+                    $('#vehicleNo').append(`<option value="${v.vehicleID}">${v.vehicleNo}</option>`);
+                });
+            }).fail(() => alert('Error loading vehicle list.'));
+        }
+
+        // Load Drivers
+        function loadDrivers() {
+            $.get('/Report/GetDrivers', function (data) {
+                $('#driverName').empty().append('<option value="">-- Select Driver --</option>');
+                $.each(data, function (i, v) {
+                    $('#driverName').append(`<option value="${v.driverID}">${v.driverName}</option>`);
+                });
+            }).fail(() => alert('Error loading driver list.'));
+        }
+
+        // Load Routes
+        function loadRoutes() {
+            $.get('/Report/GetRoutes', function (data) {
+                $('#routeName').empty().append('<option value="">-- Select Route --</option>');
+                $.each(data, function (i, v) {
+                    $('#routeName').append(`<option value="${v.routeName}">${v.routeName}</option>`);
+                });
+            }).fail(() => alert('Error loading route list.'));
+        }
+    </script>
+}

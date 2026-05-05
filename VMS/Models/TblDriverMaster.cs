@@ -79,6 +79,9 @@ public partial class TblDriverMaster
 
     public int UpdatedBy { get; set; }
 
+    public string? OldFirm { get; set; }
+    public string? Remark { get; set; }
+
     public virtual TblCity City { get; set; } = null!;
 
     public virtual TblDistrict District { get; set; } = null!;

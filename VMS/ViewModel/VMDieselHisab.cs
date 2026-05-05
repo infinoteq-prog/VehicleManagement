@@ -122,4 +122,9 @@ namespace VMS.ViewModel
 
         public List<TblDieselFilling> DieselFillingList { get; set; } // List to include
     }
+    public class DieselHisabVM
+    {
+        public decimal FreightPercent { get; set; }
+    }
+    
 }

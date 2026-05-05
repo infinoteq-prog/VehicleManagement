@@ -1,5 +1,6 @@
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using Microsoft.EntityFrameworkCore;
+using Rotativa.AspNetCore;
 using VMS.Helper;
 using VMS.Models;
 
@@ -16,7 +17,22 @@ builder.Services.AddDbContext<VmsDbContext>(options => options.UseSqlServer(
     sqlServerOptions => sqlServerOptions.CommandTimeout((int)TimeSpan.FromMinutes(180).TotalSeconds))
 );
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+
 builder.Services.AddRazorPages();
+
+
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var provider = builder.Services.BuildServiceProvider();
@@ -46,7 +62,9 @@ utilityHelper.tbsDataContext(dbContext);
 utilityHelper.sessionExtension(accessor);
 
 var app = builder.Build();
-
+//Add New Line 15 January Start
+RotativaConfiguration.Setup(app.Environment.WebRootPath, "Rotativa");
+//Add New Line 15 January End
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -60,6 +78,8 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 app.UseSession();
+app.UseCors("AllowAll");
+
 app.UseFileServer(enableDirectoryBrowsing: false);
 app.MapControllerRoute(
     name: "default",

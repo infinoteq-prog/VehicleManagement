@@ -17,12 +17,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Station\**" />
+    <Content Remove="Views\Station\**" />
+    <EmbeddedResource Remove="Views\Station\**" />
+    <None Remove="Views\Station\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\StationController.cs" />
     <Compile Remove="Controllers\VehicleDriverController.cs" />
+    <Compile Remove="Models\Station.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.104.2" />
     <PackageReference Include="EPPlus" Version="8.0.5" />
+    <PackageReference Include="ExcelDataReader" Version="3.8.0" />
+    <PackageReference Include="ExcelDataReader.DataSet" Version="3.8.0" />
     <PackageReference Include="iTextSharp" Version="5.5.13.4" />
     <PackageReference Include="itextsharp.xmlworker" Version="5.5.13.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
@@ -34,6 +45,7 @@
     <PackageReference Include="Microsoft.NETCore.App" Version="2.2.8" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.4.0" />
     <PackageReference Include="System.Data.OleDb" Version="9.0.2" />
   </ItemGroup>
 

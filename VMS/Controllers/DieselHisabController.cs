@@ -270,6 +270,7 @@ namespace VMS.Controllers
 
             try
             {
+                decimal freightPercent = await GetFreightPercentAsync(TripId);
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
@@ -311,12 +312,13 @@ namespace VMS.Controllers
                                     DieselHeaderCreatedBy = reader.GetInt32("DieselHeaderCreatedBy"),
                                     DieselHeaderUpdatedBy = reader.GetInt32("DieselHeaderUpdatedBy"),
                                     DriverName = reader.GetString("Driver_Name"),
+                                    ReferenceByDriver = reader.GetString("ReferenceByDriver"),
                                     DriverFatherName = reader.GetString("DriverFatherName"),
                                     DieselHeaderCreatedByName = reader.GetString("DieselHeaderCreatedByName"),
                                     DieselHeaderUpdatedByName = reader.GetString("DieselHeaderUpdatedByName"),
                                     BankAccountNumber = reader.GetString("Bank_AccountNumber"),
                                     DieselRate = reader.IsDBNull("DieselRate") ? 0 : reader.GetDecimal("DieselRate"),
-
+                                    FreightPercent = freightPercent,
                                     RouteNameId = reader.IsDBNull("RouteNameId") ? 0 : reader.GetInt32("RouteNameId"),
                                     RouteNameWithBestAvg = reader.IsDBNull("RouteNameWithBestAvg") ? "" : reader.GetString("RouteNameWithBestAvg"),
                                     DriverScoreId = reader.IsDBNull("DriverScoreId") ? 0 : reader.GetInt32("DriverScoreId"),
@@ -325,7 +327,8 @@ namespace VMS.Controllers
                                     DieselFillingList = await DieselHisabContext.GetDieselFillingListAsync(_connectionString, TripId),
                                     stationList = await DieselHisabContext.GetStationListAsync(_connectionString, TripId, reader.GetInt32("VehicleNo")),
                                     previous4TripAverage = await DieselHisabContext.GetPrevious4TripAverageAsync(_connectionString, TripId, reader.GetString("VehicleNumber"))
-                                };
+                                    
+                            };
                             }
                         }
                     }
@@ -1188,6 +1191,27 @@ namespace VMS.Controllers
                 return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
             }
         }
+
+        private async Task<decimal> GetFreightPercentAsync(int tripId)
+        {
+            decimal freightPercent = 0;
+            using (SqlConnection con = new SqlConnection(_connectionString))
+            {
+                await con.OpenAsync();
+                string query = "SELECT dbo.GetFreightPercent(@TripId)";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@TripId", tripId);
+                    object result = await cmd.ExecuteScalarAsync();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        freightPercent = Convert.ToDecimal(result);
+                    }
+                }
+            }
+            return freightPercent;
+        }
+
 
     }
 }

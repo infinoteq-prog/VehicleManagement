@@ -10,6 +10,7 @@
 
 @if (userLogin != null)
 {
+
     if (userLogin.MenuCode.Contains("1"))
     {
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -38,6 +39,20 @@
                         </ul>
                     </div>
                 </li>
+                @* Added on 14-Feb-2026 Challan Entry Menu *@
+                <li class="nav-item">
+                    <a id="lnkchallanentry" class="nav-link" data-toggle="collapse" href="#challanentrycollapse" aria-expanded="false" aria-controls="diesel-rate-master">
+                        <i class="typcn typcn-document-text menu-icon"></i>
+                        <span class="menu-title">Challan Entry Master</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="challanentrycollapse">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ChallanEntry/ChallanEntry")">Challan Entry </a></li>
+@*                             <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselEntry/Index")">View Diesel Entry</a></li>
+ *@                        </ul>
+                    </div>
+                </li>
 
                 <li class="nav-item">
                     <a id="lnkrouteentry" class="nav-link" data-toggle="collapse" href="#routeentrycollapse" aria-expanded="false" aria-controls="diesel-rate-master">
@@ -52,6 +67,20 @@
                         </ul>
                     </div>
                 </li>
+                @*Added below lines of Report Menu by SKG on 28-10-2025 *@
+                <li class="nav-item">
+                    <a id="lnkreport" class="nav-link" data-toggle="collapse" href="#reportcollapse" aria-expanded="false" aria-controls="diesel-rate-master">
+                        <i class="typcn typcn-document-text menu-icon"></i>
+                        <span class="menu-title">Reports</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="reportcollapse">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "Report/Index")">All Report </a></li>
+                        </ul>
+                    </div>
+                </li>
+                @* End Adding Lines by SKG 28-10-2025*@
 
                 <li class="nav-item">
                     <a id="lnkMakeMaster" class="nav-link" data-toggle="collapse" href="#make-master" aria-expanded="false" aria-controls="diesel-rate-master">
@@ -91,6 +120,10 @@
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/Index")">Add Driver</a></li>
                             <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/List")">View Driver</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverAttendance/Create")">Driver Attendance</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverChange/Create")">Driver Change </a></li>
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverProfile/DriverProfile")">Driver Profile </a></li>
+
                         </ul>
                     </div>
                 </li>
@@ -122,7 +155,24 @@
                         </ul>
                     </div>
                 </li>
-
+                @* Below Menu Item Add by SKG on 4-1-2026 *@
+                <li class="nav-item">
+                    <a id="lnkDispatchEntry" class="nav-link" data-toggle="collapse" href="#dispatch-entry" aria-expanded="false" aria-controls="diesel-rate-master">
+                        <i class="typcn typcn-document-text menu-icon"></i>
+                        <span class="menu-title">Dispatch Entry</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="dispatch-entry">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DispatchEntry/Index")">Dispatch Entry</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "VendorBill/Create")">Party Master</a></li>
+                            <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DispatchEntry/UploadExcel")">Dispatch Excel Upload</a></li>
+                            @* Added below menu item on 15-Feb-2026 *@
+                            <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "CityMaster/CityMaster")">CityMaster</a></li>
+                        </ul>
+                    </div>
+                </li>
+                @* End of Adding Menu 4-1-2026*@
                 <li class="nav-item">
                     <a id="lnkExpenseMaster" class="nav-link" data-toggle="collapse" href="#expense-master" aria-expanded="false" aria-controls="diesel-rate-master">
                         <i class="typcn typcn-document-text menu-icon"></i>
@@ -148,6 +198,13 @@
                             <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselHisab/Index")">Add Diesel Hisab</a></li>
                             <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselHisab/List")">View Diesel Hisab</a></li>
                             <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselHisab/DieselFilter")">View Diesel Filter</a></li>
+  @*Added below sub menu to change Driver from Vehicle on 28-10-2026 by SKG*@
+                          @*   <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverAttendance/Create")">Driver Attendance</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverChange/Create")">Driver Change </a></li>
+ *@
+      @*    Commented on 26-11-1025 as no need                  <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverChange/Index")">View Driver Change</a></li> *@
+                          
+
                         </ul>
                     </div>
                 </li>
@@ -286,7 +343,51 @@
                             </ul>
                         </div>
                     </li>
-
+                    @* Added on 14-Feb-2026 Challan Entry Menu *@
+                    <li class="nav-item">
+                        <a id="lnkchallanentry" class="nav-link" data-toggle="collapse" href="#challanentrycollapse" aria-expanded="false" aria-controls="diesel-rate-master">
+                            <i class="typcn typcn-document-text menu-icon"></i>
+                            <span class="menu-title">Challan Entry Master</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="challanentrycollapse">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "ChallanEntry/ChallanEntry")">Challan Entry </a></li>
+                                @*                             <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselEntry/Index")">View Diesel Entry</a></li>
+                    *@
+                            </ul>
+                        </div>
+                    </li>
+                    @* Below Menu Item Add by SKG on 4-2-2026 *@
+                    <li class="nav-item">
+                        <a id="lnkDispatchEntry" class="nav-link" data-toggle="collapse" href="#dispatch-entry" aria-expanded="false" aria-controls="diesel-rate-master">
+                            <i class="typcn typcn-document-text menu-icon"></i>
+                            <span class="menu-title">Dispatch Entry</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="dispatch-entry">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DispatchEntry/Index")">Dispatch Entry</a></li>
+                                <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "VendorBill/Create")">Party Master</a></li>
+                                <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DispatchEntry/UploadExcel")">Dispatch Excel Upload</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    @* End of Adding Menu 4-2-2026*@
+                    @*Added below lines of Report Menu by SKG on 28-10-2025 *@
+                    <li class="nav-item">
+                        <a id="lnkreport" class="nav-link" data-toggle="collapse" href="#reportcollapse" aria-expanded="false" aria-controls="diesel-rate-master">
+                            <i class="typcn typcn-document-text menu-icon"></i>
+                            <span class="menu-title">Reports</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="reportcollapse">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "Report/Index")">All Report </a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    @* End Adding Lines by SKG 28-10-2025*@
                     @if (userLogin.MenuCode.Contains("CODE MASTER"))
                     {
                         <li class="nav-item">
@@ -333,6 +434,9 @@
                                 <ul class="nav flex-column sub-menu">
                                     <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/Index")">Add Driver</a></li>
                                     <li class="nav-item"> <a class="nav-link" target="_self" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverMaster/List")">View Driver</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverAttendance/Create")">Driver Attendance</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverChange/Create")">Driver Change </a></li>
+                                    <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverProfile/DriverProfile")">Driver Profile </a></li>
                                 </ul>
                             </div>
                         </li>
@@ -402,6 +506,9 @@
                                     <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselHisab/Index")">Add Diesel Hisab</a></li>
                                     <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselHisab/List")">View Diesel Hisab</a></li>
                                     <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DieselHisab/DieselFilter")">View Diesel Filter</a></li>
+                                    @* Added menu Driver Change on 29-10-2025 by SKG *@
+                                    <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverChange/Create")">Add Driver Change</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="@(VMS.Helper.utilityHelper.SiteUrl() + "DriverChange/Index")">View Driver Change</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -422,7 +529,7 @@
                                 </ul>
                             </div>
                         </li>
-                    }
+                     }
                 </ul>
             </nav>
         }

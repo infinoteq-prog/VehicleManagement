@@ -1,0 +1,1606 @@
+﻿@model VMS.ViewModel.VMDispatchEntry
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Dispatch Entry";
+}
+<style>
+    html {
+        font-size: 16px;
+    }
+
+    input.form-control,
+    select.form-control {
+        height: 2.375rem;
+        font-size: 0.8125rem;
+        line-height: 1.2;
+        padding: 0.375rem 0.75rem;
+    }
+
+    .form-group {
+        margin-bottom: 14px;
+    }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+    .reqFields {
+        color: red;
+        font-weight: bold;
+    }
+
+    .rowHeight {
+        margin-bottom: 10px;
+    }
+    table.dataTable thead th {
+        background-color: #6c2eb9;
+        color: #fff;
+        text-align: center;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+
+    /* Enable vertical scrolling area */
+    .dataTables_scrollBody {
+        max-height: 350px !important;
+        overflow-y: auto !important;
+    }
+    /* Enable horizontal scroll */
+    .dataTables_scroll {
+        overflow-x: auto;
+    }
+
+    .dataTables_wrapper .dt-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 0px;
+    }
+
+    .dataTables_filter {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Prevent column squeeze */
+    table.dataTable {
+        white-space: nowrap;
+    }
+
+    .select2-container--default .select2-selection--single {
+        height: 38px !important;
+        padding: 4px 8px !important;
+        display: flex !important;
+        align-items: center !important; /* TEXT CENTER vertically */
+    }
+
+        /* Fix selected text position */
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: normal !important;
+            padding-left: 6px !important;
+            padding-right: 20px !important;
+        }
+
+        /* Fix dropdown arrow alignment */
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px !important;
+            top: 1px !important;
+        }
+
+        /* Fix placeholder color */
+        .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: #6c757d !important;
+        }
+
+    .custom-swal-popup .swal2-title {
+        font-size: 22px;
+        font-weight: 600;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Dispatch Entry</h4>
+                    <div>
+                        <div class="row rowHeight">
+                            <div class="col-md-6">
+                                <label class="reqFields">
+                                    Note: All fields marked with * are mandatory fields
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- ROW 1 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Vehicle No <span class="reqFields">*</span></label>
+                                    <select class="form-control" id="ddlVehicleNo" name="ddlVehicleNo"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Customer Name</label>
+                                    <select class="form-control" id="vendorName" name="VendorID"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Loading Date</label>
+                                    <input type="date" class="form-control" id="txtLoadingDate">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ROW 2 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>LR No <span class="reqFields">*</span></label>
+                                    @Html.TextBoxFor(m => m.LRNo, new { @class = "form-control", id = "txtLRNo", placeholder = "Enter LR No" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Own / Other</label>
+                                    <select class="form-control" id="ownother"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Bill Type</label>
+                                    <select class="form-control" id="ddlBillType"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ROW 3 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Bill No</label>
+                                    @Html.TextBoxFor(m => m.BillNo, new { @class = "form-control", id = "txtBillNo", placeholder = "Auto Generated" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Driver Name</label>
+                                    <select class="form-control" id="ddlDriver"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Station From</label>
+                                    <select class="form-control" id="ddlStationID"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ROW 4 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>To Station</label>
+                                    <select class="form-control" id="ddltoStationID"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Material</label>
+                                    <select class="form-control" id="ddlMaterial"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Load Weight</label>
+                                    @Html.TextBoxFor(m => m.LoadWeight, new { @class = "form-control", id = "txtLoadWeight", placeholder = "Enter Load Weight" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ROW 5 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Unload Weight</label>
+                                    @Html.TextBoxFor(m => m.UnloadWeight, new { @class = "form-control", id = "txtUnloadWeight" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Shortage</label>
+                                    @Html.TextBoxFor(m => m.Shortage, new { @class = "form-control", id = "txtShortage" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Freight Rate</label>
+                                    @Html.TextBoxFor(m => m.FreightRate, new { @class = "form-control", id = "txtFreightRate" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ROW 6 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Total Freight</label>
+                                    @Html.TextBoxFor(m => m.TotalFreight, new { @class = "form-control", id = "txtTotalFreight", @readonly = "readonly" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Deduction</label>
+                                    @Html.TextBoxFor(m => m.Deduction, new { @class = "form-control", id = "txtDeduction" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Freight For Tally</label>
+                                    @Html.TextBoxFor(m => m.FreightForTally, new { @class = "form-control", id = "txtFreightForTally", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ROW 7 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Remarks</label>
+                                    @Html.TextBoxFor(m => m.Remarks, new { @class = "form-control", id = "txtRemarks" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Invoice No</label>
+                                    @Html.TextBoxFor(m => m.InvoiceNo, new { @class = "form-control", id = "txtInvoiceNo" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Shipment No</label>
+                                    @Html.TextBoxFor(m => m.ShipmentNo, new { @class = "form-control", id = "txtShipmentNo" })
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ROW 8 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Delivery No</label>
+                                    @Html.TextBoxFor(m => m.DeliveryNo, new { @class = "form-control", id = "txtDeliveryNo" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Trade/NT</label>
+                                    @Html.TextBoxFor(m => m.TradeNT, new { @class = "form-control", id = "txtTradeNT" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Other1 </label>
+                                    @Html.TextBoxFor(m => m.Other1, new { @class = "form-control", id = "txtOther1" })
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ROW 9 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Other2 </label>
+                                    @Html.TextBoxFor(m => m.Other2, new { @class = "form-control", id = "txtOther2" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowHeight" style="text-align:center;">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary mr-2" onclick="saveOrUpdateDispatch(false)">Save </button>
+                            <button type="button" class="btn btn-primary mr-2" onclick="saveOrUpdateDispatch(true)">Update</button>
+                            <button type="button" class="btn btn-light" onclick="clearDispatchForm();">Clear</button>
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 14px; margin-bottom: 19px; border: 1px solid #ccc; border-radius: 5px;">
+                    <form id="searchDieselHisabForm">
+                        <div class="row">
+                            <div class="col-md-3">
+
+                                <div class="form-group">
+                                    <label for="ddlVehicleNos">Vehicle No</label>
+                                    <select class="form-control" id="ddlVehicleNos" name="ddlVehicleNos"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="txtStartDate">Start Date</label>
+                                    <input type="date" class="form-control" id="txtStartDate" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="txtEndDate">End Date</label>
+                                    <input type="date" class="form-control" id="txtEndDate" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="vendorNamedeatail">Customer Name</label>
+                                    <select class="form-control" id="vendorNamedeatail" name="VendorIDs"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="ddlMaterials">Material</label>
+                                    <select class="form-control" id="ddlMaterials" name="ddlMaterials"></select>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="txtState">State</label>
+                                    <select class="form-control" id="ddlState" name="ddlState" onchange="setDropDownStyle(this);"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="txtDistrict">District</label>
+                                    <select class="form-control" id="ddlDistrict" name="ddlDistrict" onchange="setDropDownStyle(this);"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="txtStation">Station</label>
+                                    <select class="form-control" id="ddlStations"></select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-primary mt-4" onclick="getDispatchEntryByDate()">Search</button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="hdnDispatchId" value="" />
+                    </form>
+                </div>
+                <h4 class="mt-4">All Dispatch Entries</h4>
+                <table id="dispatchEntryTable" class="display nowrap table table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th style="width:2%">
+                                <input type="checkbox" id="chkAll" />
+                            </th>
+                            <th style="width:4%">LR No</th>
+                            <th style="width:4%">Loading Date</th>
+                            <th style="width:7%">Vehicle No</th>
+                            <th style="width:7%">Material</th>
+                            <th style="width:9%">From</th>
+                            <th style="width:9%">To</th>
+                            <th style="width:7%">Unload Wt.</th>
+                            <th style="width:7%">Frt. Rate</th>
+                            <th style="width:7%">Load Weight</th>
+                            <th style="width:7%">Total Frt</th>
+                            <th style="width:7%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modeldispatchEntry">
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        var dispatchTable;
+
+        $(document).ready(function () {
+            $('#ddlVehicleNo').select2();
+            $('#ddlVehicleNos').select2();
+            $('#ddlDriver').select2();
+            $('#ddlStationID').select2();
+            $('#ddltoStationID').select2();
+            $("#vendorName").select2();
+            $("#vendorNamedeatail").select2();
+            $("#ddlMaterial").select2();
+            $("#ddlBillType").select2();
+            $("#ddlStations").select2();
+            getVehicleNumber();
+            getDriverMaster();
+            loadCustomers();
+            getVehicleNumberList();
+            getStateByCountryId(1);
+            setCurrentLoadingDate();
+            loadFromStationDropdown();
+            loadToStationDropdown();
+            loadBillTypeDropdown();
+            loadMaterailTypeDropdown();
+            loadFilterStationDropdown();
+            getDispatchEntryByDate();
+            loadNextBillNo();
+
+            $('#txtLoadWeight, #txtUnloadWeight').on('keyup change', function () {
+
+                var loadWeight = parseFloat($('#txtLoadWeight').val()) || 0;
+                var unloadWeight = parseFloat($('#txtUnloadWeight').val()) || 0;
+
+                var shortage = loadWeight - unloadWeight;
+
+                $('#txtShortage').val(shortage >= 0 ? shortage.toFixed(2) : 0);
+            });
+
+            $('#txtLoadWeight, #txtFreightRate').on('input', function () {
+                calculateTotalFreight();
+            });
+
+            $('#txtDeduction').on('input', function () {
+                calculateFreightForTally();
+            });
+            dispatchTable = $('#dispatchEntryTable').DataTable({
+                deferRender: true,
+                scrollY: '350px',
+                scrollX: true,
+                scrollCollapse: true,
+                paging: true,
+                searching: true,
+                info: true,
+                ordering: false,
+                dom: 'Bfrtip',
+
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        title: 'Dispatch Entry List',
+                        text: 'Download'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'Dispatch Entry List',
+                        text: 'PDF',
+                        orientation: 'landscape',
+                        pageSize: 'A4'
+                    },
+
+                    // {
+                    //     text: 'Print',
+                    //     action: function (e, dt, node, config) {
+                    //         window.location.href = '/DispatchEntry/ViewBillDetails';
+                    //     },
+                    //     className: 'btn-print-custom'
+                    // }
+                    {
+                        text: 'Print',
+                        action: function () {
+                            window.open('/DispatchEntry/ViewBillDetails', '_blank');
+                        }
+                    }
+                ]
+            });
+
+
+            // dispatchTable = $('#dispatchEntryTable').DataTable({
+
+            //     deferRender: true,
+
+            //     scrollY: '350px',
+            //     scrollX: true,
+            //     scrollCollapse: true,
+
+            //     paging: true,
+            //     searching: true,
+            //     info: true,
+            //     ordering: false,
+
+            //     dom: 'Bfrtip',
+
+            //     buttons: [
+            //         {
+            //             extend: 'excelHtml5',
+            //             title: 'Dispatch Entry List',
+            //             text: 'Download'
+            //         },
+            //         {
+            //             extend: 'pdfHtml5',
+            //             title: 'Dispatch Entry List',
+            //             text: 'PDF',
+            //             orientation: 'landscape',
+            //             pageSize: 'A4'
+            //         },
+            //         {
+            //             extend: 'print',
+            //             text: 'Print',
+            //             title: 'Dispatch Entry List',
+            //             orientation: 'landscape',
+            //             pageSize: 'A4'
+            //         }
+            //     ]
+            // });
+        });
+
+
+
+        /* ================= LOAD VEHICLE ================= */
+        function getVehicleNumberList() {
+            $.ajax({
+                url: '@(utilityHelper.SiteUrl() + "VehicleMaster/getVehicleMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                    var $ddl = $("#ddlVehicleNos");
+                    $ddl.empty();
+                    $ddl.append('<option></option>');
+
+                    $.each(data || [], function (i, v) {
+                        $ddl.append(
+                            `<option value="${v.vehicleId}">${v.vehicleName}</option>`
+                        );
+                    });
+                    if ($ddl.hasClass("select2-hidden-accessible")) {
+                        $ddl.select2('destroy');
+                    }
+
+                    $ddl.select2({
+                        placeholder: "Select a Vehicle",
+                        allowClear: true,
+                        width: '100%'
+                    });
+                }
+            });
+        }
+        function loadCustomers() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DispatchEntry/GetCustomerNameList")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                    var defaultOpt = '<option value="">-- Select Customer Name --</option>';
+
+                    // Upper dropdown
+                    $("#vendorName").html(defaultOpt);
+
+                    // Lower dropdown
+                    $("#vendorNamedeatail").html(defaultOpt);
+
+                    if (data && data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            var opt = `<option value="${data[i].vendorID}">
+                                                                                   ${data[i].vendorName}
+                                                                               </option>`;
+                            $("#vendorName").append(opt);
+                            $("#vendorNamedeatail").append(opt);
+                        }
+                    }
+
+
+                    $("#vendorName").select2({
+                        placeholder: "-- Select Customer Name --",
+                        allowClear: true,
+                        width: '100%'
+                    });
+
+                    $("#vendorNamedeatail").select2({
+                        placeholder: "-- Select Customer Name --",
+                        allowClear: true,
+                        width: '100%'
+                    });
+
+                    $("#vendorName").trigger('change');
+                    $("#vendorNamedeatail").trigger('change');
+                },
+                error: function () {
+                    alert('Error loading customer list.');
+                }
+            });
+        }
+        function setCurrentLoadingDate() {
+            var today = new Date();
+
+            var day = String(today.getDate()).padStart(2, '0');
+            var month = String(today.getMonth() + 1).padStart(2, '0');
+            var year = today.getFullYear();
+
+            var currentDate = year + '-' + month + '-' + day;
+
+            $('#txtLoadingDate').val(currentDate);
+        }
+        function loadFromStationDropdown() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DispatchEntry/GetStationDropdown")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                    var s = '<option value="">-- Select from Station --</option>';
+
+                    if (data && data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            s += `<option value="${data[i].cityId}">
+                                                     ${data[i].cityName}
+                                                    </option>`;
+                        }
+                    }
+
+                    $("#ddlStationID").html(s);
+                    $("#ddlStationID").select2({
+                        placeholder: "-- Select from Station --",
+                        allowClear: true,
+                        width: '100%'
+                    });
+
+                    $("#ddlStationID").trigger('change');
+                },
+                error: function () {
+                    alert('Error loading from station list.');
+                }
+            });
+        }
+        function loadToStationDropdown() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DispatchEntry/GetStationDropdown")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                    var s = '<option value="">-- Select To Station --</option>';
+
+                    if (data && data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            s += `<option value="${data[i].cityId}">
+                                                                                              ${data[i].cityName}
+                                                                                          </option>`;
+                        }
+                    }
+
+                    $("#ddltoStationID").html(s);
+
+                    $("#ddltoStationID").select2({
+                        placeholder: "-- Select To Station --",
+                        allowClear: true,
+                        width: '100%'
+                    });
+
+                    $("#ddltoStationID").trigger('change');
+                },
+                error: function () {
+                    alert('Error loading from station list.');
+                }
+            });
+        }
+        function loadFilterStationDropdown() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DispatchEntry/GetStationDropdown")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                    var s = '<option value="">-- Select from Station --</option>';
+
+                    if (data && data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            s += `<option value="${data[i].cityId}">
+                                                                                      ${data[i].cityName}
+                                                                                  </option>`;
+                        }
+                    }
+
+                    $("#ddlStations").html(s);
+
+                    $("#ddlStations").select2({
+                        placeholder: "-- Select from Station --",
+                        allowClear: true,
+                        width: '100%'
+                    });
+
+                    $("#ddlStations").trigger('change');
+                },
+                error: function () {
+                    alert('Error loading from station list.');
+                }
+            });
+        }
+        function loadBillTypeDropdown() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DispatchEntry/GetBillTypeDropdown")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                    var s = '<option value="">-- Select Bill Type --</option>';
+
+                    if (data && data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            s += `<option value="${data[i].billTypeId}">
+                                                                                      ${data[i].billTypeName}
+                                                                                  </option>`;
+                        }
+                    }
+
+                    $("#ddlBillType").html(s);
+
+                    $("#ddlBillType").select2({
+                        placeholder: "-- Select Bill Type --",
+                        allowClear: true,
+                        width: '100%'
+                    });
+
+                    $("#ddlBillType").trigger('change');
+                },
+                error: function () {
+                    alert('Error loading Bill Type');
+                }
+            });
+        }
+        function loadMaterailTypeDropdown() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DispatchEntry/GetMaterialTypeDropdown")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                    var defaultOpt = '<option value="">-- Select Material Type --</option>';
+                    $("#ddlMaterial").html(defaultOpt);
+                    $("#ddlMaterials").html(defaultOpt);
+
+                    if (data && data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            var opt = `<option value="${data[i].materiaId}">
+                                                                                           ${data[i].materialName}
+                                                                                       </option>`;
+                            $("#ddlMaterial").append(opt);
+                            $("#ddlMaterials").append(opt);
+                        }
+                    }
+                    $("#ddlMaterial").select2({
+                        placeholder: "-- Select Material Type --",
+                        allowClear: true,
+                        width: '100%'
+                    });
+
+                    $("#ddlMaterials").select2({
+                        placeholder: "-- Select Material Type --",
+                        allowClear: true,
+                        width: '100%'
+                    });
+
+                    $("#ddlMaterial").trigger('change');
+                    $("#ddlMaterials").trigger('change');
+                },
+                error: function () {
+                    alert('Error loading Material list.');
+                }
+            });
+        }
+        // $('table').on('change', 'td:nth-child(8), td:nth-child(9)', function () {
+        //     var updatedText = $(this).val().trim();
+        //     Swal.fire({
+        //         icon: 'success',
+        //         title: 'Updated!',
+        //         text: 'New value: ' + updatedText,
+        //         confirmButtonColor: '#2ecc71'
+        //     });
+        // });
+
+        $("#ddlState").on("change", function () {
+            getDistrictByStateId($(this).val());
+        });
+
+        $("#ddlDistrict").on("change", function () {
+            getCityByDisctrictId($(this).val());
+        });
+        $('#vendorName').on('change', function () {
+
+            var vendorId = $(this).val();
+            $('#ownother').empty();
+
+            if (!vendorId) return;
+
+            $.ajax({
+                url: '/DispatchEntry/GetVendorType',
+                type: 'GET',
+                data: { vendorId: vendorId },
+                success: function (data) {
+
+                    if (data && data.vendorType) {
+
+                        var vendorType = data.vendorType.trim();
+
+                        $('#ownother').append(
+                            `<option value="${vendorType}">${vendorType}</option>`
+                        );
+                        if (editOwnOtherValue) {
+                            $('#ownother').val(editOwnOtherValue);
+                            editOwnOtherValue = ''; // clear after use
+                        }
+                    }
+                },
+                error: function () {
+                    alert('Error loading Own / Other');
+                }
+            });
+        });
+
+
+        function calculateTotalFreight() {
+
+            var loadWeight = parseFloat($('#txtLoadWeight').val()) || 0;
+            var freightRate = parseFloat($('#txtFreightRate').val()) || 0;
+
+            var totalFreight = loadWeight * freightRate;
+
+            $('#txtTotalFreight').val(totalFreight.toFixed(2)); // 2 decimal
+        }
+        function calculateFreightForTally() {
+
+            var totalFreight = parseFloat($('#txtTotalFreight').val()) || 0;
+            var deduction = parseFloat($('#txtDeduction').val()) || 0;
+
+            var freightForTally = totalFreight - deduction;
+
+            // Prevent negative values
+            if (freightForTally < 0) {
+                freightForTally = 0;
+            }
+
+            $('#txtFreightForTally').val(freightForTally.toFixed(2));
+        }
+        function setDropDownStyle(ctrl) {
+            if ($(ctrl).val() === "0") {
+                $(ctrl).addClass('vaidationTextBoxError');
+            } else {
+                $(ctrl).removeClass('vaidationTextBoxError');
+            }
+        }
+
+        /* ================= ALL DROPDOWN BIND  ================= */
+        /* ================= VALIDATION ================= */
+        function checkValidation() {
+            let isValid = true;
+
+            $('#ddlState, #ddlDistrict, #ddlCity').each(function () {
+                if (!$(this).val() || $(this).val() === "0") {
+                    $(this).addClass('vaidationTextBoxError').focus();
+                    isValid = false;
+                    return false;
+                } else {
+                    $(this).removeClass('vaidationTextBoxError');
+                }
+            });
+
+            return isValid;
+        }
+
+        /* ================= SAVE EDTI CLEAR DISPATCH ================= */
+        // function editDispatchEntry(button, id) {
+        //     var isChecked = $('#dispatchEntryTable .chkRow[value="' + id + '"]').is(':checked');
+
+        //     if (isChecked) {
+        //         loadFullEditForm(id);   // full form edit
+        //     } else {
+        //         enableInlineEdit(id);   // inline edit (2 columns)
+        //         button.textContent = "Update";
+        //         button.classList.remove("btn-success");
+        //         button.classList.add("btn-primary");
+        //     }
+        // }
+
+        // function enableInlineEdit(id) {
+
+        //     var row = $('#dispatchEntryTable tbody tr').filter(function () {
+        //         return $(this).find('.chkRow').val() == id;
+        //     });
+
+        //     var unloadCell = row.find('td').eq(7);   // UnloadWeight
+        //     var freightCell = row.find('td').eq(8);  // FreightRate
+
+        //     var unloadVal = unloadCell.text().trim();
+        //     var freightVal = freightCell.text().trim();
+
+        //     unloadCell.html(`<input type="text" class="form-control unloadWeightInput" value="${unloadVal}" />`);
+        //     freightCell.html(`<input type="text" class="form-control freightRateInput" value="${freightVal}" />`);
+
+        //     row.find('.unloadWeightInput, .freightRateInput')
+        //         .off('blur')
+        //         .on('blur', function () {
+        //             saveInlineUpdate(id);
+        //         });
+        // }
+
+        function editDispatchEntry(button, id) {
+            var isChecked = $('#dispatchEntryTable .chkRow[value="' + id + '"]').is(':checked');
+
+            if (isChecked) {
+                loadFullEditForm(id);   // full form edit
+            }
+            else {
+                var row = $('#dispatchEntryTable tbody tr').filter(function () {
+                    return $(this).find('.chkRow').val() == id;
+                });
+
+                if (button.textContent === "Edit") {
+                    // --- Enable inline editing ---
+                    var unloadCell = row.find('td').eq(7);   // UnloadWeight
+                    var freightCell = row.find('td').eq(8);  // FreightRate
+
+                    var unloadVal = unloadCell.text().trim();
+                    var freightVal = freightCell.text().trim();
+
+                    unloadCell.html(`<input type="text" class="form-control unloadWeightInput" value="${unloadVal}" />`);
+                    freightCell.html(`<input type="text" class="form-control freightRateInput" value="${freightVal}" />`);
+
+                    button.textContent = "Update";
+                    button.classList.remove("btn-success");
+                    button.classList.add("btn-primary");
+                }
+                else if (button.textContent === "Update") {         
+                    // --- Save inline update ---
+                    saveInlineUpdate(id);
+
+                    // Reset button back to Edit
+                    button.textContent = "Edit";
+                    button.classList.remove("btn-primary");
+                    button.classList.add("btn-success");
+                }
+            }
+        }
+
+        $(document).on('input', '.freightRateInput', function () {
+
+            var row = $(this).closest('tr');
+            var freightRate = parseFloat($(this).val()) || 0;
+            var loadWeight = parseFloat(row.find('td').eq(9).text()) || 0;
+            var totalFreight = freightRate * loadWeight;
+            row.find('td').eq(10).text(totalFreight.toFixed(2));
+        });
+
+        function saveInlineUpdates(id) {
+
+            var row = $('#dispatchEntryTable tbody tr').filter(function () {
+                return $(this).find('.chkRow').val() == id;
+            });
+
+            var unloadWeight = row.find('.unloadWeightInput').val();
+            var freightRate = row.find('.freightRateInput').val();
+            var loadWeight = parseFloat(row.find('td').eq(9).text()) || 0;
+            var totalFreight = parseFloat(freightRate || 0) * loadWeight;
+
+            var model = {
+                ID: id,
+                UnloadWeight: unloadWeight,
+                FreightRate: freightRate,
+                TotalFreight: totalFreight,   
+                IsInlineUpdate: true
+            };
+
+            $.ajax({
+                url: '/DispatchEntry/SaveOrUpdateDispatch',
+                type: 'POST',
+                data: model,
+                success: function (res) {
+                    if (res.success) {
+
+                        // Replace inputs with text again
+                        row.find('td').eq(7).text(unloadWeight);
+                        row.find('td').eq(8).text(freightRate);
+                        row.find('td').eq(10).text(totalFreight.toFixed(2)); // ✅ update Total Frt
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Updated!',
+                            confirmButtonColor: '#2ecc71'
+                        });
+                    } else {
+                        alert(res.message);
+                    }
+                },
+                error: function () {
+                    alert('Inline update failed');
+                }
+            });
+        }
+
+        function saveInlineUpdate(id) {
+
+            var row = $('#dispatchEntryTable tbody tr').filter(function () {
+                return $(this).find('.chkRow').val() == id;
+            });
+
+            var unloadWeight = parseFloat(row.find('.unloadWeightInput').val()) || 0;
+            var freightRate = parseFloat(row.find('.freightRateInput').val()) || 0;
+            var loadWeight = parseFloat(row.find('td').eq(9).text()) || 0;
+
+            var shortage = loadWeight - unloadWeight;
+            if (shortage < 0) shortage = 0;
+            var totalFreight = freightRate * loadWeight;
+            var deduction = parseFloat($('#txtDeduction').val()) || 0;
+            var freightForTally = totalFreight - deduction;
+            if (freightForTally < 0) freightForTally = 0;
+
+            var model = {
+                ID: id,
+                UnloadWeight: unloadWeight,
+                FreightRate: freightRate,
+                Shortage: shortage,
+                TotalFreight: totalFreight,
+                Deduction: deduction,               
+                FreightForTally: freightForTally,   
+                IsInlineUpdate: true
+            };
+
+            $.ajax({
+                url: '/DispatchEntry/SaveOrUpdateDispatch',
+                type: 'POST',
+                data: model,
+                success: function (res) {
+                    if (res.success) {
+
+                        // ✅ GRID UPDATE (NO FreightForTally COLUMN SHOWN)
+                        row.find('td').eq(7).text(unloadWeight);
+                        row.find('td').eq(8).text(freightRate);
+                        row.find('td').eq(10).text(totalFreight.toFixed(2));
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Updated!',
+                            confirmButtonColor: '#2ecc71'
+                        });
+                    } else {
+                        alert(res.message);
+                    }
+                },
+                error: function () {
+                    alert('Inline update failed');
+                }
+            });
+        }
+
+        function loadFullEditForm(id) {
+
+            $.ajax({
+                url: '/DispatchEntry/GetDispatchById',
+                type: 'GET',
+                data: { id: id },
+                dataType: 'json',
+                success: function (data) {
+
+                    $('#hdnDispatchId').val(id);
+                    $('#vendorName').val(data.customerId).trigger('change');
+                    $('#ddlVehicleNo option').each(function () {
+                        if ($(this).text().trim() === data.vehicleNo.trim()) {
+                            $('#ddlVehicleNo').val($(this).val()).trigger('change');
+                            return false;
+                        }
+                    });
+                    $('#ddlStationID option').each(function () {
+                        if ($(this).text().trim() === data.fromStation.trim()) {
+                            $('#ddlStationID').val($(this).val()).trigger('change');
+                            return false;
+                        }
+                    });
+                    $('#ddltoStationID option').each(function () {
+                        if ($(this).text().trim() === data.toStation.trim()) {
+                            $('#ddltoStationID').val($(this).val()).trigger('change');
+                            return false;
+                        }
+                    });
+                    $('#ddlBillType option').each(function () {
+                        if ($(this).text().trim() === data.billType.trim()) {
+                            $('#ddlBillType').val($(this).val()).trigger('change');
+                            return false;
+                        }
+                    });
+                    $('#ddlMaterial option').each(function () {
+                        if ($(this).text().trim() === data.material.trim()) {
+                            $('#ddlMaterial').val($(this).val()).trigger('change');
+                            return false;
+                        }
+                    });
+                    editOwnOtherValue = data.ownothertype;
+                    $('#ddlDriver').val(data.driverId).trigger('change');
+                    $('#txtLoadingDate').val(data.loadingDate?.split('T')[0]);
+                    $('#txtLRNo').val(data.lrNo);
+                    // $('#txtBillNo').val(data.billNo);
+                    $('#txtBillNo').val(data.billNo).prop('readonly', false);
+                    $('#txtLoadWeight').val(data.loadWeight);
+                    $('#txtUnloadWeight').val(data.unloadWeight);
+                    $('#txtShortage').val(data.shortage);
+                    $('#txtFreightRate').val(data.freightRate);
+                    $('#txtTotalFreight').val(data.totalFreight);
+                    $('#txtDeduction').val(data.deduction);
+                    $('#txtFreightForTally').val(data.freightForTally);
+                    $('#txtRemarks').val(data.remarks);
+                    $('#txtInvoiceNo').val(data.invoiceNo);
+                    $('#txtShipmentNo').val(data.shipmentNo);
+                    $('#txtDeliveryNo').val(data.deliveryNo);
+                    $('#txtTradeNT').val(data.tradeNT);
+                    $('#txtOther1').val(data.other1);
+                    $('#txtOther2').val(data.other2);
+
+                }
+            });
+        }
+        //================old============================
+
+        function saveOrUpdateDispatch() {
+
+            function t(val) {
+                return val ? $.trim(val) : '';
+            }
+
+            // Validation function
+            function validateControls() {
+                let isValid = true;
+                let invalidFields = []; // ✅ Collect invalid field names
+
+                // Reset all borders first
+                $('input, select').css('border', '');
+
+                // Vehicle No
+                if ($('#ddlVehicleNo').val() === '' || $('#ddlVehicleNo').val() === null) {
+                    $('#ddlVehicleNo').css('border', '2px solid red');
+                    isValid = false;
+                    invalidFields.push('Vehicle No');
+                }
+
+                // OwnOtherType
+                if ($('#ownother').val() === '' || $('#ownother').val() === null) {
+                    $('#ownother').css('border', '2px solid red');
+                    isValid = false;
+                    invalidFields.push('Own/Other Type');
+                }
+
+                // BillType
+                if ($('#ddlBillType').val() === '' || $('#ddlBillType').val() === null) {
+                    $('#ddlBillType').css('border', '2px solid red');
+                    isValid = false;
+                    invalidFields.push('Bill Type');
+                }
+
+                // LoadingDate
+                if ($('#txtLoadingDate').val().trim() === '') {
+                    $('#txtLoadingDate').css('border', '2px solid red');
+                    isValid = false;
+                    invalidFields.push('Loading Date');
+                }
+
+                // LRNo
+                if ($('#txtLRNo').val().trim() === '') {
+                    $('#txtLRNo').css('border', '2px solid red');
+                    isValid = false;
+                    invalidFields.push('LR No');
+                }
+
+                // CustomerId
+                if ($('#vendorName').val() === '' || $('#vendorName').val() === null) {
+                    $('#vendorName').css('border', '2px solid red');
+                    isValid = false;
+                    invalidFields.push('Customer');
+                }
+
+                // BillNo
+                if ($('#txtBillNo').val().trim() === '') {
+                    $('#txtBillNo').css('border', '2px solid red');
+                    isValid = false;
+                    invalidFields.push('Bill No');
+                }
+
+                // DriverId
+                if ($('#ddlDriver').val() === '' || $('#ddlDriver').val() === null) {
+                    $('#ddlDriver').css('border', '2px solid red');
+                    isValid = false;
+                    invalidFields.push('Driver');
+                }
+
+                // FromStation
+                if ($('#ddlStationID').val() === '' || $('#ddlStationID').val() === null) {
+                    $('#ddlStationID').css('border', '2px solid red');
+                    isValid = false;
+                    invalidFields.push('From Station');
+                }
+
+                // ToStation
+                if ($('#ddltoStationID').val() === '' || $('#ddltoStationID').val() === null) {
+                    $('#ddltoStationID').css('border', '2px solid red');
+                    isValid = false;
+                    invalidFields.push('To Station');
+                }
+
+                // Material
+                if ($('#ddlMaterial').val() === '' || $('#ddlMaterial').val() === null) {
+                    $('#ddlMaterial').css('border', '2px solid red');
+                    isValid = false;
+                    invalidFields.push('Material');
+                }
+
+                // LoadWeight
+                if ($('#txtLoadWeight').val().trim() === '') {
+                    $('#txtLoadWeight').css('border', '2px solid red');
+                    isValid = false;
+                    invalidFields.push('Load Weight');
+                }
+
+                // UnloadWeight
+                if ($('#txtUnloadWeight').val().trim() === '') {
+                    $('#txtUnloadWeight').css('border', '2px solid red');
+                    isValid = false;
+                    invalidFields.push('Unload Weight');
+                }
+
+                // FreightRate
+                if ($('#txtFreightRate').val().trim() === '') {
+                    $('#txtFreightRate').css('border', '2px solid red');
+                    isValid = false;
+                    invalidFields.push('Freight Rate');
+                }
+
+                // Show alert if invalid
+                if (!isValid) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Validation Error',
+                        html: 'Please fill all required fields:<br><b>' + invalidFields.join(', ') + '</b>'
+                    });
+                }
+
+                return isValid;
+            }
+
+            // Run validation before AJAX
+            if (!validateControls()) {
+                return; // stop execution if invalid
+            }
+
+            // Prepare model (existing logic, no changes)
+            var model = {
+                ID: $('#hdnDispatchId').val() || 0,
+                VehicleNo: t($('#ddlVehicleNo option:selected').text()),
+                OwnOtherType: t($('#ownother option:selected').text()),
+                BillType: t($('#ddlBillType option:selected').text()),
+                LoadingDate: $('#txtLoadingDate').val(),
+                LRNo: t($('#txtLRNo').val()),
+                CustomerId: $('#vendorName').val(),
+                BillNo: t($('#txtBillNo').val()),
+                DriverId: $('#ddlDriver').val(),
+                FromStation: t($('#ddlStationID option:selected').text()),
+                ToStation: t($('#ddltoStationID option:selected').text()),
+                Material: t($('#ddlMaterial option:selected').text()),
+                LoadWeight: $('#txtLoadWeight').val(),
+                UnloadWeight: $('#txtUnloadWeight').val(),
+                Shortage: $('#txtShortage').val(),
+                FreightRate: $('#txtFreightRate').val(),
+                TotalFreight: $('#txtTotalFreight').val(),
+                Deduction: $('#txtDeduction').val(),
+                FreightForTally: $('#txtFreightForTally').val(),
+                Remarks: $('#txtRemarks').val(),
+                InvoiceNo: $('#txtInvoiceNo').val(),
+                ShipmentNo: $('#txtShipmentNo').val() || 0,
+                DeliveryNo: $('#txtDeliveryNo').val() || 0,
+                TradeNT: $('#txtTradeNT').val(),
+                Other1: $('#txtOther1').val(),
+                Other2: $('#txtOther2').val()
+            };
+
+            $.ajax({
+                url: '/DispatchEntry/SaveOrUpdateDispatch',
+                type: 'POST',
+                data: model,
+                success: function (res) {
+                    if (res.success) {
+                        showSuccessPopup('Save Dispatch!', res.message || 'Dispatch saved successfully!');
+                        clearDispatchForm();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: res.message || 'Something went wrong'
+                        });
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Server Error',
+                        text: 'Please try again later'
+                    });
+                }
+            });
+        }
+        function getDispatchEntryByDate() {
+
+            var startDate = $('#txtStartDate').val();
+            var endDate = $('#txtEndDate').val();
+            var vehicleNoText = $('#ddlVehicleNos option:selected').text().trim();
+            var materialText = $('#ddlMaterials option:selected').text().trim();
+            var stationText = $('#ddlStations option:selected').text().trim();
+            var customerIdtext = $('#vendorNamedeatail').val();
+            var stateText = $('#ddlState option:selected').text().trim();
+            var districtText = $('#ddlDistrict option:selected').text().trim();
+
+            var material = materialText === "-- Select Material Type --" ? null : materialText;
+            var vehicleNo = vehicleNoText === "Select a Vehicle" ? null : vehicleNoText;
+            var customerId = customerIdtext === "-- Select Customer Name --" ? null : customerIdtext;
+            var station = stationText === "-- Select from Station --" ? null : stationText;
+            var state = stateText === "Select a State" ? null : stateText;
+            var district = districtText === "Select a State" ? null : districtText;
+
+            $.ajax({
+                url: '@(utilityHelper.SiteUrl() + "DispatchEntry/GetDispatchByDateRange")',
+                type: "GET",
+                data: {
+                    vehicleno: vehicleNo,
+                    material: material,
+                    customerId: customerId,
+                    startDate: startDate,
+                    endDate: endDate,
+                    station: station,
+                    state: state,
+                    district: district
+                },
+                dataType: "json",
+                success: function (data) {
+
+                    dispatchTable.clear();
+
+                    if (data && data.length > 0) {
+                        $.each(data, function (i, item) {
+
+                            dispatchTable.row.add([
+                                '<input type="checkbox" class="chkRow" value="' + item.id + '" />',
+                                item.lrNo,
+                                item.loadingDate ?? '',
+                                item.vehicleNo,
+                                item.material,
+                                item.fromStation,
+                                item.toStation,
+                                item.unloadWeight,
+                                item.freightRate,
+                                item.loadWeight,
+                                item.totalFreight,
+                                `
+                                                                        <button type="button" class="btn btn-success btn-sm"
+                                                                                        onclick="editDispatchEntry(this,'${item.id}')">Edit</button>
+
+                                                                        <button type="button" class="btn btn-danger btn-sm ms-1"
+                                                                                onclick="deleteDispatchEntry('${item.id}')">Delete</button>
+                                                                        `
+                            ]);
+                        });
+                    }
+
+                    dispatchTable.draw();
+                },
+                error: function () {
+                    alert("Error loading data");
+                }
+            });
+        }
+
+        function clearDispatchForm() {
+            $('#hdnDispatchId').val('');
+            $('#ddlVehicleNo').val('').trigger('change');
+            $('#vendorName').val('').trigger('change');
+            $('#ownother').empty(); // if dynamically filled
+            $('#ddlBillType').val('').trigger('change');
+            $('#ddlDriver').val('').trigger('change');
+            $('#ddlStationID').val('').trigger('change');
+            $('#ddltoStationID').val('').trigger('change');
+            $('#ddlMaterial').val('').trigger('change');
+            $('#txtLoadingDate').val('');
+            $('#txtLRNo').val('');
+            $('#txtBillNo').val('');
+            $('#txtLoadWeight').val('');
+            $('#txtUnloadWeight').val('');
+            $('#txtShortage').val('');
+            $('#txtFreightRate').val('');
+            $('#txtDeduction').val('');
+            $('#txtRemarks').val('');
+            $('#txtInvoiceNo').val('');
+            $('#txtShipmentNo').val('');
+            $('#txtDeliveryNo').val('');
+            $('#txtTradeNT').val('');
+            $('#txtOther1').val('');
+            $('#txtOther2').val('');
+
+            $('#txtTotalFreight').val('');
+            $('#txtFreightForTally').val('');
+
+            setCurrentLoadingDate();
+            $('#txtBillNo').prop('readonly', true);
+            loadNextBillNo();
+        }
+
+        /* ================= SAVE DISPATCH END ================= */
+        function setOwnOtherAfterLoad(value) {
+
+            if (!value) return;
+
+            var interval = setInterval(function () {
+
+                if ($('#ownother option').length > 1) {
+
+                    $('#ownother option').each(function () {
+                        if ($(this).text().trim() === value.trim()) {
+                            $(this).prop('selected', true);
+                            clearInterval(interval);
+                            return false;
+                        }
+                    });
+
+                }
+
+            }, 200);
+        }
+
+        function deleteDispatchEntry(id) {
+            Swal.fire({
+                title: 'Delete Dispatch!',
+                text: 'Are you sure you want to delete this dispatch record?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Delete',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#e74c3c', // red
+                cancelButtonColor: '#95a5a6'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/DispatchEntry/DeleteDispatch',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (res) {
+                            if (res.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Deleted!',
+                                    text: res.message || 'Dispatch deleted successfully.',
+                                    confirmButtonColor: '#2ecc71'
+                                }).then(() => {
+                                    getDispatchEntryByDate(); // reload grid
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Delete Failed',
+                                    text: res.message || 'Unable to delete record.'
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Server Error',
+                                text: 'Please try again later.'
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+
+        function normalizeText(text) {
+            if (!text) return '';
+            return text
+                .replace(/\u00A0/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        $.fn.select2.defaults.defaults.matcher = function (params, data) {
+
+            if ($.trim(params.term) === '') {
+                return data;
+            }
+
+            if (!data.text) {
+                return null;
+            }
+
+            var searchText = normalizeText(params.term).toLowerCase();
+            var optionText = normalizeText(data.text).toLowerCase();
+
+            if (optionText.indexOf(searchText) > -1) {
+                return data;
+            }
+
+            return null;
+        };
+
+        $('#ddlVehicleNo').on('change', function () {
+
+            var selectedText = $('#ddlVehicleNo option:selected').text().trim();
+            $('#ddlVehicleNos option').each(function () {
+                if ($(this).text().trim() === selectedText) {
+                    $('#ddlVehicleNos').val($(this).val()).trigger('change');
+                    return false;
+                }
+            });
+            getDispatchEntryByDate();
+        });
+
+        $('#ddlVehicleNos').on('change', function () {
+            getDispatchEntryByDate();
+        });
+        function showSuccessPopup(title, message) {
+            Swal.fire({
+                title: title,
+                text: message,
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2ecc71',
+                width: '338px',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2ecc71',
+                iconColor: '#9be39b',
+                buttonsStyling: true,
+                customClass: {
+                    popup: 'custom-swal-popup'
+                }
+            });
+
+        }
+        function loadNextBillNo() {
+            $.ajax({
+                url: '/DispatchEntry/GetNextBillNo',
+                type: 'GET',
+                success: function (res) {
+                    if (res.success) {
+                        $('#txtBillNo').val(res.billNo);
+                    }
+                }
+            });
+        }
+
+    </script>
+
+
+
+}

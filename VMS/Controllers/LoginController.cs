@@ -41,13 +41,31 @@ namespace VMS.Controllers
             return View();
         }
 
-        [HttpPost]
+        // added this block on 3-Mar-2026
+  /*      [HttpPost]
         public JsonResult ValidateUser(string userName, string password)
         {
             VMLogin userDetails = utilityHelper.validateUserAndStoreSession(userName.Trim(), password.Trim());
             return Json(userDetails);
         }
+  */
+         // End Block
 
+        // added this block on 3-Mar-2026
+        [HttpPost]
+        public JsonResult ValidateUser(string userName, string password)
+        {
+            VMLogin userDetails = utilityHelper.validateUserAndStoreSession(userName.Trim(), password.Trim());
+
+            if (userDetails != null)
+            {
+                HttpContext.Session.SetString("UserId", userDetails.UserId.ToString());
+            }
+
+            return Json(userDetails);
+        }
+
+        //
         [HttpPost]
         public ActionResult ChangePasswordRequest(string newPassword)
         {

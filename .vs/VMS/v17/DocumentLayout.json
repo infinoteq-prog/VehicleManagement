@@ -1,0 +1,253 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|d:\\madan\\github\\vms\\vehiclemanagement\\vms\\views\\driverprofile\\driverprofile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|solutionrelative:vms\\views\\driverprofile\\driverprofile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|d:\\madan\\github\\vms\\vehiclemanagement\\vms\\views\\challanentry\\challanentry.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|solutionrelative:vms\\views\\challanentry\\challanentry.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|d:\\madan\\github\\vms\\vehiclemanagement\\vms\\controllers\\challanentrycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\challanentrycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|d:\\madan\\github\\vms\\vehiclemanagement\\vms\\controllers\\driverprofilecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\driverprofilecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|d:\\madan\\github\\vms\\vehiclemanagement\\vms\\views\\shared\\_sidebar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|solutionrelative:vms\\views\\shared\\_sidebar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|d:\\madan\\github\\vms\\vehiclemanagement\\vms\\viewmodel\\vmdriverprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|solutionrelative:vms\\viewmodel\\vmdriverprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|d:\\madan\\github\\vms\\vehiclemanagement\\vms\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|solutionrelative:vms\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|d:\\madan\\github\\vms\\vehiclemanagement\\vms\\controllers\\drivermastercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\drivermastercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|d:\\madan\\github\\vms\\vehiclemanagement\\vms\\views\\vehiclemaster\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|solutionrelative:vms\\views\\vehiclemaster\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|d:\\madan\\github\\vms\\vehiclemanagement\\vms\\controllers\\vehiclemastercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\vehiclemastercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|d:\\madan\\github\\vms\\vehiclemanagement\\vms\\viewmodel\\vmdrivermaster.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|solutionrelative:vms\\viewmodel\\vmdrivermaster.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|d:\\madan\\github\\vms\\vehiclemanagement\\vms\\models\\tbldrivermaster.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|solutionrelative:vms\\models\\tbldrivermaster.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|d:\\madan\\github\\vms\\vehiclemanagement\\vms\\views\\drivermaster\\list.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|solutionrelative:vms\\views\\drivermaster\\list.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|d:\\madan\\github\\vms\\vehiclemanagement\\vms\\views\\drivermaster\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AD7D5B35-6B0C-4F7A-9956-6FF6F38ED980}|VMS\\VMS.csproj|solutionrelative:vms\\views\\drivermaster\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ChallanEntry.cshtml",
+              "DocumentMoniker": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Views\\ChallanEntry\\ChallanEntry.cshtml",
+              "RelativeDocumentMoniker": "VMS\\Views\\ChallanEntry\\ChallanEntry.cshtml",
+              "ToolTip": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Views\\ChallanEntry\\ChallanEntry.cshtml",
+              "RelativeToolTip": "VMS\\Views\\ChallanEntry\\ChallanEntry.cshtml",
+              "ViewState": "AgIAAHICAAAAAAAAAAAwwAoAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-03T16:41:18.613Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ChallanEntryController.cs",
+              "DocumentMoniker": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Controllers\\ChallanEntryController.cs",
+              "RelativeDocumentMoniker": "VMS\\Controllers\\ChallanEntryController.cs",
+              "ToolTip": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Controllers\\ChallanEntryController.cs",
+              "RelativeToolTip": "VMS\\Controllers\\ChallanEntryController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-03T16:40:34.875Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "_sidebar.cshtml",
+              "DocumentMoniker": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Views\\Shared\\_sidebar.cshtml",
+              "RelativeDocumentMoniker": "VMS\\Views\\Shared\\_sidebar.cshtml",
+              "ToolTip": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Views\\Shared\\_sidebar.cshtml",
+              "RelativeToolTip": "VMS\\Views\\Shared\\_sidebar.cshtml",
+              "ViewState": "AgIAAAcAAAAAAAAAAIAzwA4AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-03T09:31:13.287Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\appsettings.json",
+              "RelativeDocumentMoniker": "VMS\\appsettings.json",
+              "ToolTip": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\appsettings.json",
+              "RelativeToolTip": "VMS\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-01T07:22:07.78Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DriverProfileController.cs",
+              "DocumentMoniker": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Controllers\\DriverProfileController.cs",
+              "RelativeDocumentMoniker": "VMS\\Controllers\\DriverProfileController.cs",
+              "ToolTip": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Controllers\\DriverProfileController.cs",
+              "RelativeToolTip": "VMS\\Controllers\\DriverProfileController.cs",
+              "ViewState": "AgIAAOUAAAAAAAAAAAAiwOoAAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-30T18:33:06.531Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DriverProfile.cshtml",
+              "DocumentMoniker": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Views\\DriverProfile\\DriverProfile.cshtml",
+              "RelativeDocumentMoniker": "VMS\\Views\\DriverProfile\\DriverProfile.cshtml",
+              "ToolTip": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Views\\DriverProfile\\DriverProfile.cshtml",
+              "RelativeToolTip": "VMS\\Views\\DriverProfile\\DriverProfile.cshtml",
+              "ViewState": "AgIAADAAAAAAAAAAAAAAADcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-30T18:29:01.323Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "VMDriverProfile.cs",
+              "DocumentMoniker": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\ViewModel\\VMDriverProfile.cs",
+              "RelativeDocumentMoniker": "VMS\\ViewModel\\VMDriverProfile.cs",
+              "ToolTip": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\ViewModel\\VMDriverProfile.cs",
+              "RelativeToolTip": "VMS\\ViewModel\\VMDriverProfile.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAAAkwC0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-30T17:29:01.515Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Views\\VehicleMaster\\Index.cshtml",
+              "RelativeDocumentMoniker": "VMS\\Views\\VehicleMaster\\Index.cshtml",
+              "ToolTip": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Views\\VehicleMaster\\Index.cshtml",
+              "RelativeToolTip": "VMS\\Views\\VehicleMaster\\Index.cshtml",
+              "ViewState": "AgIAAOgEAAAAAAAAAAArwPUEAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-30T06:44:22.204Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "VehicleMasterController.cs",
+              "DocumentMoniker": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Controllers\\VehicleMasterController.cs",
+              "RelativeDocumentMoniker": "VMS\\Controllers\\VehicleMasterController.cs",
+              "ToolTip": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Controllers\\VehicleMasterController.cs",
+              "RelativeToolTip": "VMS\\Controllers\\VehicleMasterController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAMYAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-30T06:41:07.129Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "TblDriverMaster.cs",
+              "DocumentMoniker": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Models\\TblDriverMaster.cs",
+              "RelativeDocumentMoniker": "VMS\\Models\\TblDriverMaster.cs",
+              "ToolTip": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Models\\TblDriverMaster.cs",
+              "RelativeToolTip": "VMS\\Models\\TblDriverMaster.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAA5wFMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T16:52:36.073Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Views\\DriverMaster\\Details.cshtml",
+              "RelativeDocumentMoniker": "VMS\\Views\\DriverMaster\\Details.cshtml",
+              "ToolTip": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Views\\DriverMaster\\Details.cshtml",
+              "RelativeToolTip": "VMS\\Views\\DriverMaster\\Details.cshtml",
+              "ViewState": "AgIAANoBAAAAAAAAAAAAAN8BAABPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-26T12:19:36.759Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "VMDriverMaster.cs",
+              "DocumentMoniker": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\ViewModel\\VMDriverMaster.cs",
+              "RelativeDocumentMoniker": "VMS\\ViewModel\\VMDriverMaster.cs",
+              "ToolTip": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\ViewModel\\VMDriverMaster.cs",
+              "RelativeToolTip": "VMS\\ViewModel\\VMDriverMaster.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAAAqwD0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T12:04:51.374Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "List.cshtml",
+              "DocumentMoniker": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Views\\DriverMaster\\List.cshtml",
+              "RelativeDocumentMoniker": "VMS\\Views\\DriverMaster\\List.cshtml",
+              "ToolTip": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Views\\DriverMaster\\List.cshtml",
+              "RelativeToolTip": "VMS\\Views\\DriverMaster\\List.cshtml",
+              "ViewState": "AgIAAC0BAAAAAAAAAAAowDcBAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-26T11:48:08.186Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DriverMasterController.cs",
+              "DocumentMoniker": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Controllers\\DriverMasterController.cs",
+              "RelativeDocumentMoniker": "VMS\\Controllers\\DriverMasterController.cs",
+              "ToolTip": "D:\\Madan\\GitHub\\VMS\\VehicleManagement\\VMS\\Controllers\\DriverMasterController.cs",
+              "RelativeToolTip": "VMS\\Controllers\\DriverMasterController.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAhwE0BAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T11:47:48.733Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

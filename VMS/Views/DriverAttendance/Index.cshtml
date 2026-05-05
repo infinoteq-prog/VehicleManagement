@@ -1,0 +1,119 @@
+﻿@{
+    ViewData["Title"] = "DriverAttendance List";
+}
+
+<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css" rel="stylesheet" />
+<style>
+    table.dataTable thead th {
+        background-color: #6c2eb9;
+        color: white;
+        text-align: center;
+    }
+
+    .dataTables_wrapper .dt-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 0px;
+    }
+
+    .dataTables_filter {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+</style>
+<div class="container mb-4">
+    <div class="card shadow p-4">
+        <h3 class="mb-3">Driver Attendance </h3>
+
+        <table id="DriverChangeTable" class="display nowrap table table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Actions</th>
+                    <th>ID</th>
+                    <th>VehicleNo</th>
+                    <th>DriverID</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Salary</th>
+                    <th>SalaryType</th>
+                    <th>Remarks</th>
+                    
+                 @*    <th>Created By</th>
+                    <th>Created Date</th> *@
+                    <th>IsActive</th>
+                   @*  <th>Updated By</th>
+                    <th>Updated Date</th> *@
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#DriverAttendanceTable').DataTable({
+            ajax: {
+                url: '@Url.Action("GetAllDriverAttendanceEntries", "DriverAttendance")',
+                dataSrc: 'data'
+            },
+            columns: [
+                {
+                    data: null,
+                    render: function (data) {
+                        return `
+                                    <button class="btn btn-sm btn-danger delete-btn ms-2" data-id="${data.DriverChangeID}">Delete</button>
+                                `;
+                    },
+                    orderable: false
+                },
+                { data: 'DriverChangeID' },
+                { data: 'VehicleNo' },
+                { data: 'DriverID' },
+                { data: 'ChangeDae' },
+                { data: 'EndDate' },
+                { data: 'status' },
+                { data: 'salary' },
+                { data: 'salaryType' },
+                { data: 'remarks' },
+                
+                { data: '' },
+                // { data: 'created_By' },
+                // { data: 'createdDate' },
+                { data: 'isActive' },
+                // { data: 'updatedBy' },
+                // { data: 'updatedDate' }
+            ],
+            dom: 'Bfrtip',
+            buttons: ['copy', 'excel', 'pdf', 'print'],
+            scrollX: true,
+            pageLength: 10
+        });
+    
+        $('#DriverAttendanceTable').on('click', '.edit-btn', function () {
+            var id = $(this).data('id');
+            window.location.href = '@Url.Action("Create", "DriverAttendance")' + '?id=' + id;
+        });
+
+        $('#DriverAttendanceTable').on('click', '.delete-btn', function () {
+            var id = $(this).data('id');
+            if (confirm("Are you sure you want to delete this Entry?")) {
+                $.post('@Url.Action("DeleteDriverAttendance", "DriverAttendance")', { id: id }, function (res) {
+                    if (res.success) {
+                        alert(res.message);
+                        table.ajax.reload(null, false);
+                    }
+                });
+            }
+        });
+    });
+</script>

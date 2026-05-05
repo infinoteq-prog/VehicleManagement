@@ -129,6 +129,7 @@ namespace VMS.Controllers
                     {
                         model.RouteID = Convert.ToInt32(rdr["RouteID"]);
                         model.RouteName = rdr["RouteName"].ToString();
+                        model.RouteExpAmt = rdr.GetDecimal("RouteExpAmt").To2Decimal();
                         model.Status = rdr["Status"].ToString();
                     }
                 }
@@ -148,7 +149,8 @@ namespace VMS.Controllers
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@RouteID", model.RouteID == 0 ? DBNull.Value : model.RouteID);
                 cmd.Parameters.AddWithValue("@RouteName", model.RouteName);
-                cmd.Parameters.AddWithValue("@Status", model.Status);
+                cmd.Parameters.AddWithValue("@RouteExpAmt", model.RouteExpAmt);
+                cmd.Parameters.AddWithValue("@Status", model.Status );
                 cmd.Parameters.AddWithValue("@CreatedBy", User.Identity?.Name ?? "Admin");
                 con.Open();
                 cmd.ExecuteNonQuery();
@@ -169,17 +171,19 @@ namespace VMS.Controllers
                 SqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
-                    routes.Add(new RouteModel
-                    {
-                        RouteID = Convert.ToInt32(rdr["RouteID"]),
-                        RouteName = rdr["RouteName"].ToString(),
-                        Status = rdr["Status"].ToString(),
-                        IsActive = Convert.ToBoolean(rdr["IsActive"]),
-                        CreatedBy = rdr["CreatedBy"].ToString(),
-                        CreatedDate = rdr["CreatedDate"] as DateTime?,
-                        UpdatedBy = rdr["UpdatedBy"].ToString(),
-                        UpdatedDate = rdr["UpdatedDate"] as DateTime?
-                    });
+                    RouteModel model = new RouteModel();
+
+                    model.RouteID = rdr["RouteID"] == DBNull.Value ? 0 : Convert.ToInt32(rdr["RouteID"]);
+                    model.RouteName = rdr["RouteName"] == DBNull.Value ? "" : rdr["RouteName"].ToString();
+                    model.Status = rdr["Status"] == DBNull.Value ? "" : rdr["Status"].ToString();
+                    model.IsActive = rdr["IsActive"] == DBNull.Value ? false : Convert.ToBoolean(rdr["IsActive"]);
+                    model.CreatedBy = rdr["CreatedBy"] == DBNull.Value ? "" : rdr["CreatedBy"].ToString();
+                    model.CreatedDate = rdr["CreatedDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(rdr["CreatedDate"]);
+                    model.UpdatedBy = rdr["UpdatedBy"] == DBNull.Value ? "" : rdr["UpdatedBy"].ToString();
+                    model.UpdatedDate = rdr["UpdatedDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(rdr["UpdatedDate"]);
+                    model.RouteExpAmt = rdr["RouteExpAmt"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(rdr["RouteExpAmt"]);
+
+                    routes.Add(model);
                 }
             }
             return Json(new { data = routes });

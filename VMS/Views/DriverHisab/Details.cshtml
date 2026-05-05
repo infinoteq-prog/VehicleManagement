@@ -181,6 +181,15 @@
                                             </div>
                                         </div>
                                     </div>
+                                  @*   <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="txtRouteName">Route Name:<span class="reqFields">*</span></label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" id="ddlRouteName" readonly="readonly" name="ddlRouteName"></select>
+
+                                            </div>
+                                        </div>
+                                    </div> *@
                                 </div>
                             </div>
 
@@ -283,11 +292,14 @@
         $(document).ready(function () {
             $('#ddlVehicleNo').select2();
             $('#ddlDriver').select2();
+            // $('#ddlRouteName').select2();
             setSideMenu("diesel-hisab-master");
             if (fullAccess === "True" || viewAccess === "True") {
                 getVehicleNumber();
                 getDriverMaster();
+                // getRouteNameMaster();
                 makeFieldsReadOnly();
+
                 var settlementId = GetParameterValues('settlementId');
                 getDriverHisabById(settlementId);
             }
@@ -366,9 +378,10 @@
                         $("#txtClosingAmount").val(data.closingBalance);
                         $("#txtWeight").val(data.weight);
                         $("#txtTripDescription").val(data.tripRouteDescr);
+                        // bindRouteByText(data.tripRouteDescr);
                         $("#txtRemarks").val(data.remarks);
 
-                        // Bind the expense list table
+                        
                         var expenseTableBody = $("#expenseListTable tbody");
                         expenseTableBody.empty(); // Clear any existing rows
 
@@ -396,7 +409,20 @@
                 }
             });
         }
+        //   function bindRouteByText(routeText) {
+        //     if (!routeText) return;
 
+        //     let interval = setInterval(function () {
+        //         if ($("#ddlRouteName option").length > 1) {
+        //             $("#ddlRouteName option").each(function () {
+        //                 if ($.trim($(this).text()) === $.trim(routeText)) {
+        //                     $("#ddlRouteName").val($(this).val()).trigger("change");
+        //                     clearInterval(interval);
+        //                 }
+        //             });
+        //         }
+        //     }, 200);
+        // }
         function downloadExcel() {
             var settlementId = GetParameterValues('settlementId');
             if (settlementId) {
@@ -405,5 +431,24 @@
                 alert("No Settlement ID found to download Excel.");
             }
         }
+        // function bindRouteByText(routeText) {
+        //     if (!routeText) return;
+
+        //     let interval = setInterval(function () {
+        //         if ($("#ddlRouteName option").length > 1) {
+
+        //             $("#ddlRouteName option").each(function () {
+        //                 if ($.trim($(this).text()) === $.trim(routeText)) {
+        //                     $("#ddlRouteName")
+        //                         .val($(this).val())
+        //                         .trigger("change");
+
+        //                     clearInterval(interval);
+        //                 }
+        //             });
+        //         }
+        //     }, 200);
+        // }
+
     </script>
 }

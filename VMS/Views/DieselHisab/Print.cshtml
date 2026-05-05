@@ -14,7 +14,7 @@
     table {
         width: 100%;
         border-collapse: collapse;
-       table-layout: fixed; 
+        table-layout: fixed;
     }
 
     table, th, td {
@@ -31,10 +31,10 @@
         font-weight: normal;
     }
 
-     th span[id^="xFillingDate"] { /* Target the date spans */
-         font-size: 0.85em; /* Reduce font size (adjust as needed) */
-         white-space: nowrap; /* Prevent text from wrapping */
-     }
+        th span[id^="xFillingDate"] { /* Target the date spans */
+            font-size: 0.85em; /* Reduce font size (adjust as needed) */
+            white-space: nowrap; /* Prevent text from wrapping */
+        }
 
     .print-button {
         position: absolute;
@@ -82,19 +82,19 @@
     <h1 id="labelDiesalHisab">Diesal Hisab</h1>
     <table>
         <thead>
-             <tr>
+            <tr>
                 <th colspan="4" style="text-align:left">
                     Driver Name:
                     <span id="driverName"></span>
                 </th>
-                
+
                 <th colspan="2" style="text-align:left">A/c No: <span id="driverAccountNumber"></span></th>
                 <th colspan="4" style="text-align:left">Date Trip Start: <span id="tripStartDate"></span></th>
                 <th colspan="3" style="text-align:left">Date Trip End: <span id="tripEndDate"></span></th>
                 <th colspan="2" style="text-align:left">Truck No: <span id="vehicleNumber"></span></th>
             </tr>
             <tr>
-                <th colspan="13" style="text-align:left" id="note"><p>Previous Remark: </p> </th>                
+                <th colspan="13" style="text-align:left" id="note"><p>Previous Remark: </p> </th>
                 <th colspan="2" style="text-align:left;">Sr No:<span id="srNo"></span></th>
                 @* <th colspan="2"></th> *@
             </tr>
@@ -123,7 +123,7 @@
             </tr>
             <tr>
                 <th><span id="xFillingDate0"></span></th>
-                <th colspan ="3"><span id="xFillingPumpName0"></span></th>
+                <th colspan="3"><span id="xFillingPumpName0"></span></th>
                 @* <th></th>
                 <th></th> *@
                 <th><span id="xFillingQty0"></span></th>
@@ -140,7 +140,7 @@
             <tr>
                 <th><span id="xFillingDate1"></span></th>
                 <th colspan="3"><span id="xFillingPumpName1"></span></th>
-               @*  <th></th>
+                @*  <th></th>
                 <th></th> *@
                 <th><span id="xFillingQty1"></span></th>
                 <th></th>
@@ -169,10 +169,11 @@
                 <th colspan="2"></th>
                 <th></th>
             </tr>
+
             <tr>
                 <th><span id="xFillingDate3"></span></th>
                 <th colspan="3"><span id="xFillingPumpName3"></span></th>
-               @*<th></th>
+                @*<th></th>
                 <th></th> *@
                 <th><span id="xFillingQty3"></span></th>
                 <th></th>
@@ -194,7 +195,7 @@
                 <th colspan="4" style="text-align:left">TOTAL DIESEL FOR CALCULATE AVERAGE (a) </th>
                 <th style="text-align:center"> <span id="dieselConsumed"></span></th>
                 <th rowspan="2" style="text-align:left">RUN BY KM</th>
-                <th rowspan="2" style="text-align:left">KM <br/>Run by<br/>Tata<br/>AL GPS </th>
+                <th rowspan="2" style="text-align:left">KM <br />Run by<br />Tata<br />AL GPS </th>
                 <th colspan="8" style="text-align:left">Diesel Consumption by GPS  </th>
             </tr>
             <tr>
@@ -205,7 +206,7 @@
                 </th>
                 <th>ODO Meter End</th>
                 <th colspan="8" style="text-align:left">
-                   Route Name:  <span id="routeNameWithBestAvg"></span>
+                    Route Name:  <span id="routeNameWithBestAvg"></span>
                 </th>
             </tr>
             <tr>
@@ -216,7 +217,13 @@
                 <th></th>
                 <th>Estimate</br>Average</th>
                 <th>Estimate</br>Diesel</th>
-                <th colspan="6" style="text-align:left">खाली का डीज़ल = <span id="khaliKaDisel"></span></th>
+                @*  <th colspan="6" style="text-align:left">खाली का डीज़ल = <span id="khaliKaDisel"></span></th>  commented on 7-11-2025 by skg *@
+                <th colspan="4" style="text-align:left">Consummed Diesel Amount  = <span id="dieselConsumedAmt"></span></th>  @* Replaced with above line by 7-12-2025 SKG *@
+                <th colspan="2" style="text-align:left">
+                    Freight % = <span id="freight"></span>
+                </th>
+                
+                @*    <th colspan="2" style="text-align:right">Consummed Diesel Rate  = <span id="dieselRate"></span></th>  *@
             </tr>
 
             @* Rows Entry *@
@@ -228,7 +235,9 @@
                 <th><span id="stationdetail_loadType0"></span></th>
                 <th><span id="stationdetail_Avg0"></span></th>
                 <th><span id="stationdetail_AvgDiesel0"></span></th>
-                <th colspan="6" style="text-align:left">खाली का कि.मी. = <span id="khaliKaKiloMeter"></span></th>
+                @*  <th colspan="6" style="text-align:left">खाली का कि.मी. = <span id="khaliKaKiloMeter"></span></th>   -- 7-11-2025 by skg *@
+                <th colspan="4" style="text-align:left">खाली का डीज़ल = <span id="khaliKaDisel"></span></th>  @* added on 27-11-2025 by skg *@
+                <th colspan="2" style="text-align:left">खाली का कि.मी. = <span id="khaliKaKiloMeter"></span></th>
             </tr>
             <tr>
                 <th colspan="3" style="text-align:left"><span id="stationdetail_station1"></span></th>
@@ -258,7 +267,7 @@
                 <th><span id="stationdetail_loadType3"></span></th>
                 <th><span id="stationdetail_Avg3"></span></th>
                 <th><span id="stationdetail_AvgDiesel3"></span></th>
-                <th colspan="6" style="text-align:left">भरी का एवरेज (कि.मी. + डीजल) = <span id="bhariKaAverage"></span></th>
+                <th colspan="6" style="text-align:left">भरी का एवरेज (कि.मी. + डीजल) = <b><span id="bhariKaAverage"></span></b></th>
             </tr>
             <tr>
                 <th colspan="3" style="text-align:left"><span id="stationdetail_station4"></span></th>
@@ -346,14 +355,16 @@
                 <th><span id="totalEstimateDiesel"></span></th>
             </tr>
             <tr>
-                <th colspan="5" style="text-align:left">लोड अनलोड (गुजरात) में एक लाइन में जोड़ कर लिख सकते है</th>
+                @* <th colspan="5" style="text-align:left">लोड अनलोड (गुजरात) में एक लाइन में जोड़ कर लिख सकते है</th> *@
+                <th colspan="5" style="text-align:left">Kilometer Run from GPS</th>  @* Changed on 2-11-2025 by SKG commented above line *@
                 <th colspan="3" style="text-align:right">Discount in Ltr.</th>
                 <th><span id="discountValue"></span></th>
                 <th colspan="6" style="text-align:left">Discount Ka Reason</th>
             </tr>
             <tr>
                 @* <th rowspan="2" colspan="6" style="text-align:left">लास्ट ट्रिप का भरी का Average: <span id="lastBhariKaAverage"></span></th> *@
-                <th rowspan="2" colspan="6" style="text-align:left"><span id="lastBhariKaAverage" style="display:none"></span> <br/>
+                <th rowspan="2" colspan="6" style="text-align:left">
+                    <span id="lastBhariKaAverage" style="display:none"></span> <br />
                     PrvAverage1: <span id="prvTripAverage1"></span><br />
                     PrvAverage2:  <span id="prvTripAverage2"></span><br />
                     PrvAverage3:  <span id="prvTripAverage3"></span><br />
@@ -365,13 +376,22 @@
             </tr>
             <tr>
                 <th colspan="2" style="text-align:right">Diesel Amt PnL:</th>
-                <th  colspan="2"> <span id="dieselAmtPnL"></span></th>
+                <th colspan="1"> <span id="dieselAmtPnL"></span></th>
+
                 <th rowspan="2" colspan="1" style="text-align:left">C/F</th>
-                <th rowspan="2" colspan="1" style="text-align:left">Not C/F</th>
+
+
+                <th rowspan="2" colspan="2" style="text-align:left">Diesel Rate: <b><span id="dieselRate"></span></b></th>
+
                 <th rowspan="2" colspan="3" style="text-align:left">Score: <b><span id="scoreCard"></span></b></th>
             </tr>
             <tr>
-                <th colspan="6" style="text-align:left">Bal. आगे ले जाओ तो C/F पर मार्क करना है नहीं तो Not C/F पर</th>
+
+                @*  alert(ReferenceByDriver+' '+driverName); *@
+                @*    7-12-2025 by SKG           <th colspan="6" style="text-align:left">Bal. आगे ले जाओ तो C/F पर मार्क करना है नहीं तो Not C/F पर</th> *@
+
+                <th colspan="6" style="text-align:left">Ref.:<span id="referenceByDriver"></span></th>
+
                 <th colspan="2" style="text-align:right">TOTAL</th>
                 <th></th>
             </tr>
@@ -401,33 +421,41 @@
                     console.log('gaurave');
                     console.log(data);
                     if (data != null && data != undefined) {
-                        
-                        var totalFillingQty=0;
+
+                        var totalFillingQty = 0;
                         var totalRunKm = 0;
                         var totalEstimateDiesel = 0;
                         var totalConsumedDiesel = 0;
-                        var totalDieselProfitLoss=0;
-                        var totalAvgDieselValue=0;
-                        var totalDieselFillingRow=0;
+                        var totalDieselProfitLoss = 0;
+                        var totalAvgDieselValue = 0;
+                        var totalDieselFillingRow = 0;
 
-                        var totalKhaliKaKm=0;
-                        var totalKhaliKaDiesel=0;
-                        var totalLoadUnloadDiesel=0;
-                        var totalDiscountValue=0;
+                        var totalKhaliKaKm = 0;
+                        var totalKhaliKaDiesel = 0;
+                        var totalLoadUnloadDiesel = 0;
+                        var totalDiscountValue = 0;
+                        var dieselConsumedAmt = 0;
+                        // add 12-12-2025 start
+                        var dieselRate = 0;
+                        // add 12-12-2025 end
 
-                         // $("#driverName").html(`Driver Name: <span>${data.driverName}</span>`);
-                         let accountNumber = data.bankAccountNumber;
+                        // $("#driverName").html(`Driver Name: <span>${data.driverName}</span>`);
+                        let accountNumber = data.bankAccountNumber;
 
                         let displayNumber = (accountNumber && accountNumber.length >= 4) ? accountNumber.slice(-4) : accountNumber || "N/A";
 
-                         $("#note").text('Previous Remark: '+ data.lastTripRouteDescr);
+                        $("#note").text('Previous Remark: ' + data.lastTripRouteDescr);
                         $("#driverAccountNumber").text(displayNumber);
                         $("#routeNameWithBestAvg").text(data.routeNameWithBestAvg);
                         $("#driverName").text(data.driverName);
+                        // add 12-12-2025 start
+                        $("#referenceByDriver").text(data.referenceByDriver);
+                        // add 12-12-2025 end
+                        $("#dieselprice").text(data.dieselprice);
                         $("#vehicleNumber").text(data.vehicleNumber);
                         $("#tripStartDate").text(data.tripStartDate);
                         $("#tripEndDate").text(data.tripEndDate);
-                        $("#srNo").text(` `+data.tripId);
+                        $("#srNo").text(` ` + data.tripId);
                         $("#odoMeterStart").text(data.startOdometer);
                         $("#odoMeterEnd").text(data.endOdometer);
                         $("#totalRunningKm").text(data.runningKm);
@@ -439,7 +467,7 @@
                         $("#currentDate").text(data.dieselHeaderCreationDate);
                         $("#lastBhariKaAverage").text(data.lastTripHistory.lastBhariKaAverage);
                         totalDiscountValue = data.discountValue;
-                        
+
                         //GetPrevious Trip Average
                         data.previous4TripAverage.forEach((entry, index) => {
                             numberIndex = index + 1;
@@ -449,43 +477,42 @@
                             } catch { }
                         });
 
-                        //Diesel Filling    
+                        //Diesel Filling
                         data.dieselFillingList.forEach((entry, index) => {
-                            totalDieselFillingRow=index+1;
+                            totalDieselFillingRow = index + 1;
                             const xFillingDate = `xFillingDate${index}`;
                             const xFillingPumpName = `xFillingPumpName${index}`;
                             const xFillingQty = `xFillingQty${index}`;
-                            totalFillingQty=parseFloat(totalFillingQty)+ parseFloat(entry.litre);
-                            try { 
-                            $(`#${xFillingDate}`).text(entry.dieselFillingDate);
-                            $(`#${xFillingPumpName}`).text(entry.vendorName);
-                            $(`#${xFillingQty}`).text(entry.litre);
-                        }catch{}
+                            totalFillingQty = parseFloat(totalFillingQty) + parseFloat(entry.litre);
+                            try {
+                                $(`#${xFillingDate}`).text(entry.dieselFillingDate);
+                                $(`#${xFillingPumpName}`).text(entry.vendorName);
+                                $(`#${xFillingQty}`).text(entry.litre);
+                            } catch { }
                         });
 
-                        
-                        try{
-                        $("#openingBalance").text(data.openingDiesel);
-                        $("#closingBalance").text(data.closingDiesel);
-                        totalConsumedDiesel=((parseFloat(data.openingDiesel) + parseFloat(totalFillingQty)) - parseFloat(data.closingDiesel));
-                        $("#dieselConsumed").text(totalConsumedDiesel);
+
+                        try {
+                            $("#openingBalance").text(data.openingDiesel);
+                            $("#closingBalance").text(data.closingDiesel);
+                            totalConsumedDiesel = ((parseFloat(data.openingDiesel) + parseFloat(totalFillingQty)) - parseFloat(data.closingDiesel));
+                            $("#dieselConsumed").text(totalConsumedDiesel);
                         }
-                        catch{}
+                        catch { }
 
                         //Station Details
                         data.stationList.forEach((entry, index) => {
-                            const station = `stationdetail_station${index}`; 
+                            const station = `stationdetail_station${index}`;
                             const km = `stationdetail_km${index}`;
                             const avg = `stationdetail_Avg${index}`;
                             const avgDiesel = `stationdetail_AvgDiesel${index}`;
                             const loadType = `stationdetail_loadType${index}`;
                             try {
 
-                                if(entry.loadType=="KHALI")
-                                {
-                                    totalKhaliKaKm=totalKhaliKaKm+entry.distance;
-                                    if (parseFloat(entry.average)>0)
-                                    totalKhaliKaDiesel=totalKhaliKaDiesel+(entry.distance / entry.average);
+                                if (entry.loadType == "KHALI") {
+                                    totalKhaliKaKm = totalKhaliKaKm + entry.distance;
+                                    if (parseFloat(entry.average) > 0)
+                                        totalKhaliKaDiesel = totalKhaliKaDiesel + (entry.distance / entry.average);
                                 }
 
                                 if (entry.routeDesc.toUpperCase() === "LOADING/UNLOADING") {
@@ -495,9 +522,9 @@
                                 $(`#${station}`).text(entry.routeDesc);
                                 $(`#${loadType}`).text(entry.loadType);
                                 $(`#${km}`).text(entry.distance);
-                                $(`#${avg}`).text(entry.average); 
-                                 $(`#${avgDiesel}`).text(entry.estimatedDiesel);
-                                 avgDieselValue=entry.estimatedDiesel;
+                                $(`#${avg}`).text(entry.average);
+                                $(`#${avgDiesel}`).text(entry.estimatedDiesel);
+                                avgDieselValue = entry.estimatedDiesel;
                                 // var avgDieselValue = 0;
                                 // try {
                                 //     avgDieselValue = entry.distance / entry.average;
@@ -508,16 +535,15 @@
                                 // }
 
                                 totalRunKm = totalRunKm + entry.distance;
-                                totalEstimateDiesel = totalEstimateDiesel+ avgDieselValue;
-                                totalAvgDieselValue=totalAvgDieselValue+avgDieselValue;
-                        }catch{}
+                                totalEstimateDiesel = totalEstimateDiesel + avgDieselValue;
+                                totalAvgDieselValue = totalAvgDieselValue + avgDieselValue;
+                            } catch { }
                         });
                         $("#totalRunKm").text(totalRunKm.toFixed(2));// Total Run Kilometer
                         $("#totalEstimateDiesel").text(totalEstimateDiesel.toFixed(2));// Total Estimate Diesel
 
 
-                        try
-                        {
+                        try {
                             //Khali ka Diesel
                             $("#khaliKaDisel").text(Math.round(parseFloat(totalKhaliKaDiesel)));
                             $("#khaliKaKiloMeter").text(Math.round(parseFloat(totalKhaliKaKm)));
@@ -525,16 +551,14 @@
                             $("#bhariKaKilometer").text(Math.round((parseFloat(totalRunKm) - parseFloat(totalKhaliKaKm))));
                             if ((parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel)) > 0) {
                                 $("#bhariKaAverage").text(((parseFloat(totalRunKm) - parseFloat(totalKhaliKaKm)) / (parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel) - parseFloat(totalLoadUnloadDiesel))).toFixed(2));
-                            }else{
+                            } else {
                                 $("#bhariKaAverage").text("0");
                             }
                             totalDieselProfitLoss = (parseFloat(totalEstimateDiesel) - parseFloat(totalConsumedDiesel)).toFixed(2);
-                            if(parseFloat(totalDieselProfitLoss)<0)
-                            {
-                               totalDieselProfitLoss= (parseFloat(totalDieselProfitLoss)  +  parseFloat(totalDiscountValue)).toFixed(2)
+                            if (parseFloat(totalDieselProfitLoss) < 0) {
+                                totalDieselProfitLoss = (parseFloat(totalDieselProfitLoss) + parseFloat(totalDiscountValue)).toFixed(2)
                             }
-                            else
-                            {
+                            else {
                                 totalDieselProfitLoss = (parseFloat(totalEstimateDiesel) - parseFloat(totalConsumedDiesel) + totalDiscountValue).toFixed(2);
                             }
                             $("#discountValue").text(totalDiscountValue.toFixed(2));
@@ -544,12 +568,29 @@
                             let profitLoss = parseFloat(totalDieselProfitLoss) || 0;
                             let dieselAmtPnL = profitLoss * dieselRate;
                             $("#dieselAmtPnL").text(dieselAmtPnL.toFixed(2));
-                            var percentageLoss=parseFloat((parseFloat(totalDieselProfitLoss)*100) / parseFloat(totalAvgDieselValue) ).toFixed(2);
+        @* Added below 2 lines to compute ConsumedDiselAmt on 7-11-2025 by skg*@
+                                //  let dieselConsumedAmt = dieselConsumed * dieselRate;
+                                let dieselConsumedAmt = totalConsumedDiesel * dieselRate;
+        @*       alert(dieselRate);
+                            alert(totalConsumedDiesel);
+                            alert(totalConsumedDiesel * dieselRate);
+                            *@
+                                // add 12-12-2025 start
+                                $("#dieselRate").text(dieselRate.toFixed(2));
+                            // add 12-12-2025 End
+                            $("#dieselConsumedAmt").text(dieselConsumedAmt.toFixed(2));
+                            if (data.freightPercent !== undefined && data.freightPercent !== null) {
+                                $("#freight").text(data.freightPercent.toFixed(2) + "%");
+                            } else {
+                                $("#freight").text("0%");
+                            }
+
+                            var percentageLoss = parseFloat((parseFloat(totalDieselProfitLoss) * 100) / parseFloat(totalAvgDieselValue)).toFixed(2);
                             $("#percentageOfLoss").text(percentageLoss);
                             $("#khaliBhariTotalKi").text(((parseFloat(totalRunKm) / parseFloat(totalConsumedDiesel))).toFixed(2));
                         }
-                        catch{}
-                        
+                        catch { }
+
                         $("#naamDaalneWala").text('');
                         $("#solution").text('');
 
@@ -574,7 +615,7 @@
                 }
             });
         }
-        </script>
+    </script>
 
     @* Print script *@
     <script>
@@ -582,36 +623,36 @@
             let printableArea = document.getElementById('printableArea');
             let originalBodyContent = document.body.innerHTML;
             let printStyles = `
-                    <style type="text/css">
-                            .print-button {
-                display: none !important;
-            }
-                               
-                                 table {
-                table-layout: fixed;
-                width: 100%;
-                margin: 0;
-                padding: 0;
-                border-collapse: collapse;
-            }
+                            <style type="text/css">
+                                    .print-button {
+                        display: none !important;
+                    }
 
-            th, td {
-                        font-size: 0.80em;
-                padding: 8px;
-                border: 1px solid black;
-                text-align: center;
-                word-wrap: break-word;
-                overflow: hidden;
-                box-sizing: border-box;
-                font-weight: bold;
-            }
+                                         table {
+                        table-layout: fixed;
+                        width: 100%;
+                        margin: 0;
+                        padding: 0;
+                        border-collapse: collapse;
+                    }
 
-            th {
-                background-color: #f2f2f2;
-                font-weight: bold;
-            }
-                    </style>
-                `;
+                    th, td {
+                                font-size: 0.80em;
+                        padding: 8px;
+                        border: 1px solid black;
+                        text-align: center;
+                        word-wrap: break-word;
+                        overflow: hidden;
+                        box-sizing: border-box;
+                        font-weight: bold;
+                    }
+
+                    th {
+                        background-color: #f2f2f2;
+                        font-weight: bold;
+                    }
+                            </style>
+                        `;
 
             if (printableArea) {
                 let printContent = printStyles + printableArea.outerHTML;

@@ -44,6 +44,9 @@ namespace VMS.ViewModel
 
         public int UpdatedBy { get; set; }
 
+      //  public int TripDays { get; set; } // added on 3-Feb-2026
+       // public decimal PnL { get; set; } // added on 3-Feb-2026
+
         public virtual TblDriverMaster Driver { get; set; } = null!;
 
         public virtual ICollection<TblDriverHisabLine> TblDriverHisabLines { get; set; } = new List<TblDriverHisabLine>();

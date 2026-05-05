@@ -1,0 +1,485 @@
+﻿@model VMS.ViewModel.VMChallanEntry
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "City";
+}
+<style>
+    html {
+        font-size: 16px;
+    }
+
+    input.form-control,
+    select.form-control {
+        height: 2.375rem;
+        font-size: 0.8125rem;
+        line-height: 1.2;
+        padding: 0.375rem 0.75rem;
+    }
+
+    .form-group {
+        margin-bottom: 14px;
+    }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+    .reqFields {
+        color: red;
+        font-weight: bold;
+    }
+
+    .rowHeight {
+        margin-bottom: 10px;
+    }
+    table.dataTable thead th {
+        background-color: #6c2eb9;
+        color: #fff;
+        text-align: center;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+
+    /* Enable vertical scrolling area */
+    .dataTables_scrollBody {
+        max-height: 350px !important;
+        overflow-y: auto !important;
+    }
+    /* Enable horizontal scroll */
+    .dataTables_scroll {
+        overflow-x: auto;
+    }
+
+    .dataTables_wrapper .dt-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 0px;
+    }
+
+    .dataTables_filter {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Prevent column squeeze */
+    table.dataTable {
+        white-space: nowrap;
+    }
+
+    .select2-container--default .select2-selection--single {
+        height: 38px !important;
+        padding: 4px 8px !important;
+        display: flex !important;
+        align-items: center !important; /* TEXT CENTER vertically */
+    }
+
+        /* Fix selected text position */
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: normal !important;
+            padding-left: 6px !important;
+            padding-right: 20px !important;
+        }
+
+        /* Fix dropdown arrow alignment */
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px !important;
+            top: 1px !important;
+        }
+
+        /* Fix placeholder color */
+        .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: #6c757d !important;
+        }
+
+    .custom-swal-popup .swal2-title {
+        font-size: 22px;
+        font-weight: 600;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-4">
+
+                    <h4 class="card-title mb-3">Add City</h4>
+
+                    <div class="alert alert-danger py-2">
+                        <strong>Note:</strong> All fields marked with * are mandatory fields
+                    </div>
+
+                    <div class="row mt-3">
+
+                        <!-- City -->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>City <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="txtCityName" placeholder="Enter City Name">
+                            </div>
+                        </div>
+
+                        <!-- District -->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>District <span class="text-danger">*</span></label>
+                                <select class="form-control" id="ddlDistrict">
+                                    <option value="">Select District</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- State -->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>State <span class="text-danger">*</span></label>
+                                <select class="form-control" id="ddlState">
+                                    <option value="">Select State</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="text-center mt-4">
+                        <button type="button"
+                                class="btn btn-primary px-4 mr-2"
+                                id="btnSave"
+                                onclick="saveCity()">
+                            Save
+                        </button>
+
+                        <button type="button"
+                                class="btn btn-outline-secondary px-4"
+                                onclick="clearForm()">
+                            Clear
+                        </button>
+                    </div>
+
+                    <input type="hidden" id="hdnChallanId" />
+                    <h4 class="mt-4">All City Details</h4>
+                    <table id="tblCity" class="display nowrap table table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th style="width:3%">City</th>
+                                <th style="width:3%">Distinct</th>
+                                <th style="width:3%">State</th>
+                                <th style="width:10%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modelCityDetails">
+                        </tbody>
+                    </table>
+                </div>
+               
+            </div>
+       
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#ddlDistrict').select2();
+            $('#ddlState').select2();
+            loadCityGrid();
+            bindAllDistrict();
+        });
+        function bindAllDistrict(districtId = 0) {
+            $.ajax({
+                cache: false,
+                url: '/CityMaster/GetAllDistrict',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                    var s = '<option value="0">Select a District</option>';
+
+                    if (data && data.length > 0) {
+
+                        for (var i = 0; i < data.length; i++) {
+
+                            if (data[i].id == districtId) {
+                                s += '<option selected="selected" value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }
+                            else {
+                                s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                            }
+                        }
+                    }
+
+                    $("#ddlDistrict").html(s);
+                },
+                error: function () {
+                    $("#ddlDistrict").html('<option value="0">Select a District</option>');
+                }
+            });
+        }
+        $("#ddlDistrict").on("change", function () {
+
+            var districtId = $(this).val();
+
+            if (districtId != "0" && districtId != "") {
+                bindStateByDistrict(districtId);
+            } else {
+                $("#ddlState").html('<option value="0">Select State</option>');
+            }
+        });
+        function bindStateByDistrict(districtId) {
+
+            $.ajax({
+                url: '/CityMaster/GetStateByDistrict',
+                type: 'GET',
+                data: { districtId: districtId },
+                success: function (data) {
+
+                    var s = '<option value="0">Select State</option>';
+
+                    if (data && data.length > 0) {
+
+                        for (var i = 0; i < data.length; i++) {
+                            s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                    }
+
+                    $("#ddlState").html(s);
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+        //Save and Update
+        function saveCity() {
+            var cityName = $("#txtCityName").val().trim();
+            var districtId = $("#ddlDistrict").val();
+            var stateId = $("#ddlState").val();
+            var id = $("#hdnChallanId").val() || 0; // 0 = new city
+
+            if (cityName == "") {
+                showErrorPopup("Validation", "Please enter City Name");
+                $("#txtCityName").focus();
+                return;
+            }
+
+            if (districtId == "0" || districtId == "") {
+                showErrorPopup("Validation", "Please select District");
+                return;
+            }
+
+            if (stateId == "0" || stateId == "") {
+                showErrorPopup("Validation", "Please select State");
+                return;
+            }
+
+            $.ajax({
+                url: '/CityMaster/SaveUpdateCity',
+                type: 'POST',
+                data: {
+                    id: id,
+                    cityName: cityName,
+                    districtId: districtId,
+                    stateId: stateId
+                },
+                success: function (response) {
+                    if (response.status == 1) {
+                        showSuccessPopup("Success", response.message);
+
+                        clearForm();
+                        $("#hdnChallanId").val('');
+                        $("#btnSave").text("Save");
+
+                        setTimeout(function () {
+                            location.reload(); // page reload
+                        }, 500); 
+                    } else {
+                        showErrorPopup("Error", response.message);
+                    }
+                },
+                error: function (xhr) {
+                    showErrorPopup("Error", "Something went wrong! " + xhr.statusText);
+                }
+            });
+        }
+      
+        function clearForm() {
+            $("#txtCityName").val('');
+            $("#ddlDistrict").html('<option value="">Select District</option>');
+            $("#ddlState").html('<option value="">Select State</option>');
+            $("#txtCityName").focus();
+        }
+        // Delete city
+        function deleteCity(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you really want to delete this city?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#e74c3c',
+                cancelButtonColor: '#6c757d',
+                customClass: {
+                    popup: 'custom-swal-popup'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/CityMaster/DeleteCity',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (res) {
+                            if (res.status == 1) {
+
+                                Swal.fire({
+                                    title: 'Deleted!',
+                                    text: res.message,
+                                    icon: 'success',
+                                    confirmButtonColor: '#2ecc71',
+                                    customClass: { popup: 'custom-swal-popup' }
+                                }).then(() => {
+                                    // 🔹 Remove row directly from table without reloading all
+                                    var table = $('#tblCity').DataTable();
+                                    table
+                                        .row($('#tblCity button[onclick="deleteCity(' + id + ')"]').parents('tr'))
+                                        .remove()
+                                        .draw(false);
+                                });
+
+                            } else {
+                                showErrorPopup("Error", res.message);
+                            }
+                        },
+                        error: function (xhr) {
+                            showErrorPopup("Error", "Something went wrong! " + xhr.statusText);
+                        }
+                    });
+                }
+            });
+        }
+        // Edit city
+        function editCity(id, cityName, districtName, stateName) {
+            $("#txtCityName").val(cityName);
+
+            // Get districtId by text
+            var districtId = $("#ddlDistrict option").filter(function () {
+                return $(this).text() == districtName;
+            }).val();
+
+            // Set District value and refresh Select2
+            $("#ddlDistrict").val(districtId).trigger('change'); // important: trigger change for Select2
+
+            if (districtId && districtId != "0") {
+                $.ajax({
+                    url: '/CityMaster/GetStateByDistrict',
+                    type: 'GET',
+                    data: { districtId: districtId },
+                    success: function (data) {
+                        var s = '<option value="0">Select State</option>';
+                        if (data && data.length > 0) {
+                            for (var i = 0; i < data.length; i++) {
+                                if (data[i].name == stateName) {
+                                    s += '<option value="' + data[i].id + '" selected>' + data[i].name + '</option>';
+                                } else {
+                                    s += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                                }
+                            }
+                        }
+                        $("#ddlState").html(s);
+
+                        // Refresh Select2 for State after binding
+                        $("#ddlState").select2({
+                            placeholder: "Select State",
+                            allowClear: true,
+                            width: '100%'
+                        });
+                    },
+                    error: function (xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            }
+
+            $("#hdnChallanId").val(id);
+        }
+        function loadCityGrid() {
+            $.ajax({
+                url: '/CityMaster/GetAllCities',
+                type: 'GET',
+                success: function (data) {
+                    let html = '';
+                    data.forEach(function (row) {
+                        html += `<tr>
+                            <td>${row.cityName}</td>
+                            <td>${row.districtName}</td>
+                            <td>${row.stateName}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info" onclick="editCity(${row.id}, '${row.cityName}', '${row.districtName}', '${row.stateName}')">Edit</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteCity(${row.id})">Delete</button>
+                            </td>
+                        </tr>`;
+                    });
+                    $("#modelCityDetails").html(html);
+
+                    $('#tblCity').DataTable({
+                        destroy: true,
+                        scrollX: true
+                    });
+                }
+            });
+        }
+        function showSuccessPopup(title, message) {
+            Swal.fire({
+                title: title,
+                text: message,
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2ecc71',
+                width: '338px',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2ecc71',
+                iconColor: '#9be39b',
+                buttonsStyling: true,
+                customClass: {
+                    popup: 'custom-swal-popup'
+                }
+            });
+
+        }
+        function showErrorPopup(title, message) {
+            return Swal.fire({
+                title: title,
+                text: message,
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#e74c3c',
+                width: '338px',
+                iconColor: '#f5a6a6',
+                buttonsStyling: true,
+                customClass: {
+                    popup: 'custom-swal-popup'
+                }
+            });
+        }
+    </script>
+}

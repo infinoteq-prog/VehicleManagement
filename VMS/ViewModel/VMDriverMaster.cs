@@ -98,5 +98,8 @@ namespace VMS.ViewModel
         public string CreatedByName { get; set; }
 
         public string UpdatedByName { get; set; }
+        public string OldFirm { get; set; }
+        public string Remark { get; set; }
+
     }
 }

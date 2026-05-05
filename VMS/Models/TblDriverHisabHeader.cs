@@ -37,6 +37,8 @@ public partial class TblDriverHisabHeader
     public DateTime UpdateDate { get; set; }
 
     public int UpdatedBy { get; set; }
+   // public int TripDays { get; set; } // added on 3-Feb-2026
+    //spublic decimal PnL { get; set; } // added on 3-Feb-2026
 
     public virtual TblDriverMaster Driver { get; set; } = null!;
 

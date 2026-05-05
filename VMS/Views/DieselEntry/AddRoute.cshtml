@@ -38,10 +38,16 @@
                 <label>Route Name</label>
                 <input asp-for="RouteName" class="form-control" required />
             </div>
+          
             <div class="col-md-4">
-                <label>Status</label>
-                <input asp-for="Status" class="form-control" required />
+                 <label>RouteExpAmt</label>
+                 <input asp-for="RouteExpAmt" class="form-control"  />
             </div>
+            <div class="col-md-4">
+                 <label>Status</label>
+                        <input asp-for="Status" class="form-control" required />
+                
+             </div>
         </div>
 
         <div class="d-flex gap-2">
@@ -64,6 +70,7 @@
                 <th>Actions</th>
                 <th>ID</th>
                 <th>Route Name</th>
+                <th>RouteExpAmt</th>
                 <th>Status</th>
                 <th>IsActive</th>
                 @* <th>Created By</th>
@@ -99,6 +106,7 @@
                 },
                 { data: 'routeID' },
                 { data: 'routeName' },
+                { data: 'routeExpAmt' },
                 { data: 'status' },
                 { data: 'isActive' },
                 // { data: 'createdBy' },
@@ -135,6 +143,7 @@
 
             $('input[name="RouteID"]').val(row.routeID);
             $('input[name="RouteName"]').val(row.routeName);
+            $('input[name="RouteExpAmt"]').val(row.routeExpAmt);
             $('input[name="Status"]').val(row.status);
 
             $('#submitBtn').text('Update Route')

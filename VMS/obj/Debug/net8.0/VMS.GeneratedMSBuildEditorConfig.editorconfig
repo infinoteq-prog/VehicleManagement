@@ -17,363 +17,489 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = VMS
 build_property.RootNamespace = VMS
-build_property.ProjectDir = C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS\
+build_property.ProjectDir = D:\Madan\GitHub\VMS\VehicleManagement\VMS\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Gaurav PC\Projects\Goswami Ji\VMS\VMS\VMS\VMS
+build_property.MSBuildProjectDirectory = D:\Madan\GitHub\VMS\VehicleManagement\VMS
 build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/CompanyMaster/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/ChallanEntry/ChallanEntry.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhbGxhbkVudHJ5XENoYWxsYW5FbnRyeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/CityMaster/CityMaster.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2l0eU1hc3RlclxDaXR5TWFzdGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/CompanyMaster/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcGFueU1hc3RlclxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/CompanyMaster/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/CompanyMaster/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcGFueU1hc3RlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/CompanyMaster/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/CompanyMaster/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcGFueU1hc3RlclxMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/CompanyMaster/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/CompanyMaster/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcGFueU1hc3RlclxVcGRhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/DieselHisab/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DieselEntry/AddRoute.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGllc2VsRW50cnlcQWRkUm91dGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DieselEntry/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGllc2VsRW50cnlcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DieselEntry/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGllc2VsRW50cnlcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DieselEntry/RouteList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGllc2VsRW50cnlcUm91dGVMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DieselHisab/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGllc2VsSGlzYWJcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/DieselHisab/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DieselHisab/DieselFilter.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGllc2VsSGlzYWJcRGllc2VsRmlsdGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DieselHisab/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGllc2VsSGlzYWJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/DieselHisab/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DieselHisab/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGllc2VsSGlzYWJcTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/DieselHisab/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DieselHisab/Print.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGllc2VsSGlzYWJcUHJpbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DieselHisab/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGllc2VsSGlzYWJcVXBkYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/DistanceMaster/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DispatchEntry/CustomerMaster/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzcGF0Y2hFbnRyeVxDdXN0b21lck1hc3RlclxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DispatchEntry/CustomerMaster/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzcGF0Y2hFbnRyeVxDdXN0b21lck1hc3RlclxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DispatchEntry/CustomerMaster/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzcGF0Y2hFbnRyeVxDdXN0b21lck1hc3RlclxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DispatchEntry/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzcGF0Y2hFbnRyeVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DispatchEntry/UploadExcel.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzcGF0Y2hFbnRyeVxVcGxvYWRFeGNlbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DispatchEntry/ViewBillDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzcGF0Y2hFbnRyeVxWaWV3QmlsbERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DistanceMaster/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzdGFuY2VNYXN0ZXJcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/DistanceMaster/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DistanceMaster/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzdGFuY2VNYXN0ZXJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/DistanceMaster/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DistanceMaster/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzdGFuY2VNYXN0ZXJcTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/DistanceMaster/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DistanceMaster/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzdGFuY2VNYXN0ZXJcVXBkYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/DriverMaster/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DriverAttendance/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVyQXR0ZW5kYW5jZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DriverAttendance/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVyQXR0ZW5kYW5jZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DriverChange/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVyQ2hhbmdlXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DriverChange/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVyQ2hhbmdlXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DriverHisab/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVySGlzYWJcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DriverHisab/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVySGlzYWJcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DriverHisab/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVySGlzYWJcTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DriverHisab/Print.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVySGlzYWJcUHJpbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DriverMaster/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVyTWFzdGVyXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/DriverMaster/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DriverMaster/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVyTWFzdGVyXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/DriverMaster/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DriverMaster/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVyTWFzdGVyXExpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/DriverMaster/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DriverMaster/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVyTWFzdGVyXFVwZGF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/ExpenseMaster/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/DriverProfile/DriverProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVyUHJvZmlsZVxEcml2ZXJQcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/ExpenseMaster/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhwZW5zZU1hc3RlclxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/ExpenseMaster/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/ExpenseMaster/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhwZW5zZU1hc3RlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/ExpenseMaster/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/ExpenseMaster/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhwZW5zZU1hc3RlclxMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/ExpenseMaster/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/ExpenseMaster/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhwZW5zZU1hc3RlclxVcGRhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/FunctionMaster/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/FunctionMaster/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRnVuY3Rpb25NYXN0ZXJcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/FunctionMaster/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/FunctionMaster/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRnVuY3Rpb25NYXN0ZXJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/FunctionMaster/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/FunctionMaster/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRnVuY3Rpb25NYXN0ZXJcTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/FunctionMaster/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/FunctionMaster/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRnVuY3Rpb25NYXN0ZXJcVXBkYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/GSTMaster/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/GSTMaster/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR1NUTWFzdGVyXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/GSTMaster/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/GSTMaster/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR1NUTWFzdGVyXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/GSTMaster/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/GSTMaster/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR1NUTWFzdGVyXExpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/GSTMaster/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/GSTMaster/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR1NUTWFzdGVyXFVwZGF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/GSTRateMaster/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/GSTRateMaster/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR1NUUmF0ZU1hc3RlclxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/GSTRateMaster/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/GSTRateMaster/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR1NUUmF0ZU1hc3RlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/GSTRateMaster/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/GSTRateMaster/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR1NUUmF0ZU1hc3RlclxMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/GSTRateMaster/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/GSTRateMaster/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR1NUUmF0ZU1hc3RlclxVcGRhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/Home/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/Home/Privacy.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Home/Index_OLD.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleF9PTEQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/Login/ChangePassword.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Login/ChangePassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cQ2hhbmdlUGFzc3dvcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/Login/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Login/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/MakeMaster/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/MakeMaster/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFrZU1hc3RlclxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/MakeMaster/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/MakeMaster/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFrZU1hc3RlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/MakeMaster/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/MakeMaster/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFrZU1hc3RlclxMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/MakeMaster/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/MakeMaster/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFrZU1hc3RlclxVcGRhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/ModelMaster/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/ModelMaster/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxNYXN0ZXJcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/ModelMaster/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/ModelMaster/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxNYXN0ZXJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/ModelMaster/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/ModelMaster/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxNYXN0ZXJcTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/ModelMaster/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/ModelMaster/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxNYXN0ZXJcVXBkYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/Shared/Error.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Report/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0XEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/ServiceDue/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZUR1ZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/ServiceDue/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZUR1ZVxMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/ServiceDue/Print.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZUR1ZVxQcmludC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/Shared/_footer.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Shared/_footer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9mb290ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/Shared/_footerFull.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Shared/_footerFull.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9mb290ZXJGdWxsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/Shared/_navbar-breadcrumb.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Shared/_navbar-breadcrumb.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9uYXZiYXItYnJlYWRjcnVtYi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/Shared/_navbar.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Shared/_navbar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9uYXZiYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/Shared/_settings-panel.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Shared/_settings-panel.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9zZXR0aW5ncy1wYW5lbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/Shared/_sidebar.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Shared/_sidebar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9zaWRlYmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/TransporterBill/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/TransporterBill/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0ZXJCaWxsXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/TransporterBill/UpdateLrGrData.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/TransporterBill/UpdateLrGrData.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0ZXJCaWxsXFVwZGF0ZUxyR3JEYXRhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/TransporterBill/UploadDispatchData.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/TransporterBill/UploadDispatchData.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0ZXJCaWxsXFVwbG9hZERpc3BhdGNoRGF0YS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/TransporterBill/ViewBillDetails.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/TransporterBill/ViewBillDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0ZXJCaWxsXFZpZXdCaWxsRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/TransporterBill/ViewDispatchDetails.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/TransporterBill/ViewDispatchDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0ZXJCaWxsXFZpZXdEaXNwYXRjaERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/TransporterBill/ViewDispatchTransactions.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/TransporterBill/ViewDispatchTransactions.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0ZXJCaWxsXFZpZXdEaXNwYXRjaFRyYW5zYWN0aW9ucy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/TransporterBill/ViewTransporterBill.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/TransporterBill/ViewTransporterBill.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0ZXJCaWxsXFZpZXdUcmFuc3BvcnRlckJpbGwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/TransporterMaster/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/TransporterMaster/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0ZXJNYXN0ZXJcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/TransporterMaster/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/TransporterMaster/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0ZXJNYXN0ZXJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/TransporterMaster/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/TransporterMaster/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0ZXJNYXN0ZXJcTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/TransporterMaster/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/TransporterMaster/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0ZXJNYXN0ZXJcVXBkYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/UserRoleAccess/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/UserRoleAccess/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclJvbGVBY2Nlc3NcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/UserRoleAccess/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/UserRoleAccess/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclJvbGVBY2Nlc3NcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/UserRoleAccess/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/UserRoleAccess/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclJvbGVBY2Nlc3NcTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/UserRoleAccess/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/UserRoleAccess/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclJvbGVBY2Nlc3NcVXBkYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/UserRole/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/UserRole/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclJvbGVcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/UserRole/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/UserRole/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclJvbGVcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/UserRole/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/UserRole/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclJvbGVcTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/UserRole/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/UserRole/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclJvbGVcVXBkYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/UserSubscription/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/UserSubscription/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclN1YnNjcmlwdGlvblxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/UserSubscription/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/UserSubscription/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclN1YnNjcmlwdGlvblxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/UserSubscription/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/UserSubscription/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclN1YnNjcmlwdGlvblxMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/UserSubscription/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/UserSubscription/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclN1YnNjcmlwdGlvblxVcGRhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/User/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/User/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/User/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/User/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/User/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/User/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/User/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/User/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxVcGRhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/VehicleMaster/Details.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/VehicleMaster/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZU1hc3RlclxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/VehicleMaster/Index.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/VehicleMaster/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZU1hc3RlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/VehicleMaster/List.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/VehicleMaster/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZU1hc3RlclxMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/VehicleMaster/Update.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/VehicleMaster/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZU1hc3RlclxVcGRhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/_ViewImports.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/VendorBill/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVuZG9yQmlsbFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/VendorBill/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVuZG9yQmlsbFxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/VendorBill/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVuZG9yQmlsbFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/_ViewStart.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/Shared/_Layout.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-jxmd6nka0u
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/Shared/_LayoutFull.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Shared/_LayoutFull.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRGdWxsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = b-0jsg2mxjbv
 
-[C:/Gaurav PC/Projects/Goswami Ji/VMS/VMS/VMS/VMS/Views/Shared/_LoginLayout.cshtml]
+[D:/Madan/GitHub/VMS/VehicleManagement/VMS/Views/Shared/_LoginLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = b-k2kdez9hmh

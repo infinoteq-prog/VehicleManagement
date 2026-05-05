@@ -356,7 +356,35 @@ namespace VMS.Controllers
                         {
                             userEntry.RoleId = Convert.ToInt32(role);
                         }
-                        userEntry.StartDate = DateTime.Parse(startDate);
+                        // userEntry.StartDate = DateTime.Parse(startDate);
+                        if (!string.IsNullOrEmpty(startDate))
+                        {
+                            try
+                            {
+                                var parts = startDate.Split(' ');
+                                var year = parts[0];
+                                var timeAndDate = parts[1];
+
+                                var timeDateParts = timeAndDate.Split('-');
+                                var time = timeDateParts[0];
+                                var month = timeDateParts[1];
+                                var day = timeDateParts[2];
+
+                                var correctedDate = $"{year}-{month}-{day} {time}";
+
+                                userEntry.StartDate = DateTime.ParseExact(
+                                    correctedDate,
+                                    "yyyy-MM-dd HH:mm",
+                                    System.Globalization.CultureInfo.InvariantCulture
+                                );
+                            }
+                            catch
+                            {
+                                model.TransactionMessage.Status = TransactionStatus.Failed;
+                                model.TransactionMessage.Message = "Invalid Start Date format.";
+                                return Json(model);
+                            }
+                        }
                         //userEntry.EndDate = DateTime.Parse(endDate);
                         userEntry.CreationDate = utilityHelper.CurrentDateTime;
                         userEntry.UpdateDate = utilityHelper.CurrentDateTime;
@@ -367,14 +395,6 @@ namespace VMS.Controllers
 
                         _context.SaveChanges();
                         model.Id = userEntry.Id.ToString();
-
-                        //Saving User Roles
-                        //var userRole = new AspNetUserRolesNew();
-                        //userRole.UserId = userEntry.Id;
-                        //userRole.RoleId = role;
-                        //_context.AspNetUserRolesNews.Add(userRole);
-                        //_context.SaveChanges();
-
                         model.TransactionMessage.Status = TransactionStatus.Success;
                         model.TransactionMessage.Message = "User Details has been saved successfully.";
                     }

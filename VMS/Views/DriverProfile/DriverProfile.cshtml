@@ -1,0 +1,848 @@
+﻿@model VMS.ViewModel.VMDriverProfile
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Challan Entry";
+}
+<style>
+    html {
+        font-size: 16px;
+    }
+
+    input.form-control,
+    select.form-control {
+        height: 2.375rem;
+        font-size: 0.8125rem;
+        line-height: 1.2;
+        padding: 0.375rem 0.75rem;
+    }
+
+    .form-group {
+        margin-bottom: 14px;
+    }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+    .reqFields {
+        color: red;
+        font-weight: bold;
+    }
+
+    .rowHeight {
+        margin-bottom: 10px;
+    }
+
+    table.dataTable thead th {
+        background-color: #6c2eb9;
+        color: #fff;
+        text-align: center;
+       /*  position: sticky;
+        top: 0; */
+        z-index: 2;
+    }
+
+    .dataTables_wrapper .dataTables_scrollHeadInner,
+    .dataTables_wrapper .dataTables_scrollBody table {
+        width: 100% !important;
+    }
+
+    table.dataTable {
+        width: 100% !important;
+    }
+
+    /* Enable vertical scrolling area */
+    .dataTables_scrollBody {
+        max-height: 350px !important;
+        overflow-y: auto !important;
+    }
+    /* Enable horizontal scroll */
+    .dataTables_scroll {
+        overflow-x: auto;
+    }
+
+    .dataTables_wrapper .dt-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 0px;
+    }
+
+    .dataTables_filter {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Prevent column squeeze */
+    table.dataTable {
+        white-space: nowrap;
+    }
+
+    .select2-container--default .select2-selection--single {
+        height: 38px !important;
+        padding: 4px 8px !important;
+        display: flex !important;
+        align-items: center !important; /* TEXT CENTER vertically */
+    }
+
+        /* Fix selected text position */
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: normal !important;
+            padding-left: 6px !important;
+            padding-right: 20px !important;
+        }
+
+        /* Fix dropdown arrow alignment */
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px !important;
+            top: 1px !important;
+        }
+
+        /* Fix placeholder color */
+        .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: #6c757d !important;
+        }
+
+    .custom-swal-popup .swal2-title {
+        font-size: 22px;
+        font-weight: 600;
+    }
+
+    /* Use automatic table layout and let DataTables calculate column widths to keep header/body aligned */
+    #tblDriveProfile,
+    .dataTables_wrapper .dataTables_scrollHeadInner table,
+    .dataTables_wrapper .dataTables_scrollBody table {
+        table-layout: auto;
+        width: 100%;
+        box-sizing: border-box;
+        border-collapse: collapse;
+    }
+
+        #tblDriveProfile th,
+        #tblDriveProfile td {
+            text-align: left;
+            vertical-align: middle;
+            white-space: nowrap; /* prevent wrapping inside cells for stable widths */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 10px 12px;
+            box-sizing: border-box;
+        }
+
+        /* Remove focus outline from table cells and buttons to avoid the green line */
+        #tblDriveProfile td:focus,
+        #tblDriveProfile th:focus,
+        #tblDriveProfile button:focus,
+        .dataTables_wrapper .dataTables_scrollBody table td:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        #tblDriveProfile tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        #tblDriveProfile tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        #tblDriveProfile thead th {
+            background: linear-gradient(45deg, #6c2eb9, #8e44ad);
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+        }
+
+    .btn-action {
+        padding: 8px 14px; /* increased size */
+        font-size: 14px; /* bigger text */
+        border-radius: 6px;
+        border: none;
+        margin: 3px;
+        min-width: 70px; /* consistent width */
+        font-weight: 500;
+    }
+
+    .btn-edit {
+        background-color: #f39c12;
+        color: #fff;
+    }
+
+    .btn-delete {
+        background-color: #e74c3c;
+        color: #fff;
+    }
+
+    .btn-edit:hover {
+        background-color: #d68910;
+    }
+
+    .btn-delete:hover {
+        background-color: #c0392b;
+    }
+
+    .dt-button.buttons-excel {
+        background-color: #28a745 !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 5px !important;
+        padding: 6px 12px !important;
+    }
+
+        .dt-button.buttons-excel:hover {
+            background-color: #218838 !important;
+        }
+    /* Make header sticky when table sits in scrollable container */
+    .table-container thead th {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: linear-gradient(45deg, #6c2eb9, #8e44ad);
+        color: #fff;
+    }
+</style>
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Drive Profile Entry</h4>
+                    <div>
+                        <div class="row rowHeight">
+                            <div class="col-md-6">
+                                <label class="reqFields">
+                                    Note: All fields marked with * are mandatory fields
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- ROW 1 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Vehicle No <span class="reqFields">*</span></label>
+                                    <select class="form-control" id="ddlVehicleNo" name="ddlVehicleNo"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Driver Name <span class="reqFields">*</span></label>
+                                    <select class="form-control" id="ddlDriver"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Offence</label>
+                                    <select class="form-control" id="ddlOffence" name="ddlOffence"></select>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ROW 2 -->
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Hold Amount <span class="reqFields">*</span></label>
+                                    @Html.TextBoxFor(m => m.HoldAmt, new { @class = "form-control", id = "txtHoldAmt", placeholder = "Enter Hold Amt" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Offence Point <span class="reqFields">*</span></label>
+                                    @Html.TextBoxFor(m => m.OffencePoint, new { @class = "form-control", id = "txtOffencePoint", placeholder = "Enter Offence Point" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Profile Date <span class="reqFields">*</span></label>
+                                    <input type="date" class="form-control" id="txtProfileDate" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ROW 3 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Remarks</label>
+                                    @Html.TextBoxFor(m => m.Remarks, new { @class = "form-control", id = "txtRemarks", placeholder = "Enter Remarks" })
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="row rowHeight" style="text-align:center;">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary mr-2" id="btnSave" onclick="saveOrUpdateDrive(false)">Save </button>
+                            <button type="button" class="btn btn-light" onclick="clearDriveForm()">Clear</button>
+                            <input type="hidden" id="hdnProfileId" />
+
+                        </div>
+                    </div>
+                    <div class="row rowHeight">
+                        <div class="col-md-12"></div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 14px; margin-bottom: 19px; border: 1px solid #ccc; border-radius: 5px;">
+                    <form id="searchDriveProfileForm">
+                        <div class="row">
+                            <div class="col-md-3">
+
+                                <div class="form-group">
+                                    <label for="ddlVehicleNos">Vehicle No</label>
+                                    <select class="form-control" id="ddlVehicleNos" name="ddlVehicleNos"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="ddlDrivers">Driver Name</label>
+                                    <select class="form-control" id="ddlDrivers"></select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="txtStartDate">From Date</label>
+
+                                    <input type="date" class="form-control" id="txtStartDate" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="txtEndDate">To Date </label>
+                                    <input type="date" class="form-control" id="txtEndDate" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-primary mt-4" onclick="loadDriveList()">Search</button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="hdnDispatchId" value="" />
+                    </form>
+                </div>
+                <h4 class="mt-4">All Drive Profile Entries</h4>
+                <div class="table-container" style="max-height:360px; overflow:auto;">
+                <table id="tblDriveProfile" class="display table table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Profile ID</th>
+                            <th>Vehicle No</th>
+                            <th>Driver Name</th>
+                            <th>Offence</th>
+                            <th>Offence Point</th>
+                            <th>Hold Amount</th>
+                            <th>Profile Date</th>
+                            <th>Create Date</th>
+                            <th>Remarks</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modelDriveEntry"></tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css" />
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('#ddlVehicleNo').select2();
+            $('#ddlVehicleNos').select2();
+            $('#ddlDriver').select2();
+            $('#ddlDrivers').select2();
+             $("#ddlOffence").select2();
+
+            getVehicleNumber();
+            getDriverMaster();
+            getVehicleNumberList();
+            getDriverMasters();
+            loadGetOffenceDropdown();
+            $("#txtOffencePoint").prop("readonly", true);
+
+            // attach filter change handlers
+            $("#ddlVehicleNos").on('change', function () { loadDriveList(); });
+            $("#txtStartDate, #txtEndDate").on('change', function () { loadDriveList(); });
+
+            loadDriveList();   // initial load
+        });
+        /* ================= LOAD VEHICLE/DRIVER ================= */
+        function getVehicleNumberList() {
+            $.ajax({
+                url: '@(utilityHelper.SiteUrl() + "VehicleMaster/getVehicleMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                    var $ddl = $("#ddlVehicleNos");
+                    $ddl.empty();
+                    $ddl.append('<option></option>');
+
+                    $.each(data || [], function (i, v) {
+                        $ddl.append(
+                            `<option value="${v.vehicleId}">${v.vehicleName}</option>`
+                        );
+                    });
+                    if ($ddl.hasClass("select2-hidden-accessible")) {
+                        $ddl.select2('destroy');
+                    }
+
+                    $ddl.select2({
+                        placeholder: "Select a Vehicle",
+                        allowClear: true,
+                        width: '100%'
+                    });
+                    $ddl.on('change select2:select select2:unselect', function () { loadDriveList(); });
+                }
+            });
+        }
+        function getDriverMasters() {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DriverMaster/getDriverMaster")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var s = '<option value="0">Select a Driver</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            // console.log(data[i])
+                            s += '<option value="' + data[i].driverId + '">' + data[i].driverName + '</option>';
+                        }
+                        $("#ddlDrivers").html(s);
+
+                        $("#ddlDrivers").select2();
+                        $("#ddlDrivers").trigger('change');
+                        // reload when filter changed (handle select2 events too)
+                        $("#ddlDrivers").on('change select2:select select2:unselect', function () { loadDriveList(); });
+                    } else {
+                        console.log(data);
+                    }
+                }
+            });
+        }
+
+            function loadGetOffenceDropdown() {
+            $.ajax({
+                url: '/DriverProfile/GetOffenceDropdown',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                    var s = '<option value="">-- Select Offence Type --</option>';
+
+                    $.each(data, function (i, item) {
+
+                        s += `<option
+                                value="${item.offenceId}"
+                                data-point="${item.offencePoint}">
+                                ${item.offenceName}
+                              </option>`;
+                    });
+
+                    $("#ddlOffence").html(s).select2({
+                        placeholder: "-- Select Offence Type --",
+                        allowClear: true,
+                        width: '100%'
+                    });
+                }
+            });
+        }
+
+
+        $("#ddlOffence").on("change", function () {
+
+            var offencePoint = $(this).find(":selected").data("point");
+
+            $("#txtOffencePoint").val(offencePoint || "");
+        });
+        /* ================= SAVE DRIVE PROFILE Start================= */
+
+
+            // Single DataTable instance (initialized once) to avoid duplicate rows/state issues
+            var dtDriverProfile = null;
+
+            function initEmptyDriverTable() {
+                if ($.fn.DataTable.isDataTable('#tblDriveProfile')) {
+                    try { $('#tblDriveProfile').DataTable().clear().destroy(); } catch (e) { }
+                }
+
+                dtDriverProfile = $('#tblDriveProfile').DataTable({
+                    data: [],
+                    columns: [
+                        { data: 'profileID' },
+                        { data: 'vehicleNo' },
+                        { data: 'driverName' },
+                        { data: 'offence' },
+                        { data: 'offencePoint', className: 'text-center' },
+                        { data: 'holdAmt', className: 'text-right' },
+                        { data: 'profileDate', render: d => formatDate(d) },
+                        { data: 'creationDate', render: d => formatDate(d) },
+                        { data: 'remarks' },
+                        {
+                            data: 'profileID',
+                            orderable: false,
+                            render: function (d) {
+                                return '<button class="btn-action btn-edit" onclick="edit(' + d + ')">Edit</button>' +
+                                    '<button class="btn-action btn-delete" onclick="deleteRecord(' + d + ')">Delete</button>';
+                            }
+                        }
+                    ],
+                    paging: true,
+                    pageLength: 10,
+                    searching: false,
+                    ordering: true,
+                    info: true,
+                    dom: 'Bfrtip',
+                    buttons: [{
+                        extend: 'excelHtml5',
+                        text: 'Download Excel',
+                        title: 'Drive Profile Data',
+                        exportOptions: { columns: ':not(:last-child)' }
+                    }],
+                    autoWidth: false,
+                    responsive: false
+                });
+
+                // ensure columns are adjusted once after rendering
+                setTimeout(function () { try { dtDriverProfile.columns.adjust(); } catch (e) { } }, 60);
+            }
+
+            // adjust on window resize
+            $(window).on('resize', function () {
+                try { $('#tblDriveProfile').DataTable().columns.adjust(); } catch (e) { }
+            });
+
+            // Reload when Search clicked - fetch JSON, build tbody, then initialize
+        function loadDriveList() {
+            var driverVal = $("#ddlDrivers").val();
+            var vehicleVal = $("#ddlVehicleNos").val();
+
+            var dataToSend = {};
+            if (driverVal && driverVal !== '0') dataToSend.DriverID = parseInt(driverVal);
+            if (vehicleVal && vehicleVal !== '0') dataToSend.VehicleID = parseInt(vehicleVal);
+            if ($("#txtStartDate").val()) dataToSend.FromDate = $("#txtStartDate").val();
+            if ($("#txtEndDate").val()) dataToSend.ToDate = $("#txtEndDate").val();
+
+            console.log('loadDriveList params:', dataToSend);
+
+            // Clear any existing DataTable and rows before fetching new data to avoid duplicates
+            try {
+                if ($.fn.DataTable.isDataTable('#tblDriveProfile')) {
+                    var dt = $('#tblDriveProfile').DataTable();
+                    dt.clear().draw();
+                    dt.destroy();
+                }
+            } catch (e) {
+                console.warn('Error clearing existing DataTable', e);
+            }
+            $('#tblDriveProfile tbody').empty();
+
+            $.ajax({
+                url: '/DriverProfile/GetDriverProfileList',
+                type: 'POST',
+                data: dataToSend,
+                success: function (data) {
+                    console.log('GetDriverProfileList response count:', (data || []).length);
+
+                    // Use DataTables API to update rows. This prevents stale/duplicate rows.
+                    if (dtDriverProfile && $.fn.DataTable.isDataTable('#tblDriveProfile')) {
+                        try {
+                            dtDriverProfile.clear();
+                            dtDriverProfile.rows.add(data || []);
+                            dtDriverProfile.draw();
+                        } catch (e) {
+                            console.warn('Error updating existing DataTable', e);
+                        }
+                    } else {
+                        // initialize empty table and then add data
+                        initEmptyDriverTable();
+                        try {
+                            dtDriverProfile.rows.add(data || []).draw();
+                        } catch (e) { console.warn('Error adding data after init', e); }
+                    }
+                },
+                error: function (xhr, status, err) {
+                    console.error('GetDriverProfileList failed', status, err);
+                    $('#tblDriveProfile tbody').html('');
+                    initializeDriverTable();
+                }
+            });
+            }
+
+          function edit(id) {
+
+            $.ajax({
+                url: '/DriverProfile/GetDriverProfileById', // create this API
+                type: 'GET',
+                data: { id: id },
+                success: function (res) {
+
+                    console.log("Edit Data:", res);
+                    if (!res) {
+                        alert("Data not found");
+                        return;
+                    }
+                    $("#hdnProfileId").val(res.profileID);
+
+                    $("#ddlDriver").val(res.driverID).trigger('change');
+                    $("#ddlVehicleNo").val(res.vehicleID).trigger('change');
+                     $("#ddlOffence").val(res.offenceId).trigger('change');
+
+                    $("#txtOffencePoint").val(res.offencePoint);
+                    $("#txtHoldAmt").val(res.holdAmt);
+                    $("#txtRemarks").val(res.remarks);
+                    $("#txtProfileDate").val(res.profileDate ? res.profileDate.split('T')[0] : "");
+                    $("#btnSave").text("Update");
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                },
+                error: function () {
+                    alert("Error loading data");
+                }
+            });
+        }
+
+         function saveOrUpdateDrive(isEdit) {
+
+            // ================= VALIDATION =================
+
+            if (!$("#ddlVehicleNo").val() || $("#ddlVehicleNo").val() == "0") {
+                showErrorPopup("Validation", "Please Select Vehicle");
+                return;
+            }
+
+            if (!$("#ddlDriver").val() || $("#ddlDriver").val() == "0") {
+                showErrorPopup("Validation", "Please Select Driver");
+                return;
+            }
+
+            if (!$("#ddlOffence").val() || $("#ddlOffence").val() == "0") {
+                showErrorPopup("Validation", "Please Select Offence");
+                return;
+            }
+
+            if (!$("#txtHoldAmt").val() || $("#txtHoldAmt").val().trim() == "") {
+                showErrorPopup("Validation", "Please Enter Hold Amount");
+                return;
+            }
+
+           // if (!$("#txtOffencePoint").val() || $("#txtOffencePoint").val().trim() == "") {
+            if (!$("#txtOffencePoint").val().trim() == "") {
+                showErrorPopup("Validation", "Offence Point missing");
+                return;
+            }
+
+            if (!$("#txtProfileDate").val() || $("#txtProfileDate").val().trim() == "") {
+                showErrorPopup("Validation", "Please Enter Profile Date");
+                return;
+            }
+
+            // ================= DATA PREPARE =================
+
+            var profileId = $("#hdnProfileId").val();
+
+            var data = {
+                ActionType: profileId && profileId != 0 ? "Edit" : "Add",
+                ProfileID: profileId || 0,
+
+                DriverID: $("#ddlDriver").val(),
+                VehicleID: $("#ddlVehicleNo").val(),
+                VehicleNo: $("#ddlVehicleNo option:selected").text(),
+
+                OffenceId: $("#ddlOffence").val(),
+                OffencePoint: $("#txtOffencePoint").val(),
+                HoldAmt: $("#txtHoldAmt").val(),
+                Remarks: $("#txtRemarks").val(),
+
+                ProfileDate: $("#txtProfileDate").val()  // ✅ NEW FIELD
+            };
+
+            // ================= AJAX =================
+
+            $.ajax({
+                url: '/DriverProfile/SaveDriverProfile',
+                type: 'POST',
+                data: data,
+
+                beforeSend: function () {
+                    $("#btnSave").prop("disabled", true).text("Saving...");
+                },
+
+                success: function (res) {
+
+                    if (res.success) {
+
+                        // ✅ SUCCESS POPUP (FIXED)
+                        Swal.fire({
+                            title: data.ActionType === "Edit" ? "Updated!" : "Saved!",
+                            text: data.ActionType === "Edit"
+                                ? "Record updated successfully"
+                                : "Record saved successfully",
+                            icon: "success",
+                            confirmButtonText: "OK",
+                            confirmButtonColor: "#2ecc71"
+                        }).then(() => {
+
+                            // ✅ Redirect AFTER popup
+                            window.location.href = "/DriverProfile/DriverProfile";
+                        });
+
+                    } else {
+                        showErrorPopup("Error", res.message || "Something went wrong");
+                    }
+                },
+
+                error: function () {
+                    showErrorPopup("Server Error", "Something went wrong on server");
+                },
+
+                complete: function () {
+                    $("#btnSave").prop("disabled", false).text("Save");
+                }
+            });
+        }
+        //Clear Function
+        function clearDriveForm() {
+
+            $("#hdnProfileId").val("");
+
+            $("#ddlDriver").val(null).trigger('change');
+            $("#ddlVehicleNo").val(null).trigger('change');
+             $("#ddlOffence").val(null).trigger('change');
+            $("#txtOffencePoint").val("");
+            $("#txtHoldAmt").val("");
+            $("#txtRemarks").val("");
+            $("#txtProfileDate").val("");
+
+            $("#btnSave").text("Save");
+        }
+        function deleteRecord(id) {
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This record will be deleted!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, Delete",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: '/DriverProfile/DeleteDriverProfile',
+                        type: 'POST',
+                        data: { id: id },
+
+                        success: function (res) {
+
+                            if (res.success) {
+
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: "Record deleted successfully",
+                                    icon: "success",
+                                    confirmButtonText: "OK"
+                                }).then(() => {
+                                    loadDriveList();
+                                });
+
+                            } else {
+
+                                Swal.fire({
+                                    title: "Error",
+                                    text: res.message || "Delete failed",
+                                    icon: "error"
+                                }).then(() => {
+                                    loadDriveList();
+                                });
+
+                            }
+                        },
+
+                        error: function () {
+
+                            Swal.fire({
+                                title: "Server Error",
+                                text: "Something went wrong",
+                                icon: "error"
+                            }).then(() => {
+                                loadDriveList(); // optional
+                            });
+                        }
+                    });
+
+                } else {
+                }
+            });
+        }
+        function showSuccessPopup(title, message) {
+            Swal.fire({
+                title: title,
+                text: message,
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2ecc71',
+                width: '338px',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2ecc71',
+                iconColor: '#9be39b',
+                buttonsStyling: true,
+                customClass: {
+                    popup: 'custom-swal-popup'
+                }
+            });
+
+        }
+        function showErrorPopup(title, message) {
+            return Swal.fire({
+                title: title,
+                text: message,
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#e74c3c',
+                width: '338px',
+                iconColor: '#f5a6a6',
+                buttonsStyling: true,
+                customClass: {
+                    popup: 'custom-swal-popup'
+                }
+            });
+        }
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            var d = new Date(dateStr);
+            return d.toLocaleDateString('en-GB');
+        }
+    </script>
+}

@@ -1,0 +1,2 @@
+13:58:05.420 - Before conversion - StartDate: '2026-01-01', EndDate: '2026-01-03', SettlementDate: '2026-01-03'
+13:58:05.435 - After conversion - StartDate: 2026-01-01, EndDate: 2026-01-03

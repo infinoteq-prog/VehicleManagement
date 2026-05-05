@@ -1,0 +1,70 @@
+------Replace Code SaveChallanEntry -----------------------
+
+
+
+  public IActionResult SaveChallanEntry(int? ChallanId,DateTime ChallanEntryDate,DateTime ChallanDate,string ChallanNo,string VehicleNo,string DriverName,decimal Amount,string Remark,string ActionName,IFormFile ChallanFile,IFormFile ReceiptFile,string GrievancesTicket, string ChallanStatus, DateTime? PaidDate, int DriverId)
+  {
+      byte[] challanFileData = null;
+      byte[] receiptFileData = null;
+      string challanFileName = null;
+      string challanContentType = null;
+      string receiptFileName = null;
+      string receiptContentType = null;
+
+      try
+      {
+          string userId = HttpContext.Session.GetString("UserId");
+          if (ChallanFile != null && ChallanFile.Length > 0)
+          {
+              using var ms = new MemoryStream();
+              ChallanFile.CopyTo(ms);
+              challanFileData = ms.ToArray();
+              challanFileName = ChallanFile.FileName;
+              challanContentType = ChallanFile.ContentType;
+          }
+
+          if (ReceiptFile != null && ReceiptFile.Length > 0)
+          {
+              using var ms = new MemoryStream();
+              ReceiptFile.CopyTo(ms);
+              receiptFileData = ms.ToArray();
+              receiptFileName = ReceiptFile.FileName;
+              receiptContentType = ReceiptFile.ContentType;
+          }
+          using SqlConnection con = new SqlConnection(_connectionString);
+          using SqlCommand cmd = new SqlCommand("SP_SaveChallanEntry", con)
+          {
+              CommandType = CommandType.StoredProcedure
+          };
+          cmd.Parameters.AddWithValue("@ChallanId", (object)ChallanId ?? DBNull.Value);
+          cmd.Parameters.AddWithValue("@ChallanEntryDate", ChallanEntryDate);
+          cmd.Parameters.AddWithValue("@ChallanDate", ChallanDate);
+          cmd.Parameters.AddWithValue("@ChallanNo", ChallanNo);
+          cmd.Parameters.AddWithValue("@VehicleNo", VehicleNo);
+          cmd.Parameters.AddWithValue("@DriverName", DriverName);
+          cmd.Parameters.AddWithValue("@Amount", Amount);
+          cmd.Parameters.AddWithValue("@Remark", (object)Remark ?? DBNull.Value);
+          cmd.Parameters.AddWithValue("@ActionName", string.IsNullOrEmpty(ActionName) ? (object)DBNull.Value : ActionName);
+          var fileParam = cmd.Parameters.Add("@ChallanAttachment", SqlDbType.VarBinary, -1);
+          fileParam.Value = challanFileData ?? (object)DBNull.Value;
+          cmd.Parameters.AddWithValue("@ChallanFileName", (object)challanFileName ?? DBNull.Value);
+          cmd.Parameters.AddWithValue("@ChallanContentType", (object)challanContentType ?? DBNull.Value);
+          var fileParamReceipt = cmd.Parameters.Add("@ReceiptAttachment", SqlDbType.VarBinary, -1);
+          fileParamReceipt.Value = receiptFileData ?? (object)DBNull.Value;
+          cmd.Parameters.AddWithValue("@ReceiptFileName", (object)receiptFileName ?? DBNull.Value);
+          cmd.Parameters.AddWithValue("@ReceiptContentType", (object)receiptContentType ?? DBNull.Value);
+          cmd.Parameters.AddWithValue("@CreatedBy", (object)userId ?? DBNull.Value);
+          cmd.Parameters.AddWithValue("@GrievancesTicket", (object)GrievancesTicket ?? DBNull.Value);
+          cmd.Parameters.AddWithValue("@ChallanStatus", (object)ChallanStatus ?? DBNull.Value);;
+          cmd.Parameters.AddWithValue("@PaidDate",PaidDate.HasValue ? (object)PaidDate.Value : DBNull.Value);
+          cmd.Parameters.AddWithValue("@DriverId", (object)DriverId ?? DBNull.Value); ;
+          con.Open();
+          cmd.ExecuteNonQuery();
+          con.Close();
+          return Json(new { success = true, message = "Saved Successfully" });
+      }
+      catch (Exception ex)
+      {
+          return Json(new { success = false, message = ex.Message });
+      }
+  }

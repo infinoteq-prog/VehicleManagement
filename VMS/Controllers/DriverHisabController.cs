@@ -235,26 +235,61 @@ namespace VMS.Controllers
                                  int openingBalance, int closingBalance, string tripRouteDescription,  List<TblDriverHisabLine> _lstDriverLine)
         {
             VMTrip model = new VMTrip();
+            //DateTime dtTripStartDate = DateTime.Now;
+            //DateTime dtTripEndDate = DateTime.Now;
+            //DateTime dtSettlementDate = DateTime.Now;
             DateTime dtTripStartDate = DateTime.Now;
             DateTime dtTripEndDate = DateTime.Now;
             DateTime dtSettlementDate = DateTime.Now;
             try
             {
-                Globalsettings.Log(_controllerName, string.Format("Before conversion StartDate {0}, EndDate {1}", tripStartDate, tripEndDate));
+                Globalsettings.Log(_controllerName,
+                    $"Before conversion - StartDate: '{tripStartDate}', EndDate: '{tripEndDate}', SettlementDate: '{settlementDate}'");
 
-                dtTripStartDate = Convert.ToDateTime(tripStartDate);
-                dtTripEndDate = Convert.ToDateTime(tripEndDate);
-                dtSettlementDate = Convert.ToDateTime(settlementDate);
-                Globalsettings.Log(_controllerName, string.Format("After conversion StartDate {0}, EndDate {1}", Convert.ToDateTime(dtTripStartDate), Convert.ToDateTime(dtTripEndDate)));
+                // Fix: Use TryParseExact to handle multiple date formats
+                if (!TryParseDate(tripStartDate, out dtTripStartDate))
+                {
+                    throw new FormatException($"Invalid tripStartDate format: '{tripStartDate}'");
+                }
 
+                if (!TryParseDate(tripEndDate, out dtTripEndDate))
+                {
+                    throw new FormatException($"Invalid tripEndDate format: '{tripEndDate}'");
+                }
+
+                if (!TryParseDate(settlementDate, out dtSettlementDate))
+                {
+                    throw new FormatException($"Invalid settlementDate format: '{settlementDate}'");
+                }
+
+                Globalsettings.Log(_controllerName,
+                    $"After conversion - StartDate: {dtTripStartDate:yyyy-MM-dd}, EndDate: {dtTripEndDate:yyyy-MM-dd}");
             }
             catch (Exception ex)
             {
-                Globalsettings.Log(_controllerName, string.Format("Error occured while converting date {0}", ex.Message));
+                Globalsettings.Log(_controllerName, $"Error occurred while converting date: {ex.Message}");
                 model.TransactionMessage.Status = TransactionStatus.Failed;
                 model.TransactionMessage.Message = "Driver Hisab Date Conversion Issue!";
                 return Json(model);
             }
+
+            //try
+            //{
+            //    Globalsettings.Log(_controllerName, string.Format("Before conversion StartDate {0}, EndDate {1}", tripStartDate, tripEndDate));
+
+            //    dtTripStartDate = Convert.ToDateTime(tripStartDate);
+            //    dtTripEndDate = Convert.ToDateTime(tripEndDate);
+            //    dtSettlementDate = Convert.ToDateTime(settlementDate);
+            //    Globalsettings.Log(_controllerName, string.Format("After conversion StartDate {0}, EndDate {1}", Convert.ToDateTime(dtTripStartDate), Convert.ToDateTime(dtTripEndDate)));
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    Globalsettings.Log(_controllerName, string.Format("Error occured while converting date {0}", ex.Message));
+            //    model.TransactionMessage.Status = TransactionStatus.Failed;
+            //    model.TransactionMessage.Message = "Driver Hisab Date Conversion Issue!";
+            //    return Json(model);
+            //}
 
             int userID = 0;
             VMLogin userDetails = HttpContext.Session.GetObjectFromJson<VMLogin>("userDetails");
@@ -503,6 +538,8 @@ namespace VMS.Controllers
                 {
                     await connection.OpenAsync();
 
+
+
                     string sql = @" SELECT
                                    dh.Settlement_No,dh.Last_Settlement_Id,dh.Vehicle_No,vm.Vehicle_No[VehicleNumber], 
                                    CONVERT(VARCHAR, dh.Trip_Start_Date, 105) AS TripStartDate,
@@ -515,7 +552,9 @@ namespace VMS.Controllers
                                    dh.Updated_By AS DieselHeaderUpdatedBy,
                                    dh.Driver_Id,dm.Driver_Name,dm.Father_Name AS DriverFatherName,
                                    uc.User_Name AS DieselHeaderCreatedByName,
-                                   uu.User_Name AS DieselHeaderUpdatedByName
+                                   uu.User_Name AS DieselHeaderUpdatedByName,
+                                   datediff(Day, Trip_Start_Date, Trip_End_Date)+1 AS TripDays,
+                                   [dbo].GetProftLossByDriverID(dh.Trip_End_Date, dh.Driver_Id) AS PnL
                                    FROM [dbo].[tbl_Driver_Hisab_Header] dh 
                                    INNER JOIN [dbo].[tbl_Vehicle_Master] vm ON dh.Vehicle_No = vm.Id
                                    LEFT JOIN [dbo].[tbl_Driver_Master] dm ON dh.Driver_Id = dm.Id
@@ -555,6 +594,8 @@ namespace VMS.Controllers
                                     DriverFatherName = reader.GetString("DriverFatherName"),
                                     DieselHeaderCreatedByName = reader.GetString("DieselHeaderCreatedByName"),
                                     DieselHeaderUpdatedByName = reader.GetString("DieselHeaderUpdatedByName"),
+                                    TripDays = reader.GetInt32("TripDays").ToIntFromNull(),
+                                    PnL = reader.GetDecimal("PnL"),
                                     LastTripHistory = await DriverHisabContext.GetLastTripHistoryBySettlementNoAsync(_connectionString, reader.GetInt32("Last_Settlement_Id")),
                                     expenseList = await DriverHisabContext.GetExpenseListAsync(_connectionString, SettlementId)
                                 };
@@ -684,7 +725,7 @@ namespace VMS.Controllers
                         }
 
                         _context.TblDriverHisabHeaders.Update(UpdateDriverHisab);
-                        _context.SaveChanges(); // Save changes to the header first to ensure TripId is consistent
+                        await _context.SaveChangesAsync(); // Save changes to the header first to ensure TripId is consistent
 
                         model.TransactionMessage.Status = TransactionStatus.Success;
                         model.TransactionMessage.Message = "Driver Hisab approved status has been changed successfully.";
@@ -708,6 +749,83 @@ namespace VMS.Controllers
                 model.TransactionMessage.Message = ex.Message.ToString();
             }
             return Json(model);
+        }
+
+        private bool TryParseDate(string dateString, out DateTime result)
+        {
+            result = DateTime.MinValue;
+
+            if (string.IsNullOrWhiteSpace(dateString))
+                return false;
+
+            // List of expected date formats
+            string[] dateFormats = {
+        // Your problematic format: "2025 00:00-01-03"
+        "yyyy HH:mm-MM-dd",
+        "yyyy HH:mm-M-d",
+        
+        // Standard formats
+        "yyyy-MM-dd",
+        "yyyy/MM/dd",
+        "MM/dd/yyyy",
+        "dd/MM/yyyy",
+        "dd-MM-yyyy",
+        "M/d/yyyy",
+        "d/M/yyyy",
+        "d-M-yyyy",
+        
+        // With time
+        "yyyy-MM-dd HH:mm:ss",
+        "yyyy-MM-ddTHH:mm:ss",
+        "MM/dd/yyyy HH:mm:ss",
+        "dd/MM/yyyy HH:mm:ss"
+    };
+
+            // First try parsing with specific formats
+            if (DateTime.TryParseExact(dateString, dateFormats,
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out result))
+            {
+                return true;
+            }
+
+            // If that fails, try cleaning the string for your specific format
+            if (dateString.Contains(" ") && dateString.Contains(":") && dateString.Contains("-"))
+            {
+                try
+                {
+                    // Handle format: "2025 00:00-01-03"
+                    string cleanedDate = CleanDateString(dateString);
+                    if (DateTime.TryParse(cleanedDate, out result))
+                    {
+                        return true;
+                    }
+                }
+                catch
+                {
+                    // Continue to try other methods
+                }
+            }
+
+            return DateTime.TryParse(dateString, out result);
+        }
+
+        private string CleanDateString(string dateString)
+        {
+            if (string.IsNullOrWhiteSpace(dateString))
+                return dateString;
+
+            string[] parts = dateString.Split(' ', '-');
+
+            if (parts.Length >= 4)
+            {
+                string year = parts[0];
+                string month = parts[2];
+                string day = parts[3];
+
+                return $"{year}-{month}-{day}";
+            }
+
+            return dateString;
         }
     }
 }

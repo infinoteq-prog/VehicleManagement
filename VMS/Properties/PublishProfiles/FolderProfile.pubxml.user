@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\Madan\GitHub\VMS\VehicleManagement\VMS\bin\Release\net8.0\publish\</_PublishTargetUrl>
+    <History>True|2026-02-27T17:49:40.3709084Z||;True|2026-02-17T22:36:30.1166121+05:30||;True|2026-02-08T23:09:15.2083218+05:30||;True|2026-02-08T22:46:31.3189856+05:30||;True|2026-02-07T23:13:42.8917995+05:30||;True|2026-02-07T22:49:55.1399504+05:30||;True|2026-02-04T14:07:28.4188933+05:30||;True|2026-01-25T23:07:59.7306851+05:30||;True|2026-01-23T21:21:28.4557613+05:30||;True|2026-01-22T20:58:17.7681817+05:30||;True|2025-05-27T11:52:32.5914266+05:30||;True|2025-05-18T19:22:13.2292517+05:30||;True|2025-05-09T16:58:18.4987818+05:30||;True|2025-05-09T16:38:41.8870692+05:30||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

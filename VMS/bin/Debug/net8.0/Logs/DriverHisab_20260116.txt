@@ -1,0 +1,8 @@
+23:09:08.203 - Before conversion StartDate 2025 00:00-07-17, EndDate 2026 23:07-01-09
+23:09:08.360 - Error occured while converting date String '2025 00:00-07-17' was not recognized as a valid DateTime.
+23:09:21.742 - Before conversion StartDate 2025 00:00-05-04, EndDate 2026 23:07-01-09
+23:09:21.826 - Error occured while converting date String '2025 00:00-05-04' was not recognized as a valid DateTime.
+23:09:48.882 - Before conversion StartDate 2026 00:00-01-01, EndDate 2026 23:07-01-09
+23:09:48.949 - Error occured while converting date String '2026 00:00-01-01' was not recognized as a valid DateTime.
+23:10:22.614 - Before conversion StartDate 2026 00:00-01-01, EndDate 2026 23:07-01-16
+23:10:22.685 - Error occured while converting date String '2026 00:00-01-01' was not recognized as a valid DateTime.

@@ -1,0 +1,426 @@
+﻿@model VMS.Models.DriverAttendanceModel
+@{
+    ViewData["Title"] = "Driver Attendance Entry";
+}
+<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<style>
+
+    table.dataTable thead th {
+        background-color: #6c2eb9;
+        color: white;
+        text-align: center;
+    }
+
+    .dataTables_wrapper .dt-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 0px;
+    }
+
+    .dataTables_filter {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+</style>
+<style>
+
+    .select2-container .select2-selection--single {
+        height: 50px; 
+        padding: 5px 12px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 38px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 48px; 
+    }
+</style>
+
+
+<div class="container mb-4">
+    <div class="card shadow p-4">
+        <h3 class="card-title mb-4">Driver Attendance Entry</h3>
+
+        <form id="DriverAttendanceForm" asp-action="Create" method="post">
+            <input type="hidden" name="DriverChangeID" />
+            <div>
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="lbVehicleNo">Vehicle No</label>
+                            <select class="form-control" id="VehicleNo" name="VehicleNo">
+                                <!-- Options will be dynamically populated here -->
+                            </select>
+                        </div>
+                    </div>
+ 
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="lbDriver">Driver Name</label>
+                            <select class="form-control" id="driverName" name="DriverID">
+                                <!-- Options will be dynamically populated here -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="lbChangedate">Start Date</label>
+                            <input asp-for="ChangeDate" type="date" class="form-control" required />
+                            @* <input type="date" class="form-control" id="txtTripStartDate" /> *@
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    
+                      <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="lbEnddate">End Date</label>
+                            <input asp-for="EndDate" type="date" class="form-control"  />
+                        </div> 
+                    </div>  
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="Salary">Salary</label>
+                            <input type="text" class="form-control" id="Salary" name="Salary" maxlength="13" inputmode="decimal" placeholder="0.00" />
+                            <!-- Options will be dynamically populated here -->
+                        </div>
+                    </div>
+
+
+   @*                 <label for="cars">Choose a car:</label>
+
+<select name="cars" id="cars">
+  <option value="volvo">Volvo</option>
+  <option value="saab">Saab</option>
+  <option value="mercedes">Mercedes</option>
+  <option value="audi">Audi</option>
+</select>
+*@
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="SalaryType">Salary Type</label>
+
+                            <select asp-for="SalaryType" class="form-control" id="SalaryType" name="SalaryType">
+                                <option value="">-- Select --</option>
+                                <option Value="Monthly">Monthly</option>
+                                <option value="Trip">Trip</option>
+
+                            </select>
+                            <span asp-validation-for="SalaryType" class="text-danger"></span>
+                            <!-- Options will be dynamically populated here -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="Status">Status</label>
+
+                            @*  <input type="text" class="form-control" id="Status" name="Status" />  *@
+
+                            @* <option value="Loaded" selected="@(Model.LoadedStatus == "Loaded")">Loaded</option>
+                            <option value="Empty" selected="@(Model.LoadedStatus == "Empty")">Empty</option> *@
+
+                            <select asp-for="Status" class="form-control" id="Status" name="Status">
+                                <option value="">-- Select --</option>
+                                <option Value="Home">Home</option>
+                                <option value="Vehicle">Vehicle</option>
+
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                            <!-- Options will be dynamically populated here -->
+                        </div>
+                    </div>
+
+ 
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="Remarks">Remarks</label>
+                            <input type="text" class="form-control" id="Remarks" name="Remarks" />
+                            <!-- Options will be dynamically populated here -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+                    <button type="submit" id="submitBtn" class="btn btn-primary mt-4" )">Add Entry</button>
+                    <button type="button" id="cancelBtn" class="btn btn-primary mt-4" style="display:none;" )">Cancel</button>
+                </div>
+            </div>
+        </form>
+
+        <h4 class="mt-4">All Driver Attendance Entries</h4>
+        <table id="driverAttendanceTable" class="display nowrap table table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Actions</th>
+                    <th>ID</th>
+                    <th>VehicleNo</th>
+                    <th>DriverName</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Salary</th>
+                    <th>SalaryType</th>
+                    <th>Remarks</th>
+
+                    @*  <th>Created By</th>
+                    <th>Created Date</th> *@
+                    <th>IsActive</th>
+                    @*  <th>Updated By</th>
+                    <th>Updated Date</th> *@
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            // var table = $('#driverAttendanceTable').DataTable({
+            //     ajax: {
+            //         url: '@Url.Action("GetAllDriverAttendanceEntries", "DriverAttendance")',
+            //         dataSrc: 'data'
+            //     },
+            //     columns: [
+            //         {
+            //             data: null,
+            //             render: function (data) {
+            //                 return `
+            //                             <button class="btn btn-sm btn-primary edit-btn" data-id="${data.driverChangeID}">Edit</button>
+            //                             <button class="btn btn-sm btn-danger delete-btn ms-2" data-id="${data.driverChangeID}">Delete</button>
+            //                         `;
+            //             },
+            //             orderable: false
+            //         },
+            //         { data: 'driverChangeID' },
+            //         { data: 'vehicleNo' },
+            //         { data: 'driverName' },
+            //         { data: 'changeDate' },
+            //         { data: 'endDate' },
+            //         { data: 'status' },
+            //         { data: 'salary', defaultContent: '' },
+            //         { data: 'salaryType' },                   
+            //         { data: 'remarks' },
+            //         { data: 'isActive' }
+            //     ],
+            //     dom: 'Bfrtip',
+            //     buttons: ['copy', 'excel', 'pdf', 'print'],
+            //     scrollX: true
+            // });
+            var table = $('#driverAttendanceTable').DataTable({
+                ajax: {
+                    url: '@Url.Action("GetAllDriverAttendanceEntries", "DriverAttendance")',
+                    dataSrc: 'data'
+                },
+                columns: [
+                    {
+                        data: null,
+                        render: function (data) {
+                            return `
+                            <button class="btn btn-sm btn-primary edit-btn" data-id="${data.driverChangeID}">Edit</button>
+                            <button class="btn btn-sm btn-danger delete-btn ms-2" data-id="${data.driverChangeID}">Delete</button>
+                        `;
+                        },
+                        orderable: false
+                    },
+                    { data: 'driverChangeID' },
+                    { data: 'vehicleNo' },
+                    { data: 'driverName' },
+                    {
+                        data: 'changeDate',
+                        render: function (data) {
+                            if (!data) return '';
+                            let d = new Date(data);
+                            return d.toLocaleDateString('en-GB'); // dd-MM-yyyy
+                        }
+                    },
+                    {
+                        data: 'endDate',
+                        render: function (data) {
+                            if (!data) return '';
+                            let d = new Date(data);
+                            return d.toLocaleDateString('en-GB'); // dd-MM-yyyy
+                        }
+                    },
+
+                    { data: 'status' },
+                    { data: 'salary', defaultContent: '' },
+                    { data: 'salaryType' },
+                    { data: 'remarks' },
+                    { data: 'isActive' }
+                ],
+                dom: 'Bfrtip',
+                buttons: ['copy', 'excel', 'pdf', 'print'],
+                scrollX: true
+            });
+
+
+
+            $('#driverAttendanceTable').on('click', '.edit-btn', function () {
+                var data = table.row($(this).parents('tr')).data();
+
+                $('#DriverChangeID').val(data.driverChangeID);
+                $('#VehicleNo').val(data.vehicleNo);
+                $('#DriverID').val(data.driverID);
+                $('#Status').val(data.status);
+                $('#Remarks').val(data.remarks);
+
+                if (data.changeDate) {
+                    let d = new Date(data.changeDate);
+                    $('#StartDate').val(d.toISOString().split('T')[0]); // yyyy-MM-dd
+                }
+
+                if (data.endDate) {
+                    let e = new Date(data.endDate);
+                    $('#EndDate').val(e.toISOString().split('T')[0]);
+                }
+            });
+
+
+            // ===== Load Drivers =====
+            function loadDrivers() {
+                $.get('/DriverAttendance/GetDrivers', function (data) {
+                    $('#driverName').empty().append('<option value="">-- Select Driver --</option>');
+                    data.forEach(v => {
+                        $('#driverName').append(`<option value="${v.driverID}">${v.driverName}</option>`);
+                    });
+
+                    // Initialize Select2 after options loaded
+                    $('#driverName').select2({
+                        placeholder: "-- Select Driver --",
+                        allowClear: true,
+                        width: "100%"
+                    });
+                });
+            }
+
+            // ===== Load Vehicles =====
+            function loadVehicles() {
+                $.get('/DriverAttendance/GetVehicles', function (data) {
+                    $('#VehicleNo').empty().append('<option value="">-- Select Vehicle --</option>');
+                    data.forEach(v => {
+                        $('#VehicleNo').append(`<option value="${v.vehicleNo}">${v.vehicleNo}</option>`);
+                    });
+
+                    // Initialize Select2 after options loaded
+                    $('#VehicleNo').select2({
+                        placeholder: "-- Select Vehicle --",
+                        allowClear: true,
+                        width: "100%"
+                    });
+                });
+            }
+
+            loadDrivers();
+            loadVehicles();
+
+            // ===== Submit =====
+            $('#DriverAttendanceForm').on('submit', function (e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+                var actionUrl = $(this).attr('action');
+
+                $.post(actionUrl, formData, function (res) {
+                    if (res.success) {
+                        resetForm();
+                        table.ajax.reload(null, false);
+                    } else {
+                        alert("Something went wrong!");
+                    }
+                });
+            });
+
+            // ===== Edit =====
+            $('#driverAttendanceTable').on('click', '.edit-btn', function () {
+               
+
+                var row = table.row($(this).parents('tr')).data();
+
+                $('input[name="DriverChangeID"]').val(row.driverChangeID);
+                $('input[name="ChangeDate"]').val(row.changeDate.split('T')[0]);
+                $('input[name="EndDate"]').val(row.endDate.split('T')[0]);
+                $('input[name="Salary"]').val(row.salary || '');
+                $('input[name="Status"]').val(row.status || '');
+
+                $('input[name="Remarks"]').val(row.remarks || '');
+
+                // Bind Select2 dropdowns
+                setSelectValue($('#driverName'), row.driverID, row.driverName);
+                setSelectValue($('#VehicleNo'), row.vehicleNo, row.vehicleNo);
+                setSelectValue($('#Status'), row.status, row.status);
+                setSelectValue($('#SalaryType'), row.salaryType, row.salaryType);
+
+                $('#submitBtn').text('Update Entry');
+                $('#cancelBtn').show();
+                $('#DriverAttendanceForm').attr('action', '@Url.Action("UpdateDriverAttendance", "DriverAttendance")');
+            });
+
+            // ===== Delete =====
+            $('#driverAttendanceTable').on('click', '.delete-btn', function () {
+                if (!confirm("Are you sure you want to delete this entry?")) return;
+                $.post('@Url.Action("DeleteDriverAttendance", "DriverAttendance")', { id: $(this).data('id') }, function (res) {
+                    if (res.success) table.ajax.reload(null, false);
+                    else alert("Delete failed");
+                });
+            });
+
+            $('#cancelBtn').click(function () {
+                resetForm();
+            });
+
+            // ===== Reset =====
+            function resetForm() {
+                $('#DriverAttendanceForm')[0].reset();
+                $('input[name="DriverChangeID"]').val('');
+                $('#submitBtn').text('Add Entry');
+                $('#cancelBtn').hide();
+                $('#DriverAttendanceForm').attr('action', '@Url.Action("Create", "DriverAttendance")');
+
+                $('#driverName').val(null).trigger('change');
+                $('#VehicleNo').val(null).trigger('change');
+            }
+
+            // 
+            function setSelectValue($select, value, text) {
+                if (!value) return;
+                if ($select.find(`option[value="${value}"]`).length === 0) {
+                    $select.append(new Option(text, value, true, true));
+                }
+                $select.val(value).trigger('change');
+            }
+
+            $('#Salary').on('input', function () {
+                this.value = this.value.replace(/[^0-9.]/g, '');
+            });
+        });
+    </script>
+}
+
