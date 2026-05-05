@@ -1,0 +1,634 @@
+﻿@model VMS.ViewModel.VMGstRateMaster
+@using VMS.Helper
+@using VMS.Models
+@using VMS.ViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Diesel Hisab Master";
+}
+
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+       table-layout: fixed; 
+    }
+
+    table, th, td {
+        font-size: 0.85em;
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+        word-wrap: break-word; /* Recommended for long words */
+        font-weight: bold;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: normal;
+    }
+
+     th span[id^="xFillingDate"] { /* Target the date spans */
+         font-size: 0.85em; /* Reduce font size (adjust as needed) */
+         white-space: nowrap; /* Prevent text from wrapping */
+     }
+
+    .print-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+    }
+
+    .container {
+        position: relative; /* Needed for absolute positioning of the button */
+    }
+</style>
+
+<style media="print">
+    table {
+        table-layout: fixed;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 8px;
+        border: 1px solid black;
+        text-align: center;
+        word-wrap: break-word;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: normal;
+    }
+</style>
+
+<div class="container" id="printableArea">
+    <button class="print-button" onclick="prepareForPrint()">Print</button>
+    <h1 id="labelDiesalHisab">Diesal Hisab</h1>
+    <table>
+        <thead>
+             <tr>
+                <th colspan="4" style="text-align:left">
+                    Driver Name:
+                    <span id="driverName"></span>
+                </th>
+                
+                <th colspan="2" style="text-align:left">A/c No: <span id="driverAccountNumber"></span></th>
+                <th colspan="4" style="text-align:left">Date Trip Start: <span id="tripStartDate"></span></th>
+                <th colspan="3" style="text-align:left">Date Trip End: <span id="tripEndDate"></span></th>
+                <th colspan="2" style="text-align:left">Truck No: <span id="vehicleNumber"></span></th>
+            </tr>
+            <tr>
+                <th colspan="13" style="text-align:left" id="note"><p>Previous Remark: </p> </th>                
+                <th colspan="2" style="text-align:left;">Sr No:<span id="srNo"></span></th>
+                @* <th colspan="2"></th> *@
+            </tr>
+            <tr>
+                <th colspan="4">TROLLY KI TANKI KA DIESEL JODNA HAI</th>
+                <th style="text-align:left">(+) <span id="openingBalance"></span></th>
+                <th colspan="4">GPS WORKING - 1</th>
+                <th colspan="6">FOR TALLY PURPOSE AND CHECK DATE</th>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <th colspan="3">Pump Name</th>
+                @* <th>F/T/Sr. No.</th>
+                <th>Horse (H) + Trolly</th> *@
+                <th>Qty. by Driver</th>
+                <th>Qty. From GPS/Trolly</th>
+                <th>Diff in HSD</th>
+                <th>Time</th>
+                <th>Date in GPS/Tally</th>
+                <th>Qty in Tally</th>
+                <th>Fair/Rough</th>
+                <th>Pump Name</th>
+                <th>Narration</th>
+                <th>S No</th>
+                <th>V No/<br />Amount</th>
+            </tr>
+            <tr>
+                <th><span id="xFillingDate0"></span></th>
+                <th colspan ="3"><span id="xFillingPumpName0"></span></th>
+                @* <th></th>
+                <th></th> *@
+                <th><span id="xFillingQty0"></span></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th colspan="2"></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th><span id="xFillingDate1"></span></th>
+                <th colspan="3"><span id="xFillingPumpName1"></span></th>
+               @*  <th></th>
+                <th></th> *@
+                <th><span id="xFillingQty1"></span></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th colspan="2"></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th><span id="xFillingDate2"></span></th>
+                <th colspan="3"><span id="xFillingPumpName2"></span></th>
+                @* <th></th>
+                <th></th> *@
+                <th><span id="xFillingQty2"></span></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th colspan="2"></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th><span id="xFillingDate3"></span></th>
+                <th colspan="3"><span id="xFillingPumpName3"></span></th>
+               @*<th></th>
+                <th></th> *@
+                <th><span id="xFillingQty3"></span></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th colspan="2"></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th colspan="4" style="text-align:left">TROLLY KI TANKI KA DIESEL घटाना HAI</th>
+                <th style="text-align:left">(-) <span id="closingBalance"></span></th>
+                <th colspan="10" style="text-align:left">TROLLY DIESEL RULE: JO ENTRY GPS ME EXTRA HOGI WO TROLLY WALA DIESEL HOGA</th>
+            </tr>
+            <tr>
+                <th colspan="4" style="text-align:left">TOTAL DIESEL FOR CALCULATE AVERAGE (a) </th>
+                <th style="text-align:center"> <span id="dieselConsumed"></span></th>
+                <th rowspan="2" style="text-align:left">RUN BY KM</th>
+                <th rowspan="2" style="text-align:left">KM <br/>Run by<br/>Tata<br/>AL GPS </th>
+                <th colspan="8" style="text-align:left">Diesel Consumption by GPS  </th>
+            </tr>
+            <tr>
+                <th colspan="3" style="text-align:left">PUMP SE PUMP TAK MANUAL</th>
+                <th>
+                    ODO Meter
+                    Start
+                </th>
+                <th>ODO Meter End</th>
+                <th colspan="8" style="text-align:left">
+                   Route Name:  <span id="routeNameWithBestAvg"></span>
+                </th>
+            </tr>
+            <tr>
+                <th colspan="3" style="text-align:left">Route Sr No. फॉर फिक्स डीज़ल</th>
+                <th><span id="odoMeterStart"></span></th>
+                <th><span id="odoMeterEnd"></span></th>
+                <th><span id="totalRunningKm"></span></th>
+                <th></th>
+                <th>Estimate</br>Average</th>
+                <th>Estimate</br>Diesel</th>
+                <th colspan="6" style="text-align:left">खाली का डीज़ल = <span id="khaliKaDisel"></span></th>
+            </tr>
+
+            @* Rows Entry *@
+            <tr>
+                <th colspan="3" style="text-align:left"><span id="stationdetail_station0"></span></th>
+                <th></th>
+                <th></th>
+                <th><span id="stationdetail_km0"></span></th>
+                <th><span id="stationdetail_loadType0"></span></th>
+                <th><span id="stationdetail_Avg0"></span></th>
+                <th><span id="stationdetail_AvgDiesel0"></span></th>
+                <th colspan="6" style="text-align:left">खाली का कि.मी. = <span id="khaliKaKiloMeter"></span></th>
+            </tr>
+            <tr>
+                <th colspan="3" style="text-align:left"><span id="stationdetail_station1"></span></th>
+                <th></th>
+                <th></th>
+                <th><span id="stationdetail_km1"></span></th>
+                <th><span id="stationdetail_loadType1"></span></th>
+                <th><span id="stationdetail_Avg1"></span></th>
+                <th><span id="stationdetail_AvgDiesel1"></span></th>
+                <th colspan="6" style="text-align:left">भरी का डीजल (Total - खाली का डीजल) = <span id="bhariKaDiesel"></span></th>
+            </tr>
+            <tr>
+                <th colspan="3" style="text-align:left"><span id="stationdetail_station2"></span></th>
+                <th></th>
+                <th></th>
+                <th><span id="stationdetail_km2"></span></th>
+                <th><span id="stationdetail_loadType2"></span></th>
+                <th><span id="stationdetail_Avg2"></span></th>
+                <th><span id="stationdetail_AvgDiesel2"></span></th>
+                <th colspan="6" style="text-align:left">भरी का कि.मी. (Total - खाली का कि.मी.) = <span id="bhariKaKilometer"></span></th>
+            </tr>
+            <tr>
+                <th colspan="3" style="text-align:left"><span id="stationdetail_station3"></span></th>
+                <th></th>
+                <th></th>
+                <th><span id="stationdetail_km3"></span></th>
+                <th><span id="stationdetail_loadType3"></span></th>
+                <th><span id="stationdetail_Avg3"></span></th>
+                <th><span id="stationdetail_AvgDiesel3"></span></th>
+                <th colspan="6" style="text-align:left">भरी का एवरेज (कि.मी. + डीजल) = <span id="bhariKaAverage"></span></th>
+            </tr>
+            <tr>
+                <th colspan="3" style="text-align:left"><span id="stationdetail_station4"></span></th>
+                <th></th>
+                <th></th>
+                <th><span id="stationdetail_km4"></span></th>
+                <th><span id="stationdetail_loadType4"></span></th>
+                <th><span id="stationdetail_Avg4"></span></th>
+                <th><span id="stationdetail_AvgDiesel4"></span></th>
+                <th colspan="6" style="text-align:left">%(of Loss + Estimate Diesel) = <span id="percentageOfLoss"></span></th>
+            </tr>
+            <tr>
+                <th colspan="3" style="text-align:left"><span id="stationdetail_station5"></span></th>
+                <th></th>
+                <th></th>
+                <th><span id="stationdetail_km5"></span></th>
+                <th><span id="stationdetail_loadType5"></span></th>
+                <th><span id="stationdetail_Avg5"></span></th>
+                <th><span id="stationdetail_AvgDiesel5"></span></th>
+                <th colspan="6" style="text-align:left">नाम डालने वाला डीजल की मात्रा व राशि : <span id="naamDaalneWala"></span></th>
+            </tr>
+            <tr>
+                <th colspan="3" style="text-align:left"><span id="stationdetail_station6"></span></th>
+                <th></th>
+                <th></th>
+                <th><span id="stationdetail_km6"></span></th>
+                <th><span id="stationdetail_loadType6"></span></th>
+                <th><span id="stationdetail_Avg6"></span></th>
+                <th><span id="stationdetail_AvgDiesel6"></span></th>
+                <th colspan="6" style="text-align:left">खाली भरी टोटल की डीजल एवरेज = <span id="khaliBhariTotalKi"></span></th>
+            </tr>
+            <tr>
+                <th colspan="3" style="text-align:left"><span id="stationdetail_station7"></span></th>
+                <th></th>
+                <th></th>
+                <th><span id="stationdetail_km7"></span></th>
+                <th><span id="stationdetail_loadType7"></span></th>
+                <th><span id="stationdetail_Avg7"></span></th>
+                <th><span id="stationdetail_AvgDiesel7"></span></th>
+                <th rowspan="4" colspan="6" style="text-align:left">Current Remarks: <span id="currentRemarks"></span></th>
+            </tr>
+            <tr>
+                <th colspan="3" style="text-align:left"><span id="stationdetail_station8"></span></th>
+                <th></th>
+                <th></th>
+                <th><span id="stationdetail_km8"></span></th>
+                <th><span id="stationdetail_loadType8"></span></th>
+                <th><span id="stationdetail_Avg8"></span></th>
+                <th><span id="stationdetail_AvgDiesel8"></span></th>
+            </tr>
+            <tr>
+                <th colspan="3" style="text-align:left"><span id="stationdetail_station9"></span></th>
+                <th></th>
+                <th></th>
+                <th><span id="stationdetail_km9"></span></th>
+                <th><span id="stationdetail_loadType9"></span></th>
+                <th><span id="stationdetail_Avg9"></span></th>
+                <th><span id="stationdetail_AvgDiesel9"></span></th>
+                @* <th rowspan="2" colspan="6" style="text-align:left">Solution क्या किया : <span id="solution"></span></th> *@
+            </tr>
+            <tr>
+                <th colspan="3" style="text-align:left"><span id="stationdetail_station10"></span></th>
+                <th></th>
+                <th></th>
+                <th><span id="stationdetail_km10"></span></th>
+                <th><span id="stationdetail_loadType10"></span></th>
+                <th><span id="stationdetail_Avg10"></span></th>
+                <th><span id="stationdetail_AvgDiesel10"></span></th>
+            </tr>
+
+            @* footer section *@
+            <tr>
+                <th colspan="5" style="text-align:left">METER AND MANUAL CALCULATION (+) YA (-) KARNA</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th rowspan="2" colspan="4" style="text-align:left">Average Nikalne Wale Ka Name: <span id="userName1"></span></th>
+                <th rowspan="2" colspan="2" style="text-align:left">Average Nikalne Ke Date <span id="currentDate"></span></th>
+            </tr>
+            <tr>
+                <th colspan="5" style="text-align:left">TOTAL RUN (YE METER READING KE SAME HONA CHAHIYE) (C)</th>
+                <th><span id="totalRunKm"></span></th>
+                <th colspan="2" style="text-align:right">Total Estimate Diesel </th>
+                <th><span id="totalEstimateDiesel"></span></th>
+            </tr>
+            <tr>
+                @* <th colspan="5" style="text-align:left">लोड अनलोड (गुजरात) में एक लाइन में जोड़ कर लिख सकते है</th> *@
+                <th colspan="5" style="text-align:left">Kilometer Run from GPS</th>  @* Changed on 2-11-2025 by SKG commented above line *@
+                <th colspan="3" style="text-align:right">Discount in Ltr.</th>
+                <th><span id="discountValue"></span></th>
+                <th colspan="6" style="text-align:left">Discount Ka Reason</th>
+            </tr>
+            <tr>
+                @* <th rowspan="2" colspan="6" style="text-align:left">लास्ट ट्रिप का भरी का Average: <span id="lastBhariKaAverage"></span></th> *@
+                <th rowspan="2" colspan="6" style="text-align:left"><span id="lastBhariKaAverage" style="display:none"></span> <br/>
+                    PrvAverage1: <span id="prvTripAverage1"></span><br />
+                    PrvAverage2:  <span id="prvTripAverage2"></span><br />
+                    PrvAverage3:  <span id="prvTripAverage3"></span><br />
+                    PrvAverage4:  <span id="prvTripAverage4"></span><br />
+                </th>
+                <th colspan="2" style="text-align:right">Diesel Profit/Loss</th>
+                <th><span id="dieselProfitLoss"></span></th>
+                <th colspan="6" style="text-align:left">(F-MEANS TANK FULL AND T MEANS TOP UP)</th>
+            </tr>
+            <tr>
+                <th colspan="2" style="text-align:right">Diesel Amt PnL:</th>
+                <th  colspan="2"> <span id="dieselAmtPnL"></span></th>
+                <th rowspan="2" colspan="1" style="text-align:left">C/F</th>
+                <th rowspan="2" colspan="1" style="text-align:left">Not C/F</th>
+                <th rowspan="2" colspan="3" style="text-align:left">Score: <b><span id="scoreCard"></span></b></th>
+            </tr>
+            <tr>
+                <th colspan="6" style="text-align:left">Bal. आगे ले जाओ तो C/F पर मार्क करना है नहीं तो Not C/F पर</th>
+                <th colspan="2" style="text-align:right">TOTAL</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            setSideMenu("diesel-hisab-master");
+            var tripid = GetParameterValues('tripid');
+            getDieselHisabById(tripid);
+        });
+
+        function getDieselHisabById(tripid) {
+            $.ajax({
+                cache: false,
+                url: '@(utilityHelper.SiteUrl() + "DieselHisab/getDieselHisablWithId")',
+                type: "GET",
+                data: { tripid: tripid },
+                dataType: "json",
+                success: function (data) {
+
+                    console.log('gaurave');
+                    console.log(data);
+                    if (data != null && data != undefined) {
+                        
+                        var totalFillingQty=0;
+                        var totalRunKm = 0;
+                        var totalEstimateDiesel = 0;
+                        var totalConsumedDiesel = 0;
+                        var totalDieselProfitLoss=0;
+                        var totalAvgDieselValue=0;
+                        var totalDieselFillingRow=0;
+
+                        var totalKhaliKaKm=0;
+                        var totalKhaliKaDiesel=0;
+                        var totalLoadUnloadDiesel=0;
+                        var totalDiscountValue=0;
+
+                         // $("#driverName").html(`Driver Name: <span>${data.driverName}</span>`);
+                         let accountNumber = data.bankAccountNumber;
+
+                        let displayNumber = (accountNumber && accountNumber.length >= 4) ? accountNumber.slice(-4) : accountNumber || "N/A";
+
+                         $("#note").text('Previous Remark: '+ data.lastTripRouteDescr);
+                        $("#driverAccountNumber").text(displayNumber);
+                        $("#routeNameWithBestAvg").text(data.routeNameWithBestAvg);
+                        $("#driverName").text(data.driverName);
+                        $("#vehicleNumber").text(data.vehicleNumber);
+                        $("#tripStartDate").text(data.tripStartDate);
+                        $("#tripEndDate").text(data.tripEndDate);
+                        $("#srNo").text(` `+data.tripId);
+                        $("#odoMeterStart").text(data.startOdometer);
+                        $("#odoMeterEnd").text(data.endOdometer);
+                        $("#totalRunningKm").text(data.runningKm);
+                        $("#currentRemarks").text(data.route_Descr);
+                        $("#scoreCard").text(data.scoreCard);
+                        $("#dieselAmtPnL").text(0);
+                        $("#userName").text(data.dieselHeaderCreatedByName);
+                        $("#userName1").text(data.dieselHeaderCreatedByName);
+                        $("#currentDate").text(data.dieselHeaderCreationDate);
+                        $("#lastBhariKaAverage").text(data.lastTripHistory.lastBhariKaAverage);
+                        totalDiscountValue = data.discountValue;
+                        
+                        //GetPrevious Trip Average
+                        data.previous4TripAverage.forEach((entry, index) => {
+                            numberIndex = index + 1;
+                            const prvTripAverage = `prvTripAverage${numberIndex}`;
+                            try {
+                                $(`#${prvTripAverage}`).text(entry.RouteName + " " + entry.PrvAverage);
+                            } catch { }
+                        });
+
+                        //Diesel Filling    
+                        data.dieselFillingList.forEach((entry, index) => {
+                            totalDieselFillingRow=index+1;
+                            const xFillingDate = `xFillingDate${index}`;
+                            const xFillingPumpName = `xFillingPumpName${index}`;
+                            const xFillingQty = `xFillingQty${index}`;
+                            totalFillingQty=parseFloat(totalFillingQty)+ parseFloat(entry.litre);
+                            try { 
+                            $(`#${xFillingDate}`).text(entry.dieselFillingDate);
+                            $(`#${xFillingPumpName}`).text(entry.vendorName);
+                            $(`#${xFillingQty}`).text(entry.litre);
+                        }catch{}
+                        });
+
+                        
+                        try{
+                        $("#openingBalance").text(data.openingDiesel);
+                        $("#closingBalance").text(data.closingDiesel);
+                        totalConsumedDiesel=((parseFloat(data.openingDiesel) + parseFloat(totalFillingQty)) - parseFloat(data.closingDiesel));
+                        $("#dieselConsumed").text(totalConsumedDiesel);
+                        }
+                        catch{}
+
+                        //Station Details
+                        data.stationList.forEach((entry, index) => {
+                            const station = `stationdetail_station${index}`; 
+                            const km = `stationdetail_km${index}`;
+                            const avg = `stationdetail_Avg${index}`;
+                            const avgDiesel = `stationdetail_AvgDiesel${index}`;
+                            const loadType = `stationdetail_loadType${index}`;
+                            try {
+
+                                if(entry.loadType=="KHALI")
+                                {
+                                    totalKhaliKaKm=totalKhaliKaKm+entry.distance;
+                                    if (parseFloat(entry.average)>0)
+                                    totalKhaliKaDiesel=totalKhaliKaDiesel+(entry.distance / entry.average);
+                                }
+
+                                if (entry.routeDesc.toUpperCase() === "LOADING/UNLOADING") {
+                                    if (parseFloat(entry.average) > 0)
+                                        totalLoadUnloadDiesel = totalLoadUnloadDiesel + entry.estimatedDiesel;
+                                }
+                                $(`#${station}`).text(entry.routeDesc);
+                                $(`#${loadType}`).text(entry.loadType);
+                                $(`#${km}`).text(entry.distance);
+                                $(`#${avg}`).text(entry.average); 
+                                 $(`#${avgDiesel}`).text(entry.estimatedDiesel);
+                                 avgDieselValue=entry.estimatedDiesel;
+                                // var avgDieselValue = 0;
+                                // try {
+                                //     avgDieselValue = entry.distance / entry.average;
+                                //     $(`#${avgDiesel}`).text(avgDieselValue.toFixed(2));
+                                // } catch (error) {
+                                //     console.error("Error calculating average diesel:", error);
+                                //     $(`#${avgDiesel}`).text("Error"); // Display an error message to the user
+                                // }
+
+                                totalRunKm = totalRunKm + entry.distance;
+                                totalEstimateDiesel = totalEstimateDiesel+ avgDieselValue;
+                                totalAvgDieselValue=totalAvgDieselValue+avgDieselValue;
+                        }catch{}
+                        });
+                        $("#totalRunKm").text(totalRunKm.toFixed(2));// Total Run Kilometer
+                        $("#totalEstimateDiesel").text(totalEstimateDiesel.toFixed(2));// Total Estimate Diesel
+
+
+                        try
+                        {
+                            //Khali ka Diesel
+                            $("#khaliKaDisel").text(Math.round(parseFloat(totalKhaliKaDiesel)));
+                            $("#khaliKaKiloMeter").text(Math.round(parseFloat(totalKhaliKaKm)));
+                            $("#bhariKaDiesel").text(Math.round((parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel) - parseFloat(totalLoadUnloadDiesel))));
+                            $("#bhariKaKilometer").text(Math.round((parseFloat(totalRunKm) - parseFloat(totalKhaliKaKm))));
+                            if ((parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel)) > 0) {
+                                $("#bhariKaAverage").text(((parseFloat(totalRunKm) - parseFloat(totalKhaliKaKm)) / (parseFloat(totalConsumedDiesel) - parseFloat(totalKhaliKaDiesel) - parseFloat(totalLoadUnloadDiesel))).toFixed(2));
+                            }else{
+                                $("#bhariKaAverage").text("0");
+                            }
+                            totalDieselProfitLoss = (parseFloat(totalEstimateDiesel) - parseFloat(totalConsumedDiesel)).toFixed(2);
+                            if(parseFloat(totalDieselProfitLoss)<0)
+                            {
+                               totalDieselProfitLoss= (parseFloat(totalDieselProfitLoss)  +  parseFloat(totalDiscountValue)).toFixed(2)
+                            }
+                            else
+                            {
+                                totalDieselProfitLoss = (parseFloat(totalEstimateDiesel) - parseFloat(totalConsumedDiesel) + totalDiscountValue).toFixed(2);
+                            }
+                            $("#discountValue").text(totalDiscountValue.toFixed(2));
+                            $("#dieselProfitLoss").text(totalDieselProfitLoss);
+
+                            let dieselRate = parseFloat(data?.dieselRate) || 0;
+                            let profitLoss = parseFloat(totalDieselProfitLoss) || 0;
+                            let dieselAmtPnL = profitLoss * dieselRate;
+                            $("#dieselAmtPnL").text(dieselAmtPnL.toFixed(2));
+                            var percentageLoss=parseFloat((parseFloat(totalDieselProfitLoss)*100) / parseFloat(totalAvgDieselValue) ).toFixed(2);
+                            $("#percentageOfLoss").text(percentageLoss);
+                            $("#khaliBhariTotalKi").text(((parseFloat(totalRunKm) / parseFloat(totalConsumedDiesel))).toFixed(2));
+                        }
+                        catch{}
+                        
+                        $("#naamDaalneWala").text('');
+                        $("#solution").text('');
+
+
+                    } else {
+                        $.confirm({
+                            title: 'Diesel Hisab',
+                            content: 'Diesel Hisab does not Exists!',
+                            icon: 'fa fa-warning',
+                            type: 'red',
+                            buttons: {
+                                omg: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
+        }
+        </script>
+
+    @* Print script *@
+    <script>
+        function prepareForPrint() {
+            let printableArea = document.getElementById('printableArea');
+            let originalBodyContent = document.body.innerHTML;
+            let printStyles = `
+                    <style type="text/css">
+                            .print-button {
+                display: none !important;
+            }
+                               
+                                 table {
+                table-layout: fixed;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                border-collapse: collapse;
+            }
+
+            th, td {
+                        font-size: 0.80em;
+                padding: 8px;
+                border: 1px solid black;
+                text-align: center;
+                word-wrap: break-word;
+                overflow: hidden;
+                box-sizing: border-box;
+                font-weight: bold;
+            }
+
+            th {
+                background-color: #f2f2f2;
+                font-weight: bold;
+            }
+                    </style>
+                `;
+
+            if (printableArea) {
+                let printContent = printStyles + printableArea.outerHTML;
+                document.body.innerHTML = printContent;
+            }
+
+            window.print();
+
+            // Restore the original body content after printing (with a slight delay)
+            setTimeout(() => {
+                document.body.innerHTML = originalBodyContent;
+            }, 100);
+
+            // #labelDiesalHisab{
+            //     display: none!important;
+            // }
+        }
+    </script>
+}

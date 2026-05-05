@@ -1,0 +1,337 @@
+﻿@model VMS.Models.DriverChangeModel
+@{
+    ViewData["Title"] = "DriverChange Entry";
+}
+<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+ 
+<style>
+ 
+    table.dataTable thead th {
+        background-color: #6c2eb9;
+        color: white;
+        text-align: center;
+    }
+
+    .dataTables_wrapper .dt-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 0px;
+    }
+
+    .dataTables_filter {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+</style>
+
+
+<div class="container mb-4">
+    <div class="card shadow p-4">
+        <h3 class="card-title mb-4">Driver Change Entry</h3>
+
+        <form id="DriverChangeForm" asp-action="Create" method="post">
+            <input type="hidden" name="DriverChangeID" />
+            <div>
+            <div class="row">
+                 
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="lbChangedate">Change Date</label>
+                        <input asp-for="ChangeDate" type="date" class="form-control" required />
+                        @* <input type="date" class="form-control" id="txtTripStartDate" /> *@
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="lbDriver">Driver Name</label>
+                        <select class="form-control" id="driverName" name="DriverID">
+                            <!-- Options will be dynamically populated here -->
+                        </select>
+                    </div>
+                </div>
+              
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="lbVehicleNo">Vehicle No</label>
+                        <select class="form-control" id="VehicleNo" name="VehicleNo">
+                            <!-- Options will be dynamically populated here -->
+                        </select>
+                    </div>
+                </div>
+             </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="Salary">Salary</label>
+                            <input type="text" class="form-control" id="Salary" name="Salary" maxlength="13" inputmode="decimal" placeholder="0.00" />
+                                <!-- Options will be dynamically populated here -->                           
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="Remarks">Remarks</label>
+                            <input type="text" class="form-control" id="Remarks" name="Remarks" />
+                            <!-- Options will be dynamically populated here -->
+                        </div>
+                    </div>
+                
+                </div>
+
+                <div class="col-md-3">
+                    <button type="submit" id="submitBtn" class="btn btn-primary mt-4" )">Add Entry</button>
+                    <button type="button" id="cancelBtn" class="btn btn-primary mt-4" style="display:none;" )">Cancel</button>
+                </div>
+            </div>
+        </form>
+
+        <h4 class="mt-4">All Driver Change Entries</h4>
+        <table id="driverChangeTable" class="display nowrap table table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Actions</th>
+                    <th>ID</th>
+                    <th>Change Date</th>
+                    <th>DriverName</th>
+                    <th>VehicleNo</th>
+                    <th>Salary</th>
+                    <th>Remarks</th>
+                    <th>Status</th>
+                    @*  <th>Created By</th>
+                <th>Created Date</th> *@
+                    <th>IsActive</th>
+                    @*  <th>Updated By</th>
+                <th>Updated Date</th> *@
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+        $(document).ready(function () {
+              // initialize select2 look (kept minimal)
+              // $('#driverName').select2({
+              //       placeholder: "-- Select --",
+              //       width: '100%'
+              //   });
+
+              loadDrivers();
+              loadVehicles();
+
+            var table = $('#driverChangeTable').DataTable({
+                ajax: {
+                    url: '@Url.Action("GetAllDriverChangeEntries", "DriverChange")',
+                    dataSrc: 'data'
+                },
+                columns: [
+                    {
+                        data: null,
+                        render: function (data) {
+
+                            return `
+                                        <button class="btn btn-sm btn-primary edit-btn" data-id="${data.driverChangeID}">Edit</button>
+                                        <button class="btn btn-sm btn-danger delete-btn ms-2" data-id="${data.driverChangeID}">Delete</button>
+                                `;
+                        },
+                        orderable: false
+                    },
+
+
+                       { data: 'driverChangeID' },
+                       { data: 'changeDate' },
+                       //{ data: 'driverID' },
+                       { data: 'driverName' },
+                       { data: 'vehicleNo' },
+                       {data:'salary', defaultContent: ''},
+                       { data: 'remarks' },
+                       { data: 'status' },
+                       // { data: 'created_By' },
+                       // { data: 'createdDate' },
+                       { data: 'isActive' },
+                       // { data: 'updatedBy' },
+                       // { data: 'updatedDate' }
+                   ],
+                   dom: 'Bfrtip',
+                   buttons: ['copy', 'excel', 'pdf', 'print'],
+                   scrollX: true,
+                   //pageLength: 10
+            });
+
+            //=======To Save the Driver details===============
+                $('#DriverChangeForm').on('submit', function (e) {
+        e.preventDefault();
+
+        // Ensure driver select has a value - fallback to origDriverID if empty
+        var $driverSelect = $('#driverName');
+        var driverVal = $driverSelect.val();
+        if (!driverVal || driverVal === "") {
+            var origDriver = $driverSelect.data('origDriverID');
+            if (origDriver !== undefined && origDriver !== null && origDriver !== "") {
+                if ($driverSelect.find('option[value="' + origDriver + '"]').length === 0) {
+                    $driverSelect.append(new Option($driverSelect.data('origDriverText') || origDriver, origDriver, true, true));
+                }
+                $driverSelect.val(String(origDriver)).trigger('change');
+            }
+        }
+
+        // Ensure vehicle select has a value - fallback to origVehicleNo if empty
+        var $vehicleSelect = $('#VehicleNo');
+        var vehicleVal = $vehicleSelect.val();
+        if (!vehicleVal || vehicleVal === "") {
+            var origVeh = $vehicleSelect.data('origVehicleNo');
+            if (origVeh) {
+                if ($vehicleSelect.find('option[value="' + origVeh + '"]').length === 0) {
+                    $vehicleSelect.append(new Option(origVeh, origVeh, true, true));
+                }
+                $vehicleSelect.val(origVeh).trigger('change');
+            }
+        }
+
+        // Now serialize & post
+        var formData = $(this).serialize();
+        var actionUrl = $(this).attr('action');
+
+        $.post(actionUrl, formData, function (res) {
+            if (res.success) {
+                $('#message').text(res.message).fadeIn().delay(3000).fadeOut();
+                resetForm();
+                table.ajax.reload(null, false);
+            } else {
+                alert("Something went wrong!");
+            }
+        }).fail(function () {
+            alert("Server error. Check controller response.");
+        });
+    });
+           // ======================= End submit=============================================//
+               $('#driverChangeTable').on('click', '.edit-btn', function () {
+        var row = table.row($(this).parents('tr')).data();
+
+        // Hidden ID
+        $('input[name="DriverChangeID"]').val(row.driverChangeID);
+
+        // ChangeDate
+        if (row.changeDate) {
+            $('input[name="ChangeDate"]').val(row.changeDate.split('T')[0]);
+        } else {
+            $('input[name="ChangeDate"]').val('');
+        }
+
+        // Driver select (use driverID & driverName)
+            setSelectValue($('#driverName'), row.driverID, row.driverName);
+            $('#driverName').data('origDriverID', row.driverID);
+            $('#driverName').data('origDriverText', row.driverName);
+
+        // Vehicle select (vehicleNo text)
+        setSelectValue($('#VehicleNo'), row.vehicleNo, row.vehicleNo);
+        $('#VehicleNo').data('origVehicleNo', row.vehicleNo);
+
+        // Salary, remarks, status, isActive
+        $('input[name="Salary"]').val(row.salary !== undefined ? row.salary : '');
+        $('input[name="Remarks"]').val(row.remarks || '');
+        $('select[name="Status"]').val(row.status || '');
+        $('input[name="IsActive"]').prop('checked', !!row.isActive);
+
+        // UI changes
+        $('#submitBtn').text('Update Entry').removeClass('btn-success').addClass('btn-primary');
+        $('#cancelBtn').show();
+        $('#DriverChangeForm').attr('action', '@Url.Action("UpdateDriverChange", "DriverChange")');
+    });
+
+
+                $('#driverChangeTable').on('click', '.delete-btn', function () {
+            var id = $(this).data('id');
+
+            if (confirm("Are you sure you want to delete this entry?")) {
+
+                $.post('@Url.Action("DeleteDriverChange", "DriverChange")',
+                    { id: id },  // <-- MATCHES CONTROLLER PARAM NAME
+                    function (res) {
+                        if (res.success) {
+                            $('#message').text("Deleted successfully!")
+                                .fadeIn().delay(3000).fadeOut();
+                            table.ajax.reload(null, false);
+                        } else {
+                            alert("Delete failed!");
+                        }
+                    }
+                );
+            }
+        });
+
+            $('#cancelBtn').click(function () {
+                resetForm();
+            });
+
+
+
+            function resetForm() {
+                $('#DriverChangeForm')[0].reset();
+                $('input[name="DriverChangeID"]').val('');
+                $('#submitBtn').text('Add Entry').removeClass('btn-primary').addClass('btn-success');
+                $('#cancelBtn').hide();
+                $('#DriverChangeForm').attr('action', '@Url.Action("Create", "DriverChange")');
+                // reset select2 fields
+                $('#driverName').val(null).trigger('change');
+                $('#VehicleNo').val(null).trigger('change');
+                // clear salary
+                $('input[name="Salary"]').val('');
+            }
+
+            // ===== Load Drivers =====
+                   function loadDrivers() {
+                            $.get('/DriverChange/GetDrivers', function (data) {
+                                $('#driverName').empty().append('<option value="">-- Select Driver --</option>');
+                                $.each(data || [], function (i, v) {
+                                    $('#driverName').append(`<option value="${v.driverID}">${v.driverName}</option>`);
+                                });
+                                $('#driverName').trigger('change');
+                            });
+                        }
+
+            // ===== Load Vehicles =====
+            function loadVehicles() {
+                $.get('/DriverChange/GetVehicles', function (data) {
+                    console.log('Vehicle data received:', data);
+                    $('#VehicleNo').empty().append('<option value="">-- Select Vehicle --</option>');
+                    $.each(data || [], function (i, v) {
+                        $('#VehicleNo').append(`<option value="${v.vehicleNo}">${v.vehicleNo}</option>`);
+                    });
+                    $('#VehicleNo').trigger('change');
+                }).fail(() => alert('Error loading vehicle list.'));
+            }
+
+
+         function setSelectValue($select, value, text) {
+        if (value === undefined || value === null) return;
+        var valStr = String(value);
+        var exists = $select.find('option[value="' + valStr + '"]');
+        if (exists.length) {
+            $select.val(valStr).trigger('change');
+        } else {
+            var opt = new Option(text || valStr, valStr, true, true);
+            $select.append(opt).trigger('change');
+        }
+    }
+
+            // ===== form field input filters =====
+            $('#Salary').on('input', function () {
+                this.value = this.value.replace(/[^0-9.]/g, '');
+            });
+        });
+</script>
