@@ -1,0 +1,227 @@
+@model VMS.Models.DriverChangeModel
+@{
+    ViewData["Title"] = "DriverChange Entry";
+}
+
+<!-- CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<!---->
+<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+
+<style>
+    table.dataTable thead th {
+        background-color: #6c2eb9;
+        color: white;
+        text-align: center;
+    }
+
+    .dataTables_wrapper .dt-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 0px;
+    }
+
+    .dataTables_filter {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+</style>
+<div class="container mb-4">
+    <div class="card shadow p-4">
+        <h3 class="card-title mb-4">Driver Change Entry</h3>
+
+    <form id="DriverChangeForm" asp-action="Create" method="post">
+            <input type="hidden" name="DriverChangeID" />
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label>Change Date</label>
+                <input asp-for="ChangeDate" type="date" class="form-control" required />
+            </div>
+            @* 
+            <div class="col-md-3">
+                    <label>Driver Name</label>
+                    <input asp-for="DriverID" type="number" step="0.01" class="form-control" required />
+            </div>
+            *@
+                <div class="col-md-3">
+                    <label class="form-label">Driver Name</label>
+                    <select id="driverName" class="form-select select2-square"></select>
+                </div
+
+               <div class="col-md-3">
+                    <label class="form-label">VehicleNo</label>
+                    <select id="VehicleNo" class="form-select select2-square"></select>
+                </div
+
+            <div class="col-md-3">
+                <label>Remarks</label>
+                <input asp-for="Remarks" class="form-control" />
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" id="submitBtn" class="btn btn-success">Add Entry</button>
+            <button type="button" id="cancelBtn" class="btn btn-secondary" style="display:none;">Cancel</button>
+        </div>
+
+        <div id="message" class="alert alert-success mt-3" style="display:none;"></div>
+    </form>
+   
+
+    <hr />
+
+    <h4 class="mt-4">All Driver Change Entries</h4>
+    <table id="dieselTable" class="display nowrap table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Actions</th>
+                <th>ID</th>
+                <th>Change Date</th>
+                <th>DriverID</th>
+                <th>VehicleNo</th>
+                <th>Remarks</th>
+                <th>Status</th>
+               @*  <th>Created By</th>
+                <th>Created Date</th> *@
+                <th>IsActive</th>
+               @*  <th>Updated By</th>
+                <th>Updated Date</th> *@
+            </tr>
+        </thead>
+    </table>
+
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        loadVehicles()
+        loadDrivers()
+     
+        var table = $('#ChangeTable').DataTable({
+            ajax: {
+                url: '@Url.Action("GetAllDriverChangeEntries", "DriverChange")',
+                dataSrc: 'data'
+            },
+            columns: [
+                {
+                    data: null,
+                    render: function (data) {
+                        return `
+                                    <button class="btn btn-sm btn-primary edit-btn" data-id="${data.DriverChangeID}">Edit</button>
+                                    <button class="btn btn-sm btn-danger delete-btn ms-2" data-id="${data.DriverChangeID}">Delete</button>
+                            `;
+                    },
+                    orderable: false
+                },
+                { data: 'DriverChangeID' },
+                { data: 'ChangeDate' },
+                { data: 'DriverID' },
+                { data: 'VehicleNo' },
+                { data: 'Remarks' },
+                { data: 'Status' },
+                // { data: 'created_By' },
+                // { data: 'createdDate' },
+                { data: 'isActive' },
+                // { data: 'updatedBy' },
+                // { data: 'updatedDate' }
+            ],
+            dom: 'Bfrtip',
+            buttons: ['copy', 'excel', 'pdf', 'print'],
+            scrollX: true,
+            pageLength: 10
+        });
+
+        $('#DriverForm').on('submit', function (e) {
+            e.preventDefault();
+            var formData = $(this).serialize();
+            var actionUrl = $(this).attr('action');
+
+            $.post(actionUrl, formData, function (res) {
+                if (res.success) {
+                    $('#message').text(res.message).fadeIn().delay(3000).fadeOut();
+
+                    resetForm();
+                    table.ajax.reload(null, false); 
+                } else {
+                    alert("Something went wrong!");
+                }
+            }).fail(function () {
+                alert("Server error. Check controller response.");
+            });
+        });
+
+        $('#ChangeTable').on('click', '.edit-btn', function () {
+            var row = table.row($(this).parents('tr')).data();
+            $('input[name="DriverChangeID"]').val(row.DriverChangeID);
+            $('input[name="DriverID"]').val(row.DriverID);          
+            $('input[name="ChangeDate"]').val(row.ChangeDate.split('T')[0]);
+          //  $('input[name="EndDate"]').val(row.endDate.split('T')[0]);
+          //  $('input[name="DieselRate"]').val(row.dieselRate);
+            $('input[name="VehicleNo"]').val(row.VehicleNo);
+            $('input[name="Remarks"]').val(row.remarks);
+            $('input[name="Status"]').val(row.status);
+            $('#submitBtn').text('Update Entry').removeClass('btn-success').addClass('btn-primary');
+            $('#cancelBtn').show();
+            $('#dieselForm').attr('action', '@Url.Action("UpdateDriverChange", "DriverChange")');
+        });
+
+        $('#ChangeTable').on('click', '.delete-btn', function () {
+            var id = $(this).data('id');
+            if (confirm("Are you sure you want to delete this entry?")) {
+                $.post('@Url.Action("DeleteDriverChange", "DriverChange")', { id: id }, function (res) {
+                    if (res.success) {
+                        $('#message').text("Deleted successfully!").fadeIn().delay(3000).fadeOut();
+                        table.ajax.reload(null, false);
+                    }
+                });
+            }
+        });
+
+        $('#cancelBtn').click(function () {
+            resetForm();
+        });
+
+        function resetForm() {
+            $('#DriverForm')[0].reset();
+            $('input[name="DriverChangeID"]').val('');
+            $('#submitBtn').text('Add Entry').removeClass('btn-primary').addClass('btn-success');
+            $('#cancelBtn').hide();
+            $('#dieselForm').attr('action', '@Url.Action("Create", "DriverChange")');
+        }
+
+        // Load Drivers
+        function loadDrivers() {
+            $.get('/DriverChange/GetDrivers', function (data) {
+                $('#driverName').empty().append('<option value="">-- Select Driver --</option>');
+                $.each(data, function (i, v) {
+                    $('#driverName').append(`<option value="${v.driverID}">${v.driverName}</option>`);
+                });
+            }).fail(() => alert('Error loading driver list.'));
+        }
+
+         // Load Vehicles
+        function loadVehicles() {
+            $.get('/DriverChange/GetVehicles', function (data) {
+                $('#vehicleNo').empty().append('<option value="">-- Select Vehicle --</option>');
+                $.each(data, function (i, v) {
+                    $('#vehicleNo').append(`<option value="${v.vehicleID}">${v.vehicleNo}</option>`);
+                });
+            }).fail(() => alert('Error loading vehicle list.'));
+        }
+    });
+</script>
+
+

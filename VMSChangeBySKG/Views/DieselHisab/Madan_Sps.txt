@@ -1,0 +1,551 @@
+ 
+
+
+
+Create PROCEDURE [dbo].[TripWiseSummary]      
+---- TRIP WISE SUMMARY FOR REPORT PURPOSE;    
+    @STARTDATE DATETIME ,       -- INPUT PARAMETER    
+    @ENDDATE DATETIME  ,        -- INPUT PARAMETER    
+    @VEHICLENO INT,           -- VehicleID of Vehicle 
+    @DRIVERID INT = NULL  
+AS      
+BEGIN      
+          
+ DECLARE @TRIPID INT;      
+ DECLARE @MODELID INT;    
+ DECLARE @MODELNO VARCHAR(50);    
+ DECLARE @TOTALDISTANCE INT;     
+ DECLARE @DISTANCE_KHALI INT;     
+ DECLARE @DISTANCE_BHARI INT;    
+ DECLARE @ESTIMATED_DIESEL DECIMAL(10,2);     
+ DECLARE @DIESELFILLED DECIMAL(10,2);    
+ DECLARE @TRIP_START_DATE DATETIME;    
+ DECLARE @TRIPENDDATE DATETIME;    
+ DECLARE @PROFITLOSSAMT  DECIMAL(10,2);    
+ DECLARE @PROFIT_LOSS   DECIMAL(10,2);    
+    
+    --DECLARE @SALARY DECIMAL(10, 2);      
+      
+ --- CREATING TRIP TEMPTABLE FORREPORT---      
+    
+IF OBJECT_ID('DBO.TBL_TRIPTEMP', 'U') IS NOT NULL
+DROP TABLE DBO.TBL_TRIPTEMP;
+     
+    
+SELECT   HD.TRIPID, VM.VEHICLE_NO ,  'XXXXXXXXXXXXXXXXXXXX' AS MODELNO, MFG_YEAR, DM.DRIVER_NAME,    
+     MIN(TRIP_START_DATE) AS TRIP_START_DATE, MAX(TRIP_END_DATE) AS TRIPENDDATE,    
+     SUM(BHARI_KA_AVERAGE) "BHARI_KA_AVERAGE",    
+	 0  AS TOTALDISTANCE,    
+     0  AS ESTIMATED_DIESEL,    
+     0  AS DISTANCE_KHALI,    
+     0  AS DISTANCE_BHARI,    
+     0  AS DIESELFILLED,    
+     SUM(PROFIT_LOSS) "PROFIT_LOSS",     
+     0  AS PROFITLOSSAMT,    
+     SUM(PERCENT_LOSS) "PERCENT_PROFITLOSS",     
+     MIN(START_ODOMETER) "ODOMETER START", MAX(END_ODOMETER) "ODOMETER END",     
+     SUM(CASE     
+     WHEN BHARI_KA_AVERAGE <= .99  THEN 0    
+     WHEN BHARI_KA_AVERAGE BETWEEN 1 AND 1.99  THEN 1    
+     WHEN BHARI_KA_AVERAGE BETWEEN 2 AND 2.99 THEN 2    
+     WHEN BHARI_KA_AVERAGE >= 3 THEN 3    
+   ELSE 0    
+   END) AS SCORE,    
+   VM.ID AS VEHICLEID, MODELID, DM.ID    
+ INTO TBL_TRIPTEMP    
+ FROM [DBO].[TBL_DIESEL_HEADER] HD JOIN [DBO].[TBL_VEHICLE_MASTER] VM ON VM.ID = HD.VEHICLENO 
+                                   JOIN [DBO].[TBL_DRIVER_MASTER] DM ON  DM.ID = HD.DRIVERID   
+ WHERE 1=1     
+	 AND TRIP_END_DATE BETWEEN @STARTDATE AND @ENDDATE    
+	 AND VM.ID= ISNULL(@VEHICLENO, VM.ID) 
+	 AND DM.ID= ISNULL(@DRIVERID, DM.ID) 
+ --VM.VEHICLE_NO = 'RJ31GB2541' 
+ --AND DL.TRIPID = HD.TRIPID    
+ --AND HD.TRIPID = 184    
+GROUP BY   VM.VEHICLE_NO ,  MFG_YEAR, DM.DRIVER_NAME,  HD.TRIPID, VM.ID, VM.MODELID, DM.ID;    
+    
+ DECLARE TRIP_CURSOR CURSOR FOR      
+ SELECT TRIPID , TRIP_START_DATE, TRIPENDDATE , PROFIT_LOSS, MODELID, MODELNO    
+ FROM TBL_TRIPTEMP;      
+    OPEN TRIP_CURSOR;     
+      
+    -- FETCH THE FIRST ROW      
+    FETCH NEXT FROM TRIP_CURSOR INTO @TRIPID, @TRIP_START_DATE, @TRIPENDDATE, @PROFIT_LOSS, @MODELID , @MODELNO;    
+	
+    -- LOOP THROUGH THE ROWS      
+    WHILE @@FETCH_STATUS = 0      
+    BEGIN      
+        -- FETCH MINIMUM AND MAXIMUM LINEID TO CHECK IF MORE THAN 1 LINES IN LOADING LINES      
+  SET @TOTALDISTANCE =0;  SET @ESTIMATED_DIESEL = 0; SET @DISTANCE_KHALI = 0; SET @DISTANCE_BHARI = 0;    
+  SET @DIESELFILLED = 0;  SET @PROFITLOSSAMT = 0;     
+        
+     SELECT @TOTALDISTANCE = SUM(DISTANCE) ,    
+           @ESTIMATED_DIESEL = SUM(ESTIMATED_DIESEL),    
+           @DISTANCE_KHALI = SUM(CASE WHEN LOAD_TYPE = 'KHALI' THEN DISTANCE ELSE 0 END),     
+     @DISTANCE_BHARI = SUM(CASE WHEN LOAD_TYPE = 'KHALI' THEN 0 ELSE DISTANCE  END)     
+     FROM  [DBO].[TBL_DIESEL_LINE]   DL    
+     WHERE TRIPID = @TRIPID;      
+      
+       SELECT @DIESELFILLED = SUM(DF.DIESEL_QTY)    
+     FROM  [DBO].[TBL_DIESEL_FILLING]   DF    
+     WHERE TRIPID = @TRIPID;      
+    
+  /* EXEC GETDIESELRATE (@TRIP_START_DATE, 'SALE') */    
+  --DECLARE    
+    --@PROFITLOSSAMT DECIMAL(10,2);    
+   SET  @PROFITLOSSAMT = (DBO.GETDIESELRATE(@TRIPENDDATE, 'SALE',@TRIPID) * @PROFIT_LOSS);    
+ --BEGIN    
+  SET @MODELNO = NULL;    
+  SELECT @MODELNO =  MODEL_NO     
+  FROM  TBL_MODEL_AVERAGE_MASTER MA    
+  WHERE  ID = @MODELID;    
+       
+ --END:    
+      
+   BEGIN      
+         
+        BEGIN      
+   UPDATE TBL_TRIPTEMP      
+    SET  TOTALDISTANCE = @TOTALDISTANCE,    
+      ESTIMATED_DIESEL = @ESTIMATED_DIESEL,    
+      DISTANCE_KHALI = @DISTANCE_KHALI,    
+      DISTANCE_BHARI = @DISTANCE_BHARI,    
+      DIESELFILLED = @DIESELFILLED,    
+      PROFITLOSSAMT = ISNULL(@PROFITLOSSAMT, 0),    
+      MODELNO = @MODELNO    
+   WHERE TRIPID = @TRIPID;      
+  END      
+   END;      
+          
+      
+        -- FETCH THE NEXT ROW      
+        FETCH NEXT FROM TRIP_CURSOR INTO @TRIPID, @TRIP_START_DATE, @TRIPENDDATE, @PROFIT_LOSS, @MODELID, @MODELNO;      
+  END;      
+       
+    -- CLOSE AND DEALLOCATE THE CURSOR      
+    CLOSE TRIP_CURSOR;      
+    DEALLOCATE TRIP_CURSOR;      
+    
+   SELECT * FROM TBL_TRIPTEMP; -- ORDER BY TRIPENDDATE DESC;    
+    
+    
+END;
+
+------------------------------
+
+
+
+Create PROCEDURE [dbo].[VehicleLastAvg]  
+---- Vehicles Latest Mileage Report   
+-- Report Requires to show all vehicles with recent bhari ka average order by trip_end_Date  
+  AS    
+BEGIN    
+  
+  DECLARE @Vehicle_No varchar(50);  
+  DECLARE @TripID INT;  
+  DECLARE @VehicleID INT;  
+  DECLARE @Trip_End_Date datetime;  
+  DECLARE @Bhari_Ka_Average decimal(18,3);  
+  
+ --- Creating TempTable forReport---    
+    
+drop table tbl_vehtemp;    
+  
+select vm.ID as VehicleID, vm.Vehicle_No as Vehicle_No,   max(tripid) as TripID  ,      
+     max(Trip_End_Date) as Trip_End_Date,   
+       sum(Bhari_ka_average) as Bhari_ka_average  
+Into  tbl_vehtemp  
+from  [dbo].[tbl_Vehicle_Master] vm  
+  LEFT JOIN [dbo].[tbl_Diesel_Header] hd  
+  ON  vm.id = hd.vehicleno  
+where 1=1    
+--and trip_start_date is null  
+ --and hd.tripid = 184   
+group by vm.Vehicle_No, vm.ID;  
+--order by trip_end_date desc  
+  
+DECLARE C1_Cursor CURSOR FOR    
+ Select  VehicleID, Vehicle_No,  TripID    
+ from tbl_vehtemp;  
+  
+  -- Open the cursor    
+    OPEN C1_Cursor;    
+    
+    -- Fetch the first row    
+    FETCH NEXT FROM C1_Cursor INTO @VehicleID, @Vehicle_No,  @TripID ;   
+    
+    -- Loop through the rows    
+    WHILE @@FETCH_STATUS = 0    
+    BEGIN    
+  
+       set @Bhari_Ka_Average = 00.000;  
+    --set @Trip_End_Date =null;  
+  
+    select  @Bhari_Ka_Average = Bhari_Ka_Average,   
+            @Trip_End_Date = Trip_End_Date   
+    from  [dbo].[tbl_Diesel_Header] hd  
+    where TripID = @TripID;  
+     
+  
+   BEGIN    
+   UPDATE tbl_vehtemp    
+    SET  Bhari_Ka_Average = @Bhari_Ka_Average,  
+         Trip_End_Date = @Trip_End_Date  
+   WHERE TripID = @TripID  
+   And  TripID is not null;  
+   END    
+   FETCH NEXT FROM C1_Cursor INTO  @VehicleID, @Vehicle_No,  @TripID ;   
+ END;    
+     
+    -- Close and deallocate the cursor    
+    CLOSE C1_Cursor;    
+    DEALLOCATE C1_Cursor;    
+  
+--select * from tbl_vehtemp order by TripEndDate, bhari_ka_average desc;  
+select Vehicle_no, Trip_End_Date, cast (Bhari_ka_average as decimal(10,2)) Bhari_ka_average from tbl_vehtemp order by  TripID desc;  
+End;
+
+-----------------------------
+
+
+
+
+Create PROCEDURE [dbo].[VehicleWiseDistanceRun]
+    @STARTDATE DATETIME ,       -- INPUT PARAMETER    
+    @ENDDATE DATETIME,          -- INPUT PARAMETER    
+    @VEHICLENO INT,           -- VehicleID of Vehicle 
+    @DRIVERID INT = NULL  
+AS      
+BEGIN      
+          
+-- Declare @VEHICLENO INT;          -- VehicleID of Vehicle 
+-- Declare @DRIVERID INT = NULL ; 
+ DECLARE @TRIPID INT;      
+ DECLARE @MODELID INT;    
+ DECLARE @MODELNO VARCHAR(50);    
+ DECLARE @TOTALDISTANCE INT;     
+ DECLARE @DISTANCE_KHALI INT;     
+ DECLARE @DISTANCE_BHARI INT;    
+ DECLARE @ESTIMATED_DIESEL DECIMAL(10,2);     
+ DECLARE @DIESELFILLED DECIMAL(10,2);    
+ DECLARE @TRIP_START_DATE DATETIME;    
+ DECLARE @TRIPENDDATE DATETIME;    
+ DECLARE @PROFITLOSSAMT  DECIMAL(10,2);    
+ DECLARE @PROFIT_LOSS   DECIMAL(10,2);    
+    
+    --DECLARE @SALARY DECIMAL(10, 2);      
+      
+ --- CREATING TRIP TEMPTABLE FORREPORT---      
+    
+IF OBJECT_ID('DBO.TBL_TRIPTEMP', 'U') IS NOT NULL
+DROP TABLE DBO.TBL_TRIPTEMP;
+     
+    
+SELECT   HD.TRIPID, VM.VEHICLE_NO ,  'XXXXXXXXXXXXXXXXXXXX' AS MODELNO, MFG_YEAR, DM.DRIVER_NAME,    
+     MIN(TRIP_START_DATE) AS TRIP_START_DATE, MAX(TRIP_END_DATE) AS TRIPENDDATE,    
+     SUM(BHARI_KA_AVERAGE) "BHARI_KA_AVERAGE",    
+	 0  AS TOTALDISTANCE,    
+     0  AS ESTIMATED_DIESEL,    
+     0  AS DISTANCE_KHALI,    
+     0  AS DISTANCE_BHARI,    
+     0  AS DIESELFILLED,    
+     SUM(PROFIT_LOSS) "PROFIT_LOSS",     
+     0  AS PROFITLOSSAMT,    
+     SUM(PERCENT_LOSS) "PERCENT_PROFITLOSS",     
+     MIN(START_ODOMETER) "ODOMETER START", MAX(END_ODOMETER) "ODOMETER END",     
+     SUM(CASE     
+     WHEN BHARI_KA_AVERAGE <= .99  THEN 0    
+     WHEN BHARI_KA_AVERAGE BETWEEN 1 AND 1.99  THEN 1    
+     WHEN BHARI_KA_AVERAGE BETWEEN 2 AND 2.99 THEN 2    
+     WHEN BHARI_KA_AVERAGE >= 3 THEN 3    
+   ELSE 0    
+   END) AS SCORE,    
+   VM.ID AS VEHICLEID, MODELID, DM.ID    
+ INTO TBL_TRIPTEMP    
+ FROM [DBO].[TBL_DIESEL_HEADER] HD JOIN [DBO].[TBL_VEHICLE_MASTER] VM ON VM.ID = HD.VEHICLENO 
+                                   JOIN [DBO].[TBL_DRIVER_MASTER] DM ON  DM.ID = HD.DRIVERID   
+ WHERE 1=1     
+	 AND TRIP_END_DATE BETWEEN @STARTDATE AND @ENDDATE    
+	 AND VM.ID= ISNULL(@VEHICLENO, VM.ID) 
+	 AND DM.ID= ISNULL(@DRIVERID, DM.ID) 
+ --VM.VEHICLE_NO = 'RJ31GB2541' 
+ --AND DL.TRIPID = HD.TRIPID    
+ --AND HD.TRIPID = 184    
+GROUP BY   VM.VEHICLE_NO ,  MFG_YEAR, DM.DRIVER_NAME,  HD.TRIPID, VM.ID, VM.MODELID, DM.ID;    
+    
+ DECLARE TRIP_CURSOR CURSOR FOR      
+ SELECT TRIPID , TRIP_START_DATE, TRIPENDDATE , PROFIT_LOSS, MODELID, MODELNO    
+ FROM TBL_TRIPTEMP;      
+ 
+ OPEN TRIP_CURSOR;     
+      
+    -- FETCH THE FIRST ROW      
+    FETCH NEXT FROM TRIP_CURSOR INTO @TRIPID, @TRIP_START_DATE, @TRIPENDDATE, @PROFIT_LOSS, @MODELID , @MODELNO;    
+	
+    -- LOOP THROUGH THE ROWS      
+    WHILE @@FETCH_STATUS = 0      
+    BEGIN      
+        -- FETCH MINIMUM AND MAXIMUM LINEID TO CHECK IF MORE THAN 1 LINES IN LOADING LINES      
+  SET @TOTALDISTANCE =0;  SET @ESTIMATED_DIESEL = 0; SET @DISTANCE_KHALI = 0; SET @DISTANCE_BHARI = 0;    
+  SET @DIESELFILLED = 0;  SET @PROFITLOSSAMT = 0;     
+        
+     SELECT @TOTALDISTANCE = SUM(DISTANCE) ,    
+            @ESTIMATED_DIESEL = SUM(ESTIMATED_DIESEL),    
+            @DISTANCE_KHALI = SUM(CASE WHEN LOAD_TYPE = 'KHALI' THEN DISTANCE ELSE 0 END),     
+			@DISTANCE_BHARI = SUM(CASE WHEN LOAD_TYPE = 'KHALI' THEN 0 ELSE DISTANCE  END)     
+     FROM  [DBO].[TBL_DIESEL_LINE]   DL    
+     WHERE TRIPID = @TRIPID;      
+      
+       SELECT @DIESELFILLED = SUM(DF.DIESEL_QTY)    
+     FROM  [DBO].[TBL_DIESEL_FILLING]   DF    
+     WHERE TRIPID = @TRIPID;      
+    
+  /* EXEC GETDIESELRATE (@TRIP_START_DATE, 'SALE') */    
+  --DECLARE    
+    --@PROFITLOSSAMT DECIMAL(10,2);    
+   SET  @PROFITLOSSAMT = (DBO.GETDIESELRATE(@TRIPENDDATE, 'SALE',@TRIPID) * @PROFIT_LOSS);    
+ --BEGIN    
+  SET @MODELNO = NULL;    
+  SELECT @MODELNO =  MODEL_NO     
+  FROM  TBL_MODEL_AVERAGE_MASTER MA    
+  WHERE  ID = @MODELID;    
+       
+ --END:    
+      
+   BEGIN      
+         
+        BEGIN      
+   UPDATE TBL_TRIPTEMP      
+    SET  TOTALDISTANCE = @TOTALDISTANCE,    
+      ESTIMATED_DIESEL = @ESTIMATED_DIESEL,    
+      DISTANCE_KHALI = @DISTANCE_KHALI,    
+      DISTANCE_BHARI = @DISTANCE_BHARI,    
+      DIESELFILLED = @DIESELFILLED,    
+      PROFITLOSSAMT = ISNULL(@PROFITLOSSAMT, 0),    
+      MODELNO = @MODELNO    
+   WHERE TRIPID = @TRIPID;      
+  END      
+   END;      
+          
+      
+        -- FETCH THE NEXT ROW      
+        FETCH NEXT FROM TRIP_CURSOR INTO @TRIPID, @TRIP_START_DATE, @TRIPENDDATE, @PROFIT_LOSS, @MODELID, @MODELNO;      
+  END;      
+       
+    -- CLOSE AND DEALLOCATE THE CURSOR      
+	CLOSE TRIP_CURSOR;      
+    DEALLOCATE TRIP_CURSOR;      
+    
+	select vehicle_No, sum(distance_khali) as distance_khali, sum (distance_bhari)as distance_bhari, sum(distance_khali+distance_bhari) as Total_Distance
+	from [dbo].[TBL_TRIPTEMP]
+	group by vehicle_No;
+    
+    
+END;
+
+-----------------------------------
+
+
+
+
+
+Create PROCEDURE [dbo].[DriverWisePnL]
+    @STARTDATE DATETIME ,       -- INPUT PARAMETER    
+    @ENDDATE DATETIME,          -- INPUT PARAMETER    
+    @VEHICLENO INT,           -- VehicleID of Vehicle 
+    @DRIVERID INT = NULL  
+AS      
+BEGIN      
+          
+-- Declare @VEHICLENO INT;          -- VehicleID of Vehicle 
+-- Declare @DRIVERID INT = NULL ; 
+ DECLARE @TRIPID INT;      
+ DECLARE @MODELID INT;    
+ DECLARE @MODELNO VARCHAR(50);    
+ DECLARE @TOTALDISTANCE INT;     
+ DECLARE @DISTANCE_KHALI INT;     
+ DECLARE @DISTANCE_BHARI INT;    
+ DECLARE @ESTIMATED_DIESEL DECIMAL(10,2);     
+ DECLARE @DIESELFILLED DECIMAL(10,2);    
+ DECLARE @TRIP_START_DATE DATETIME;    
+ DECLARE @TRIPENDDATE DATETIME;    
+ DECLARE @PROFITLOSSAMT  DECIMAL(10,2);    
+ DECLARE @PROFIT_LOSS   DECIMAL(10,2);    
+    
+    --DECLARE @SALARY DECIMAL(10, 2);      
+      
+ --- CREATING TRIP TEMPTABLE FORREPORT---      
+
+
+Exec [TripWiseSummary] @StartDate, @EndDate, @VehicleNo, @DriverId;
+    
+  
+select Driver_Name, Vehicle_no, sum(ProfitlossAmt)   as PnL
+--select * 
+from [dbo].[TBL_TRIPTEMP]
+--where Format (TripEndDate,'MMM') = 'Jun'
+group by Driver_Name, Vehicle_no
+    
+
+    
+END;
+
+
+
+--------------------------
+
+
+
+Create PROCEDURE [dbo].[DriverWiseTrips]
+    @STARTDATE DATETIME ,       -- INPUT PARAMETER    
+    @ENDDATE DATETIME,          -- INPUT PARAMETER    
+    @VEHICLENO INT,           -- VehicleID of Vehicle 
+    @DRIVERID INT = NULL  
+AS      
+BEGIN      
+          
+-- Declare @VEHICLENO INT;          -- VehicleID of Vehicle 
+-- Declare @DRIVERID INT = NULL ; 
+ DECLARE @TRIPID INT;      
+ DECLARE @MODELID INT;    
+ DECLARE @MODELNO VARCHAR(50);    
+ DECLARE @TOTALDISTANCE INT;     
+ DECLARE @DISTANCE_KHALI INT;     
+ DECLARE @DISTANCE_BHARI INT;    
+ DECLARE @ESTIMATED_DIESEL DECIMAL(10,2);     
+ DECLARE @DIESELFILLED DECIMAL(10,2);    
+ DECLARE @TRIP_START_DATE DATETIME;    
+ DECLARE @TRIPENDDATE DATETIME;    
+ DECLARE @PROFITLOSSAMT  DECIMAL(10,2);    
+ DECLARE @PROFIT_LOSS   DECIMAL(10,2);    
+    
+    --DECLARE @SALARY DECIMAL(10, 2);      
+      
+ --- CREATING TRIP TEMPTABLE FORREPORT---      
+
+
+Exec [TripWiseSummary] @StartDate, @EndDate, @VehicleNo, @DriverId;
+    
+  
+select Driver_Name, Count(*) as Trips, sum(Score) Score, sum(score)/count(*) as ScoreCard
+--select * 
+from [dbo].[TBL_TRIPTEMP]
+--where Format (TripEndDate,'MMM') = 'Jun'
+group by Driver_Name
+    
+
+    
+END;
+
+
+-------------------
+
+
+
+
+
+Create PROCEDURE [dbo].[DriverScoreCard]
+	@StartDate DateTime ,       -- Input parameter
+	@EndDate DateTime    ,      -- Input parameter
+	@VehicleNo	int = null,
+	@Driverid  int 
+--    @TotalSalary DECIMAL(10, 2) OUTnPUT -- Output parameter
+AS
+----DriverWise Scorecard Report 
+-- Report Requires to show all vehicles with recent bhari ka average order by trip_end_Date
+-- 0 Below Average
+-- 1 Low Average
+-- 2 Medium Average
+-- 3 Good 
+ 
+BEGIN  
+/*
+    DECLARE @loadingID INT;  
+ DECLARE @ExpenseID INT;  
+ DECLARE @lineID INT;  
+ DECLARE @FrtAmt decimal(10,2);  
+  
+ DECLARE @MinlineID INT;  
+ DECLARE @MaxlineID INT;  
+    --DECLARE @Salary DECIMAL(10, 2);  
+  */
+   --Declare @VehicleNo varchar(500);
+   DECLARE @ScoreCard decimal(10,2);
+   Declare @driver_Name varchar(500);
+   Declare @Score  int;
+   Declare @NoOFTrips int;
+
+ --- Creating TempTable forReport---  
+ 
+--Executing TripWiseSummary Procedure to pull data from base table in tbl_Triptemp
+EXEC TripWiseSummary @StartDate, @EndDate, @vehicleNo, @Driverid;
+
+drop table tbl_temp;
+/*
+select driver_Name ,  DATENAME(Month, trip_start_Date) as MonthName,
+	sum(CASE 
+        WHEN Bhari_ka_average <= .99  THEN 0
+        WHEN Bhari_ka_average between 1 and 1.99  THEN 1
+		WHEN Bhari_ka_average between 2 and 2.99 THEN 2
+		WHEN Bhari_ka_average >= 3 THEN 3
+		ELSE 0
+    END) AS Score,
+	sum(ProfitLossAmt) as ProfitLossAmt,
+ count(*) as NoOFTrips,  month(trip_start_Date) as Month
+ */
+ select driver_Name ,  
+	sum(Score) as Score,
+	 count(*) as NoOFTrips ,
+	 -- CAST( (sum(Score) / count(*) ) AS decimal(20, 2)) ScoreCard  
+	 0 ScoreCard
+	 --sum(Score) / count(*) As ScoreCard
+	--sum(ProfitLossAmt) as ProfitLossAmt, 
+Into  tbl_temp
+from tbl_Triptemp 
+where TripEndDate between @StartDate and @EndDate
+group by driver_Name;  
+
+update  tbl_temp set ScoreCard =    cast( CAST(Score As decimal(9,2)) / cast ( NoOFTrips AS decimal(5,2) ) as decimal(8,2))
+where Score > 0 
+and NoOFTrips > 0;
+
+
+--order by driver_Name;
+/*
+DECLARE Trip_Cursor CURSOR FOR  
+	Select driver_Name , Score, NoOFTrips
+	from tbl_temp
+	where score >0;
+
+	 -- Open the cursor  
+    OPEN Trip_Cursor;  
+  
+    -- Fetch the first row  
+    FETCH NEXT FROM Trip_Cursor INTO @driver_Name , @Score, @NoOFTrips;
+  
+    -- Loop through the rows  
+    WHILE @@FETCH_STATUS = 0  
+    BEGIN  
+
+	      set @ScoreCard = 0;
+		  set @ScoreCard = round(@Score / @NoOFTrips,2);
+
+		 BEGIN  
+			UPDATE tbl_temp  
+				SET  ScoreCard = @ScoreCard				
+			WHERE driver_Name = @driver_Name;  
+		 END  
+		 FETCH NEXT FROM Trip_Cursor INTO @driver_Name , @Score, @NoOFTrips; 
+	END;  
+   
+    -- Close and deallocate the cursor  
+    CLOSE Trip_Cursor;  
+    DEALLOCATE Trip_Cursor;  
+*/
+--select * from tbl_vehtemp order by TripEndDate, bhari_ka_average desc;
+
+
+select driver_name, Score, NoofTrips, Scorecard  from tbl_temp order by Scorecard desc
+End;
+
+
